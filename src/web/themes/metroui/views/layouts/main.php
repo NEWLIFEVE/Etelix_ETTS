@@ -19,6 +19,7 @@
         <!-- Local JavaScript -->
         <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/docs.js"></script>
         <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/github.info.js"></script>
+        <link rel="shortcut icon" href="<?php echo Yii::app()->request->baseUrl; ?>/images/favicon.ico" type="image/x-icon"/> 
     </head>
     <body class="metro">
         <header class="bg-dark">
