@@ -77,6 +77,6 @@
                 </div>
             </div>
         </div>
-        <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/hitua.js"></script>
+        <!--<script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/hitua.js"></script>-->
     </body>
 </html>
