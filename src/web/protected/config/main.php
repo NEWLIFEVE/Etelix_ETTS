@@ -8,7 +8,7 @@
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 	'name'=>'ETTS',
-        'language' => 'es',
+//        'language' => 'en',
         'sourceLanguage' => 'en',
         'charset'=> 'utf-8',
         'theme' => 'metroui',
@@ -57,6 +57,7 @@ return array(
 		// uncomment the following to use a MySQL database
 	
 		'db'=>array(
+
 			'connectionString' => 'pgsql:host=172.16.17.190;port=5432;dbname=etts',
 			'emulatePrepare' => true,
 			'username' => 'postgres',

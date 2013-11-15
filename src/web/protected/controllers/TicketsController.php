@@ -15,6 +15,15 @@ class TicketsController extends Controller
                     'loginUrl'=>Yii::app()->createUrl('/site/index'),
                 )));
         }
+        
+        /**
+         * Funcion para retornar los detinos 
+         */
+        public function actionDestinations()
+        {
+            $destinos = Destinos::model()->findAll();
+            echo CJSON::encode($destinos);
+        }
 
 	/**
 	 * @return array action filters
@@ -36,7 +45,7 @@ class TicketsController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
+				'actions'=>array('index','view', 'destinations'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -69,7 +78,8 @@ class TicketsController extends Controller
 	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 */
 	public function actionCreate()
-	{
+	{       
+                
 		$model=new Tickets;
 
 		// Uncomment the following line if AJAX validation is needed
@@ -77,6 +87,10 @@ class TicketsController extends Controller
 
 		if(isset($_POST['Tickets']))
 		{
+//                    echo '<pre>';
+//                    print_r($_POST);
+//                    Yii::app()->end();
+                    
 			$model->attributes=$_POST['Tickets'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
@@ -129,7 +143,8 @@ class TicketsController extends Controller
 	 * Lists all models.
 	 */
 	public function actionIndex()
-	{
+	{   
+            
 		$dataProvider=new CActiveDataProvider('Tickets');
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,

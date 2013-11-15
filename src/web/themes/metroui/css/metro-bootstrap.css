@@ -5,6 +5,10 @@
  * Licensed under the MIT License (MIT)
  * http://opensource.org/licenses/mit-license.php
  */
+ 
+ /*
+linea 3816 realicé el cambio del place holder del textarea. Nelson Marcano 
+ */
 html,
 body {
   padding: 0;
@@ -3812,6 +3816,10 @@ a {
 .metro .input-control.file input:disabled ~ .btn-reveal {
   display: none;
 }
+
+.metro .input-control.textarea textarea::-webkit-input-placeholder {  color: #999999; font-family: arial; }
+
+
 .metro .input-control.text input:-moz-placeholder,
 .metro .input-control.password input:-moz-placeholder,
 .metro .input-control.file input:-moz-placeholder {
