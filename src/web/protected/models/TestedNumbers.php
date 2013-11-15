@@ -8,7 +8,7 @@
  * @property integer $tickets_id
  * @property integer $destinos_id
  * @property integer $numero
- * @property string $fecha_tested
+ * @property string $fecha_tested_number
  *
  * The followings are the available model relations:
  * @property Destinos $destinos
@@ -32,11 +32,11 @@ class TestedNumbers extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('tickets_id, destinos_id, numero, fecha_tested', 'required'),
+			array('tickets_id, destinos_id, numero', 'required'),
 			array('tickets_id, destinos_id, numero', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, tickets_id, destinos_id, numero, fecha_tested', 'safe', 'on'=>'search'),
+			array('id, tickets_id, destinos_id, numero', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -63,7 +63,6 @@ class TestedNumbers extends CActiveRecord
 			'tickets_id' => 'Tickets',
 			'destinos_id' => 'Destinos',
 			'numero' => 'Numero',
-			'fecha_tested' => 'Fecha Tested',
 		);
 	}
 
@@ -89,7 +88,6 @@ class TestedNumbers extends CActiveRecord
 		$criteria->compare('tickets_id',$this->tickets_id);
 		$criteria->compare('destinos_id',$this->destinos_id);
 		$criteria->compare('numero',$this->numero);
-		$criteria->compare('fecha_tested',$this->fecha_tested,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

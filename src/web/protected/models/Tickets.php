@@ -15,7 +15,6 @@
  * @property integer $prefijo
  * @property string $fecha_ticket
  * @property string $ip_maquina
- * @property integer $estado
  *
  * The followings are the available model relations:
  * @property Archivos[] $archivoses
@@ -31,7 +30,7 @@
  */
 class Tickets extends CActiveRecord
 {
-        public $mail;
+//        public $mail;
         public $descripcion;
         public $tested_numbers = array();
         public $destination = array();
@@ -52,13 +51,13 @@ class Tickets extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('mail, tested_numbers, destination, fecha,  fallas_id, prioridad_id, origen_ip, destino_ip, prefijo,  descripcion', 'required'),
+			array('mail_id, tested_numbers, destination, fecha,  fallas_id, prioridad_id, origen_ip, destino_ip, prefijo,  descripcion', 'required'),
 			array('tickets_id, fallas_id, prioridad_id, prefijo', 'numerical', 'integerOnly'=>true),
                         array('origen_ip, destino_ip', 'application.extensions.ipvalidator.IPValidator', 'version' => 'v4'),
            
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, tickets_id, fallas_id, prioridad_id, statu_id, mail_id, origen_ip, destino_ip, prefijo, fecha_ticket, ip_maquina, estado', 'safe', 'on'=>'search'),
+			array('id, tickets_id, fallas_id, prioridad_id, statu_id, mail_id, origen_ip, destino_ip, prefijo, fecha_ticket, ip_maquina', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -74,7 +73,7 @@ class Tickets extends CActiveRecord
 			'descripcionTickets' => array(self::HAS_MANY, 'DescripcionTicket', 'tickets_id'),
 			'respuestases' => array(self::HAS_MANY, 'Respuestas', 'tickets_id'),
 			'mail' => array(self::BELONGS_TO, 'Mail', 'mail_id'),
-			'statu' => array(self::BELONGS_TO, 'Statu', 'statu_id'),
+			'status' => array(self::BELONGS_TO, 'Status', 'statu_id'),
 			'prioridad' => array(self::BELONGS_TO, 'Prioridad', 'prioridad_id'),
 			'fallas' => array(self::BELONGS_TO, 'Fallas', 'fallas_id'),
 			'tickets' => array(self::BELONGS_TO, 'Tickets', 'tickets_id'),
@@ -100,8 +99,7 @@ class Tickets extends CActiveRecord
 			'prefijo' => 'Prefijo',
 			'fecha_ticket' => 'Fecha Ticket',
 			'ip_maquina' => 'Ip Maquina',
-			'estado' => 'Estado',
-                        'mail' => 'Response to',
+                        'mail_id' => 'Response to',
                         'descripcion' => 'Descripcion',
                         'destination' => 'Destinations'
 		);
@@ -136,12 +134,25 @@ class Tickets extends CActiveRecord
 		$criteria->compare('prefijo',$this->prefijo);
 		$criteria->compare('fecha_ticket',$this->fecha_ticket,true);
 		$criteria->compare('ip_maquina',$this->ip_maquina,true);
-		$criteria->compare('estado',$this->estado);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
 	}
+        
+        public function addTestedNumbers($tickets_id, $destinos_id, $numero, $fecha_tested_numbers)
+	{
+		$sql = "INSERT INTO tested_numbers(tickets_id, destinos_id, numero, fecha_tested_numbers) " .
+		       "VALUES (:tickets_id, :destinos_id, :numero, :fecha_tested_numbers)";
+		$comando = Yii::app()->db->createCommand($sql);
+		$comando->bindParam(":tickets_id", $tickets_id, PDO::PARAM_INT);
+		$comando->bindParam(":destinos_id", $destinos_id, PDO::PARAM_INT);
+		$comando->bindParam(":numero", $numero, PDO::PARAM_INT);
+                $comando->bindParam(":fecha_tested_numbers", $fecha_tested_numbers, PDO::PARAM_STR);
+		$control = $comando->execute();
+		return ($control > 0);
+	}
+        
 
 	/**
 	 * Returns the static model of the specified AR class.

@@ -72,6 +72,8 @@ class TicketsController extends Controller
 			'model'=>$this->loadModel($id),
 		));
 	}
+        
+        
 
 	/**
 	 * Creates a new model.
@@ -81,6 +83,9 @@ class TicketsController extends Controller
 	{       
                 
 		$model=new Tickets;
+                /*Instancio los modelos donde se harán inserts*/
+                $modelTestedNumbers= new TestedNumbers;
+                $modelDescripcionTicket= new DescripcionTicket;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -90,10 +95,48 @@ class TicketsController extends Controller
 //                    echo '<pre>';
 //                    print_r($_POST);
 //                    Yii::app()->end();
-                    
+                        
 			$model->attributes=$_POST['Tickets'];
-			if($model->save())
+                        
+                        //Demás atributos que no estan en el formualrio
+                        $model->statu_id = 1;
+                        $model->fecha_ticket = new CDbExpression('NOW()');
+                        $model->ip_maquina = Yii::app()->request->userHostAddress;
+                        
+//                        echo '<pre>';
+//                        print_r($model->attributes);
+//                        Yii::app()->end();
+                        
+			if($model->save()) {
+                                
+                                // Guardo en TestedNumbers
+//                                $modelTestedNumbers->tickets_id = $model->primaryKey;
+//                                $modelTestedNumbers->destinos_id = $_POST['Tickets']['destination'];
+//                                $modelTestedNumbers->numero = $_POST['Tickets']['tested_numbers'];
+                               
+                                $countDestination = $_POST['Tickets']['destination'];
+                                $countTestedNumbers = $_POST['Tickets']['tested_numbers'];
+                                $countFecha = $_POST['Tickets']['fecha'];
+                                
+                                for ($i = 0; $i < count($countTestedNumbers); $i++) {
+                                    $model->addTestedNumbers(
+                                            $model->primaryKey, 
+                                            $countDestination[$i], 
+                                            $countTestedNumbers[$i], 
+                                            $countFecha[$i]
+                                            );
+                                }
+                                
+                                // Guardo en DescripcionTicket
+                                $modelDescripcionTicket->tickets_id = $model->primaryKey;
+                                $modelDescripcionTicket->descripcion = $_POST['Tickets']['descripcion'];
+                                $modelDescripcionTicket->fecha_mensaje = new CDbExpression('NOW()');
+                                
+                                $modelTestedNumbers->save();
+                                $modelDescripcionTicket->save();
+                                
 				$this->redirect(array('view','id'=>$model->id));
+                        }
 		}
 
 		$this->render('create',array(

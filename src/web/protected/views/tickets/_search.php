@@ -37,8 +37,8 @@
 	</div>
 
 	<div class="row">
-		<?php echo $form->label($model,'usuarios_id'); ?>
-		<?php echo $form->textField($model,'usuarios_id'); ?>
+		<?php echo $form->label($model,'mail_id'); ?>
+		<?php echo $form->textField($model,'mail_id'); ?>
 	</div>
 
 	<div class="row">
@@ -66,10 +66,6 @@
 		<?php echo $form->textField($model,'ip_maquina',array('size'=>60,'maxlength'=>64)); ?>
 	</div>
 
-	<div class="row">
-		<?php echo $form->label($model,'estado'); ?>
-		<?php echo $form->textField($model,'estado'); ?>
-	</div>
 
 	<div class="row buttons">
 		<?php echo CHtml::submitButton('Search'); ?>
