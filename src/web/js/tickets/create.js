@@ -23,7 +23,8 @@ $(document).on('ready', function(){
     $('#tickets-form').delegate('.fecha','focusin',function(){
         $(this).datetimepicker({
             changeMonth:true,
-            changeYear:true
+            changeYear:true,
+            dateFormat: "yy-mm-dd"
         }); 
     });
 
