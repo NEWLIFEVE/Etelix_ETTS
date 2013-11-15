@@ -7,7 +7,7 @@
 // CWebApplication properties can be configured here.
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-	'name'=>'Tickets',
+	'name'=>'ETTS',
         'language' => 'es',
         'sourceLanguage' => 'en',
         'charset'=> 'utf-8',
@@ -57,7 +57,7 @@ return array(
 		// uncomment the following to use a MySQL database
 	
 		'db'=>array(
-			'connectionString' => 'pgsql:host=localhost;port=5432;dbname=test3',
+			'connectionString' => 'pgsql:host=192.168.1.110;port=5432;dbname=etts',
 			'emulatePrepare' => true,
 			'username' => 'postgres',
 			'password' => '123',

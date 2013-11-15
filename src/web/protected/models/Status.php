@@ -10,7 +10,7 @@
  * The followings are the available model relations:
  * @property Tickets[] $tickets
  */
-class Statu extends CActiveRecord
+class Status extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
