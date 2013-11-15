@@ -46,7 +46,7 @@
                         <?php echo CHtml::link('<i class="icon-box-add on-right on-left"></i> Tickets', '#', array('class' => 'dropdown-toggle')); ?>
                         <?php $this->widget('zii.widgets.CMenu',array(
                             'items'=>array(
-                                    array('label'=>'My tickets', 'url'=>array('/tickets/index')),
+                                    array('label'=>'My tickets', 'url'=>array('/tickets/admin')),
                                     array('label'=>'Open ticket', 'url'=>array('/tickets/create')),
                             ),
                             'htmlOptions' => array(
