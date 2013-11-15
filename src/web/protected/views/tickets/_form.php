@@ -23,8 +23,8 @@ $form=$this->beginWidget('CActiveForm', array(
 	<?php echo $form->errorSummary($model); ?>
         
         <div class="input-control select">
-                <?php echo $form->dropDownList($model,'mail', CHtml::listData(Mail::getMails(Yii::app()->getSession()->get('usuario_id')), 'id', 'mail'),  array('empty' => 'Response to (required)')); ?>
-                <?php echo $form->error($model,'fallas_id'); ?>
+                <?php echo $form->dropDownList($model,'mail_id', CHtml::listData(Mail::getMails(Yii::app()->getSession()->get('usuario_id')), 'id', 'mail'),  array('empty' => 'Response to (required)')); ?>
+                <?php echo $form->error($model,'mail_id'); ?>
 	</div>
 
         <div class="input-control text span3">

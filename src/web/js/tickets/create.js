@@ -9,7 +9,7 @@ $(document).on('ready', function(){
         $.post(_root_ + 'tickets/destinations', '', function(data){
                 $('[name="Tickets[destination][]"]').html('<option>Destination</option>');
                 for (var i = 0; i < data.length; i++) {
-                    $('[name="Tickets[destination][]"]').append('<option>'+ data[i].destino +'</option>');
+                    $('[name="Tickets[destination][]"]').append('<option value="'+ data[i].id +'">'+ data[i].destino +'</option>');
                 }
             }, 'json'
         );
