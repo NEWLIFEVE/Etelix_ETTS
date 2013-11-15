@@ -106,3 +106,8 @@ footer {
 {       
     background: #16499a;    
 }
+
+::selection {
+background: #2E62B4;
+color: #fff;
+text-shadow: none;
