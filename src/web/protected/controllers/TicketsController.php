@@ -108,17 +108,13 @@ class TicketsController extends Controller
 //                        Yii::app()->end();
                         
 			if($model->save()) {
-                                
-                                // Guardo en TestedNumbers
-//                                $modelTestedNumbers->tickets_id = $model->primaryKey;
-//                                $modelTestedNumbers->destinos_id = $_POST['Tickets']['destination'];
-//                                $modelTestedNumbers->numero = $_POST['Tickets']['tested_numbers'];
                                
                                 $countDestination = $_POST['Tickets']['destination'];
                                 $countTestedNumbers = $_POST['Tickets']['tested_numbers'];
                                 $countFecha = $_POST['Tickets']['fecha'];
                                 
                                 for ($i = 0; $i < count($countTestedNumbers); $i++) {
+                                    // Guardo en TestedNumbers
                                     $model->addTestedNumbers(
                                             $model->primaryKey, 
                                             $countDestination[$i], 

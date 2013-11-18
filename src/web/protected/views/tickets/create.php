@@ -13,7 +13,7 @@ $this->menu=array(
 );
 ?>
 
-<h1>Open Ticket</h1>
+<h1>Ticket Information</h1>
 <div class="example">
     <?php $this->renderPartial('_form', array('model'=>$model)); ?>
 </div>

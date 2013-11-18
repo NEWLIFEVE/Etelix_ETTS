@@ -7,7 +7,6 @@
  * @property integer $id
  * @property integer $tickets_id
  * @property integer $fallas_id
- * @property integer $prioridad_id
  * @property integer $statu_id
  * @property integer $mail_id
  * @property string $origen_ip
@@ -51,13 +50,13 @@ class Tickets extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('mail_id, tested_numbers, destination, fecha,  fallas_id, prioridad_id, origen_ip, destino_ip, prefijo,  descripcion', 'required'),
-			array('tickets_id, fallas_id, prioridad_id, prefijo', 'numerical', 'integerOnly'=>true),
+			array('mail_id, tested_numbers, destination, fecha,  fallas_id, origen_ip, destino_ip, prefijo,  descripcion', 'required'),
+			array('tickets_id, fallas_id, prefijo', 'numerical', 'integerOnly'=>true),
                         array('origen_ip, destino_ip', 'application.extensions.ipvalidator.IPValidator', 'version' => 'v4'),
            
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, tickets_id, fallas_id, prioridad_id, statu_id, mail_id, origen_ip, destino_ip, prefijo, fecha_ticket, ip_maquina', 'safe', 'on'=>'search'),
+			array('id, tickets_id, fallas_id, statu_id, mail_id, origen_ip, destino_ip, prefijo, fecha_ticket, ip_maquina', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -74,7 +73,6 @@ class Tickets extends CActiveRecord
 			'respuestases' => array(self::HAS_MANY, 'Respuestas', 'tickets_id'),
 			'mail' => array(self::BELONGS_TO, 'Mail', 'mail_id'),
 			'status' => array(self::BELONGS_TO, 'Status', 'statu_id'),
-			'prioridad' => array(self::BELONGS_TO, 'Prioridad', 'prioridad_id'),
 			'fallas' => array(self::BELONGS_TO, 'Fallas', 'fallas_id'),
 			'tickets' => array(self::BELONGS_TO, 'Tickets', 'tickets_id'),
 			'tickets1' => array(self::HAS_MANY, 'Tickets', 'tickets_id'),
@@ -91,7 +89,6 @@ class Tickets extends CActiveRecord
 			'id' => 'ID',
 			'tickets_id' => 'Tickets',
 			'fallas_id' => 'Fallas',
-			'prioridad_id' => 'Prioridad',
 			'statu_id' => 'Statu',
 			'mail_id' => 'Mail',
 			'origen_ip' => 'Origen Ip',
@@ -126,7 +123,6 @@ class Tickets extends CActiveRecord
 		$criteria->compare('id',$this->id);
 		$criteria->compare('tickets_id',$this->tickets_id);
 		$criteria->compare('fallas_id',$this->fallas_id);
-		$criteria->compare('prioridad_id',$this->prioridad_id);
 		$criteria->compare('statu_id',$this->statu_id);
 		$criteria->compare('mail_id',$this->mail_id);
 		$criteria->compare('origen_ip',$this->origen_ip,true);

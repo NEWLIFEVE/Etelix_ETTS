@@ -27,6 +27,35 @@ $form=$this->beginWidget('CActiveForm', array(
                 <?php echo $form->error($model,'mail_id'); ?>
 	</div>
 
+        
+      
+        <div class="input-control select">
+                <?php echo $form->dropDownList($model,'fallas_id', CHtml::listData(Fallas::model()->findAll(), 'id', 'falla'),  array('empty' => 'Failure (required)')); ?>
+                <?php echo $form->error($model,'fallas_id'); ?>
+	</div>
+
+	<div class="input-control text" data-role="input-control">
+            <label>
+		<?php echo $form->textField($model,'origen_ip',array('placeholder' => 'Origination IP (Customer IP)(requiered)')); ?>
+		<?php echo $form->error($model,'origen_ip'); ?>
+            </label>
+	</div>
+
+	<div class="input-control text" data-role="input-control">
+            <label>
+		<?php echo $form->textField($model,'destino_ip',array('placeholder' => 'DestinationIP IP (Etelix IP)(requiered)')); ?>
+		<?php echo $form->error($model,'destino_ip'); ?>
+            </label>
+	</div>
+
+	<div class="input-control text" data-role="input-control">
+            <label>
+		<?php echo $form->textField($model,'prefijo',array('placeholder' => 'Prefix (required)')); ?>
+		<?php echo $form->error($model,'prefijo'); ?>
+            </label>
+	</div>
+                
+                
         <div class="input-control text span3">
             <?php echo $form->textField($model,'tested_numbers[]',array('placeholder' => 'Tested numbers (required)')); ?>
             <?php echo $form->error($model,'tested_numbers[]'); ?>
@@ -34,7 +63,7 @@ $form=$this->beginWidget('CActiveForm', array(
         </div>
                 
         <div class="input-control select span2" style="margin-left: 5px;">
-            <?php echo $form->dropDownList($model,'destination[]', CHtml::listData(Destinos::model()->findAll(), 'id', 'destino'),  array('empty' => 'Destination')); ?>
+            <?php echo $form->dropDownList($model,'destination[]', CHtml::listData(Destinos::model()->findAll(), 'id', 'destino'),  array('empty' => 'Country')); ?>
             <?php echo $form->error($model,'destination[]'); ?>
         </div>
                 
@@ -47,38 +76,7 @@ $form=$this->beginWidget('CActiveForm', array(
         <div class="input-control text span1" style="margin-left: 15px; padding-top: 5px"><a href="javascript:void(0)" class="_agregar"><i class="icon-plus-2"></i></a></div>
         
         <div class="container_agregar"></div>
-      
-        <div class="input-control select">
-                <?php echo $form->dropDownList($model,'fallas_id', CHtml::listData(Fallas::model()->findAll(), 'id', 'falla'),  array('empty' => 'Failure (required)')); ?>
-                <?php echo $form->error($model,'fallas_id'); ?>
-	</div>
-
-	<div class="input-control select">
-		<?php echo $form->dropDownList($model,'prioridad_id', CHtml::listData(Prioridad::model()->findAll(), 'id', 'prioridad'),  array('empty' => 'Priority (required)')); ?>
-		<?php echo $form->error($model,'prioridad_id'); ?>
-	</div>
-
-
-	<div class="input-control text" data-role="input-control">
-            <label>
-		<?php echo $form->textField($model,'origen_ip',array('placeholder' => 'Origination ip (required)')); ?>
-		<?php echo $form->error($model,'origen_ip'); ?>
-            </label>
-	</div>
-
-	<div class="input-control text" data-role="input-control">
-            <label>
-		<?php echo $form->textField($model,'destino_ip',array('placeholder' => 'Destination ip (required)')); ?>
-		<?php echo $form->error($model,'destino_ip'); ?>
-            </label>
-	</div>
-
-	<div class="input-control text" data-role="input-control">
-            <label>
-		<?php echo $form->textField($model,'prefijo',array('placeholder' => 'Prefix (required)')); ?>
-		<?php echo $form->error($model,'prefijo'); ?>
-            </label>
-	</div>
+                
 
         <div class="input-control textarea" data-role="input-control">
             <label>
@@ -88,7 +86,7 @@ $form=$this->beginWidget('CActiveForm', array(
 	</div>
 
         <div></div>
-        <?php echo CHtml::submitButton($model->isNewRecord ? 'Send Ticket' : 'Save', array('class' => 'primary large')); ?>
+        <?php echo CHtml::submitButton($model->isNewRecord ? 'Preview Ticket' : 'Save', array('class' => 'primary large')); ?>
 	
         </fieldset>
 <?php $this->endWidget(); ?>
