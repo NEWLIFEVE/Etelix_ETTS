@@ -8,7 +8,7 @@
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 	'name'=>'ETTS',
-        'language' => 'es',
+//        'language' => 'en',
         'sourceLanguage' => 'en',
         'charset'=> 'utf-8',
         'theme' => 'metroui',
@@ -62,7 +62,7 @@ return array(
 //                        'connectionString' => 'pgsql:host=localhost;port=5432;dbname=etts',
 			'emulatePrepare' => true,
 			'username' => 'postgres',
-			'password' => '123',
+			'password' => 'Nsusfd8263',
 			'charset' => 'utf8',
 		),
 		'errorHandler'=>array(

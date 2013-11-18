@@ -23,7 +23,8 @@ $(document).on('ready', function(){
     $('#tickets-form').delegate('.fecha','focusin',function(){
         $(this).datetimepicker({
             changeMonth:true,
-            changeYear:true
+            changeYear:true,
+            dateFormat: "yy-mm-dd"
         }); 
     });
 
@@ -45,7 +46,7 @@ $(document).on('ready', function(){
             '</div>' +
             
             '<div class="input-control text span2" style="margin-left: 5px;">' +
-                '<input type="text" class="efecto fecha" style="display: none;" name="Tickets[fecha][]" placeholder="Fecha" >' +
+                '<input type="text" class="efecto fecha" style="display: none;" name="Tickets[fecha][]" placeholder="Date" >' +
             '</div>' +
             '<div class="input-control text span1" style="margin-left: 15px; padding-top: 5px"><a href="javascript:void(0)" class="_cancelar"><i class="icon-cancel-2"></i></a></div>'
         );
