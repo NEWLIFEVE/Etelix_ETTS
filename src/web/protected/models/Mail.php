@@ -47,6 +47,7 @@ class Mail extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'usuarios' => array(self::BELONGS_TO, 'Usuarios', 'usuarios_id'),
+                        'tickets' => array(self::HAS_MANY, 'Tickets', 'usuarios_id'),
 		);
 	}
 

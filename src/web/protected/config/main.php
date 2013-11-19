@@ -8,7 +8,7 @@
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 	'name'=>'ETTS',
-        'language' => 'es',
+//        'language' => 'en',
         'sourceLanguage' => 'en',
         'charset'=> 'utf-8',
         'theme' => 'metroui',

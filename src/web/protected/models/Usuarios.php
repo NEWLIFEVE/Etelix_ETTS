@@ -55,7 +55,7 @@ class Usuarios extends CActiveRecord
 		return array(
 			'rol' => array(self::BELONGS_TO, 'Rol', 'rol_id'),
 			'mails' => array(self::HAS_MANY, 'Mail', 'usuarios_id'),
-			'tickets' => array(self::HAS_MANY, 'Tickets', 'usuarios_id'),
+			
 		);
 	}
 

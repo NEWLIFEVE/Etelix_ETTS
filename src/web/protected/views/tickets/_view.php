@@ -25,8 +25,8 @@
 	<?php echo CHtml::encode($data->statu_id); ?>
 	<br />
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('usuarios_id')); ?>:</b>
-	<?php echo CHtml::encode($data->usuarios_id); ?>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('mail_id')); ?>:</b>
+	<?php echo CHtml::encode($data->mail_id); ?>
 	<br />
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('origen_ip')); ?>:</b>

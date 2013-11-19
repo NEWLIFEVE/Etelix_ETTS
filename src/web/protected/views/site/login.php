@@ -9,7 +9,8 @@
             'Login',
     );
     ?>
-    <h1 id="_default" class=""><i class="icon-accessibility on-left"></i>Accede a tu cuenta</h1>
+    <h1 id="_default" class=""><i class="on-left"></i></h1>
+    <!--<h1 id="_default" class=""><i class="icon-accessibility on-left"></i>Accede a tu cuenta</h1>-->
     <div id="logueo" class="example">
     <?php $form=$this->beginWidget('CActiveForm', array(
             'id'=>'login-form',
@@ -19,15 +20,15 @@
             ),
     )); ?>
             <fieldset>
-                <legend><h1>Iniciar sesión <i class="icon-user-3 on-left"></i></h1></legend>
+                <legend><h1>Log In  <i class="icon-user-3 on-left"></i></h1></legend>
             <div class="input-control text" data-role="input-control">
-                    <?php echo $form->textField($model,'username', array('placeholder' => 'user')); ?>
+                    <?php echo $form->textField($model,'username', array('placeholder' => 'User')); ?>
                     <button class="btn-clear" tabindex="-1"></button>
                     <?php echo $form->error($model,'username'); ?>
             </div>
 
             <div class="input-control password" data-role="input-control">
-                    <?php echo $form->passwordField($model,'password', array('placeholder' => 'password')); ?>
+                    <?php echo $form->passwordField($model,'password', array('placeholder' => 'Password')); ?>
                     <button class="btn-reveal" tabindex="-1"></button>
                     <?php echo $form->error($model,'password'); ?>
             </div>
@@ -35,14 +36,14 @@
             <div class="input-control checkbox" data-role="input-control">
                     <label>
                     <?php echo $form->checkBox($model,'rememberMe'); ?>
-                    <span class="check"></span>  Recordar cuenta
+                    <span class="check"></span>  Remember Me
                     <?php echo $form->error($model,'rememberMe'); ?>
                     </label>
             </div>
 
             <div></div>
 
-            <?php echo CHtml::submitButton('Login', array('class' => 'primary large')); ?>
+            <?php echo CHtml::submitButton('Go!', array('class' => 'primary large')); ?>
 
         </fieldset>
 

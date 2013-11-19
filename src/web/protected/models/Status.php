@@ -17,7 +17,7 @@ class Status extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'statu';
+		return 'status';
 	}
 
 	/**

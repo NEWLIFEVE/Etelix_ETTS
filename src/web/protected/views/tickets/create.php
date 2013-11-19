@@ -17,3 +17,12 @@ $this->menu=array(
 <div class="example">
     <?php $this->renderPartial('_form', array('model'=>$model)); ?>
 </div>
+
+
+
+<?php
+/*
+ * Agregando el archivo javascript
+ */
+Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/create.js',CClientScript::POS_END);
+?>
