@@ -12,7 +12,6 @@ return array(
         'sourceLanguage' => 'en',
         'charset'=> 'utf-8',
         'theme' => 'metroui',
-//        'defaultController' => 'site/login',
 
 	// preloading 'log' component
 	'preload'=>array('log'),
@@ -21,8 +20,12 @@ return array(
 	'import'=>array(
 		'application.models.*',
 		'application.components.*',
+//                'application.extensions.xupload.*',
 	),
-
+//        'aliases' => array(
+//            //If you manually installed it
+//            'xupload' => 'ext.xupload'
+//        ),
 	'modules'=>array(
 		// uncomment the following to enable the Gii tool
 

@@ -16,6 +16,7 @@ class TicketsController extends Controller
                 )));
         }
         
+        
         /**
          * Funcion para retornar los detinos 
          */
@@ -45,7 +46,7 @@ class TicketsController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view', 'destinations'),
+				'actions'=>array('index','view', 'destinations', 'upload'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -86,14 +87,14 @@ class TicketsController extends Controller
                 /*Instancio los modelos donde se harán inserts*/
                 $modelTestedNumbers= new TestedNumbers;
                 $modelDescripcionTicket= new DescripcionTicket;
-
+                
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
 		if(isset($_POST['Tickets']))
 		{
 //                    echo '<pre>';
-//                    print_r($_POST);
+//                    print_r($_FILES);
 //                    Yii::app()->end();
                         
 			$model->attributes=$_POST['Tickets'];
@@ -108,17 +109,13 @@ class TicketsController extends Controller
 //                        Yii::app()->end();
                         
 			if($model->save()) {
-                                
-                                // Guardo en TestedNumbers
-//                                $modelTestedNumbers->tickets_id = $model->primaryKey;
-//                                $modelTestedNumbers->destinos_id = $_POST['Tickets']['destination'];
-//                                $modelTestedNumbers->numero = $_POST['Tickets']['tested_numbers'];
                                
                                 $countDestination = $_POST['Tickets']['destination'];
                                 $countTestedNumbers = $_POST['Tickets']['tested_numbers'];
                                 $countFecha = $_POST['Tickets']['fecha'];
                                 
                                 for ($i = 0; $i < count($countTestedNumbers); $i++) {
+                                    // Guardo en TestedNumbers
                                     $model->addTestedNumbers(
                                             $model->primaryKey, 
                                             $countDestination[$i], 
@@ -143,6 +140,24 @@ class TicketsController extends Controller
 			'model'=>$model,
 		));
 	}
+        
+        public function actionUpload() 
+        {
+            Yii::import("ext.EAjaxUpload.qqFileUploader");
+
+            $folder = 'uploads/'; // folder for uploaded files
+            $allowedExtensions = array('pdf', 'gif', 'jpeg', 'png', 'jpg', 'xlsx', 'xls'); 
+            $sizeLimit = 10 * 1024 * 1024; // maximum file size in bytes
+            $uploader = new qqFileUploader($allowedExtensions, $sizeLimit);
+            $result = $uploader->handleUpload($folder);
+            $return = htmlspecialchars(json_encode($result), ENT_NOQUOTES);
+
+            $fileSize = filesize($folder . $result['filename']); //GETTING FILE SIZE
+            $fileName = $result['filename']; //GETTING FILE NAME
+
+            echo $return; // it's array 
+        }
+               
 
 	/**
 	 * Updates a particular model.

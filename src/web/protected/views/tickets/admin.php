@@ -50,8 +50,6 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 		'fallas.falla',
 		'prioridad.prioridad',
 		'status.statu',
-		'mail.mail',
-		
 		'origen_ip',
 		'destino_ip',
 		'prefijo',
