@@ -110,3 +110,8 @@ footer {
 background: #2E62B4;
 color: #fff;
 text-shadow: none;
+}
+
+.div-agregar_correo {
+    margin-bottom: 5px;
+}
