@@ -51,7 +51,7 @@
 <div class="grid">
     <div classclass="row">
         <div class="input-control text span3">
-            <small class="text-muted "><em>Do not type the prefix for the number</em></small>
+            <small class="text-muted "><em>without prefix</em></small>
             <?php echo $form->textField($model,'tested_numbers[]',array('placeholder' => 'Tested numbers (required)')); ?>
             <?php echo $form->error($model,'tested_numbers[]'); ?>
         </div>
