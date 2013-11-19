@@ -1,6 +1,6 @@
 <?php /* @var $this Controller */ ?>
 <?php $this->beginContent('//layouts/main'); ?>
-<div class="span9">
-    <?php echo $content; ?>
-</div>
+
+<?php echo $content; ?>
+
 <?php $this->endContent(); ?>
