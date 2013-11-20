@@ -25,18 +25,22 @@
         <?php echo $form->error($model,'fallas_id'); ?>
 </div>
 
+<div class="_label">Origination IP (Customer IP)(requiered)</div>
 <div class="input-control text block" data-role="input-control">
-    <label>
-        <?php echo $form->textField($model,'origen_ip',array('placeholder' => 'Origination IP (Customer IP)(requiered)')); ?>
-        <?php echo $form->error($model,'origen_ip'); ?>
-    </label>
+<!--    <label>
+        <?php // echo $form->textField($model,'origen_ip',array('placeholder' => 'Origination IP (Customer IP)(requiered)', 'class' => '_ip')); ?>
+        <?php // echo $form->error($model,'origen_ip'); ?>
+    </label>-->
+    <input type="text" class="_ip"> <input type="text" class="_ip"> <input type="text" class="_ip"> <input type="text" class="_ip">
 </div>
 
+<div class="_label">DestinationIP IP (Etelix IP)(requiered)</div>
 <div class="input-control text block" data-role="input-control">
-    <label>
-        <?php echo $form->textField($model,'destino_ip',array('placeholder' => 'DestinationIP IP (Etelix IP)(requiered)')); ?>
-        <?php echo $form->error($model,'destino_ip'); ?>
-    </label>
+<!--    <label>
+        <?php // echo $form->textField($model,'destino_ip',array('placeholder' => 'DestinationIP IP (Etelix IP)(requiered)', 'class' => '_ip')); ?>
+        <?php // echo $form->error($model,'destino_ip'); ?>
+    </label>-->
+    <input type="text" class="_ip"> <input type="text" class="_ip"> <input type="text" class="_ip"> <input type="text" class="_ip">
 </div>
 
 <div class="input-control text block" data-role="input-control">
@@ -46,10 +50,8 @@
     </label>
 </div>
 
-        
-
 <div class="grid">
-    <div classclass="row">
+<!--    <div classclass="row">-->
         <div class="input-control text span3">
             <small class="text-muted "><em>Do not type the prefix for the number</em></small>
             <?php echo $form->textField($model,'tested_numbers[]',array('placeholder' => 'Tested numbers (required)')); ?>
@@ -72,7 +74,7 @@
             <br>
             <a href="javascript:void(0)" class="_agregar"><i class="icon-plus-2"></i></a>
         </div>
-    </div>
+    <!--</div>-->
 </div>
         
 <div style="clear: left;"></div>
