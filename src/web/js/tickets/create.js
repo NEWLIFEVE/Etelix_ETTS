@@ -63,7 +63,6 @@ $(document).on('ready', function(){
      *  Boton para agregar más tested_numbers, destinatios y fecha
      * 
      ***************************************************************************/
-    
     $(document).on('click', '._agregar', function(){
         contador += 1; 
         getDestination();// Se llama a la función para cargar el select de destinations

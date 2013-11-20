@@ -88,7 +88,7 @@ class TestedNumbers extends CActiveRecord
 		$criteria->compare('tickets_id',$this->tickets_id);
 		$criteria->compare('destinos_id',$this->destinos_id);
 		$criteria->compare('numero',$this->numero);
-
+                
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
