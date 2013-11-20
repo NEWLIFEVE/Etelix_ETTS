@@ -93,15 +93,15 @@ class Tickets extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'tickets_id' => 'Tickets',
-			'fallas_id' => 'Fallas',
-			'statu_id' => 'Statu',
-			'origen_ip' => 'Origen Ip',
-			'destino_ip' => 'Destino Ip',
-			'prefijo' => 'Prefijo',
+			'fallas_id' => 'Failure',
+			'statu_id' => 'Status',
+			'origen_ip' => 'Origination Ip',
+			'destino_ip' => 'Destination Ip',
+			'prefijo' => 'Prefix',
 			'fecha_ticket' => 'Fecha Ticket',
 			'ip_maquina' => 'Ip Maquina',
                         'mail' => 'Response to',
-                        'descripcion' => 'Descripcion',
+                        'descripcion' => 'Description',
                         'destination' => 'Destinations'
 		);
 	}
