@@ -93,11 +93,19 @@ class Tickets extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'tickets_id' => 'Tickets',
+<<<<<<< HEAD
 			'fallas_id' => 'Failure',
 			'statu_id' => 'Status',
 			'origen_ip' => 'Origination Ip',
 			'destino_ip' => 'Destination Ip',
 			'prefijo' => 'Prefix',
+=======
+			'fallas_id' => 'Fallas',
+			'statu_id' => 'Statu',
+			'origen_ip' => 'Origination IP (Customer IP)',
+			'destino_ip' => 'DestinationIP IP (Etelix IP)',
+			'prefijo' => 'Prefijo',
+>>>>>>> 3a9ad685f63a762fcee91b9b6f26eb79b4357486
 			'fecha_ticket' => 'Fecha Ticket',
 			'ip_maquina' => 'Ip Maquina',
                         'mail' => 'Response to',

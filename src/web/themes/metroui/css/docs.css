@@ -115,3 +115,10 @@ text-shadow: none;
 .div-agregar_correo {
     margin-bottom: 5px;
 }
+
+._ip {
+    width: 139px !important;
+    margin-right: 10px;
+}
+
+._ip:last-child {margin-right: 0px;}
