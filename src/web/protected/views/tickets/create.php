@@ -42,7 +42,7 @@ $form=$this->beginWidget('CActiveForm', array(
                            'allowedExtensions'=>array('pdf', 'gif', 'jpeg', 'png', 'jpg', 'xlsx', 'xls'),
                            'sizeLimit'=>10*1024*1024,// maximum file size in bytes
                            'minSizeLimit'=>512,// minimum file size in bytes
-                           'onComplete'=>"js:function(id, fileName, responseJSON){ alert(fileName); }",
+                           /*'onComplete'=>"js:function(id, fileName, responseJSON){ alert(fileName); }",
                            'messages'=>array(
                                              'typeError'=>"{file} has invalid extension. Only {extensions} are allowed.",
                                              'sizeError'=>"{file} is too large, maximum file size is {sizeLimit}.",
@@ -50,7 +50,7 @@ $form=$this->beginWidget('CActiveForm', array(
                                              'emptyError'=>"{file} is empty, please select files again without it.",
                                              'onLeave'=>"The files are being uploaded, if you leave now the upload will be cancelled."
                                             ),
-                           'showMessage'=>"js:function(message){ alert(message); }"
+                           'showMessage'=>"js:function(message){ alert(message); }"*/
                           )
         )); ?>
     </div>
