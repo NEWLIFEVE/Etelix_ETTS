@@ -1,6 +1,6 @@
 <?php
-/* @var $this StatuController */
-/* @var $data Statu */
+/* @var $this StatusController */
+/* @var $data Status */
 ?>
 
 <div class="view">
@@ -9,8 +9,8 @@
 	<?php echo CHtml::link(CHtml::encode($data->id), array('view', 'id'=>$data->id)); ?>
 	<br />
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('statu')); ?>:</b>
-	<?php echo CHtml::encode($data->statu); ?>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('name')); ?>:</b>
+	<?php echo CHtml::encode($data->name); ?>
 	<br />
 
 

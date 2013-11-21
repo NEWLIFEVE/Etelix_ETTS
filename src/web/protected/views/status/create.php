@@ -1,18 +1,18 @@
 <?php
-/* @var $this StatuController */
-/* @var $model Statu */
+/* @var $this StatusController */
+/* @var $model Status */
 
 $this->breadcrumbs=array(
-	'Status'=>array('index'),
+	'Statuses'=>array('index'),
 	'Create',
 );
 
 $this->menu=array(
-	array('label'=>'List Statu', 'url'=>array('index')),
-	array('label'=>'Manage Statu', 'url'=>array('admin')),
+	array('label'=>'List Status', 'url'=>array('index')),
+	array('label'=>'Manage Status', 'url'=>array('admin')),
 );
 ?>
 
-<h1>Create Statu</h1>
+<h1>Create Status</h1>
 
-<?php $this->renderPartial('_form', array('model'=>$model)); ?>
+<?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

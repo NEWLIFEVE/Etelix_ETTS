@@ -1,18 +1,18 @@
 <?php
-/* @var $this StatuController */
+/* @var $this StatusController */
 /* @var $dataProvider CActiveDataProvider */
 
 $this->breadcrumbs=array(
-	'Status',
+	'Statuses',
 );
 
 $this->menu=array(
-	array('label'=>'Create Statu', 'url'=>array('create')),
-	array('label'=>'Manage Statu', 'url'=>array('admin')),
+	array('label'=>'Create Status', 'url'=>array('create')),
+	array('label'=>'Manage Status', 'url'=>array('admin')),
 );
 ?>
 
-<h1>Status</h1>
+<h1>Statuses</h1>
 
 <?php $this->widget('zii.widgets.CListView', array(
 	'dataProvider'=>$dataProvider,

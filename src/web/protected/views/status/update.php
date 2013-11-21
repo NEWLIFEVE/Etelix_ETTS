@@ -1,21 +1,21 @@
 <?php
-/* @var $this StatuController */
-/* @var $model Statu */
+/* @var $this StatusController */
+/* @var $model Status */
 
 $this->breadcrumbs=array(
-	'Status'=>array('index'),
-	$model->id=>array('view','id'=>$model->id),
+	'Statuses'=>array('index'),
+	$model->name=>array('view','id'=>$model->id),
 	'Update',
 );
 
 $this->menu=array(
-	array('label'=>'List Statu', 'url'=>array('index')),
-	array('label'=>'Create Statu', 'url'=>array('create')),
-	array('label'=>'View Statu', 'url'=>array('view', 'id'=>$model->id)),
-	array('label'=>'Manage Statu', 'url'=>array('admin')),
+	array('label'=>'List Status', 'url'=>array('index')),
+	array('label'=>'Create Status', 'url'=>array('create')),
+	array('label'=>'View Status', 'url'=>array('view', 'id'=>$model->id)),
+	array('label'=>'Manage Status', 'url'=>array('admin')),
 );
 ?>
 
-<h1>Update Statu <?php echo $model->id; ?></h1>
+<h1>Update Status <?php echo $model->id; ?></h1>
 
-<?php $this->renderPartial('_form', array('model'=>$model)); ?>
+<?php echo $this->renderPartial('_form', array('model'=>$model)); ?>
