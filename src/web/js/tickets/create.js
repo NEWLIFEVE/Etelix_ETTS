@@ -32,7 +32,7 @@ $(document).on('ready', function(){
     
     $(document).on('click', '.a-agregar_correo', function(){
 
-        $('.div-agregar_correo').toggle('slow');
+        $('.div-agregar_correo').toggle('fast');
         
     });
     
@@ -45,14 +45,15 @@ $(document).on('ready', function(){
     $(document).on('click', '.a-bajar_correo', function(){
         if ($('#cargar_mails').val()) { // Si hay valor en la carga de mail se ejecutará el código
         
-            clickAgregarMail += 1;
-
-            if (clickAgregarMail > 5){
-                alert('Límite alcanzado')
-                return false;
-            }
+//            clickAgregarMail += 1;
+//            
+//
+//            if (clickAgregarMail > 5){
+//                alert('Límite alcanzado')
+//                return false;
+//            }
             
-            $('#Tickets_mail').append('<option value="'+$('#cargar_mails').val()+'">'+$('#cargar_mails option:selected').html()+'</option>');
+            $('#Ticket_mail').append('<option value="'+$('#cargar_mails').val()+'">'+$('#cargar_mails option:selected').html()+'</option>');
         }
     });
     
@@ -63,10 +64,10 @@ $(document).on('ready', function(){
      * 
      ***************************************************************************/
     var getDestination = function(){
-        $.post(_root_ + 'tickets/destinations', '', function(data){
-                $('[name="Tickets[destination][]"]').html('<option>Country</option>');
+        $.post(_root_ + 'country/DynamicCountry', '', function(data){
+                $('[name="Ticket[country][]"]').html('<option>Country</option>');
                 for (var i = 0; i < data.length; i++) {
-                    $('[name="Tickets[destination][]"]').append('<option value="'+ data[i].id +'">'+ data[i].destino +'</option>');
+                    $('[name="Ticket[country][]"]').append('<option value="'+ data[i].id +'">'+ data[i].name +'</option>');
                 }
             }, 'json');
     };
@@ -76,7 +77,7 @@ $(document).on('ready', function(){
      *  Delegate para agregar el datepicker dinamicamente
      * 
      ***************************************************************************/
-    $('#tickets-form').delegate('.fecha','focusin',function(){
+    $('#ticket-form').delegate('.fecha','focusin',function(){
         $(this).datetimepicker({
             dateFormat: "yy-mm-dd",
             controlType: 'select',
@@ -87,7 +88,7 @@ $(document).on('ready', function(){
 
     /***************************************************************************
      * 
-     *  Boton para agregar más tested_numbers, destinatios y fecha
+     *  Boton para agregar más tested_numbers, destinatios y date_number
      * 
      ***************************************************************************/
     
@@ -98,23 +99,23 @@ $(document).on('ready', function(){
         $('.container_agregar').append(
             '<div id="div_'+clickAgregarNumber+'" style="display:none;">'+
                 '<div class="input-control text span3">' +
-                    '<input type="text" name="Tickets[tested_numbers][]" placeholder="Tested numbers" >' +
+                    '<input type="text" name="Ticket[tested_numbers][]" placeholder="Tested numbers" >' +
                 '</div>' +
 
                 '<div class="input-control select span2 country2" style="margin-left: 5px;">' +
-                    '<select name="Tickets[destination][]" class="destinos">' +
+                    '<select name="Ticket[country][]" class="destinos">' +
 
                     '</select>' +        // Se carga el select con getDestination()
                 '</div>' +
 
                 '<div class="input-control text span2" style="margin-left: 5px;">' +
-                    '<input type="text" class="fecha" name="Tickets[fecha][]" placeholder="Date" >' +
+                    '<input type="text" class="fecha" name="Ticket[date_number][]" placeholder="Date" >' +
                 '</div>' +
                 '<a href="javascript:void(0)" style="margin-left: 15px;"  class="_cancelar input-control text span1"><i class="icon-cancel-2 fg-red "></i></a>' +
             '</div>'
         );
         
-        $("#div_"+clickAgregarNumber).show('slow')
+        $("#div_"+clickAgregarNumber).show('fast')
 
     });
         

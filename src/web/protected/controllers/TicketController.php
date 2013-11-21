@@ -1,30 +1,12 @@
 <?php
 
-class TicketsController extends Controller
+class TicketController extends Controller
 {
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
 	public $layout='//layouts/column2';
-        
-        public function init() 
-        {
-            Yii::app()->setComponents(array(
-                'user'=>array(
-                    'loginUrl'=>Yii::app()->createUrl('/site/index'),
-                )));
-        }
-        
-        
-        /**
-         * Funcion para retornar los detinos 
-         */
-        public function actionDestinations()
-        {
-            $destinos = Destinos::model()->findAll();
-            echo CJSON::encode($destinos);
-        }
 
 	/**
 	 * @return array action filters
@@ -46,8 +28,8 @@ class TicketsController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view', 'destinations', 'upload'),
-				'users'=>array('@'),
+				'actions'=>array('index','view'),
+				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
 				'actions'=>array('create','update'),
@@ -73,36 +55,33 @@ class TicketsController extends Controller
 			'model'=>$this->loadModel($id),
 		));
 	}
-        
-        
 
 	/**
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 */
 	public function actionCreate()
-	{       
-                
-		$model=new Tickets;
+	{
+		$model=new Ticket;
                 /*Instancio los modelos donde se harán inserts*/
-                $modelTestedNumbers= new TestedNumbers;
-                $modelDescripcionTicket= new DescripcionTicket;
+                $modelTestedNumbers= new TestedNumber;
+                $modelDescripcionTicket= new DescriptionTicket;
                 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Tickets']))
+		if(isset($_POST['Ticket']))
 		{
 //                    echo '<pre>';
 //                    print_r($_FILES);
 //                    Yii::app()->end();
                         
-			$model->attributes=$_POST['Tickets'];
+			$model->attributes=$_POST['Ticket'];
                         
                         //Demás atributos que no estan en el formualrio
-                        $model->statu_id = 1;
-                        $model->fecha_ticket = new CDbExpression('NOW()');
-                        $model->ip_maquina = Yii::app()->request->userHostAddress;
+                        $model->id_status = 1;
+                        $model->date = new CDbExpression('NOW()');
+                        $model->machine_ip = Yii::app()->request->userHostAddress;
                         
 //                        echo '<pre>';
 //                        print_r($model->attributes);
@@ -110,9 +89,9 @@ class TicketsController extends Controller
                         
 			if($model->save()) {
                                
-                                $countDestination = $_POST['Tickets']['destination'];
-                                $countTestedNumbers = $_POST['Tickets']['tested_numbers'];
-                                $countFecha = $_POST['Tickets']['fecha'];
+                                $countDestination = $_POST['Ticket']['country'];
+                                $countTestedNumbers = $_POST['Ticket']['tested_numbers'];
+                                $countFecha = $_POST['Ticket']['date_number'];
                                 
                                 for ($i = 0; $i < count($countTestedNumbers); $i++) {
                                     // Guardo en TestedNumbers
@@ -125,9 +104,9 @@ class TicketsController extends Controller
                                 }
                                 
                                 // Guardo en DescripcionTicket
-                                $modelDescripcionTicket->tickets_id = $model->primaryKey;
-                                $modelDescripcionTicket->descripcion = $_POST['Tickets']['descripcion'];
-                                $modelDescripcionTicket->fecha_mensaje = new CDbExpression('NOW()');
+                                $modelDescripcionTicket->id_ticket = $model->primaryKey;
+                                $modelDescripcionTicket->description = $_POST['Ticket']['description'];
+                                $modelDescripcionTicket->date = new CDbExpression('NOW()');
                                 
                                 $modelTestedNumbers->save();
                                 $modelDescripcionTicket->save();
@@ -140,24 +119,6 @@ class TicketsController extends Controller
 			'model'=>$model,
 		));
 	}
-        
-        public function actionUpload() 
-        {
-            Yii::import("ext.EAjaxUpload.qqFileUploader");
-
-            $folder = 'uploads/'; // folder for uploaded files
-            $allowedExtensions = array('pdf', 'gif', 'jpeg', 'png', 'jpg', 'xlsx', 'xls'); 
-            $sizeLimit = 10 * 1024 * 1024; // maximum file size in bytes
-            $uploader = new qqFileUploader($allowedExtensions, $sizeLimit);
-            $result = $uploader->handleUpload($folder);
-            $return = htmlspecialchars(json_encode($result), ENT_NOQUOTES);
-
-            $fileSize = filesize($folder . $result['filename']); //GETTING FILE SIZE
-            $fileName = $result['filename']; //GETTING FILE NAME
-
-            echo $return; // it's array 
-        }
-               
 
 	/**
 	 * Updates a particular model.
@@ -171,9 +132,9 @@ class TicketsController extends Controller
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Tickets']))
+		if(isset($_POST['Ticket']))
 		{
-			$model->attributes=$_POST['Tickets'];
+			$model->attributes=$_POST['Ticket'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -201,9 +162,8 @@ class TicketsController extends Controller
 	 * Lists all models.
 	 */
 	public function actionIndex()
-	{   
-            
-		$dataProvider=new CActiveDataProvider('Tickets');
+	{
+		$dataProvider=new CActiveDataProvider('Ticket');
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));
@@ -214,10 +174,10 @@ class TicketsController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new Tickets('search');
+		$model=new Ticket('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Tickets']))
-			$model->attributes=$_GET['Tickets'];
+		if(isset($_GET['Ticket']))
+			$model->attributes=$_GET['Ticket'];
 
 		$this->render('admin',array(
 			'model'=>$model,
@@ -228,12 +188,12 @@ class TicketsController extends Controller
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer $id the ID of the model to be loaded
-	 * @return Tickets the loaded model
+	 * @return Ticket the loaded model
 	 * @throws CHttpException
 	 */
 	public function loadModel($id)
 	{
-		$model=Tickets::model()->findByPk($id);
+		$model=Ticket::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
@@ -241,11 +201,11 @@ class TicketsController extends Controller
 
 	/**
 	 * Performs the AJAX validation.
-	 * @param Tickets $model the model to be validated
+	 * @param Ticket $model the model to be validated
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='tickets-form')
+		if(isset($_POST['ajax']) && $_POST['ajax']==='ticket-form')
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();

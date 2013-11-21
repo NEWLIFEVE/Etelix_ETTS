@@ -45,7 +45,7 @@
                         <?php $this->widget('zii.widgets.CMenu',array(
                             'items'=>array(
                                     array('label'=>'My tickets', 'url'=>array('/ticket/admin')),
-                                    array('label'=>'Open ticket', 'url'=>array('/tickets/create')),
+                                    array('label'=>'Open ticket', 'url'=>array('/ticket/create')),
                             ),
                             'htmlOptions' => array(
                                 'class' => 'dropdown-menu',

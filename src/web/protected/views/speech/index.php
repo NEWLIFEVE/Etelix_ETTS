@@ -1,18 +1,18 @@
 <?php
-/* @var $this TicketsController */
+/* @var $this SpeechController */
 /* @var $dataProvider CActiveDataProvider */
 
 $this->breadcrumbs=array(
-	'Tickets',
+	'Speeches',
 );
 
 $this->menu=array(
-	array('label'=>'Create Tickets', 'url'=>array('create')),
-	array('label'=>'Manage Tickets', 'url'=>array('admin')),
+	array('label'=>'Create Speech', 'url'=>array('create')),
+	array('label'=>'Manage Speech', 'url'=>array('admin')),
 );
 ?>
 
-<h1>Tickets</h1>
+<h1>Speeches</h1>
 
 <?php $this->widget('zii.widgets.CListView', array(
 	'dataProvider'=>$dataProvider,
