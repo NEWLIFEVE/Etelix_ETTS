@@ -13,6 +13,7 @@
  * @property integer $prefijo
  * @property string $fecha_ticket
  * @property string $ip_maquina
+ * @property string $gmt
  *
  * The followings are the available model relations:
  * @property Archivos[] $archivoses
@@ -74,9 +75,6 @@ class Tickets extends CActiveRecord
                         // Prueba de ralacion Many_Many
                         'mail' => array(self::MANY_MANY, 'Usuarios', 'mail_tickets(mail_id,tickets_id)'),
                     
-                    
-                    
-//			'mail' => array(self::BELONGS_TO, 'Mail', 'mail_id'),
 			'status' => array(self::BELONGS_TO, 'Status', 'statu_id'),
 			'fallas' => array(self::BELONGS_TO, 'Fallas', 'fallas_id'),
 			'tickets' => array(self::BELONGS_TO, 'Tickets', 'tickets_id'),
@@ -139,15 +137,15 @@ class Tickets extends CActiveRecord
 		));
 	}
         
-        public function addTestedNumbers($tickets_id, $destinos_id, $numero, $fecha_tested_numbers)
+        public function addTestedNumbers($tickets_id, $destinos_id, $numero, $date_numbers)
 	{
-		$sql = "INSERT INTO tested_numbers(tickets_id, destinos_id, numero, fecha_tested_numbers) " .
-		       "VALUES (:tickets_id, :destinos_id, :numero, :fecha_tested_numbers)";
+		$sql = "INSERT INTO tested_numbers(tickets_id, destinos_id, numero, date_numbers) " .
+		       "VALUES (:tickets_id, :destinos_id, :numero, :date_numbers)";
 		$comando = Yii::app()->db->createCommand($sql);
 		$comando->bindParam(":tickets_id", $tickets_id, PDO::PARAM_INT);
 		$comando->bindParam(":destinos_id", $destinos_id, PDO::PARAM_INT);
 		$comando->bindParam(":numero", $numero, PDO::PARAM_INT);
-                $comando->bindParam(":fecha_tested_numbers", $fecha_tested_numbers, PDO::PARAM_STR);
+                $comando->bindParam(":date_numbers", $date_numbers, PDO::PARAM_STR);
 		$control = $comando->execute();
 		return ($control > 0);
 	}
