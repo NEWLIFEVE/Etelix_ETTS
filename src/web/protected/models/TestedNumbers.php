@@ -8,8 +8,9 @@
  * @property integer $tickets_id
  * @property integer $destinos_id
  * @property integer $numero
- * @property string $fecha_tested_number
- *
+ * @property string $date_numbers
+ * @property string $hour_numbers
+ * 
  * The followings are the available model relations:
  * @property Destinos $destinos
  * @property Tickets $tickets
