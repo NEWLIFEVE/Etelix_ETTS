@@ -6,7 +6,7 @@ $this->breadcrumbs=array(
 	'Tickets',
 );
 
-$this->menu=array(
+$this->menu = array(
 	array('label'=>'Create Ticket', 'url'=>array('create')),
 	array('label'=>'Manage Ticket', 'url'=>array('admin')),
 );

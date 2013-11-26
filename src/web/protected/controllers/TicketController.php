@@ -62,6 +62,8 @@ class TicketController extends Controller
 	 */
 	public function actionCreate()
 	{
+            
+            if (Yii::app()->user->checkAccess('cliente') || Yii::app()->user->checkAccess('subadmin')) { // Si el rol del usuario es cliente tendrá acceso al ticket information
 		$model=new Ticket;
                 /*Instancio los modelos donde se harán inserts*/
                 $modelTestedNumbers= new TestedNumber;
@@ -72,9 +74,6 @@ class TicketController extends Controller
 
 		if(isset($_POST['Ticket']))
 		{
-//                    echo '<pre>';
-//                    print_r($_FILES);
-//                    Yii::app()->end();
                         
 			$model->attributes=$_POST['Ticket'];
                         
@@ -82,10 +81,6 @@ class TicketController extends Controller
                         $model->id_status = 1;
                         $model->date = new CDbExpression('NOW()');
                         $model->machine_ip = Yii::app()->request->userHostAddress;
-                        
-//                        echo '<pre>';
-//                        print_r($model->attributes);
-//                        Yii::app()->end();
                         
 			if($model->save()) {
                                
@@ -118,6 +113,9 @@ class TicketController extends Controller
 		$this->render('create',array(
 			'model'=>$model,
 		));
+            } else {
+                throw new CHttpException(401,'No Access');
+            }
 	}
 
 	/**

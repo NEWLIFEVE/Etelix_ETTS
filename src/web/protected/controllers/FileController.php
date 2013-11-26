@@ -176,7 +176,7 @@ class FileController extends Controller
             Yii::import("ext.EAjaxUpload.qqFileUploader");
 
             $folder = 'uploads/'; // folder for uploaded files
-            $allowedExtensions = array('pdf', 'gif', 'jpeg', 'png', 'jpg', 'xlsx', 'xls'); 
+            $allowedExtensions = array('pdf', 'gif', 'jpeg', 'png', 'jpg', 'xlsx', 'xls', 'txt'); 
             $sizeLimit = 10 * 1024 * 1024; // maximum file size in bytes
             $uploader = new qqFileUploader($allowedExtensions, $sizeLimit);
             $result = $uploader->handleUpload($folder);

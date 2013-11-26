@@ -78,10 +78,8 @@ $(document).on('ready', function(){
      * 
      ***************************************************************************/
     $('#ticket-form').delegate('.fecha','focusin',function(){
-        $(this).datetimepicker({
-            dateFormat: "yy-mm-dd",
-            controlType: 'select',
-            timeFormat: 'HH:mm'
+        $(this).datepicker({
+            dateFormat: "yy-mm-dd"
         }); 
     });
     
@@ -125,7 +123,7 @@ $(document).on('ready', function(){
      * 
      ***************************************************************************/
     $(document).on('click', '._cancelar', function(){
-        $(this).parent('div').hide('slow', function(){
+        $(this).parent('div').hide('fast', function(){
             $(this).remove();
         });
     });

@@ -9,21 +9,22 @@
         <link href="<?php echo Yii::app()->theme->baseUrl; ?>/css/docs.css" rel="stylesheet" type="text/css">
         
         <?php Yii::app()->clientScript->registerCoreScript('jquery'); ?>
-        <?php Yii::app()->clientScript->registerCoreScript('jquery.ui'); ?>
-        <?php Yii::app()->clientScript->registerCssFile(Yii::app()->clientScript->getCoreScriptUrl().'/jui/css/base/jquery-ui.css'); ?>
+        <?php // Yii::app()->clientScript->registerCoreScript('jquery.ui'); ?>
+        <?php // Yii::app()->clientScript->registerCssFile(Yii::app()->clientScript->getCoreScriptUrl().'/jui/css/base/jquery-ui.css'); ?>
         
+        <!--<script src="<?php // echo Yii::app()->theme->baseUrl; ?>/js/jquery/jquery.min.js"></script>-->
         <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/jquery/jquery.widget.min.js"></script>
         <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/jquery/jquery.mousewheel.js"></script>
         <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/prettify/prettify.js"></script>
         <!--COMENTARIO TEST-->
         <!-- Local JavaScript -->
-        <!--<script src="<?php // echo Yii::app()->theme->baseUrl; ?>/js/metro/metro-loader.js"></script>-->
+        <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/metro/metro-loader.js"></script>
         <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/metro/metro-dropdown.js"></script>
+        
         <!-- Local JavaScript -->
         <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/docs.js"></script>
         <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/github.info.js"></script>
         
-        <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/jquery/jquery-ui-timepicker-addon.js"></script>
         <link rel="shortcut icon" href="<?php echo Yii::app()->request->baseUrl; ?>/images/favicon.ico" type="image/x-icon"/> 
     </head>
     <body class="metro">
@@ -34,29 +35,54 @@
             <div class="navigation-bar dark">
                 <div class="navigation-bar-content container">
                     <a href="/" class="element"><span class="icon-grid-view"></span> <?php echo Yii::app()->name; ?> <sup>ETELIX</sup></a>
-                    
-                    <?php if (!Yii::app()->user->isGuest): ?>
+                    <?php if (!Yii::app()->user->isGuest): // Si se ha logueado un usuario ?>
                         <span class="element-divider"></span>
-
                         <?php echo CHtml::link('<i class="icon-home on-right on-left"></i> Home', array('/site/index'), array('class' => 'element')); ?>
-                    
                         <div class="element">
-                        <?php echo CHtml::link('<i class="icon-box-add on-right on-left"></i> Tickets', '#', array('class' => 'dropdown-toggle')); ?>
-                        <?php $this->widget('zii.widgets.CMenu',array(
-                            'items'=>array(
-                                    array('label'=>'My tickets', 'url'=>array('/ticket/admin')),
-                                    array('label'=>'Open ticket', 'url'=>array('/ticket/create')),
-                            ),
-                            'htmlOptions' => array(
-                                'class' => 'dropdown-menu',
-                                'id' => 'base-submenu',
-                                'data-role' => 'dropdown'
+                            <?php echo CHtml::link('<i class="icon-box-add on-right on-left"></i> Tickets', '#', array('class' => 'dropdown-toggle')); ?>
+                            <?php $this->widget('zii.widgets.CMenu',array(
+                                'items'=>array(
+                                        array('label'=>'My tickets', 'url'=>array('/ticket/admin')),
+                                        array('label'=>'Open ticket', 'url'=>array('/ticket/create')),
                                 ),
+                                'htmlOptions' => array(
+                                    'class' => 'dropdown-menu',
+                                    'id' => 'base-submenu',
+                                    'data-role' => 'dropdown'
+                                    ),
 
-                        )); ?>
+                            )); ?>
                         </div>
-                        <?php // if(Yii::app()->getSession()->get('role') === 1) echo CHtml::link('<i class="icon-user on-right on-left"></i> Usuarios', array('/usuarios/index'), array('class' => 'element')); ?>
-                        <?php echo CHtml::link('<i class="icon-locked on-right on-left"></i> Logout', array('/site/logout'), array('class' => 'element')); ?>
+                        
+                        <?php if (Yii::app()->user->checkAccess('admin')): // Solo visible al superadmin ?>
+                            <div class="element">
+                                    <?php echo CHtml::link('<i class="icon-user on-right on-left"></i> Manage Users', '#', array('class' => 'dropdown-toggle')); ?>
+                                    <?php $this->widget('zii.widgets.CMenu', array(
+                                        'items'=>Yii::app()->user->ui->adminItems,
+                                        'htmlOptions'=>array(
+                                            'class'=>'dropdown-menu',
+                                            'id' => 'base-submenu',
+                                            'data-role' => 'dropdown'
+                                            ),
+                                    )); ?>
+                            </div>
+                        <?php else: ?>
+                            <?php if (Yii::app()->user->checkAccess('subadmin')): // Solo visible al subadministrador ?>
+                            <div class="element">
+                                    <?php echo CHtml::link('<i class="icon-user on-right on-left"></i> Manage Users', '#', array('class' => 'dropdown-toggle')); ?>
+                                    <?php $this->widget('zii.widgets.CMenu', array(
+                                        'items'=>Yii::app()->user->ui->adminItems,
+                                        'htmlOptions'=>array(
+                                            'class'=>'dropdown-menu',
+                                            'id' => 'base-submenu',
+                                            'data-role' => 'dropdown'
+                                            ),
+                                    )); ?>
+                            </div>
+                           <?php endif; ?>
+                       <?php endif; ?>
+                        
+                        <?php echo CHtml::link('<i class="icon-locked on-right on-left"></i> Logout ('.Yii::app()->user->name.')', Yii::app()->user->ui->logoutUrl, array('class' => 'element')); ?>
                         <span class="element-divider"></span>
                     <?php endif; ?> 
                 </div>
@@ -85,5 +111,6 @@
         <script>
         var _root_ = "<?php echo Yii::app()->getBaseUrl(true) . '/'; ?>";
         </script>
+         <?php echo Yii::app()->user->ui->displayErrorConsole(); ?>
     </body>
 </html>

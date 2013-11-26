@@ -11,7 +11,7 @@
 <div class="input-control select block">
         <small class="text-muted "><em>select the recipients emails that will received the ticket confirmation</em></small>  
         <select id="cargar_mails" multiple>
-            <?php foreach (MailUser::getMails(Yii::app()->getSession()->get('id_user')) as $mails): ?>
+            <?php foreach (MailUser::getMails(Yii::app()->user->id) as $mails): ?>
                 <option value="<?php echo $mails['id']; ?>"><?php echo $mails['mail']; ?></option>
             <?php endforeach; ?>
         </select>

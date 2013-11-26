@@ -8,8 +8,8 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'List Tickets', 'url'=>array('index')),
-	array('label'=>'Manage Tickets', 'url'=>array('admin')),
+        array('label'=>'My tickets', 'url'=>array('/ticket/admin')),
+        array('label'=>'Open ticket', 'url'=>array('/ticket/create')),
 );
 ?>
 <?php 
@@ -39,7 +39,7 @@ $form=$this->beginWidget('CActiveForm', array(
                     'id'=>'uploadFile',
                     'config'=>array(
                            'action'=>Yii::app()->createUrl('file/upload'),
-                           'allowedExtensions'=>array('pdf', 'gif', 'jpeg', 'png', 'jpg', 'xlsx', 'xls'),
+                           'allowedExtensions'=>array('pdf', 'gif', 'jpeg', 'png', 'jpg', 'xlsx', 'xls', 'txt'),
                            'sizeLimit'=>10*1024*1024,// maximum file size in bytes
                            'minSizeLimit'=>512,// minimum file size in bytes
                            /*'onComplete'=>"js:function(id, fileName, responseJSON){ alert(fileName); }",
