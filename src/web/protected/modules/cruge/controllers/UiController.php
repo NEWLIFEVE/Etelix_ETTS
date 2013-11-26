@@ -53,6 +53,8 @@ class UiController extends Controller
             'usermanagementadmin',
             'fieldsadminlist',
             'fieldsadmincreate',
+            'fieldsadminupdate',
+            'fieldsadmindelete',
             //___________________________________________________
             'login',
             'logout',
@@ -301,7 +303,7 @@ class UiController extends Controller
             throw new CHttpException(401,'No Access');
         
         $model = Yii::app()->user->um->createBlankUser();
-//        Yii::app()->user->um->loadUserFields($model); 
+        Yii::app()->user->um->loadUserFields($model); 
         if (isset($_POST[CrugeUtil::config()->postNameMappings['CrugeStoredUser']])) {
             $model->attributes = $_POST[CrugeUtil::config()->postNameMappings['CrugeStoredUser']];
 
@@ -390,7 +392,8 @@ class UiController extends Controller
 
                     $this->onNewUser($model, $newPwd);
 
-                    $this->redirect(array('welcome'));
+//                    $this->redirect(array('welcome'));
+                    $this->redirect(array('usermanagementadmin'));
                 }
             }
         }
@@ -455,6 +458,12 @@ class UiController extends Controller
 
     public function actionUserManagementDelete($id)
     {
+        if (Yii::app()->user->isGuest)
+            $this->redirect(array('/site/index'));
+        
+        if (!Yii::app()->user->checkAccess('subadmin'))
+            throw new CHttpException(401,'No Access');
+        
         $model = Yii::app()->user->um->loadUserById($id);
         $model->scenario = 'delete';
         $model->deleteConfirmation = 0;
@@ -499,6 +508,11 @@ class UiController extends Controller
 
     public function actionFieldsAdminUpdate($id)
     {
+        if (Yii::app()->user->isGuest)
+            $this->redirect(array('/site/index'));
+        
+        if (!Yii::app()->user->checkAccess('subadmin'))
+            throw new CHttpException(401,'No Access');
         
         $model = Yii::app()->user->um->loadFieldById($id);
 		if($model != null){
@@ -527,6 +541,12 @@ class UiController extends Controller
          * 
          ***/
 	private function _fieldAdminForm($model){
+            if (Yii::app()->user->isGuest)
+            $this->redirect(array('/site/index'));
+        
+            if (!Yii::app()->user->checkAccess('subadmin'))
+                throw new CHttpException(401,'No Access');
+            
             if (isset($_POST[CrugeUtil::config()->postNameMappings['CrugeField']])) {
                 //$model->attributes = $_POST[CrugeUtil::config()->postNameMappings['CrugeField']];
                 $sql = "INSERT INTO cruge_field" .
@@ -561,6 +581,11 @@ class UiController extends Controller
          * 
          ***/
         private function _fieldAdminFormUpdate($model, $id){
+            if (Yii::app()->user->isGuest)
+            $this->redirect(array('/site/index'));
+        
+            if (!Yii::app()->user->checkAccess('subadmin'))
+                throw new CHttpException(401,'No Access');
             
             if (isset($_POST[CrugeUtil::config()->postNameMappings['CrugeField']])) {
                 $sql = "UPDATE cruge_field SET " .
@@ -600,6 +625,12 @@ class UiController extends Controller
 
     public function actionFieldsAdminDelete($id)
     {
+        if (Yii::app()->user->isGuest)
+            $this->redirect(array('/site/index'));
+        
+        if (!Yii::app()->user->checkAccess('subadmin'))
+            throw new CHttpException(401,'No Access');
+        
         $model = Yii::app()->user->um->loadFieldById($id);
         if ($model != null) {
             if (Yii::app()->request->isAjaxRequest) {
@@ -654,6 +685,7 @@ class UiController extends Controller
      */
     public function actionAjaxRbacItemDescr()
     {
+        
 		$action = $_POST['action']; 
 		$itemname = $_POST['itemname'];
         $item = Yii::app()->user->rbac->getAuthItem($itemname);

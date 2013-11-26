@@ -66,24 +66,24 @@
             </div>
         </div>
         
-<!--        <div class="separador-vertical"></div>
+        <div class="separador-vertical"></div>
         
         <div class="grid">
             <div class="row">
                 <?php 
-//                foreach($model->getFields() as $f){
-//                        // aqui $f es una instancia que implementa a: ICrugeField
-//                        echo "<div class='span2'>";
-//                            echo "<div class='input-control text span2'>";
-//                                echo Yii::app()->user->um->getLabelField($f);
-//                                echo Yii::app()->user->um->getInputField(null, $f);
-//                                echo $form->error($model,$f->fieldname);
-//                            echo "</div>";
-//                        echo "</div>";
-//                }
+                foreach($model->getFields() as $f){
+                        // aqui $f es una instancia que implementa a: ICrugeField
+                        echo "<div class='span2'>";
+                            echo "<div class='input-control text span2'>";
+                                echo Yii::app()->user->um->getLabelField($f);
+                                echo Yii::app()->user->um->getInputField(null, $f);
+                                echo $form->error($model,$f->fieldname);
+                            echo "</div>";
+                        echo "</div>";
+                }
                 ?>
             </div>
-        </div>-->
+        </div>
         
         
         <div class="separador-vertical"></div>

@@ -19,7 +19,7 @@
 
         
 <div class="input-control select block">
-    <strong>Response to </strong><small class="text-muted "><em>(required)</em></small>&nbsp;&nbsp;
+    Response to <small class="text-muted "><em>(required)</em></small>&nbsp;&nbsp;
     <a href="javascript:void(0)" class="a-agregar_correo"><i class="icon-plus-2"></i></a>
     &nbsp;
     <a href="javascript:void(0)" class="a-bajar_correo"><i class="icon-arrow-down"></i></a>
@@ -37,12 +37,12 @@
 
 
 <div class="input-control select block">
-        <strong>Failure</strong><small class="text-muted "><em> (required)</em></small>
+        Failure<small class="text-muted "><em> (required)</em></small>
         <?php echo $form->dropDownList($model,'id_failure', CHtml::listData(Failure::model()->findAll(), 'id', 'name'),  array('empty' => '')); ?>
         <?php echo $form->error($model,'id_failure'); ?>
 </div>
 
-<div class="_label"><strong>Origination IP </strong><small class="text-muted "><em>(Customer IP)(required)</em></small>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>DestinationIP IP</strong> <small class="text-muted "><em>(Etelix IP)(required)</em></small></div>
+<div class="_label">Origination IP <small class="text-muted "><em>(Customer IP)(required)</em></small>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DestinationIP  <small class="text-muted "><em>(Etelix IP)(required)</em></small></div>
 <div class="input-control text block" data-role="input-control">
 
     <input type="text" class="_ip" maxlength="3"> 
@@ -60,7 +60,7 @@
 
 
 <div class="input-control text block" data-role="input-control">
-        <strong>Prefix </strong><small class="text-muted "><em>(required)</em></small>
+        Prefix <small class="text-muted "><em>(required)</em></small>
         <?php echo $form->textField($model,'prefix'); ?>
         <?php echo $form->error($model,'prefix'); ?>
 
@@ -72,7 +72,7 @@
 
 <div class="grid" >
         <div class="input-control text span3" >
-            <strong>Tested numbers</strong><small class="text-muted "><em> (required)</em></small>
+            Tested numbers<small class="text-muted "><em> (required)</em></small>
             <?php echo $form->textField($model,'tested_numbers[]',array('placeholder' => 'Without prefix')); ?>
             <?php echo $form->error($model,'tested_numbers[]'); ?>
         </div>

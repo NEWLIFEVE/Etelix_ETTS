@@ -1,4 +1,4 @@
-<h1><?php echo ucwords(CrugeTranslator::t("registrarse"));?></h1>
+<h2>Create New User</h2>
 <div class="form">
 <?php
 	/*
@@ -26,7 +26,7 @@
 		<div class='item'>
 			<?php echo $form->textField($model,'newPassword'); ?>
 			<p class='hint'><?php echo CrugeTranslator::t(
-				"su contraseña, letras o digitos o los caracteres @#$%. minimo 6 simbolos.");?></p>
+				"su contraseï¿½a, letras o digitos o los caracteres @#$%. minimo 6 simbolos.");?></p>
 		</div>
 		<?php echo $form->error($model,'newPassword'); ?>
 		<script>

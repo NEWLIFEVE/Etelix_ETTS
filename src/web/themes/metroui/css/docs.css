@@ -148,3 +148,8 @@ ul#base-submenu.dropdown-menu li span {
     margin-left:30px !important;
     /*font-weight: bold !important;*/
 }
+
+div.input-control.select.block strong {
+    font-weight: 0 !important;
+      
+}
