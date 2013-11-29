@@ -32,7 +32,7 @@ class MailController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('create','update','SetMail'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -142,6 +142,40 @@ class MailController extends Controller
 			'model'=>$model,
 		));
 	}
+        
+        
+        
+        public function actionSetMail()
+        {
+            $model=new Mail();
+            $model->mail = $_POST['mail'];
+            $usuario_id = Yii::app()->user->id;
+            
+            $topeMail = Yii::app()->db->createCommand("SELECT COUNT(id_user) AS conteo FROM mail_user WHERE id_user = $usuario_id ");
+            $row = $topeMail->queryRow();
+            $bandera = $row['conteo'];
+            
+            if ($bandera < 5) {
+                if($model->save()) {
+
+                    $mail_id = $model->primaryKey;
+
+                    $sql = "INSERT INTO mail_user(id_user, id_mail) VALUES($usuario_id, $mail_id)";
+                    $comando = Yii::app()->db->createCommand($sql);
+                    $control = $comando->execute();
+
+                    if ($control > 0)
+                        echo 'ok';
+                    else
+                        echo 'no';
+                } else {
+                    echo 'no';
+                }
+            } else {
+                echo 'tope_alcanzado';
+            }
+        }
+        
 
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.

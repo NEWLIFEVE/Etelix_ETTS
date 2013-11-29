@@ -57,6 +57,9 @@ $form=$this->beginWidget('CActiveForm', array(
 </div>
 
 <?php $this->endWidget(); ?>
+
+<?php Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl . '/css/jquery.timeentry.css'); ?>
+<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->theme->baseUrl . '/js/jquery/jquery.timeentry.min.js',CClientScript::POS_END); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/create.js',CClientScript::POS_END); ?>
 
 

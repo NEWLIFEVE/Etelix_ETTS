@@ -287,8 +287,8 @@ class CrugeUi extends CComponent
             array(
                 'label' => CrugeTranslator::t('admin', 'Create User')
             ,
-                'url' => $this->getUserManagementCreateUrl()
-//                'url' => array('/cruge/ui/registration')
+//                'url' => $this->getUserManagementCreateUrl()
+                'url' => array('/cruge/ui/registration')
             ),
             array(
                 'label' => CrugeTranslator::t('admin', 'Manage Users')

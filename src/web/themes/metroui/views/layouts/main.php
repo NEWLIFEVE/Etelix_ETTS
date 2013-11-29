@@ -7,10 +7,10 @@
         <link href="<?php echo Yii::app()->theme->baseUrl; ?>/css/metro-bootstrap-responsive.css" rel="stylesheet" type="text/css">
         <link href="<?php echo Yii::app()->theme->baseUrl; ?>/js/prettify/prettify.css" rel="stylesheet">
         <link href="<?php echo Yii::app()->theme->baseUrl; ?>/css/docs.css" rel="stylesheet" type="text/css">
-        
+                
         <?php Yii::app()->clientScript->registerCoreScript('jquery'); ?>
-        <?php // Yii::app()->clientScript->registerCoreScript('jquery.ui'); ?>
-        <?php // Yii::app()->clientScript->registerCssFile(Yii::app()->clientScript->getCoreScriptUrl().'/jui/css/base/jquery-ui.css'); ?>
+        <?php Yii::app()->clientScript->registerCoreScript('jquery.ui'); ?>
+        <?php Yii::app()->clientScript->registerCssFile(Yii::app()->clientScript->getCoreScriptUrl().'/jui/css/base/jquery-ui.css'); ?>
         
         <!--<script src="<?php // echo Yii::app()->theme->baseUrl; ?>/js/jquery/jquery.min.js"></script>-->
         <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/jquery/jquery.widget.min.js"></script>
@@ -20,7 +20,7 @@
         <!-- Local JavaScript -->
         <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/metro/metro-loader.js"></script>
         <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/metro/metro-dropdown.js"></script>
-        
+                
         <!-- Local JavaScript -->
         <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/docs.js"></script>
         <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/github.info.js"></script>
@@ -111,6 +111,6 @@
         <script>
         var _root_ = "<?php echo Yii::app()->getBaseUrl(true) . '/'; ?>";
         </script>
-         <?php echo Yii::app()->user->ui->displayErrorConsole(); ?>
+        <?php echo Yii::app()->user->ui->displayErrorConsole(); ?>
     </body>
 </html>

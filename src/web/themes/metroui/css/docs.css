@@ -120,7 +120,12 @@ text-shadow: none;
     width: 48px !important;
 }
 
-span.margen_17px{margin: 0 44px;}
+span.margen_22px{margin: 0 44px;}
+span.margen_17px{margin: 0 34px;}
+
+div.input-control.select.span2.margen-number, div.input-control.text.span2.margen-number, div.input-control.text.span1.margen-number {margin-left: 10px !important;}
+div.input-control.text.span2.margen-number.fecha_div{width: 100px !important}
+div.input-control.text.span1.margen-number.hour_div{width: 80px !important}
 
 .margen-number {
     margin-left: 5px;
@@ -132,12 +137,9 @@ span.margen_17px{margin: 0 44px;}
     margin: 0 !important;
 }
 
-/*#form-new-user {
-    max-width: 500px;
-}*/
-#pp {
+/*#pp {
     margin-bottom: 30px;
-}
+}*/
 
 .separador-vertical {
     clear: left;
@@ -153,3 +155,9 @@ div.input-control.select.block strong {
     font-weight: 0 !important;
       
 }
+
+.btn-agregar-correo.primary {
+    padding: 7px 7px; 
+    margin-left: 4px;
+}
+
