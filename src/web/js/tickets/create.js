@@ -211,4 +211,9 @@ $(document).on('ready', function(){
        }
    }
 }*/
-
+$('input[name="preview"]').on('click',function(e)
+    {
+        e.preventDefault();
+        alert($('#oip1').val()+'.'+$('#oip2').val()+'.'+$('#oip3').val()+'.'+$('#oip4').val());
+        alert($('#dip1').val()+'.'+$('#dip2').val()+'.'+$('#dip3').val()+'.'+$('#dip4').val());
+});

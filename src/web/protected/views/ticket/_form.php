@@ -9,6 +9,7 @@
 
 <div class="input-control select block">
         Select the recipients emails that will received the ticket confirmation
+
         <small class="text-muted "><em> (maximum 5 emails)</em></small>
         <select id="cargar_mails" multiple>
             <?php foreach (MailUser::getMails(Yii::app()->user->id) as $mails): ?>
@@ -53,17 +54,17 @@
 <div class="_label">Origination IP <small class="text-muted "><em>(Customer IP)(required)</em></small><span class="margen_17px"></span>DestinationIP  <small class="text-muted "><em>(Etelix IP)(required)</em></small></div>
 <div class="input-control text block" data-role="input-control">
 
-    <input type="text" class="_ip" maxlength="3"> 
-    <input type="text" class="_ip" maxlength="3"> 
-    <input type="text" class="_ip" maxlength="3"> 
-    <input type="text" class="_ip" maxlength="3">
+    <input type="text" class="_ip" id="oip1" maxlength="3"> 
+    <input type="text" class="_ip" id="oip2" maxlength="3"> 
+    <input type="text" class="_ip" id="oip3" maxlength="3"> 
+    <input type="text" class="_ip" id="oip4" maxlength="3">
     
     <span class="margen_22px"></span>
     
-    <input type="text" class="_ip" maxlength="3"> 
-    <input type="text" class="_ip" maxlength="3"> 
-    <input type="text" class="_ip" maxlength="3"> 
-    <input type="text" class="_ip" maxlength="3">
+    <input type="text" class="_ip" id="dip1" maxlength="3"> 
+    <input type="text" class="_ip" id="dip2" maxlength="3"> 
+    <input type="text" class="_ip" id="dip3" maxlength="3"> 
+    <input type="text" class="_ip" id="dip4" maxlength="3">
 </div>
 
 
@@ -132,6 +133,6 @@
 </div>
 
 <div></div>
-<?php echo CHtml::submitButton($model->isNewRecord ? 'Preview Ticket' : 'Save', array('class' => 'primary large')); ?>
+<?php echo CHtml::submitButton($model->isNewRecord ? 'Preview Ticket' : 'Save', array('class' => 'primary large', 'name'=>'preview')); ?>
 
 </fieldset>
