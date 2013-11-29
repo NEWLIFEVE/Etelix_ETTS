@@ -211,9 +211,67 @@ $(document).on('ready', function(){
        }
    }
 }*/
-$('input[name="preview"]').on('click',function(e)
-    {
-        e.preventDefault();
-        alert($('#oip1').val()+'.'+$('#oip2').val()+'.'+$('#oip3').val()+'.'+$('#oip4').val());
-        alert($('#dip1').val()+'.'+$('#dip2').val()+'.'+$('#dip3').val()+'.'+$('#dip4').val());
+
+
+$('input[name="preview"]').on('click', function(e){
+    e.preventDefault();
+    
+    // INPUTS DE ARREGLO
+    var responseTo = $('[name="Ticket[mail][]"] option');
+    var testedNumbers = $('[name="Ticket[tested_numbers][]"]');
+    var country = $('[name="Ticket[country][]"]');
+    var dateNumber = $('[name="Ticket[date_number][]"]');
+    var hourNumber = $('[name="Ticket[hour_number][]"]');
+
+    var responseToArray = [];
+    var testedNumbersArray = [];
+    var countryArray = [];
+    var dateNumberArray = [];
+    var hourNumberArray = [];
+
+    var i = 0;
+
+    for(i= 0; i < responseTo.length; i++)
+        responseToArray.push(responseTo[i].value)
+
+    for(i= 0; i < testedNumbers.length; i++)
+        testedNumbersArray.push(testedNumbers[i].value)
+
+    for(i= 0; i < country.length; i++)
+        countryArray.push(country[i].value)
+
+    for(i= 0; i < dateNumber.length; i++)
+        dateNumberArray.push(dateNumber[i].value)
+
+    for(i= 0; i < hourNumber.length; i++)
+        hourNumberArray.push(hourNumber[i].value)
+    
+    $.Dialog({
+        shadow: true,
+        overlay: false,
+        icon: '<span class="icon-rocket"></span>',
+        title: 'Title',
+        width: 500,
+        height:600,
+        padding: 50,
+        draggable: true,
+        content:
+
+            'Response to: ' + responseToArray + '<br>' +
+            'Failure:' + $('#Ticket_id_failure').val() + '<br>' +
+            'Origination ip:' + $('#oip1').val()+'.'+$('#oip2').val()+'.'+$('#oip3').val()+'.'+$('#oip4').val()+ '<br>' +
+            'Destination ip:' + $('#dip1').val()+'.'+$('#dip2').val()+'.'+$('#dip3').val()+'.'+$('#dip4').val()+ '<br>' +
+            'Prefix:' + $('#Ticket_prefix').val() + '<br>' +
+            'GMT:' + $('#Ticket_idGmt').val() + '<br>' +
+
+            'Tested numbers:' + testedNumbersArray + '<br>' +
+            'Country:' + countryArray + '<br>' +
+            'Date:' + dateNumberArray + '<br>' +
+            'Hour:' + hourNumberArray + '<br>' +
+
+            'Description:' + $('#Ticket_description').val() + '<br>' +
+            '<button type="button" class="default">Send</button> &nbsp; <button type="button" class="default">Cancel</button>'
+        
+    });
 });
+

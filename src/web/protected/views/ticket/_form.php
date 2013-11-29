@@ -6,7 +6,7 @@
 <fieldset>
         <legend>Use this form to submit a ticket.</legend>
 <?php echo $form->errorSummary($model); ?>
-
+       
 <div class="input-control select block">
         Select the recipients emails that will received the ticket confirmation
 
