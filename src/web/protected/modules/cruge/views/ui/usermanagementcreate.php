@@ -66,8 +66,6 @@
             </div>
         </div>
         
-        <div class="separador-vertical"></div>
-        
         <div class="grid">
             <div class="row">
                 <?php 

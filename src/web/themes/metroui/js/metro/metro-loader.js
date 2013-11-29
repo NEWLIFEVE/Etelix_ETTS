@@ -6,7 +6,7 @@ var plugins = [
     'button-set',
     'date-format',
     'calendar',
-    'datepicker',
+//    'datepicker',
     'carousel',
     'countdown',
     'dropdown',

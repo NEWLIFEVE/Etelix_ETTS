@@ -31,6 +31,7 @@
                 <label>
                     <?php echo $form->checkBox($model,'rememberMe'); ?>
                     <span class="check"></span>  Remember Me &nbsp;&nbsp; <?php echo Yii::app()->user->ui->passwordRecoveryLink; ?>
+                    <?php if(Yii::app()->user->um->getDefaultSystem()->getn('registrationonlogin')===1) echo Yii::app()->user->ui->registrationLink; ?>
                     <?php echo $form->error($model,'rememberMe'); ?>
                 </label>
 	</div>
@@ -38,12 +39,6 @@
         <div></div>
         
             <?php echo CHtml::submitButton('Go!', array('class' => 'primary large')); ?>
-            <?php // Yii::app()->user->ui->tbutton(CrugeTranslator::t('logon', "Login")); ?>
-            
-            <?php
-//			if(Yii::app()->user->um->getDefaultSystem()->getn('registrationonlogin')===1)
-//				echo Yii::app()->user->ui->iregistrationLink;
-            ?>
 
 	<?php
 		//	si el componente CrugeConnector existe lo usa:

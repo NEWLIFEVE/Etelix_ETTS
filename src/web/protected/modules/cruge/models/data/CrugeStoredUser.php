@@ -15,12 +15,14 @@
  * @property string $regdate    fecha de registro
  * @property string $actdate    fecha de activacion
  * @property string $logondate    ultimo login exitoso
+ * @property integer $id_carrier
  * @author: Christian Salazar H. <christiansalazarh@gmail.com> @salazarchris74
  * @license protected/modules/cruge/LICENSE
  */
 class CrugeStoredUser extends CActiveRecord implements ICrugeStoredUser
 {
     public $_fields = array();
+    public $id_carrier;
     public $deleteConfirmation; // required on 'delete'
     public $newPassword; // declararlo 'safe'
 
@@ -264,7 +266,7 @@ class CrugeStoredUser extends CActiveRecord implements ICrugeStoredUser
             ,
                 'message' => CrugeTranslator::t('logon', 'Invalid username')
             ),
-            array('username,email', 'required'),
+            array('username,email,id_carrier', 'required'),
             array('newPassword', 'safe', 'on' => 'update'),
             array('newPassword', 'required', 'on' => 'insert, manualcreate'),
             array('newPassword', 'length', 'min' => 6, 'max' => 20),
@@ -387,16 +389,17 @@ class CrugeStoredUser extends CActiveRecord implements ICrugeStoredUser
         return array(
             'idusuario' => ucfirst(CrugeTranslator::t('usuario#')),
             'username' => ucfirst(CrugeTranslator::t('username')),
-            'email' => ucfirst(CrugeTranslator::t('correo')),
-            'password' => ucfirst(CrugeTranslator::t('clave')),
+            'email' => ucfirst(CrugeTranslator::t('mail')),
+            'password' => ucfirst(CrugeTranslator::t('password')),
             'authkey' => ucfirst(CrugeTranslator::t('llave de autenticacion')),
             'state' => ucfirst(CrugeTranslator::t('estado de la cuenta')),
-            'newPassword' => ucfirst(CrugeTranslator::t('clave')),
+            'newPassword' => ucfirst(CrugeTranslator::t('password')),
             'deleteConfirmation' => ucfirst(CrugeTranslator::t('confirmar eliminacion')),
             'regdate' => ucfirst(CrugeTranslator::t('registrado')),
             'actdate' => ucfirst(CrugeTranslator::t('activado')),
             'logondate' => ucfirst(CrugeTranslator::t('ultimo acceso')),
             'terminosYCondiciones' => ucfirst(CrugeTranslator::t('comprendo y acepto, por favor registrarme')),
+            'id_carrier' => 'Carrier'
         );
     }
 

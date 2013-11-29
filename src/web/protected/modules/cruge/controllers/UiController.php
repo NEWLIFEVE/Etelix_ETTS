@@ -336,8 +336,9 @@ class UiController extends Controller
 
 
         $model = Yii::app()->user->um->createBlankUser();
-		$model->bypassCaptcha = false;
+        $model->bypassCaptcha = false;
         $model->terminosYCondiciones = false;
+        
         if (Yii::app()->user->um->getDefaultSystem()->getn('registerusingterms') == 0) {
             $model->terminosYCondiciones = true;
         }
@@ -360,6 +361,7 @@ class UiController extends Controller
         // siendo: "nombre" y "apellido" los nombre de campos personalizados
         //	que inmediantamente tras registro seran inicializados.
         //
+        
         if ($datakey != null) {
             // leo la data de la varibale de sesion
             $s = new CHttpSession();
@@ -381,15 +383,23 @@ class UiController extends Controller
 
         if (isset($_POST[CrugeUtil::config()->postNameMappings['CrugeStoredUser']])) {
             $model->attributes = $_POST[CrugeUtil::config()->postNameMappings['CrugeStoredUser']];
+//            echo '<pre>';
+//            print_r($_POST);
+//            Yii::app()->end();
             if ($model->validate()) {
-
+                
                 $newPwd = trim($model->newPassword);
                 Yii::app()->user->um->changePassword($model, $newPwd);
 
                 Yii::app()->user->um->generateAuthenticationKey($model);
 
                 if (Yii::app()->user->um->save($model, 'insert')) {
-
+                    
+                    // UPDATE A LA TABLA cruge_user CON EL id DEL CARRIER
+                    Yii::app()->db->createCommand(
+                            "UPDATE cruge_user SET id_carrier = ".$_POST['CrugeStoredUser']['id_carrier']." 
+                            WHERE iduser = ".$model->primaryKey." ")->execute();
+                    
                     $this->onNewUser($model, $newPwd);
 
 //                    $this->redirect(array('welcome'));

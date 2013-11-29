@@ -97,10 +97,15 @@ class MailUser extends CActiveRecord
 		));
 	}
         
-        static public function getMails($user)
-        {            
-            return self::model()->findAllBySql("select mu.id as id, m.mail as mail
+        static public function getMails($user, $json = false)
+        {   if ($json == false) {        
+                return self::model()->findAllBySql("select mu.id as id, m.mail as mail
                                                 from mail m, mail_user mu
                                                 where mu.id_user = $user and mu.id_mail = m.id");
+            } else {
+                echo CJSON::encode(Mail::model()->findAllBySql("select mu.id as id, m.mail as mail " .
+                                                "from mail m, mail_user mu " .
+                                                "where mu.id_user = $user and mu.id_mail = m.id"));
+            }
         }
 }

@@ -87,4 +87,6 @@ class Mail extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+        
+        
 }

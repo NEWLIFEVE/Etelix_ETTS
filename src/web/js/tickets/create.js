@@ -1,4 +1,64 @@
+/*******************************************************************************
+ *          FUNCION PARA CARGAR EL ULTIMO OPTION Y PASARLO A RESPONSE TO
+ ******************************************************************************/
+function setResponseTo() 
+{
+    var valor = $('#cargar_mails option:last').val();
+    var texto = $('#cargar_mails option:last').html();
+    $('#Ticket_mail').append('<option value="'+valor+'">'+texto+'</option>');
+}
+
 $(document).on('ready', function(){
+    
+ 
+    
+    
+    $(document).on('click', '#add_all_email', function(){
+       $('#Ticket_mail').html('');
+       $('#cargar_mails option').clone().appendTo($('#Ticket_mail'));
+    });
+    
+    
+    
+    /*******************************************************************************
+    *          FUNCION AJAX PARA MOSTRAR LOS CORREOS QUE SE VAYAN INSERTANDO
+    ******************************************************************************/
+    var getMailUser = function(){
+        $.post('/MailUser/GetMailUser', '', function(data){
+            $('#cargar_mails').html('');
+            for (var i = 0; i < data.length; i++) {
+                $('#cargar_mails').append('<option value="'+ data[i].id +'">'+ data[i].mail +'</option>');
+            }
+        }, 'json');
+    }
+    
+    
+    
+    /***************************************************************************
+     *
+     *          INSERTAR CORREO - AJAX
+     *
+     **************************************************************************/
+    $(document).on('click', '.btn-agregar-correo', function(){
+        
+       $.ajax({
+          url:  '/Mail/SetMail',
+          type: 'post',
+          data:{mail: $('#new_mail').val()},
+          success: function(data){
+              if (data == 'ok') {
+                  $('#new_mail').val('');
+                  getMailUser();
+                  setTimeout('setResponseTo()', 1000);
+              } else if(data == 'tope_alcanzado') {
+                  alert('Only five emails allowed')
+              } else if (data == 'no') {
+                  alert('Error')
+              }
+          }
+       });
+    });
+    
     /***************************************************************************
      *      
      *      AREA DE DESTINATION IP
@@ -41,36 +101,28 @@ $(document).on('ready', function(){
      *      AGREGAR CORREOS AL SELECT DE ABAJO
      *      
      ***************************************************************************/
-    var clickAgregarMail = 0;
     $(document).on('click', '.a-bajar_correo', function(){
         if ($('#cargar_mails').val()) { // Si hay valor en la carga de mail se ejecutará el código
-        
-//            clickAgregarMail += 1;
-//            
-//
-//            if (clickAgregarMail > 5){
-//                alert('Límite alcanzado')
-//                return false;
-//            }
-            
-            $('#Ticket_mail').append('<option value="'+$('#cargar_mails').val()+'">'+$('#cargar_mails option:selected').html()+'</option>');
+            if ($('#Ticket_mail option').length <= 4) {
+                $('#Ticket_mail').append('<option value="'+$('#cargar_mails').val()+'">'+$('#cargar_mails option:selected').html()+'</option>');
+            } else {
+                alert('Only five emails allowed')
+            }
         }
     });
     
+    
     /***************************************************************************
-     * 
-     *  Funcion para cargar destinations en los selects generados en el evento
-     *  onclick
-     * 
+     *      
+     *      ELIMINAR CORREOS DEL SELECT DE ABAJO
+     *      
      ***************************************************************************/
-    var getDestination = function(){
-        $.post(_root_ + 'country/DynamicCountry', '', function(data){
-                $('[name="Ticket[country][]"]').html('<option>Country</option>');
-                for (var i = 0; i < data.length; i++) {
-                    $('[name="Ticket[country][]"]').append('<option value="'+ data[i].id +'">'+ data[i].name +'</option>');
-                }
-            }, 'json');
-    };
+    $(document).on('click', '.a-borrar_correo', function(){
+        if ($('#Ticket_mail').val()) { 
+           $('#Ticket_mail option:selected').remove();
+        }
+    });
+    
     
     /***************************************************************************
      * 
@@ -78,9 +130,13 @@ $(document).on('ready', function(){
      * 
      ***************************************************************************/
     $('#ticket-form').delegate('.fecha','focusin',function(){
-        $(this).datepicker({
+        $('.fecha').datepicker({
             dateFormat: "yy-mm-dd"
         }); 
+    });
+    
+    $('#ticket-form').delegate('.hour','focusin',function(){
+        $('.hour').timeEntry({show24Hours: true, showSeconds: true});
     });
     
 
@@ -92,27 +148,31 @@ $(document).on('ready', function(){
     
     var clickAgregarNumber = 0; // Varible que permite cambiar los numeros del id del div que contiene a tested number
     $(document).on('click', '._agregar', function(){
-        clickAgregarNumber += 1; 
-        getDestination();// Se llama a la función para cargar el select de destinations
+        
+        clickAgregarNumber += 1;
+        
+        var country = $('#content_country').clone();
+        country.children().children('br').remove();
+
         $('.container_agregar').append(
             '<div id="div_'+clickAgregarNumber+'" style="display:none;">'+
                 '<div class="input-control text span3">' +
-                    '<input type="text" name="Ticket[tested_numbers][]" placeholder="Tested numbers" >' +
+                    '<input type="text" name="Ticket[tested_numbers][]" placeholder="Without prefix" >' +
                 '</div>' +
+                
+                country.html() +
 
-                '<div class="input-control select span2 country2" style="margin-left: 5px;">' +
-                    '<select name="Ticket[country][]" class="destinos">' +
-
-                    '</select>' +        // Se carga el select con getDestination()
-                '</div>' +
-
-                '<div class="input-control text span2" style="margin-left: 5px;">' +
+                '<div class="input-control text span2 margen-number fecha_div">' +
                     '<input type="text" class="fecha" name="Ticket[date_number][]" placeholder="Date" >' +
                 '</div>' +
-                '<a href="javascript:void(0)" style="margin-left: 15px;"  class="_cancelar input-control text span1"><i class="icon-cancel-2 fg-red "></i></a>' +
+                
+                '<div class="input-control text span1 margen-number hour_div">' +
+                    '<input type="text" name="Ticket[hour_number][]" placeholder="Hour" class="hour" >' +
+                '</div>' +
+                '<a href="javascript:void(0)" style="margin-left: 5px; padding-top: 5px; width: 10px !important;"  class="_cancelar input-control text span1"><i class="icon-cancel-2 fg-red "></i></a>' +
             '</div>'
+            
         );
-        
         $("#div_"+clickAgregarNumber).show('fast')
 
     });

@@ -171,8 +171,4 @@ class CountryController extends Controller
 		}
 	}
         
-        public function actionDynamicCountry()
-        {
-            echo CJSON::encode(Country::model()->findAll());
-        }
 }
