@@ -227,7 +227,7 @@ class TicketController extends Controller
              $maxID = Yii::app()->db->createCommand("SELECT MAX(id) AS maximo FROM ticket")->queryRow();
              $max = $maxID['maximo'] + 1;
              
-             $ticketNumber = date('Ymd') . '-' . $max . '-' . $modelTicket->id_failure;
+             $ticketNumber = date('Ymd') . '-' . $max . '-C' . $modelTicket->id_failure;
              $modelTicket->ticket_number= $ticketNumber;
              
              if($modelTicket->save()){
