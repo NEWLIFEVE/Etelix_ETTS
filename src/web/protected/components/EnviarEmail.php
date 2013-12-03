@@ -40,14 +40,14 @@ class EnviarEmail extends CApplicationComponent
             $mailer->IsHTML(true);
             $mailer->From='sinca.test@gmail.com';
 //            $mailer->AddReplyTo('sinca.test@gmail.com');
-//            $mailer->AddAddress('mark182182@gmail.com');
-            if($user!=null)
-            {
-                foreach ($user as $key => $value)
-                {
-                    $mailer->AddAddress($value);
-                }
-            }
+            $mailer->AddAddress($user);
+//            if($user!=null)
+//            {
+//                foreach ($user as $key => $value)
+//                {
+//                    $mailer->AddAddress($value);
+//                }
+//            }
             if($reply!=null)
             {
                 foreach ($reply as $key => $value)

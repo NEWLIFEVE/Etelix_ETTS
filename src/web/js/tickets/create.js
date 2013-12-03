@@ -202,6 +202,7 @@ $(document).on('ready', function(){
         
         // Pasando inputs de arreglo con una cadena
         var responseToArray = [];
+        var emailsArray = [];
         var testedNumbersArray = [];
         var countryArray = [];
         var dateArray = [];
@@ -223,7 +224,9 @@ $(document).on('ready', function(){
         
         for (i = 0; i < hourNumber.length; i++)
             hourArray.push(hourNumber[i].value);
-
+        
+        for (i = 0; i < responseTo.length; i++)
+            emailsArray.push(responseTo[i].text);
         /**
          *  Construyendo la tabla de tested number
          **/
@@ -337,7 +340,8 @@ $(document).on('ready', function(){
                    _country: countryArray,
                    _date: dateArray,
                    _hour: hourArray,
-                   description: $('#Ticket_description').val()
+                   description: $('#Ticket_description').val(),
+                   emails: emailsArray
                },
                success:function(data){
                    if (data == 'success') {

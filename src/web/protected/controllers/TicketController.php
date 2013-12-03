@@ -223,7 +223,14 @@ class TicketController extends Controller
              $modelTicket->machine_ip=Yii::app()->request->userHostAddress;
              $modelTicket->id_ticket=NULL;
              $modelTicket->hour=date('H:m:s');
-             $modelTicket->ticket_number="testingNumber01";
+             
+             $criteria=new CDbCriteria;
+             $criteria->select='max(id) AS maxColumn';
+             $row = $modelTicket->model()->find($criteria);
+             $maxID = $row['maxColumn'] + 1;
+             
+             $ticketNumber = date('Ymd') . '-' . $maxID . '-';
+             $modelTicket->ticket_number=  uniqid();
              
              
              
@@ -256,7 +263,9 @@ class TicketController extends Controller
                 $modelDescriptionTicket->save();
                 
                 $mailer = new EnviarEmail;
-                $callback = $mailer->enviar('Testing', $_POST['responseTo'], $_POST['responseTo'], 'ETTS TICKET TEST');
+                
+                for ($i = 0; $i < count($_POST['emails']); $i++)
+                    $mailer->enviar('Testing', $_POST['emails'][$i], '', 'ETTS TICKET TEST');
                 
                 echo 'success';
             } else {

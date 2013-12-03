@@ -5,8 +5,7 @@
 ?>
 <fieldset>
         <legend>Use this form to submit a ticket.</legend>
-<?php echo $form->errorSummary($model); ?>
-       
+<?php echo $form->errorSummary($model); ?>       
 <div class="input-control select block">
         Select the recipients emails that will received the ticket confirmation
 
@@ -17,7 +16,7 @@
             <?php endforeach; ?>
         </select>
 </div>
-
+<h1><?php $lastID = Ticket::model()->findBySql("SELECT MAX(id) FROM ticket"); print_r($lastID->id); ?></h1>
         
 <div class="input-control select block">
     Response to <small class="text-muted "><em>(required)</em></small>&nbsp;&nbsp;
