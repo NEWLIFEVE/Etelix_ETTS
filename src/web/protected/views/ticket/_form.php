@@ -82,10 +82,12 @@
 
 <div class="input-control select block">
         GMT <small class="text-muted "><em>(required)</em></small>
-        <?php echo $form->dropDownList($model,'idGmt',array()); ?>
+        <?php echo $form->dropDownList($model,'idGmt', CHtml::listData(Gmt::model()->findAll(), 'id', 'name'),  array('empty' => '')); ?>
         <?php echo $form->error($model,'idGmt'); ?>
 </div>
 
+<!--Preview tested number-->
+<div id="preview_tested_number"> 
 <div class="grid" >
         <div class="input-control text span3" >
             Tested numbers<small class="text-muted "><em> (required)</em></small>
@@ -123,6 +125,7 @@
 <div style="clear: left;"></div>
 
 <div class="container_agregar"></div>
+</div> <!--/.preview_tested_number-->
 
 
 <div class="input-control textarea" data-role="input-control">

@@ -28,11 +28,11 @@ class TicketController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
+				'actions'=>array('index'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('create','update','SaveTicket','view'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -209,4 +209,58 @@ class TicketController extends Controller
 			Yii::app()->end();
 		}
 	}
+        
+        public function actionSaveTicket()
+        {
+            $modelTicket = new Ticket;
+             $modelTicket->date=date('y-m-d');
+             $modelTicket->id_failure=$_POST['failure'];
+             $modelTicket->id_status=1;
+             $modelTicket->id_gmt=$_POST['gmt'];
+             $modelTicket->destination_ip=$_POST['destinationIp'];
+             $modelTicket->origination_ip=$_POST['originationIp'];
+             $modelTicket->prefix=$_POST['prefix'];
+             $modelTicket->machine_ip=Yii::app()->request->userHostAddress;
+             $modelTicket->id_ticket=NULL;
+             $modelTicket->hour=date('H:m:s');
+             $modelTicket->ticket_number="testingNumber01";
+             
+             
+             
+             if($modelTicket->save()){
+                // Guardando los mails
+                for ($i = 0; $i < count($_POST['responseTo']); $i++){
+                    $modelMailTicket = new MailTicket;
+                    $modelMailTicket->id_mail_user = $_POST['responseTo'][$i];
+                    $modelMailTicket->id_ticket = $modelTicket->id;
+                    $modelMailTicket->save();
+                } 
+                
+                // Guardando number
+                for ($i = 0; $i < count($_POST['testedNumber']); $i++){
+                    $modelTestedNumber = new TestedNumber;
+                    $modelTestedNumber->id_ticket = $modelTicket->id;
+                    $modelTestedNumber->id_country = $_POST['_country'][$i];
+                    $modelTestedNumber->numero = $_POST['testedNumber'][$i];
+                    $modelTestedNumber->date = $_POST['_date'][$i];
+                    $modelTestedNumber->hour = $_POST['_hour'][$i];
+                    $modelTestedNumber->save();
+                } 
+                
+                // Guardando descripcion
+                $modelDescriptionTicket = new DescriptionTicket(); 
+                $modelDescriptionTicket->id_ticket = $modelTicket->id;
+                $modelDescriptionTicket->description = $_POST['description'];
+                $modelDescriptionTicket->date = date('Y-m-d');
+                $modelDescriptionTicket->hour = date('H:m:s');
+                $modelDescriptionTicket->save();
+                
+                $mailer = new EnviarEmail;
+                $callback = $mailer->enviar('Testing', $_POST['responseTo'], $_POST['responseTo'], 'ETTS TICKET TEST');
+                
+                echo 'success';
+            } else {
+                echo 'error';
+            }
+        }
 }
