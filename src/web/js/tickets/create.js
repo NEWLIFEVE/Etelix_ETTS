@@ -329,6 +329,19 @@ $(document).on('ready', function(){
             $.ajax({
                type:'POST',
                url:'saveTicket',
+               beforeSend:function(){
+                   $.Dialog.close();
+                       
+                    $.Dialog({
+                         shadow: true,
+                         overlay: false,
+                         icon: '<span class="icon-rocket"></span>',
+                         title: 'Title',
+                         width: 500,
+                         padding: 10,
+                         content: '<center><h2>Wait a few seconds...<h2></center>'
+                   });
+               },
                data:{
                    responseTo: responseToArray,
                    failure:$('#Ticket_id_failure').val(),
@@ -354,7 +367,7 @@ $(document).on('ready', function(){
                             title: 'Title',
                             width: 500,
                             padding: 10,
-                            content: 'Success'
+                            content: '<center><h2>Success<h2></center>'
                       });
                    }
                }
