@@ -224,15 +224,11 @@ class TicketController extends Controller
              $modelTicket->id_ticket=NULL;
              $modelTicket->hour=date('H:m:s');
              
-             $criteria=new CDbCriteria;
-             $criteria->select='max(id) AS maxColumn';
-             $row = $modelTicket->model()->find($criteria);
-             $maxID = $row['maxColumn'] + 1;
+             $maxID = Yii::app()->db->createCommand("SELECT MAX(id) AS maximo FROM ticket")->queryRow();
+             $max = $maxID['maximo'] + 1;
              
-             $ticketNumber = date('Ymd') . '-' . $maxID . '-';
-             $modelTicket->ticket_number=  uniqid();
-             
-             
+             $ticketNumber = date('Ymd') . '-' . $max . '-' . $modelTicket->id_failure;
+             $modelTicket->ticket_number= $ticketNumber;
              
              if($modelTicket->save()){
                 // Guardando los mails

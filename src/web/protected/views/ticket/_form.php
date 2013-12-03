@@ -16,7 +16,6 @@
             <?php endforeach; ?>
         </select>
 </div>
-<h1><?php $lastID = Ticket::model()->findBySql("SELECT MAX(id) FROM ticket"); print_r($lastID->id); ?></h1>
         
 <div class="input-control select block">
     Response to <small class="text-muted "><em>(required)</em></small>&nbsp;&nbsp;
