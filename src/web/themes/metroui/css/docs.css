@@ -265,3 +265,7 @@ table#tabla_preview tr:last-child td:last-child {
     -webkit-border-radius: 0 0 6px 0;
     border-radius: 0 0 6px 0;
 }*/
+
+a#imprimir {
+    font-size: 22px;
+}
