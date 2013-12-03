@@ -49,7 +49,7 @@ return array(
 				'baseUrl'=>'http://coco.com/',
 
 				 // NO OLVIDES PONER EN FALSE TRAS INSTALAR
-				 'debug'=>true,
+				 'debug'=>false,
 				 'rbacSetupEnabled'=>true,
 				 'allowUserAlways'=>false,
 
@@ -112,6 +112,9 @@ return array(
 				'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
 			),
 		),
+                'mail' => array(
+                        'class' => "application.components.EnviarEmail",
+                ),
 		'db'=>array(
 			'connectionString' => 'sqlite:'.dirname(__FILE__).'/../data/testdrive.db',
 		),
