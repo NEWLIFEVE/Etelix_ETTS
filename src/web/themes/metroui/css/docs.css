@@ -161,6 +161,136 @@ div.input-control.select.block strong {
     margin-left: 4px;
 }
 
+
+/***************Gridview*********************/
+.grid-view-loading
+{
+	background:url(loading.gif) no-repeat !important;
+}
+
+.grid-view
+{
+	padding: 15px 0 !important;
+}
+
+.grid-view table.items
+{
+	background: white !important;
+	border-collapse: collapse !important;
+	width: 100% !important;
+	border: 1px #D0E3EF solid !important;
+}
+
+.grid-view table.items th, .grid-view table.items td
+{
+	font-size: 0.9em !important;
+	border: 1px white solid !important;
+	padding: 0.3em !important;
+}
+
+.grid-view table.items th
+{
+	color: white !important;
+	background: url("bg.gif") repeat-x scroll left top white !important;
+	background-color: #16499a  !important;
+	text-align: center !important;
+}
+
+.grid-view table.items th a
+{
+	color: #EEE !important;
+	font-weight: bold !important;
+	text-decoration: none !important;
+}
+
+.grid-view table.items th a:hover
+{
+	color: #FFF !important;
+}
+
+.grid-view table.items th a.asc
+{
+	background:url(up.gif) right center no-repeat !important;
+	padding-right: 10px !important;
+}
+
+.grid-view table.items th a.desc
+{
+	background:url(down.gif) right center no-repeat !important;
+	padding-right: 10px !important;
+}
+
+.grid-view table.items tr.even
+{
+	background: #F8F8F8 !important;
+}
+
+.grid-view table.items tr.odd
+{
+	background: #F8F8F8 !important;
+}
+
+.grid-view table.items tr.selected
+{
+	background: #BCE774 !important;
+}
+
+.grid-view table.items tr:hover.selected
+{
+	background: #CCFF66 !important;
+}
+
+.grid-view table.items tbody tr:hover
+{
+	background: #E5F1F4 !important;
+}
+
+.grid-view .link-column img
+{
+	border: 0 !important;
+}
+
+.grid-view .button-column
+{
+	text-align: center !important;
+	width: 60px !important;
+}
+
+.grid-view .button-column img
+{
+	border: 0 !important;
+}
+
+.grid-view .checkbox-column
+{
+	width: 15px !important;
+}
+
+.grid-view .summary
+{
+	margin: 0 0 5px 0 !important;
+	text-align: right !important;
+}
+
+.grid-view .pager
+{
+	margin: 5px 0 0 0 !important;
+	text-align: right !important;
+}
+
+.grid-view .empty
+{
+	font-style: italic !important;
+}
+
+.grid-view .filters input,
+.grid-view .filters select
+{
+	width: 100% !important;
+	border: 1px solid #ccc !important;
+}
+/***************Gridview*********************/
+
 /***Preview****/
 #content_preview {
     width: 100% !important;
@@ -181,7 +311,7 @@ div.input-control.select.block strong {
 
 
 table#tabla_preview {
-    *border-collapse: collapse; /* IE7 and lower */
+    border-collapse: collapse; /* IE7 and lower */
     border-spacing: 0;
     width: 100%;    
 }
@@ -265,6 +395,7 @@ table#tabla_preview tr:last-child td:last-child {
     -webkit-border-radius: 0 0 6px 0;
     border-radius: 0 0 6px 0;
 }*/
+
 
 a#imprimir {
     font-size: 22px;
