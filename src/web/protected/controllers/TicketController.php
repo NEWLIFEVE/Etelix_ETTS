@@ -213,7 +213,7 @@ class TicketController extends Controller
         public function actionSaveTicket()
         {
             $modelTicket = new Ticket;
-             $modelTicket->date=date('y-m-d');
+             $modelTicket->date=date('Y-m-d');
              $modelTicket->id_failure=$_POST['failure'];
              $modelTicket->id_status=1;
              $modelTicket->id_gmt=$_POST['gmt'];
