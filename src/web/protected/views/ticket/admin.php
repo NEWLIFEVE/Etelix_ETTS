@@ -42,10 +42,25 @@ $('.search-form form').submit(function(){
 	'dataProvider'=>$model->search(),
 	'filter'=>$model,
 	'columns'=>array(
-		'id',
+//		'id',
+		'ticket_number',
 //		'id_ticket',
-		'id_failure',
-		'id_status',
+//		'id_failure',
+             array(
+            'name'=>'idFailure',
+            'value'=>'$data->idFailure->name',
+            'type'=>'text',
+//            'filter'=>  Accionlog::getListAccionLog(),
+//            'htmlOptions'=>array(
+//                'style'=>'text-align: center',
+//                ),
+            ),
+//		'id_status',
+             array(
+            'name'=>'idStatus',
+            'value'=>'$data->idStatus->name',
+            'type'=>'text',
+            ),
 		'origination_ip',
 		'destination_ip',
 		/*
