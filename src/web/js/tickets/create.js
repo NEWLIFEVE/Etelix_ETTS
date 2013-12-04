@@ -319,7 +319,7 @@ $(document).on('ready', function(){
                 
                 '</div>' +
                 '<div id="preview_buttons">' +
-                    '<button  class="primary large" id="save_ticket">Send Ticket Information</button>' +
+                    '<button  class="primary large" id="save_ticket">Send Ticket Information</button> <a  href="#" id="imprimir"><i class="icon-printer on-right"></i></a>' +
                 '</div>'
         });
         $('#save_ticket').on('click',  function(){
@@ -336,7 +336,7 @@ $(document).on('ready', function(){
                          shadow: true,
                          overlay: false,
                          icon: '<span class="icon-rocket"></span>',
-                         title: 'Title',
+                         title: 'Sending email',
                          width: 500,
                          padding: 10,
                          content: '<center><h2>Wait a few seconds...<h2></center>'
@@ -364,7 +364,7 @@ $(document).on('ready', function(){
                             shadow: true,
                             overlay: false,
                             icon: '<span class="icon-rocket"></span>',
-                            title: 'Title',
+                            title: 'Operation complete',
                             width: 500,
                             padding: 10,
                             content: '<center><h2>Success<h2></center>'
