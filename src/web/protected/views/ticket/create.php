@@ -35,7 +35,8 @@ $form=$this->beginWidget('CActiveForm', array(
     
     <h2>Attach File <i class="icon-file on-right on-left"></i></h2>
     <div class="example" style="padding: 0px; border: none;">
-        <?php $this->widget('ext.EAjaxUpload.EAjaxUpload',
+        <?php 
+        $this->widget('ext.EAjaxUpload.EAjaxUpload',
             array(
                     'id'=>'uploadFile',
                     'config'=>array(
@@ -43,8 +44,10 @@ $form=$this->beginWidget('CActiveForm', array(
                            'allowedExtensions'=>array('pdf', 'gif', 'jpeg', 'png', 'jpg', 'xlsx', 'xls', 'txt'),
                            'sizeLimit'=>10*1024*1024,// maximum file size in bytes
                            'minSizeLimit'=>512,// minimum file size in bytes
-                           'onComplete'=>"js:function(id, fileName, responseJSON){ alert(fileName); }",
-                           /*'messages'=>array(
+                           'onComplete'=>"js:function(id, fileName, responseJSON){ $('#content_attached_file').append('<input type=\'hidden\' name=\'attachFile[]\' value=\''+fileName+'\'>'); }",
+                            
+                           /*'onComplete'=>"js:function(id, fileName, responseJSON){ alert(fileName); }",
+                            'messages'=>array(    
                                              'typeError'=>"{file} has invalid extension. Only {extensions} are allowed.",
                                              'sizeError'=>"{file} is too large, maximum file size is {sizeLimit}.",
                                              'minSizeError'=>"{file} is too small, minimum file size is {minSizeLimit}.",

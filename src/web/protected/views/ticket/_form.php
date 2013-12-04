@@ -3,6 +3,7 @@
 /* @var $model Tickets */
 /* @var $form CActiveForm */
 ?>
+<div id="content_attached_file"></div>
 <fieldset>
         <legend>Use this form to submit a ticket.</legend>
 <?php echo $form->errorSummary($model); ?>       

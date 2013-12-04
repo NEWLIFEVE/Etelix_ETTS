@@ -199,6 +199,7 @@ $(document).on('ready', function(){
         var country = $('[name="Ticket[country][]"]');
         var dateNumber = $('[name="Ticket[date_number][]"]');
         var hourNumber = $('[name="Ticket[hour_number][]"]');
+        var attachFile = $('[name="attachFile[]"]');
         
         // Pasando inputs de arreglo con una cadena
         var responseToArray = [];
@@ -207,6 +208,7 @@ $(document).on('ready', function(){
         var countryArray = [];
         var dateArray = [];
         var hourArray = [];
+        var attachFileArray = [];
         
         var i = 0;
         
@@ -227,6 +229,9 @@ $(document).on('ready', function(){
         
         for (i = 0; i < responseTo.length; i++)
             emailsArray.push(responseTo[i].text);
+        
+        for (i = 0; i < attachFile.length; i++)
+            attachFileArray.push(attachFile[i].value);
         /**
          *  Construyendo la tabla de tested number
          **/
@@ -323,6 +328,7 @@ $(document).on('ready', function(){
                 '</div>'
         });
         $('#save_ticket').on('click',  function(){
+            
             var _originationIp = $('#oip1').val() + '.' + $('#oip2').val() + '.' + $('#oip3').val() + '.' + $('#oip4').val();
             var _destinationIp = $('#dip1').val() + '.' + $('#dip2').val() + '.' + $('#dip3').val() + '.' + $('#dip4').val();
             
@@ -354,7 +360,8 @@ $(document).on('ready', function(){
                    _date: dateArray,
                    _hour: hourArray,
                    description: $('#Ticket_description').val(),
-                   emails: emailsArray
+                   emails: emailsArray,
+                   _attachFile: attachFileArray
                },
                success:function(data){
                    if (data == 'success') {
@@ -383,7 +390,6 @@ function appendResponseTo()
 {
     $('#Ticket_mail option').clone().appendTo($('#preview_response_to'));
 }
-
 
 
 /***************************************************************************

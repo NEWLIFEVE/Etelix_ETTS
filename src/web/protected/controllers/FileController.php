@@ -179,7 +179,7 @@ class FileController extends Controller
             $allowedExtensions = array('pdf', 'gif', 'jpeg', 'png', 'jpg', 'xlsx', 'xls', 'txt'); 
             $sizeLimit = 10 * 1024 * 1024; // maximum file size in bytes
             $uploader = new qqFileUploader($allowedExtensions, $sizeLimit);
-            $result = $uploader->handleUpload($folder);
+            $result = $uploader->handleUpload($folder, false);
             $return = htmlspecialchars(json_encode($result), ENT_NOQUOTES);
 
             $fileSize = filesize($folder . $result['filename']); //GETTING FILE SIZE

@@ -248,7 +248,20 @@ class TicketController extends Controller
                     $modelTestedNumber->date = $_POST['_date'][$i];
                     $modelTestedNumber->hour = $_POST['_hour'][$i];
                     $modelTestedNumber->save();
-                } 
+                }
+                
+                if (isset($_POST['_attachFile']) && count($_POST['_attachFile'])) {
+                    // Guardando Attach File
+                    for ($i = 0; $i < count($_POST['_attachFile']); $i++){
+                        $modelAttachFile = new File;
+                        $modelAttachFile->id_ticket = $modelTicket->id;
+                        $modelAttachFile->saved_name = $_POST['_attachFile'][$i];
+                        $modelAttachFile->real_name = $_POST['_attachFile'][$i];
+                        $modelAttachFile->size = 2.1;
+                        $modelAttachFile->rute = 'uploads/' . $_POST['_attachFile'][$i] . '/';
+                        $modelAttachFile->save();
+                    }
+                }
                 
                 // Guardando descripcion
                 $modelDescriptionTicket = new DescriptionTicket(); 
