@@ -331,6 +331,7 @@ qq.FileUploaderBasic.prototype = {
             onComplete: function(id, fileName, result){
                 self._onComplete(id, fileName, result);
                 self._options.onComplete(id, fileName, result);
+                
             },
             onCancel: function(id, fileName){
                 self._onCancel(id, fileName);

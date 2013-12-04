@@ -137,3 +137,4 @@
 <?php echo CHtml::submitButton($model->isNewRecord ? 'Preview Ticket' : 'Save', array('class' => 'primary large', 'name'=>'preview')); ?>
 
 </fieldset>
+

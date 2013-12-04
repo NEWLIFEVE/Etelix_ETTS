@@ -23,6 +23,7 @@ $form=$this->beginWidget('CActiveForm', array(
         'htmlOptions' => array('enctype' => 'multipart/form-data'),
 )); ?>
 
+
 <div class="span9">
     <h2>Ticket Information</h2>
     <div class="example">
@@ -42,8 +43,8 @@ $form=$this->beginWidget('CActiveForm', array(
                            'allowedExtensions'=>array('pdf', 'gif', 'jpeg', 'png', 'jpg', 'xlsx', 'xls', 'txt'),
                            'sizeLimit'=>10*1024*1024,// maximum file size in bytes
                            'minSizeLimit'=>512,// minimum file size in bytes
-                           /*'onComplete'=>"js:function(id, fileName, responseJSON){ alert(fileName); }",
-                           'messages'=>array(
+                           'onComplete'=>"js:function(id, fileName, responseJSON){ alert(fileName); }",
+                           /*'messages'=>array(
                                              'typeError'=>"{file} has invalid extension. Only {extensions} are allowed.",
                                              'sizeError'=>"{file} is too large, maximum file size is {sizeLimit}.",
                                              'minSizeError'=>"{file} is too small, minimum file size is {minSizeLimit}.",

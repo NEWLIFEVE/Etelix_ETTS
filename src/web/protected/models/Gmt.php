@@ -6,7 +6,9 @@
  * The followings are the available columns in table 'gmt':
  * @property integer $id
  * @property string $name
- *
+ * @property string $description
+ * @property string $relative
+ * 
  * The followings are the available model relations:
  * @property Ticket[] $tickets
  */
@@ -65,6 +67,8 @@ class Gmt extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'name' => 'Name',
+                        'description' => 'Description',
+                        'relative' => 'Relative'
 		);
 	}
 
