@@ -395,11 +395,15 @@ table#tabla_preview tr:last-child td:last-child {
 }*/
 
 
+
 a#imprimir {
     font-size: 22px;
 }
 
 #originationIp, #destinationIp {
-    width: 0px; 
+    width: 0px;
+    padding: 0;
+    margin: 0;
+    height: 0;
     visibility: hidden;
 }

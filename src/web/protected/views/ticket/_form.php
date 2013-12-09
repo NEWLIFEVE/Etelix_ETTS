@@ -50,20 +50,20 @@
         <?php echo $form->error($model,'id_failure'); ?>
 </div>
 
-        <div class="_label">Origination IP <!--<input type="text" id="originationIp" class="validate[required]">--> <small class="text-muted "><em>(Customer IP)(required)</em></small><span class="margen_17px"></span>Destination IP <!--<input type="text" value="sssssssssssssssss" id="destinationIp" class="validate[required]">--><small class="text-muted "><em>(Etelix IP)(required)</em></small></div>
+        <div class="_label">Origination IP<input type="text" id="originationIp" class="validate[required,custom[ipv4]]"><small class="text-muted "><em>(Customer IP)(required)</em></small><span class="margen_17px"></span>Destination IP<input type="text" id="destinationIp" class="validate[required,custom[ipv4]]"><small class="text-muted "><em>(Etelix IP)(required)</em></small></div>
 <div class="input-control text block" data-role="input-control">
 
-    <input type="text" class="_ip validate[required,custom[integer]]" id="oip1" name="oip1" maxlength="3"> 
-    <input type="text" class="_ip validate[required,custom[integer]]" id="oip2" maxlength="3"> 
-    <input type="text" class="_ip validate[required,custom[integer]]" id="oip3" maxlength="3"> 
-    <input type="text" class="_ip validate[required,custom[integer]]" id="oip4" maxlength="3">
+    <input type="text" class="_ip validate[custom[integer]]" id="oip1" name="oip1" maxlength="3"> 
+    <input type="text" class="_ip validate[custom[integer]]" id="oip2" maxlength="3"> 
+    <input type="text" class="_ip validate[custom[integer]]" id="oip3" maxlength="3"> 
+    <input type="text" class="_ip validate[custom[integer]]" id="oip4" maxlength="3">
     
     <span class="margen_22px"></span>
     
-    <input type="text" class="_ip validate[required,custom[integer]]" id="dip1" maxlength="3"> 
-    <input type="text" class="_ip validate[required,custom[integer]]" id="dip2" maxlength="3"> 
-    <input type="text" class="_ip validate[required,custom[integer]]" id="dip3" maxlength="3"> 
-    <input type="text" class="_ip validate[required,custom[integer]]" id="dip4" maxlength="3">
+    <input type="text" class="_ip validate[custom[integer]]" id="dip1" maxlength="3"> 
+    <input type="text" class="_ip validate[custom[integer]]" id="dip2" maxlength="3"> 
+    <input type="text" class="_ip validate[custom[integer]]" id="dip3" maxlength="3"> 
+    <input type="text" class="_ip validate[custom[integer]]" id="dip4" maxlength="3">
 </div>
 
 
@@ -73,7 +73,7 @@
         <?php echo $form->error($model,'prefix'); ?>
 </div>
 
-<div class="grid" >
+<div class="grid">
     <div class="row" id="separador-prefijo"></div>
 </div>
 

@@ -164,7 +164,7 @@ $(document).on('ready', function(){
         country.children().children('br').remove();
 
         $('.container_agregar').append(
-            '<div id="div_'+clickAgregarNumber+'" style="display:none;">'+
+            '<div id="div_'+clickAgregarNumber+'" style="display:none">'+
                 '<div class="input-control text span3">' +
                     '<input type="text" class="validate[required]" name="Ticket[tested_numbers][]" placeholder="Without prefix" >' +
                 '</div>' +
@@ -182,7 +182,7 @@ $(document).on('ready', function(){
             '</div>'
             
         );
-        $("#div_"+clickAgregarNumber).show('fast')
+        $("#div_"+clickAgregarNumber).fadeIn('fast');
 
     });
         
@@ -192,7 +192,7 @@ $(document).on('ready', function(){
      * 
      ***************************************************************************/
     $(document).on('click', '._cancelar', function(){
-        $(this).parent('div').hide('fast', function(){
+        $(this).parent('div').fadeOut('fast', function(){
             $(this).remove();
         });
     });
@@ -203,9 +203,23 @@ $(document).on('ready', function(){
     *  VALIDACIONES
     * 
     ****************************************************************************/
+   var _originationIp = $('#oip1').val() + '.' + $('#oip2').val() + '.' + $('#oip3').val() + '.' + $('#oip4').val();
+   
+   
+   $(document).on('click', 'input[name="preview"]', function(){
+       var originationIP = $('#oip1').val() + '.' + $('#oip2').val() + '.' + $('#oip3').val() + '.' + $('#oip4').val();
+       var destinationIP = $('#dip1').val() + '.' + $('#dip2').val() + '.' + $('#dip3').val() + '.' + $('#dip4').val();
+       
+       $('#originationIp ').val(originationIP); 
+       $('#destinationIp').val(destinationIP);
+      
+   });
+   
+   
     $("#ticket-form").validationEngine('attach', 
     {
         autoHidePrompt:true,
+//        promptPosition:'left',
         onValidationComplete:function(form, status){
             
          if (status == true) {           
