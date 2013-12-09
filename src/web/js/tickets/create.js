@@ -43,23 +43,27 @@ $(document).on('ready', function(){
      *
      **************************************************************************/
     $(document).on('click', '.btn-agregar-correo', function(){
-        
-       $.ajax({
-          url:  '/Mail/SetMail',
-          type: 'post',
-          data:{mail: $('#new_mail').val()},
-          success: function(data){
-              if (data == 'ok') {
-                  $('#new_mail').val('');
-                  getMailUser();
-                  setTimeout('setResponseTo()', 1000);
-              } else if(data == 'tope_alcanzado') {
-                  alert('Only five emails allowed')
-              } else if (data == 'no') {
-                  alert('Error')
-              }
-          }
-       });
+         var ok = true;
+         if (!$('#new_mail').val()) {
+             alert(12)
+         }
+         
+//       $.ajax({
+//          url:  '/Mail/SetMail',
+//          type: 'post',
+//          data:{mail: $('#new_mail').val()},
+//          success: function(data){
+//              if (data == 'ok') {
+//                  $('#new_mail').val('');
+//                  getMailUser();
+//                  setTimeout('setResponseTo()', 1000);
+//              } else if(data == 'tope_alcanzado') {
+//                  alert('Only five emails allowed')
+//              } else if (data == 'no') {
+//                  alert('Error')
+//              }
+//          }
+//       });
     });
     
     /***************************************************************************
