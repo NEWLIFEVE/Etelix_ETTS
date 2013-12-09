@@ -20,7 +20,7 @@ $form=$this->beginWidget('CActiveForm', array(
 	// There is a call to performAjaxValidation() commented in generated controller code.
 	// See class documentation of CActiveForm for details on this.
 	'enableAjaxValidation'=>false,
-        'htmlOptions' => array('enctype' => 'multipart/form-data'),
+        'htmlOptions' => array('enctype' => 'multipart/form-data', 'onsubmit' => 'return false'),
 )); ?>
 
 
@@ -44,7 +44,7 @@ $form=$this->beginWidget('CActiveForm', array(
                            'allowedExtensions'=>array('pdf', 'gif', 'jpeg', 'png', 'jpg', 'xlsx', 'xls', 'txt'),
                            'sizeLimit'=>10*1024*1024,// maximum file size in bytes
                            'minSizeLimit'=>512,// minimum file size in bytes
-                           'onComplete'=>"js:function(id, fileName, responseJSON){ $('#content_attached_file').append('<input type=\'hidden\' name=\'attachFile[]\' value=\''+fileName+'\'>'); }",
+                           'onComplete'=>"js:function(id, fileName, responseJSON){ $('#content_attached_file').append('<input type=\'hidden\' name=\'attachFile[]\' value=\''+fileName+'\'> <input type=\'hidden\' name=\'attachFileSave[]\' value=\''+responseJSON.filename+'\'> <input type=\'hidden\' name=\'attachFileSize[]\' value=\''+responseJSON.size+'\'>'); }",
                             
                            /*'onComplete'=>"js:function(id, fileName, responseJSON){ alert(fileName); }",
                             'messages'=>array(    
@@ -62,10 +62,12 @@ $form=$this->beginWidget('CActiveForm', array(
 
 <?php $this->endWidget(); ?>
 
+<?php Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl . '/css/validationEngine.jquery.css'); ?>
 <?php Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl . '/css/jquery.timeentry.css'); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->theme->baseUrl . '/js/jquery/jquery.timeentry.min.js',CClientScript::POS_END); ?>
+<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/plugins/jquery/jquery.validationEngine-es.js',CClientScript::POS_END); ?>
+<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/plugins/jquery/jquery.validationEngine.js',CClientScript::POS_END); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/create.js',CClientScript::POS_END); ?>
-
 
 <?php //******************OLD-ONE**************************/
 /* @var $this TicketController */

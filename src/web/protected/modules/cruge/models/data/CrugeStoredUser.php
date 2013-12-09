@@ -266,8 +266,9 @@ class CrugeStoredUser extends CActiveRecord implements ICrugeStoredUser
             ,
                 'message' => CrugeTranslator::t('logon', 'Invalid username')
             ),
-            array('username,email,id_carrier', 'required'),
+            array('username,email', 'required'),
             array('newPassword', 'safe', 'on' => 'update'),
+            array('id_carrier', 'safe', 'on' => 'insert'),
             array('newPassword', 'required', 'on' => 'insert, manualcreate'),
             array('newPassword', 'length', 'min' => 6, 'max' => 20),
             array(

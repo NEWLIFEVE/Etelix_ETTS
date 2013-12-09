@@ -171,7 +171,7 @@ class FileController extends Controller
 		}
 	}
         
-                public function actionUpload() 
+        public function actionUpload() 
         {
             Yii::import("ext.EAjaxUpload.qqFileUploader");
 

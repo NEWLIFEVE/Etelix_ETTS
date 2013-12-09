@@ -13,7 +13,7 @@
  * @property string $date
  * @property string $machine_ip
  * @property string $hour
- * @property string $prefix
+ * @property integer $prefix
  * @property integer $id_gmt
  * @property string $ticket_number
  *
@@ -66,7 +66,7 @@ class Ticket extends CActiveRecord
 			array('id_failure, id_status, origination_ip, destination_ip, date, machine_ip', 'required'),
 			array('id_ticket, id_failure, id_status, id_gmt', 'numerical', 'integerOnly'=>true),
 			array('origination_ip, destination_ip, machine_ip', 'length', 'max'=>64),
-			array('prefix, ticket_number', 'length', 'max'=>50),
+			array('ticket_number', 'length', 'max'=>50),
 			array('hour', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
