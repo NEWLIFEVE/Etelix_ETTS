@@ -3613,7 +3613,7 @@ a {
 .metro .input-control.file {
   display: inline-block;
   cursor: pointer;
-  background-color: #fff;
+  /*background-color: #fff;*/
   outline: 0;
   height: 34px;
   position: relative;
