@@ -52,6 +52,7 @@ $(document).on('ready', function(){
                   $('#new_mail').val('');
                   getMailUser();
                   setTimeout('setResponseTo()', 1000);
+                  $('#Ticket_mail').removeClass('validate[required]');
               } else if(data == 'tope_alcanzado') {
                   alert('Only five emails allowed')
               } else if (data == 'no') {

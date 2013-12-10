@@ -228,8 +228,14 @@ class TicketController extends Controller
              
              $maxID = Yii::app()->db->createCommand("SELECT MAX(id) AS maximo FROM ticket")->queryRow();
              $max = $maxID['maximo'] + 1;
+             $typeUser = '';
+             if (Yii::app()->user->checkAccess('cliente')) $typeUser = '-C';
+             if (Yii::app()->user->checkAccess('interno')) $typeUser = '-I';
+             if (Yii::app()->user->checkAccess('proveedor')) $typeUser = '-P';
+             if (Yii::app()->user->checkAccess('admin')) $typeUser = '-A';
+//             if (Yii::app()->user->checkAccess('subadmin')) $typeUser = '-SA';
              
-             $ticketNumber = date('Ymd') . '-' . $max . '-C' . $modelTicket->id_failure;
+             $ticketNumber = date('Ymd') . '-' . $max . $typeUser . $modelTicket->id_failure;
              $modelTicket->ticket_number= $ticketNumber;
              
              if($modelTicket->save()){

@@ -56,6 +56,7 @@
                         
                         <?php if (Yii::app()->user->checkAccess('admin')): // Solo visible al superadmin ?>
                             <div class="element">
+                               
                                     <?php echo CHtml::link('<i class="icon-user on-right on-left"></i> Manage Users', '#', array('class' => 'dropdown-toggle')); ?>
                                     <?php $this->widget('zii.widgets.CMenu', array(
                                         'items'=>Yii::app()->user->ui->adminItems,
@@ -67,7 +68,7 @@
                                     )); ?>
                             </div>
                         <?php else: ?>
-                            <?php if (Yii::app()->user->checkAccess('subadmin')): // Solo visible al subadministrador ?>
+                            <?php if (Yii::app()->user->checkAccess('subadmin') && (!Yii::app()->user->checkAccess('interno') || !Yii::app()->user->checkAccess('cliente'))): // Solo visible al subadministrador ?>
                             <div class="element">
                                     <?php echo CHtml::link('<i class="icon-user on-right on-left"></i> Manage Users', '#', array('class' => 'dropdown-toggle')); ?>
                                     <?php $this->widget('zii.widgets.CMenu', array(
