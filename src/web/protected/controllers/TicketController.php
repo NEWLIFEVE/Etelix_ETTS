@@ -284,7 +284,7 @@ class TicketController extends Controller
                 
                 $cuerpo = 
                 '<div style="width:100%">
-                        <img src="'.Yii::app()->baseUrl.'/images/logo.jpg" height="100">
+                        <img src="http://deve.sacet.com.ve/images/logo.jpg" height="100"/>
                         <hr>
                         <div style="text-align:right">Ticket Confirmation<br>Ticket #: '.$ticketNumber.'</div>
                         <div>
