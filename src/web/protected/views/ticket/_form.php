@@ -29,7 +29,7 @@
     <a href="javascript:void(0)" id="add_all_email" >Add all emails</a>
     <div class="div-agregar_correo">
         <div class="input-control text span3"  data-role="input-control">
-            <input type="text" id="new_mail" placeholder="example@example.com" />
+            <input type="text" id="new_mail" class="validate[custom[email]]" name="new_mail" placeholder="example@example.com" />
         </div>
         
         <div class="input-control text span2">

@@ -228,8 +228,14 @@ class TicketController extends Controller
              
              $maxID = Yii::app()->db->createCommand("SELECT MAX(id) AS maximo FROM ticket")->queryRow();
              $max = $maxID['maximo'] + 1;
+             $typeUser = '';
+             if (Yii::app()->user->checkAccess('cliente')) $typeUser = '-C';
+             if (Yii::app()->user->checkAccess('interno')) $typeUser = '-I';
+             if (Yii::app()->user->checkAccess('proveedor')) $typeUser = '-P';
+             if (Yii::app()->user->checkAccess('admin')) $typeUser = '-A';
+//             if (Yii::app()->user->checkAccess('subadmin')) $typeUser = '-SA';
              
-             $ticketNumber = date('Ymd') . '-' . $max . '-C' . $modelTicket->id_failure;
+             $ticketNumber = date('Ymd') . '-' . $max . $typeUser . $modelTicket->id_failure;
              $modelTicket->ticket_number= $ticketNumber;
              
              if($modelTicket->save()){
@@ -275,7 +281,98 @@ class TicketController extends Controller
                 $modelDescriptionTicket->save();
                 
                 $mailer = new EnviarEmail;
-                $mailer->enviar('Testing', $_POST['emails'], '', 'ETTS TICKET TEST', $rutaAttachFile);
+                
+                $cuerpo = 
+                '<div style="width:100%">
+                        <img src="'.Yii::app()->baseUrl.'/images/logo.jpg" height="100">
+                        <hr>
+                        <div style="text-align:right">Ticket Confirmation<br>Ticket #: '.$ticketNumber.'</div>
+                        <div>
+                                <h2>Hello "'. Yii::app()->user->name .'"</h2>
+                                <p style="text-align:justify">
+                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                                        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                                        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                                        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                                </p>
+                        </div>
+                        <hr>
+                </div>
+                <h2>Ticket Details</h2>
+                <table style="border-spacing: 0; width:100%; border: solid #ccc 1px;">
+			<tr>
+			    <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc; padding: 5px 10px; text-align: left;">Response to</th>
+			</tr>
+			<tr>
+				<td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'. implode('<br>', $_POST['emails']) .'</td>
+			</tr>
+
+			<tr>
+			    <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Failure</th>
+			</tr>
+			<tr>
+				<td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$_POST['failureText'].'</td>
+			</tr>
+
+			<tr>
+			    <th colspan="1" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Origination IP</th>
+			    <th colspan="3" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Destination IP</th>
+			</tr>
+			<tr>
+				<td colspan="1" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$_POST['originationIp'].'</td>
+				<td colspan="3" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$_POST['destinationIp'].'</td>
+			</tr>
+
+			<tr>
+			    <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Prefix</th>
+			</tr>
+			<tr>
+				<td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$_POST['prefix'].'</td>
+			</tr>
+
+			<tr>
+			    <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">GMT</th>
+			</tr>
+			<tr>
+				<td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$_POST['gmtText'].'</td>
+			</tr>
+
+
+			<tr>
+			    <th style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Tested number</th>
+			    <th style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Country</th>
+			    <th style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Date</th>
+			    <th style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Hour</th>
+			</tr>
+			<tr>
+				<td style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'. implode('<br>', $_POST['testedNumber']) .'</td>
+				<td style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'. implode('<br>', $_POST['_countryText']) .'</td>
+				<td style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'. implode('<br>', $_POST['_date']) .'</td>
+				<td style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'. implode('<br>', $_POST['_hour']) .'</td>
+			</tr>
+
+			<tr>
+			    <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Description</th>
+			</tr>
+			<tr>
+                                <td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$_POST['description'].'</td>
+			</tr>
+		</table>
+                <div style="width:100%">
+		<p style="text-align:justify">
+			Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+			tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+			quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+			consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+			cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+			proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		</p>
+                </div>
+                ';
+                
+                $mailer->enviar($cuerpo, $_POST['emails'], '', 'ETTS TICKET TEST', $rutaAttachFile);
                 
                 echo 'success';
             } else {

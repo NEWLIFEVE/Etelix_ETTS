@@ -43,7 +43,6 @@ $(document).on('ready', function(){
      *
      **************************************************************************/
     $(document).on('click', '.btn-agregar-correo', function(){
-        
        $.ajax({
           url:  '/Mail/SetMail',
           type: 'post',
@@ -53,6 +52,7 @@ $(document).on('ready', function(){
                   $('#new_mail').val('');
                   getMailUser();
                   setTimeout('setResponseTo()', 1000);
+                  $('#Ticket_mail').removeClass('validate[required]');
               } else if(data == 'tope_alcanzado') {
                   alert('Only five emails allowed')
               } else if (data == 'no') {
@@ -236,7 +236,10 @@ $(document).on('ready', function(){
             var responseToArray = [];
             var emailsArray = [];
             var testedNumbersArray = [];
+            
             var countryArray = [];
+            var countryTextArray = [];
+            
             var dateArray = [];
             var hourArray = [];
             var attachFileArray = [];
@@ -253,6 +256,9 @@ $(document).on('ready', function(){
 
             for (i = 0; i < country.length; i++)
                 countryArray.push(country[i].value);
+            
+            for (i = 0; i < country.length; i++)
+                countryTextArray.push(country[i].options[country[i].selectedIndex].text);
 
             for (i = 0; i < dateNumber.length; i++)
                 dateArray.push(dateNumber[i].value);
@@ -286,19 +292,7 @@ $(document).on('ready', function(){
             tablaNumber = tablaNumber+'</tbody></table></div>';
 
             setTimeout('appendResponseTo()', 500);
-
-            $.Dialog({
-                shadow: true,
-                overlay: true,
-                flat:true,
-                icon: '<span class="icon-eye-2"></span>',
-                title: 'Preview Ticket',
-                width: 510,
-                height: 300,
-                padding: 0,
-                draggable: true,
-                content:
-                    '<div id="content_preview">' +
+            var ticketComplete = '<div id="content_preview">' +
                         '<div class="input-control select block">' +
                             'Response to' +
                             '<select multiple="multiple" disabled="disabled" id="preview_response_to">' +
@@ -359,15 +353,25 @@ $(document).on('ready', function(){
                                 'Description' +
                                 '<textarea disabled>'+$('#Ticket_description').val()+'</textarea>' +
                         '</div>'+
-
-
                     '</div>' +
                     '<div id="preview_buttons">' +
                         '<button  class="primary large" id="save_ticket">Send Ticket Information</button> <a  href="#" id="imprimir"><i class="icon-printer on-right"></i></a>' +
-                    '</div>'
+                    '</div>';
+                
+            $.Dialog({
+                shadow: true,
+                overlay: true,
+                flat:true,
+                icon: '<span class="icon-eye-2"></span>',
+                title: 'Preview Ticket',
+                width: 510,
+                height: 300,
+                padding: 0,
+                draggable: true,
+                content:ticketComplete
+                    
             });
             $('#save_ticket').on('click',  function(){
-
                 var _originationIp = $('#oip1').val() + '.' + $('#oip2').val() + '.' + $('#oip3').val() + '.' + $('#oip4').val();
                 var _destinationIp = $('#dip1').val() + '.' + $('#dip2').val() + '.' + $('#dip3').val() + '.' + $('#dip4').val();
 
@@ -390,19 +394,23 @@ $(document).on('ready', function(){
                    data:{
                        responseTo: responseToArray,
                        failure:$('#Ticket_id_failure').val(),
+                       failureText:$('#Ticket_id_failure option:selected').text(),
                        originationIp: _originationIp,
                        destinationIp: _destinationIp,
                        prefix: $('#Ticket_prefix').val(),
                        gmt: $('#Ticket_idGmt').val(),
+                       gmtText: $('#Ticket_idGmt option:selected').text(),
                        testedNumber: testedNumbersArray,
                        _country: countryArray,
+                       _countryText: countryTextArray,
                        _date: dateArray,
                        _hour: hourArray,
                        description: $('#Ticket_description').val(),
                        emails: emailsArray,
                        _attachFile: attachFileArray,
                        _attachFileSave: attachFileSaveArray,
-                       _attachFileSize: attachFileSizeArray
+                       _attachFileSize: attachFileSizeArray,
+                       _ticketComplete: ticketComplete
                    },
                    success:function(data){
                        if (data == 'success') {

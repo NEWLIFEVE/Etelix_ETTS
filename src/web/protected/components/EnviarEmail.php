@@ -30,15 +30,15 @@ class EnviarEmail extends CApplicationComponent
             $mailer=Yii::createComponent('application.extensions.mailer.EMailer');
             $mailer=new PHPMailer();
             $mailer->IsSMTP();
-            $mailer->Host='smtp.gmail.com';
-            $mailer->Port='587';
+            $mailer->Host='mail.etelix.com';
+            $mailer->Port='475';
             $mailer->SMTPSecure='tls';
-            $mailer->Username='sinca.test@gmail.com';
+            $mailer->Username='etts@etelix.com';
             $mailer->SMTPAuth=true;
-            $mailer->Password="sincatest";
+            $mailer->Password="3t3l1x.etts";
             $mailer->IsSMTP();
             $mailer->IsHTML(true);
-            $mailer->From='sinca.test@gmail.com';
+            $mailer->From='etts@etelix.com';
 //            $mailer->AddReplyTo('sinca.test@gmail.com');
 //            $mailer->AddAddress($user);
             if($user!=null)

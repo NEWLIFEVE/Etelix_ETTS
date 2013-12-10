@@ -333,6 +333,7 @@ class UiController extends Controller
     public function actionRegistration($datakey = '')
     {
 
+        
         $this->layout = CrugeUtil::config()->registrationLayout;
 
 
