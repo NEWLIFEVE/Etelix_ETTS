@@ -283,7 +283,7 @@ class TicketController extends Controller
                 $mailer = new EnviarEmail;
                 
                 $cuerpo = 
-                '<div style="width:60%">
+                '<div style="width:100%">
                         <img src="'.Yii::app()->baseUrl.'/images/logo.jpg" height="100">
                         <hr>
                         <div style="text-align:right">Ticket Confirmation<br>Ticket #: '.$ticketNumber.'</div>
@@ -301,7 +301,7 @@ class TicketController extends Controller
                         <hr>
                 </div>
                 <h2>Ticket Details</h2>
-                <table style="border-spacing: 0; width:60%; border: solid #ccc 1px;">
+                <table style="border-spacing: 0; width:100%; border: solid #ccc 1px;">
 			<tr>
 			    <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc; padding: 5px 10px; text-align: left;">Response to</th>
 			</tr>
@@ -360,7 +360,7 @@ class TicketController extends Controller
                                 <td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$_POST['description'].'</td>
 			</tr>
 		</table>
-                <div style="width:60%">
+                <div style="width:100%">
 		<p style="text-align:justify">
 			Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
 			tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
