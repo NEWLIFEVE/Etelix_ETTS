@@ -63,7 +63,7 @@ class TicketController extends Controller
 	public function actionCreate()
 	{
             
-            if (Yii::app()->user->checkAccess('cliente') || Yii::app()->user->checkAccess('subadmin')) { // Si el rol del usuario es cliente tendrá acceso al ticket information
+//            if (Yii::app()->user->checkAccess('cliente') || Yii::app()->user->checkAccess('subadmin')) { // Si el rol del usuario es cliente tendrá acceso al ticket information
 		$model=new Ticket;
                 /*Instancio los modelos donde se harán inserts*/
                 $modelTestedNumbers= new TestedNumber;
@@ -113,9 +113,9 @@ class TicketController extends Controller
 		$this->render('create',array(
 			'model'=>$model,
 		));
-            } else {
-                throw new CHttpException(401,'No Access');
-            }
+//            } else {
+//                throw new CHttpException(401,'No Access');
+//            }
 	}
 
 	/**
