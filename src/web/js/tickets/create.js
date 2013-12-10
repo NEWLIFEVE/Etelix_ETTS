@@ -48,20 +48,34 @@ $(document).on('ready', function(){
           type: 'post',
           data:{mail: $('#new_mail').val()},
           success: function(data){
-              
-//              if (data == 'existe')
-//                  alert(data)
-//              else 
-//                  alert(data)
               if (data == 'ok') {
                   $('#new_mail').val('');
                   getMailUser();
                   setTimeout('setResponseTo()', 1000);
                   $('#Ticket_mail').removeClass('validate[required]');
               } else if(data == 'tope_alcanzado') {
-                  alert('Only five emails allowed')
+                  
+                  
+                  $.Dialog({
+                             shadow: true,
+                             overlay: false,
+                             icon: '<span class="icon-rocket"></span>',
+                             title: 'Error',
+                             width: 500,
+                             padding: 10,
+                             content: '<center><h2>Only five emails allowed<h2></center>'
+                       });
+                  
               } else if (data == 'no') {
-                  alert('Error')
+                  $.Dialog({
+                             shadow: true,
+                             overlay: false,
+                             icon: '<span class="icon-rocket"></span>',
+                             title: 'Error',
+                             width: 500,
+                             padding: 10,
+                             content: '<center><h2>Error<h2></center>'
+                       });
               }
           }
        });
