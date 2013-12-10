@@ -3,6 +3,7 @@
 /* @var $model Tickets */
 /* @var $form CActiveForm */
 ?>
+<div id="content_attached_file"></div>
 <fieldset>
         <legend>Use this form to submit a ticket.</legend>
 <?php echo $form->errorSummary($model); ?>       
@@ -38,41 +39,41 @@
     <?php echo $form->ListBox(
                 $model,'mail[]', 
                 array(),  
-                array('multiple' => 'multiple')) ?>
+                array('multiple' => 'multiple', 'class' => 'validate[required]')) ?>
     <?php echo $form->error($model,'mail[]'); ?>
 </div>
 
 
 <div class="input-control select block">
         Failure<small class="text-muted "><em> (required)</em></small>
-        <?php echo $form->dropDownList($model,'id_failure', CHtml::listData(Failure::model()->findAll(), 'id', 'name'),  array('empty' => '')); ?>
+        <?php echo $form->dropDownList($model,'id_failure', CHtml::listData(Failure::model()->findAll(), 'id', 'name'),  array('empty' => '' ,'class' => 'validate[required]')); ?>
         <?php echo $form->error($model,'id_failure'); ?>
 </div>
 
-<div class="_label">Origination IP <small class="text-muted "><em>(Customer IP)(required)</em></small><span class="margen_17px"></span>DestinationIP  <small class="text-muted "><em>(Etelix IP)(required)</em></small></div>
+        <div class="_label">Origination IP<input type="text" id="originationIp" class="validate[required,custom[ipv4]]"><small class="text-muted "><em>(Customer IP)(required)</em></small><span class="margen_17px"></span>Destination IP<input type="text" id="destinationIp" class="validate[required,custom[ipv4]]"><small class="text-muted "><em>(Etelix IP)(required)</em></small></div>
 <div class="input-control text block" data-role="input-control">
 
-    <input type="text" class="_ip" id="oip1" maxlength="3"> 
-    <input type="text" class="_ip" id="oip2" maxlength="3"> 
-    <input type="text" class="_ip" id="oip3" maxlength="3"> 
-    <input type="text" class="_ip" id="oip4" maxlength="3">
+    <input type="text" class="_ip validate[custom[integer]]" id="oip1" name="oip1" maxlength="3"> 
+    <input type="text" class="_ip validate[custom[integer]]" id="oip2" maxlength="3"> 
+    <input type="text" class="_ip validate[custom[integer]]" id="oip3" maxlength="3"> 
+    <input type="text" class="_ip validate[custom[integer]]" id="oip4" maxlength="3">
     
     <span class="margen_22px"></span>
     
-    <input type="text" class="_ip" id="dip1" maxlength="3"> 
-    <input type="text" class="_ip" id="dip2" maxlength="3"> 
-    <input type="text" class="_ip" id="dip3" maxlength="3"> 
-    <input type="text" class="_ip" id="dip4" maxlength="3">
+    <input type="text" class="_ip validate[custom[integer]]" id="dip1" maxlength="3"> 
+    <input type="text" class="_ip validate[custom[integer]]" id="dip2" maxlength="3"> 
+    <input type="text" class="_ip validate[custom[integer]]" id="dip3" maxlength="3"> 
+    <input type="text" class="_ip validate[custom[integer]]" id="dip4" maxlength="3">
 </div>
 
 
 <div class="input-control text block" data-role="input-control">
         Prefix <small class="text-muted "><em>(required)</em></small>
-        <?php echo $form->textField($model,'prefix'); ?>
+        <?php echo $form->textField($model,'prefix', array('class' => 'validate[required,custom[integer]]')); ?>
         <?php echo $form->error($model,'prefix'); ?>
 </div>
 
-<div class="grid" >
+<div class="grid">
     <div class="row" id="separador-prefijo"></div>
 </div>
 
@@ -80,7 +81,7 @@
 
 <div class="input-control select block">
         GMT <small class="text-muted "><em>(required)</em></small>
-        <?php echo $form->dropDownList($model,'idGmt', CHtml::listData(Gmt::model()->findAll(), 'id', 'name'),  array('empty' => '')); ?>
+        <?php echo $form->dropDownList($model,'idGmt', CHtml::listData(Gmt::model()->findAll(), 'id', 'relative'),  array('empty' => '', 'class' => 'validate[required]')); ?>
         <?php echo $form->error($model,'idGmt'); ?>
 </div>
 
@@ -89,7 +90,7 @@
 <div class="grid" >
         <div class="input-control text span3" >
             Tested numbers<small class="text-muted "><em> (required)</em></small>
-            <?php echo $form->textField($model,'tested_numbers[]',array('placeholder' => 'Without prefix')); ?>
+            <?php echo $form->textField($model,'tested_numbers[]',array('placeholder' => 'Without prefix', 'class' => 'validate[required]')); ?>
             <?php echo $form->error($model,'tested_numbers[]'); ?>
         </div>
 
@@ -103,7 +104,7 @@
 
         <div class="input-control text span2 margen-number fecha_div">
             <br>
-            <?php echo $form->textField($model,'date_number[]',array('placeholder' => 'Date', 'class' => 'fecha')); ?>
+            <?php echo $form->textField($model,'date_number[]',array('placeholder' => 'Date', 'class' => 'fecha', 'readonly' => 'readonly')); ?>
             <?php echo $form->error($model,'date_number[]'); ?>
         </div>
 
@@ -128,7 +129,7 @@
 
 <div class="input-control textarea" data-role="input-control">
     <label>
-        <?php echo $form->textArea($model,'description',array('placeholder' => 'Description (required)')); ?>
+        <?php echo $form->textArea($model,'description',array('placeholder' => 'Description (required)', 'class' => 'validate[required]')); ?>
         <?php echo $form->error($model,'description'); ?>
     </label>
 </div>
@@ -137,3 +138,4 @@
 <?php echo CHtml::submitButton($model->isNewRecord ? 'Preview Ticket' : 'Save', array('class' => 'primary large', 'name'=>'preview')); ?>
 
 </fieldset>
+

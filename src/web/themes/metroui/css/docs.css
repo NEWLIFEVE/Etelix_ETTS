@@ -294,7 +294,7 @@ div.input-control.select.block strong {
 /***Preview****/
 #content_preview {
     width: 100% !important;
-    height: 450px;
+    height: 420px !important;
     overflow: auto;
     width:152px;
     overflow-y:scroll;
@@ -307,8 +307,6 @@ div.input-control.select.block strong {
     padding-top: 5px;
     border-top: 1px solid silver;
 }
-
-
 
 table#tabla_preview {
     border-collapse: collapse; /* IE7 and lower */
@@ -397,6 +395,15 @@ table#tabla_preview tr:last-child td:last-child {
 }*/
 
 
+
 a#imprimir {
     font-size: 22px;
+}
+
+#originationIp, #destinationIp {
+    width: 0px;
+    padding: 0;
+    margin: 0;
+    height: 0;
+    visibility: hidden;
 }

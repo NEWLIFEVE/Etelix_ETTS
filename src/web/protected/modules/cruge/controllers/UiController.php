@@ -55,6 +55,7 @@ class UiController extends Controller
             'fieldsadmincreate',
             'fieldsadminupdate',
             'fieldsadmindelete',
+//            'systmenupdate',
             //___________________________________________________
             'login',
             'logout',
@@ -396,9 +397,11 @@ class UiController extends Controller
                 if (Yii::app()->user->um->save($model, 'insert')) {
                     
                     // UPDATE A LA TABLA cruge_user CON EL id DEL CARRIER
-                    Yii::app()->db->createCommand(
-                            "UPDATE cruge_user SET id_carrier = ".$_POST['CrugeStoredUser']['id_carrier']." 
-                            WHERE iduser = ".$model->primaryKey." ")->execute();
+                    if (isset($_POST['CrugeStoredUser']['id_carrier'])) {
+                        Yii::app()->db->createCommand(
+                                "UPDATE cruge_user SET id_carrier = ".$_POST['CrugeStoredUser']['id_carrier']." 
+                                WHERE iduser = ".$model->primaryKey." ")->execute();
+                    }
                     
                     $this->onNewUser($model, $newPwd);
 

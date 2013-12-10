@@ -213,6 +213,8 @@ class TicketController extends Controller
         public function actionSaveTicket()
         {
             $modelTicket = new Ticket;
+            $rutaAttachFile = array();
+            
              $modelTicket->date=date('Y-m-d');
              $modelTicket->id_failure=$_POST['failure'];
              $modelTicket->id_status=1;
@@ -248,7 +250,21 @@ class TicketController extends Controller
                     $modelTestedNumber->date = $_POST['_date'][$i];
                     $modelTestedNumber->hour = $_POST['_hour'][$i];
                     $modelTestedNumber->save();
-                } 
+                }
+                
+                if (isset($_POST['_attachFile']) && count($_POST['_attachFile'])) { // Se verifica si se envia por post
+                    // Guardando Attach File
+                    for ($i = 0; $i < count($_POST['_attachFile']); $i++){
+                        $modelAttachFile = new File;
+                        $modelAttachFile->id_ticket = $modelTicket->id;
+                        $modelAttachFile->saved_name = $_POST['_attachFileSave'][$i];
+                        $modelAttachFile->real_name = $_POST['_attachFile'][$i];
+                        $modelAttachFile->size = $_POST['_attachFileSize'][$i];
+                        $modelAttachFile->rute = 'uploads/' . $_POST['_attachFileSave'][$i];
+                        $rutaAttachFile[] = $modelAttachFile->rute;
+                        $modelAttachFile->save();
+                    }
+                }
                 
                 // Guardando descripcion
                 $modelDescriptionTicket = new DescriptionTicket(); 
@@ -259,9 +275,7 @@ class TicketController extends Controller
                 $modelDescriptionTicket->save();
                 
                 $mailer = new EnviarEmail;
-                
-                for ($i = 0; $i < count($_POST['emails']); $i++)
-                    $mailer->enviar('Testing', $_POST['emails'][$i], '', 'ETTS TICKET TEST');
+                $mailer->enviar('Testing', $_POST['emails'], '', 'ETTS TICKET TEST', $rutaAttachFile);
                 
                 echo 'success';
             } else {

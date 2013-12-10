@@ -40,14 +40,14 @@ class EnviarEmail extends CApplicationComponent
             $mailer->IsHTML(true);
             $mailer->From='sinca.test@gmail.com';
 //            $mailer->AddReplyTo('sinca.test@gmail.com');
-            $mailer->AddAddress($user);
-//            if($user!=null)
-//            {
-//                foreach ($user as $key => $value)
-//                {
-//                    $mailer->AddAddress($value);
-//                }
-//            }
+//            $mailer->AddAddress($user);
+            if($user!=null)
+            {
+                foreach ($user as $key => $value)
+                {
+                    $mailer->AddAddress($value);
+                }
+            }
             if($reply!=null)
             {
                 foreach ($reply as $key => $value)
@@ -65,8 +65,12 @@ class EnviarEmail extends CApplicationComponent
             $mailer->FromName='ETTS';
             $mailer->CharSet='UTF-8';
             $mailer->Subject=Yii::t('', $asunto);
-            if ($ruta!= null){
-            $mailer->AddAttachment($ruta); //Archivo adjunto
+            
+            if ($ruta!= null){ 
+                foreach ($ruta as $key)
+                {
+                    $mailer->AddAttachment($key); //Archivo adjunto
+                }
             }
             $message=$html;
             $mailer->Body=$message;
