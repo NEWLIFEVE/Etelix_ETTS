@@ -34,6 +34,7 @@ class MailUser extends CActiveRecord
 	}
         
         public $mail;
+        public $mailcount;
 	
         /**
 	 * @return array validation rules for model attributes.
@@ -106,6 +107,15 @@ class MailUser extends CActiveRecord
                 echo CJSON::encode(Mail::model()->findAllBySql("select mu.id as id, m.mail as mail " .
                                                 "from mail m, mail_user mu " .
                                                 "where mu.id_user = $user and mu.id_mail = m.id"));
+            }
+        }
+        
+       public static function getCountMail($user){
+            $count =self::model()->findBySql("SELECT COUNT(id_user) AS mailcount FROM mail_user WHERE id_user = $user ");
+            if($count->mailcount < 5){
+                return TRUE;
+            }else{
+                return FALSE;
             }
         }
 }

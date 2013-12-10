@@ -48,6 +48,11 @@ $(document).on('ready', function(){
           type: 'post',
           data:{mail: $('#new_mail').val()},
           success: function(data){
+              
+//              if (data == 'existe')
+//                  alert(data)
+//              else 
+//                  alert(data)
               if (data == 'ok') {
                   $('#new_mail').val('');
                   getMailUser();
@@ -219,7 +224,6 @@ $(document).on('ready', function(){
     $("#ticket-form").validationEngine('attach', 
     {
         autoHidePrompt:true,
-//        promptPosition:'left',
         onValidationComplete:function(form, status){
             
          if (status == true) {           
