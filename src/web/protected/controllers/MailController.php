@@ -147,32 +147,32 @@ class MailController extends Controller
         
         public function actionSetMail()
         {
-            $model=new Mail();
-            $model->mail = $_POST['mail'];
-            $usuario_id = Yii::app()->user->id;
-            
-            $topeMail = Yii::app()->db->createCommand("SELECT COUNT(id_user) AS conteo FROM mail_user WHERE id_user = $usuario_id ");
-            $row = $topeMail->queryRow();
-            $bandera = $row['conteo'];
-            
-            if ($bandera < 5) {
-                if($model->save()) {
+            $model = new Mail;
+            $modelMailUser = new MailUser;
 
-                    $mail_id = $model->primaryKey;
-
-                    $sql = "INSERT INTO mail_user(id_user, id_mail) VALUES($usuario_id, $mail_id)";
-                    $comando = Yii::app()->db->createCommand($sql);
-                    $control = $comando->execute();
-
-                    if ($control > 0)
-                        echo 'ok';
-                    else
-                        echo 'no';
+            if ($modelMailUser::getCountMail(Yii::app()->user->id)) {
+                $existeMail = $model->find("mail=:mail", array(":mail" => $_POST['mail']));
+                
+                if ($existeMail != null) {
+                    $modelMailUser->id_mail = $existeMail->id;
+                    $modelMailUser->id_user = Yii::app()->user->id;
+                    if($modelMailUser->save())
+                            echo 'ok';
+                        else
+                            echo 'no';
                 } else {
-                    echo 'no';
+                    $model->mail = $_POST['mail'];
+                    if ($model->save()) {
+                        $modelMailUser->id_mail = $model->id;
+                        $modelMailUser->id_user = Yii::app()->user->id;
+                        if ($modelMailUser->save())
+                            echo 'ok';
+                        else
+                            echo 'no';
+                    }
                 }
-            } else {
-                echo 'tope_alcanzado';
+            }else {
+                echo "tope_alcanzado";
             }
         }
         
