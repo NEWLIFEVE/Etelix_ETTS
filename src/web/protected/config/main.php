@@ -50,7 +50,7 @@ return array(
 
 				 // NO OLVIDES PONER EN FALSE TRAS INSTALAR
 				 'debug'=>false,
-				 'rbacSetupEnabled'=>true,
+				 'rbacSetupEnabled'=>false,
 				 'allowUserAlways'=>false,
 
 				// MIENTRAS INSTALAS..PONLO EN: false
