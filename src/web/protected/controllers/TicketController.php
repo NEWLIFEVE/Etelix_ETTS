@@ -370,7 +370,7 @@ class TicketController extends Controller
                 </div>
                 ';
                 
-                $mailer->enviar($cuerpo, $_POST['emails'], '', 'ETTS TICKET TEST', $rutaAttachFile);
+                $mailer->enviar($cuerpo, $_POST['emails'], '', $ticketNumber, $rutaAttachFile);
                 
                 echo 'success';
             } else {
