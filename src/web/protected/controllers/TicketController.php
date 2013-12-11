@@ -290,12 +290,15 @@ class TicketController extends Controller
                         <div>
                                 <h2>Hello "'. Yii::app()->user->name .'"</h2>
                                 <p style="text-align:justify">
-                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                                        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                                        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                                        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                                    <div>Dear Customer:</div><br/>
+
+                                    <div>Thanks for using our online tool "Etelix Trouble Ticket System" (etts.etelix.com).<br/>
+
+                                    Your issue has been opened with the TT Number (please see below).<br/>
+
+                                    Your TT will be answered by an Etelix Analyst soon.</div><br/>
+
+                                    Etelix NOC Team.    
                                 </p>
                         </div>
                         <hr>
@@ -362,12 +365,7 @@ class TicketController extends Controller
 		</table>
                 <div style="width:100%">
 		<p style="text-align:justify">
-			Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-			tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-			quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-			consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-			cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-			proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    <br/><div style="font-style:italic;">Please do not reply to this email. Replies to this message are routed to an unmonitored mailbox.</div>
 		</p>
                 </div>
                 ';
