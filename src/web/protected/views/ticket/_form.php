@@ -90,7 +90,7 @@
 <div class="grid" >
         <div class="input-control text span3" >
             Tested numbers<small class="text-muted "><em> (required)</em></small>
-            <?php echo $form->textField($model,'tested_numbers[]',array('placeholder' => 'Without prefix', 'class' => 'validate[required]')); ?>
+            <?php echo $form->textField($model,'tested_numbers[]',array('placeholder' => 'Without prefix', 'class' => 'validate[required,custom[integer]]')); ?>
             <?php echo $form->error($model,'tested_numbers[]'); ?>
         </div>
 

@@ -27,7 +27,7 @@ $(document).on('ready', function(){
     *          FUNCION AJAX PARA MOSTRAR LOS CORREOS QUE SE VAYAN INSERTANDO
     ******************************************************************************/
     var getMailUser = function(){
-        $.post('/MailUser/GetMailUser', '', function(data){
+        $.post('/MailUser/Getmailuser', '', function(data){
             $('#cargar_mails').html('');
             for (var i = 0; i < data.length; i++) {
                 $('#cargar_mails').append('<option value="'+ data[i].id +'">'+ data[i].mail +'</option>');
@@ -43,6 +43,9 @@ $(document).on('ready', function(){
      *
      **************************************************************************/
     $(document).on('click', '.btn-agregar-correo', function(){
+       if ($('#new_mail').val() == '')
+           return false;
+       
        $.ajax({
           url:  '/Mail/SetMail',
           type: 'post',
@@ -54,8 +57,6 @@ $(document).on('ready', function(){
                   setTimeout('setResponseTo()', 1000);
                   $('#Ticket_mail').removeClass('validate[required]');
               } else if(data == 'tope_alcanzado') {
-                  
-                  
                   $.Dialog({
                              shadow: true,
                              overlay: false,
@@ -138,11 +139,29 @@ $(document).on('ready', function(){
     
     /***************************************************************************
      *      
-     *      ELIMINAR CORREOS DEL SELECT DE ABAJO
+     *      ELIMINAR CORREOS DE LOS SELECT'S
      *      
      ***************************************************************************/
     $(document).on('click', '.a-borrar_correo', function(){
+        
+        var mailSeleccionado = $('#cargar_mails option:selected').val();
+        
+        if ($('#cargar_mails').val()) { 
+            if (confirm('Delete mail?')) {
+                $.ajax({
+                   type: 'POST',
+                   url: '/mailuser/deletemail',
+                   data:{ id: mailSeleccionado },
+                   success:function(){
+                       $('#cargar_mails option[value='+mailSeleccionado+']').remove();
+                   }
+                });
+                $('#Ticket_mail option[value='+mailSeleccionado+']').remove();
+            }
+        }
+        
         if ($('#Ticket_mail').val()) { 
+           
            $('#Ticket_mail option:selected').remove();
            
            if ($('#Ticket_mail option').length == 0) {
@@ -185,7 +204,7 @@ $(document).on('ready', function(){
         $('.container_agregar').append(
             '<div id="div_'+clickAgregarNumber+'" style="display:none">'+
                 '<div class="input-control text span3">' +
-                    '<input type="text" class="validate[required]" name="Ticket[tested_numbers][]" placeholder="Without prefix" >' +
+                    '<input type="text" class="validate[required,custom[integer]]" name="Ticket[tested_numbers][]" placeholder="Without prefix" >' +
                 '</div>' +
                 
                 country.html() +
@@ -395,7 +414,7 @@ $(document).on('ready', function(){
 
                 $.ajax({
                    type:'POST',
-                   url:'saveTicket',
+                   url:'saveticket',
                    beforeSend:function(){
                        $.Dialog.close();
 

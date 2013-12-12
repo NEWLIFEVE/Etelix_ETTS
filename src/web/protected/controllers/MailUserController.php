@@ -11,13 +11,18 @@ class MailUserController extends Controller
 	/**
 	 * @return array action filters
 	 */
-	public function filters()
-	{
-		return array(
-			'accessControl', // perform access control for CRUD operations
-			'postOnly + delete', // we only allow deletion via POST request
-		);
-	}
+//	public function filters()
+//	{
+//		return array(
+//			'accessControl', // perform access control for CRUD operations
+//			'postOnly + delete', // we only allow deletion via POST request
+//		);
+//	}
+        
+        public function filters()
+        {
+            return array(array('CrugeAccessControlFilter'));
+        }
 
 	/**
 	 * Specifies the access control rules.
@@ -143,10 +148,7 @@ class MailUserController extends Controller
 		));
 	}
         
-        public function actionGetMailUser()
-        {
-            MailUser::getMails(Yii::app()->user->id, true);
-        }
+        
 
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.
@@ -175,4 +177,18 @@ class MailUserController extends Controller
 			Yii::app()->end();
 		}
 	}
+        
+        /* Métodos propios */
+        public function actionGetmailuser()
+        {
+            MailUser::getMails(Yii::app()->user->id, true);
+        }
+        
+        
+        public function actionDeletemail()
+        {
+            $this->loadModel($_POST['id'])->delete();
+        }
+        
+        
 }
