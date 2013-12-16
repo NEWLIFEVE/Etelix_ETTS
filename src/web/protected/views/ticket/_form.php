@@ -17,6 +17,8 @@
             <?php endforeach; ?>
         </select>
 </div>
+
+     
         
 <div class="input-control select block">
     Response to <small class="text-muted "><em>(required)</em></small>&nbsp;&nbsp;
@@ -81,7 +83,7 @@
 
 <div class="input-control select block">
         GMT <small class="text-muted "><em>(required)</em></small>
-        <?php echo $form->dropDownList($model,'idGmt', CHtml::listData(Gmt::model()->findAll(), 'id', 'relative'),  array('empty' => '', 'class' => 'validate[required]')); ?>
+        <?php echo $form->dropDownList($model,'idGmt', CHtml::listData(Gmt::model()->findAll(), 'id', 'name'),  array('empty' => '', 'class' => 'validate[required]')); ?>
         <?php echo $form->error($model,'idGmt'); ?>
 </div>
 

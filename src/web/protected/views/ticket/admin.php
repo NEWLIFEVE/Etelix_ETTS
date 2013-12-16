@@ -26,18 +26,51 @@ $('.search-form form').submit(function(){
 ");
 ?>
 
-<h1>Manage Tickets</h1>
+
+
+
+<!--<div class="span12">
+    <h2>My Tickets</h2>
+    <div class="example">
+        <table id="tabla_preview">
+            <thead>
+                <tr>
+                    <th>Ticket Number</th>
+                    <th>Failure</th>
+                    <th>Status</th>
+                    <th>Origination IP</th>
+                    <th>Destination IP</th>
+                    <th>Prefix</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>-->
+
+
+
+
+
+<!--<h1>Manage Tickets</h1>-->
 
 
 
 <?php // echo CHtml::link('Advanced Search','#',array('class'=>'search-button')); ?>
 <div class="search-form" style="display:none">
-<?php $this->renderPartial('_search',array(
+<?php 
+$this->renderPartial('_search',array(
 	'model'=>$model,
-)); ?>
+)); 
+?>
 </div><!-- search-form -->
 
-<?php $this->widget('zii.widgets.grid.CGridView', array(
+<?php
+$this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'ticket-grid',
 	'dataProvider'=>$model->search(),
 	'filter'=>$model,
@@ -75,4 +108,5 @@ $('.search-form form').submit(function(){
 			'class'=>'CButtonColumn',
 		),
 	),
-)); ?>
+)); 
+?>

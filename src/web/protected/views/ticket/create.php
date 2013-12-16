@@ -1,7 +1,6 @@
 <?php
 /* @var $this TicketsController */
 /* @var $model Tickets */
-
 $this->breadcrumbs=array(
 	'Tickets'=>array('index'),
 	'Create',

@@ -119,11 +119,9 @@
                     </div>
                 </div>
             </div>
-            <div class="page-footer">
-                <div class="page-footer-content">
-                    <!--<div data-load="header.html"></div>-->
-                </div>
-            </div>
+            <footer>
+                Copyright &copy; <?php echo date('Y'); ?> ETELIX All Rights Reserved. Version 1.0
+            </footer>
         </div>
         <script>
         var _root_ = "<?php echo Yii::app()->getBaseUrl(true) . '/'; ?>";

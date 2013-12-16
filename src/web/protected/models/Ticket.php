@@ -35,6 +35,7 @@ class Ticket extends CActiveRecord
 	 * @param string $className active record class name.
 	 * @return Ticket the static model class
 	 */
+        public $maximo;
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);

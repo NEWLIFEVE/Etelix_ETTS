@@ -7,7 +7,7 @@ class TicketController extends Controller
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
 	public $layout='//layouts/column2';
-
+        
 	/**
 	 * @return array action filters
 	 */
@@ -227,10 +227,10 @@ class TicketController extends Controller
              $modelTicket->id_ticket=NULL;
              $modelTicket->hour=date('H:m:s');
              
-             $maxID = Yii::app()->db->createCommand("SELECT MAX(id) AS maximo FROM ticket")->queryRow();
-             $max = $maxID['maximo'] + 1;
+             $modelTicket->maximo = $modelTicket::model()->findBySql("SELECT MAX(id) AS maximo FROM ticket");
+             $modelTicket->maximo += 1;
              
-             $ticketNumber = date('Ymd') . '-' . $max . '-' . CrugeAuthassignment::getRoleUser() . $modelTicket->id_failure;
+             $ticketNumber = date('Ymd') . '-' . $modelTicket->maximo . '-' . CrugeAuthassignment::getRoleUser() . $modelTicket->id_failure;
              $modelTicket->ticket_number= $ticketNumber;
              
              if($modelTicket->save()){
