@@ -141,4 +141,10 @@ class Carrier extends CActiveRecord
             return self::model()->findAll();
         }
         
+        
+        public static function getCarriers()
+        {
+            return CHtml::listData(self::model()->findAll(), 'id', 'name');
+        }
+        
 }

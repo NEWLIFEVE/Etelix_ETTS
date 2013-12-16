@@ -227,10 +227,10 @@ class TicketController extends Controller
              $modelTicket->id_ticket=NULL;
              $modelTicket->hour=date('H:m:s');
              
-             $modelTicket->maximo = $modelTicket::model()->findBySql("SELECT MAX(id) AS maximo FROM ticket");
-             $modelTicket->maximo += 1;
+             $maximo = $modelTicket::model()->findBySql("SELECT MAX(id) AS maximo FROM ticket");
+             $maximo->maximo += 1;
              
-             $ticketNumber = date('Ymd') . '-' . $modelTicket->maximo . '-' . CrugeAuthassignment::getRoleUser() . $modelTicket->id_failure;
+             $ticketNumber = date('Ymd') . '-' . $maximo->maximo . '-' . CrugeAuthassignment::getRoleUser() . $modelTicket->id_failure;
              $modelTicket->ticket_number= $ticketNumber;
              
              if($modelTicket->save()){
