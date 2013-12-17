@@ -144,7 +144,18 @@ class Carrier extends CActiveRecord
         
         public static function getCarriers()
         {
-            return CHtml::listData(self::model()->findAll(array('order'=>'name asc')), 'id', 'name');
+            return CHtml::listData(self::model()
+                    ->findAllBySql
+                    ("SELECT 
+                    c.id, c.name
+                    FROM
+                    carrier c
+                    LEFT JOIN
+                    dblink('hostaddr=172.16.17.190 port=5432 dbname=etts user=postgres password=123', 'SELECT id_carrier FROM cruge_user') as t(id_carrier int)
+                    ON  c.id = t.id_carrier
+                    WHERE t.id_carrier IS NULL ORDER BY c.name ASC"), 
+                    'id', 'name');
+//            return CHtml::listData(self::model()->findAll(array('order'=>'name asc')), 'id', 'name');
         }
         
 }
