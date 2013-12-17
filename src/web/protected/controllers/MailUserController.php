@@ -186,8 +186,9 @@ class MailUserController extends Controller
         
         
         public function actionDeletemail()
-        {
-            $this->loadModel($_POST['id'])->delete();
+        {   
+//            $this->loadModel($_POST['id'])->delete();
+            MailUser::model()->updateByPk($_POST['id'], array("status"=>'0'));
         }
         
         

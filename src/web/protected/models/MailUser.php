@@ -7,7 +7,8 @@
  * @property integer $id
  * @property integer $id_user
  * @property integer $id_mail
- *
+ * @property integer $status
+ * 
  * The followings are the available model relations:
  * @property Mail $idMail
  * @property User $idUser
@@ -102,16 +103,16 @@ class MailUser extends CActiveRecord
         {   if ($json == false) {        
                 return self::model()->findAllBySql("select mu.id as id, m.mail as mail
                                                 from mail m, mail_user mu
-                                                where mu.id_user = $user and mu.id_mail = m.id");
+                                                where mu.id_user = $user and mu.id_mail = m.id AND mu.status = 1");
             } else {
                 echo CJSON::encode(Mail::model()->findAllBySql("select mu.id as id, m.mail as mail " .
                                                 "from mail m, mail_user mu " .
-                                                "where mu.id_user = $user and mu.id_mail = m.id"));
+                                                "where mu.id_user = $user and mu.id_mail = m.id AND mu.status = 1"));
             }
         }
         
        public static function getCountMail($user){
-            $count =self::model()->findBySql("SELECT COUNT(id_user) AS mailcount FROM mail_user WHERE id_user = $user ");
+            $count =self::model()->findBySql("SELECT COUNT(id_user) AS mailcount FROM mail_user WHERE id_user = $user AND status = 1");
             if($count->mailcount < 5){
                 return TRUE;
             }else{

@@ -155,7 +155,6 @@ class Carrier extends CActiveRecord
                     ON  c.id = t.id_carrier
                     WHERE t.id_carrier IS NULL ORDER BY c.name ASC"), 
                     'id', 'name');
-//            return CHtml::listData(self::model()->findAll(array('order'=>'name asc')), 'id', 'name');
         }
         
 }

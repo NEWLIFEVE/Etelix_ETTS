@@ -159,17 +159,31 @@ class MailController extends Controller
                 $existeMail = $model->find("mail=:mail", array(":mail" => $_POST['mail']));
                 
                 if ($existeMail != null) {
-                    $modelMailUser->id_mail = $existeMail->id;
-                    $modelMailUser->id_user = Yii::app()->user->id;
-                    if($modelMailUser->save())
-                            echo 'ok';
-                        else
-                            echo 'no';
+                    $existeMailUser = $modelMailUser->findBySql("select * from mail_user where id_user = ".Yii::app()->user->id." and id_mail = ".$existeMail->id." and status = 0");
+                    if ($existeMailUser != null) {
+                        $modelMailUser::model()->updateByPk($existeMailUser->id, array("status"=>'1'));
+                        echo 'ok';
+                    } else {
+                        
+                        $existeMailUser2 = $modelMailUser->findBySql("select * from mail_user where id_user = ".Yii::app()->user->id." and id_mail = ".$existeMail->id." and status = 1");
+                        if ($existeMailUser2 != null) {
+                            echo 'existe correo';
+                        } else {
+                            $modelMailUser->id_mail = $existeMail->id;
+                            $modelMailUser->id_user = Yii::app()->user->id;
+                            $modelMailUser->status = 1;
+                            if($modelMailUser->save())
+                                echo 'ok';
+                            else
+                                echo 'no';
+                        }
+                    }
                 } else {
                     $model->mail = $_POST['mail'];
                     if ($model->save()) {
                         $modelMailUser->id_mail = $model->id;
                         $modelMailUser->id_user = Yii::app()->user->id;
+                        $modelMailUser->status = 1;
                         if ($modelMailUser->save())
                             echo 'ok';
                         else

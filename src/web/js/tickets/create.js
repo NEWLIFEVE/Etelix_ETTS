@@ -67,6 +67,16 @@ $(document).on('ready', function(){
                              content: '<center><h2>Only five emails allowed<h2></center>'
                        });
                   
+              } else if (data == 'existe correo') {
+                  $.Dialog({
+                             shadow: true,
+                             overlay: false,
+                             icon: '<span class="icon-rocket"></span>',
+                             title: 'Error',
+                             width: 500,
+                             padding: 10,
+                             content: '<center><h2>Error, email already exists, try another direction<h2></center>'
+                       });
               } else if (data == 'no') {
                   $.Dialog({
                              shadow: true,
@@ -151,8 +161,8 @@ $(document).on('ready', function(){
                 $.ajax({
                    type: 'POST',
                    url: '/mailuser/deletemail',
-                   data:{ id: mailSeleccionado },
-                   success:function(){
+                   data:"id="+mailSeleccionado,
+                   success:function(data){
                        $('#cargar_mails option[value='+mailSeleccionado+']').remove();
                    }
                 });
