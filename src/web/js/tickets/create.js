@@ -160,7 +160,7 @@ $(document).on('ready', function(){
             if (confirm('Delete mail?')) {
                 $.ajax({
                    type: 'POST',
-                   url: '/mailuser/deletemail',
+                   url: '/mailUser/deletemail',
                    data:"id="+mailSeleccionado,
                    success:function(data){
                        $('#cargar_mails option[value='+mailSeleccionado+']').remove();
