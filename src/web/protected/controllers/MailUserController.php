@@ -37,7 +37,7 @@ class MailUserController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','GetMailUser'),
+				'actions'=>array('create','update','GetMailUser','deletemail'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
