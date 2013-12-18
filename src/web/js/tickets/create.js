@@ -13,6 +13,20 @@ function appendResponseTo()
     $('#Ticket_mail option').clone().appendTo($('#preview_response_to'));
 }
 
+function miConfirm(mensaje)
+{
+    $.Dialog({
+        shadow: true,
+        overlay: false,
+        icon: '<span class="icon-rocket"></span>',
+        title: 'Error',
+        width: 500,
+        padding: 10,
+        content: mensaje + '<button id="ok_confirm" type="button">OK</button>  <button id="cancel_confirm" type="button">Cancel</button>'
+    });
+}
+
+
 $(document).on('ready', function(){
     
     $(document).on('click', '#add_all_email', function(){
@@ -147,6 +161,7 @@ $(document).on('ready', function(){
     });
     
     
+    
     /***************************************************************************
      *      
      *      ELIMINAR CORREOS DE LOS SELECT'S
@@ -157,6 +172,26 @@ $(document).on('ready', function(){
         var mailSeleccionado = $('#cargar_mails option:selected').val();
         
         if ($('#cargar_mails').val()) { 
+            
+//            miConfirm('Delete Mail?')
+//            
+//            $('#ok_confirm').on('click', function(){
+//                $.ajax({
+//                   type: 'POST',
+//                   url: '/mailuser/deletemail',
+//                   data:"id="+mailSeleccionado,
+//                   success:function(data){
+//                       $('#cargar_mails option[value='+mailSeleccionado+']').remove();
+//                   }
+//                });
+//                $('#Ticket_mail option[value='+mailSeleccionado+']').remove();
+//                $.Dialog.close();
+//            });
+//            
+//            $('#cancel_confirm').on('click', function(){
+//                $.Dialog.close();
+//            });
+            
             if (confirm('Delete mail?')) {
                 $.ajax({
                    type: 'POST',
