@@ -144,6 +144,8 @@ class Carrier extends CActiveRecord
         
         public static function getCarriers()
         {
+//            return CHtml::listData(self::model()->findAll("id not in(1,2,3,4) order by id asc"), 'id', 'name');
+            
             return CHtml::listData(self::model()
                     ->findAllBySql
                     ("SELECT 

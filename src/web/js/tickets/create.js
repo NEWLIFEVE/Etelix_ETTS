@@ -19,7 +19,7 @@ function miConfirm(mensaje)
         shadow: true,
         overlay: false,
         icon: '<span class="icon-rocket"></span>',
-        title: 'Error',
+        title: false,
         width: 500,
         padding: 10,
         content: mensaje + '<button id="ok_confirm" type="button">OK</button>  <button id="cancel_confirm" type="button">Cancel</button>'
@@ -173,36 +173,36 @@ $(document).on('ready', function(){
         
         if ($('#cargar_mails').val()) { 
             
-//            miConfirm('Delete Mail?')
-//            
-//            $('#ok_confirm').on('click', function(){
-//                $.ajax({
-//                   type: 'POST',
-//                   url: '/mailuser/deletemail',
-//                   data:"id="+mailSeleccionado,
-//                   success:function(data){
-//                       $('#cargar_mails option[value='+mailSeleccionado+']').remove();
-//                   }
-//                });
-//                $('#Ticket_mail option[value='+mailSeleccionado+']').remove();
-//                $.Dialog.close();
-//            });
-//            
-//            $('#cancel_confirm').on('click', function(){
-//                $.Dialog.close();
-//            });
+            miConfirm('Delete Mail?')
             
-            if (confirm('Delete mail?')) {
+            $('#ok_confirm').on('click', function(){
                 $.ajax({
                    type: 'POST',
-                   url: '/mailUser/deletemail',
+                   url: '/mailuser/deletemail',
                    data:"id="+mailSeleccionado,
                    success:function(data){
                        $('#cargar_mails option[value='+mailSeleccionado+']').remove();
                    }
                 });
                 $('#Ticket_mail option[value='+mailSeleccionado+']').remove();
-            }
+                $.Dialog.close();
+            });
+            
+            $('#cancel_confirm').on('click', function(){
+                $.Dialog.close();
+            });
+            
+//            if (confirm('Delete mail?')) {
+//                $.ajax({
+//                   type: 'POST',
+//                   url: '/mailUser/deletemail',
+//                   data:"id="+mailSeleccionado,
+//                   success:function(data){
+//                       $('#cargar_mails option[value='+mailSeleccionado+']').remove();
+//                   }
+//                });
+//                $('#Ticket_mail option[value='+mailSeleccionado+']').remove();
+//            }
         }
         
         if ($('#Ticket_mail').val()) { 
