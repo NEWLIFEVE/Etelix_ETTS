@@ -37,7 +37,7 @@ class MailUserController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','GetMailUser'),
+				'actions'=>array('create','update','GetMailUser','deletemail'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -188,6 +188,7 @@ class MailUserController extends Controller
         public function actionDeletemail()
         {   
 //            $this->loadModel($_POST['id'])->delete();
+            echo "im in";
             MailUser::model()->updateByPk($_POST['id'], array("status"=>'0'));
         }
         
