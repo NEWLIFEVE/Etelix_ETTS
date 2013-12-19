@@ -151,9 +151,8 @@ class Carrier extends CActiveRecord
                     FROM
                     carrier c
                     LEFT JOIN
-                    dblink('hostaddr=localhost port=5432 dbname=etts user=postgres password=Nsusfd8263', 'SELECT id_carrier FROM cruge_user') as t(id_carrier int)
-                    ON  c.id = t.id_carrier
-                    WHERE t.id_carrier IS NULL ORDER BY c.name ASC"), 
+                   dblink('hostaddr=67.215.160.89  port=5432 dbname=etts user=postgres password=Nsusfd8263', 'SELECT id_carrier FROM cruge_user') as t(id_carrier int)
+                    ON  c.id = t.id_carrier                    WHERE t.id_carrier IS NULL ORDER BY c.name ASC"), 
                     'id', 'name');
         }
         
