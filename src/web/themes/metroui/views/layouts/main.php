@@ -36,7 +36,10 @@
             <div class="navigation-bar dark">
                 <div class="navigation-bar-content container">
                     <a href="/" class="element"><span class="icon-grid-view"></span> <?php echo Yii::app()->name; ?> <sup>ETELIX</sup></a>
-                    <?php if (!Yii::app()->user->isGuest): // Si se ha logueado un usuario ?>
+                    
+                    <!-- ############################################################ -->
+                    <!-- SI SE LOGUEA EL USUARIO -->
+                    <?php if (!Yii::app()->user->isGuest): ?>
                         <span class="element-divider"></span>
                         <?php echo CHtml::link('<i class="icon-home on-right on-left"></i> Home', array('/site/index'), array('class' => 'element')); ?>
                         <div class="element">
@@ -55,6 +58,8 @@
                             )); ?>
                         </div>
                         
+                        <!-- ############################################################ -->
+                        <!-- SI SE LOGUEA COMO SUPERADMIN -->
                         <?php if (Yii::app()->user->checkAccess('admin')): // Solo visible al superadmin ?>
                             <div class="element">
                                
@@ -69,7 +74,10 @@
                                     )); ?>
                             </div>
                         <?php else: ?>
-                            <?php if (Yii::app()->user->checkAccess('subadmin') && (!Yii::app()->user->checkAccess('interno') || !Yii::app()->user->checkAccess('cliente'))): // Solo visible al subadministrador ?>
+                        
+                            <!-- ############################################################ -->
+                            <!-- SI SE LOGUEA COMO SUBADMIN -->
+                            <?php if (Yii::app()->user->checkAccess('subadmin')): // Solo visible al subadministrador ?>
                             <div class="element">
                                     <?php echo CHtml::link('<i class="icon-user on-right on-left"></i> Manage Users', '#', array('class' => 'dropdown-toggle')); ?>
                                     <?php $this->widget('zii.widgets.CMenu', array(
@@ -81,12 +89,19 @@
                                             ),
                                     )); ?>
                             </div>
+                           <?php endif; //FIN SI ES SUBADMIN ?>
+                            
+                           <!-- ############################################################ -->
+                           <!-- SI NO ES SUPERADMIN NI SUBADMIN -->
+                           <?php if (!Yii::app()->user->checkAccess('subadmin')): // Solo visible al subadministrador ?>
+                                <?php echo CHtml::link('<i class="icon-pencil on-right on-left"></i> Edit Profile', array('/cruge/ui/editprofile'), array('class' => 'element')); ?>
                            <?php endif; ?>
-                       <?php endif; ?>
+                           
+                       <?php endif; //FIN SI ES SUPERADMIN ?>
                         
                         <?php echo CHtml::link('<i class="icon-locked on-right on-left"></i> Logout ('.Yii::app()->user->name.')', Yii::app()->user->ui->logoutUrl, array('class' => 'element')); ?>
                         <span class="element-divider"></span>
-                    <?php endif; ?> 
+                    <?php endif; //FIN DEL LOGUEO ?> 
                 </div>
             </div><!-- /MENU -->
         </header>
@@ -104,11 +119,9 @@
                     </div>
                 </div>
             </div>
-            <div class="page-footer">
-                <div class="page-footer-content">
-                    <!--<div data-load="header.html"></div>-->
-                </div>
-            </div>
+            <footer>
+                Copyright &copy; <?php echo date('Y'); ?> ETELIX All Rights Reserved. Version 1.0
+            </footer>
         </div>
         <script>
         var _root_ = "<?php echo Yii::app()->getBaseUrl(true) . '/'; ?>";

@@ -17,7 +17,7 @@
             
             <div class="separador-vertical"></div>
             <?php echo $form->labelEx($model, 'id_carrier') ?>
-            <?php echo $form->dropDownList($model,'id_carrier', CHtml::listData(Carrier::model()->findAll(), 'id', 'name'),  array('empty' => 'Select carrier')); ?>
+            <?php echo $form->dropDownList($model,'id_carrier', Carrier::getCarriers(),  array('empty' => 'Select carrier')); ?>
             <span id="disable_enable">Disable</span> <input type="checkbox" id="disable_carrier" name="disable_carrier" value="ok">
             <?php echo $form->error($model, 'id_carrier'); ?>
             <div class="separador-vertical"></div>

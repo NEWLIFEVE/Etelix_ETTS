@@ -13,6 +13,20 @@ function appendResponseTo()
     $('#Ticket_mail option').clone().appendTo($('#preview_response_to'));
 }
 
+function miConfirm(mensaje)
+{
+    $.Dialog({
+        shadow: true,
+        overlay: false,
+        icon: '<span class="icon-rocket"></span>',
+        title: false,
+        width: 500,
+        padding: 10,
+        content: mensaje + '<button id="ok_confirm" type="button">OK</button>  <button id="cancel_confirm" type="button">Cancel</button>'
+    });
+}
+
+
 $(document).on('ready', function(){
     
     $(document).on('click', '#add_all_email', function(){
@@ -27,7 +41,7 @@ $(document).on('ready', function(){
     *          FUNCION AJAX PARA MOSTRAR LOS CORREOS QUE SE VAYAN INSERTANDO
     ******************************************************************************/
     var getMailUser = function(){
-        $.post('/MailUser/GetMailUser', '', function(data){
+        $.post('/MailUser/Getmailuser', '', function(data){
             $('#cargar_mails').html('');
             for (var i = 0; i < data.length; i++) {
                 $('#cargar_mails').append('<option value="'+ data[i].id +'">'+ data[i].mail +'</option>');
@@ -43,6 +57,9 @@ $(document).on('ready', function(){
      *
      **************************************************************************/
     $(document).on('click', '.btn-agregar-correo', function(){
+       if ($('#new_mail').val() == '')
+           return false;
+       
        $.ajax({
           url:  '/Mail/SetMail',
           type: 'post',
@@ -54,8 +71,6 @@ $(document).on('ready', function(){
                   setTimeout('setResponseTo()', 1000);
                   $('#Ticket_mail').removeClass('validate[required]');
               } else if(data == 'tope_alcanzado') {
-                  
-                  
                   $.Dialog({
                              shadow: true,
                              overlay: false,
@@ -66,6 +81,16 @@ $(document).on('ready', function(){
                              content: '<center><h2>Only five emails allowed<h2></center>'
                        });
                   
+              } else if (data == 'existe correo') {
+                  $.Dialog({
+                             shadow: true,
+                             overlay: false,
+                             icon: '<span class="icon-rocket"></span>',
+                             title: 'Error',
+                             width: 500,
+                             padding: 10,
+                             content: '<center><h2>Error, email already exists, try another direction<h2></center>'
+                       });
               } else if (data == 'no') {
                   $.Dialog({
                              shadow: true,
@@ -136,13 +161,52 @@ $(document).on('ready', function(){
     });
     
     
+    
     /***************************************************************************
      *      
-     *      ELIMINAR CORREOS DEL SELECT DE ABAJO
+     *      ELIMINAR CORREOS DE LOS SELECT'S
      *      
      ***************************************************************************/
     $(document).on('click', '.a-borrar_correo', function(){
+        
+        var mailSeleccionado = $('#cargar_mails option:selected').val();
+        
+        if ($('#cargar_mails').val()) { 
+            
+            miConfirm('Delete Mail?')
+            
+            $('#ok_confirm').on('click', function(){
+                $.ajax({
+                   type: 'POST',
+                   url: '/mailUser/deletemail',
+                   data:"id="+mailSeleccionado,
+                   success:function(data){
+                       $('#cargar_mails option[value='+mailSeleccionado+']').remove();
+                   }
+                });
+                $('#Ticket_mail option[value='+mailSeleccionado+']').remove();
+                $.Dialog.close();
+            });
+            
+            $('#cancel_confirm').on('click', function(){
+                $.Dialog.close();
+            });
+            
+//            if (confirm('Delete mail?')) {
+//                $.ajax({
+//                   type: 'POST',
+//                   url: '/mailUser/deletemail',
+//                   data:"id="+mailSeleccionado,
+//                   success:function(data){
+//                       $('#cargar_mails option[value='+mailSeleccionado+']').remove();
+//                   }
+//                });
+//                $('#Ticket_mail option[value='+mailSeleccionado+']').remove();
+//            }
+        }
+        
         if ($('#Ticket_mail').val()) { 
+           
            $('#Ticket_mail option:selected').remove();
            
            if ($('#Ticket_mail option').length == 0) {
@@ -185,7 +249,7 @@ $(document).on('ready', function(){
         $('.container_agregar').append(
             '<div id="div_'+clickAgregarNumber+'" style="display:none">'+
                 '<div class="input-control text span3">' +
-                    '<input type="text" class="validate[required]" name="Ticket[tested_numbers][]" placeholder="Without prefix" >' +
+                    '<input type="text" class="validate[required,custom[integer]]" name="Ticket[tested_numbers][]" placeholder="Without prefix" >' +
                 '</div>' +
                 
                 country.html() +
@@ -395,7 +459,7 @@ $(document).on('ready', function(){
 
                 $.ajax({
                    type:'POST',
-                   url:'saveTicket',
+                   url:'saveticket',
                    beforeSend:function(){
                        $.Dialog.close();
 

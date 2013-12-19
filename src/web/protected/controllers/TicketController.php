@@ -7,17 +7,23 @@ class TicketController extends Controller
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
 	public $layout='//layouts/column2';
-
+        
 	/**
 	 * @return array action filters
 	 */
-	public function filters()
-	{
-		return array(
-			'accessControl', // perform access control for CRUD operations
-			'postOnly + delete', // we only allow deletion via POST request
-		);
-	}
+//	public function filters()
+//	{
+//		return array(
+//			'accessControl', // perform access control for CRUD operations
+//			'postOnly + delete', // we only allow deletion via POST request
+//		);
+//	}
+        
+        public function filters()
+        {
+            return array(array('CrugeAccessControlFilter'));
+        }
+        
 
 	/**
 	 * Specifies the access control rules.
@@ -62,12 +68,11 @@ class TicketController extends Controller
 	 */
 	public function actionCreate()
 	{
-            
-//            if (Yii::app()->user->checkAccess('cliente') || Yii::app()->user->checkAccess('subadmin')) { // Si el rol del usuario es cliente tendrá acceso al ticket information
 		$model=new Ticket;
                 /*Instancio los modelos donde se harán inserts*/
                 $modelTestedNumbers= new TestedNumber;
                 $modelDescripcionTicket= new DescriptionTicket;
+                
                 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -111,11 +116,8 @@ class TicketController extends Controller
 		}
 
 		$this->render('create',array(
-			'model'=>$model,
+			'model'=>$model
 		));
-//            } else {
-//                throw new CHttpException(401,'No Access');
-//            }
 	}
 
 	/**
@@ -210,7 +212,7 @@ class TicketController extends Controller
 		}
 	}
         
-        public function actionSaveTicket()
+        public function actionSaveticket()
         {
             $modelTicket = new Ticket;
             $rutaAttachFile = array();
@@ -226,16 +228,10 @@ class TicketController extends Controller
              $modelTicket->id_ticket=NULL;
              $modelTicket->hour=date('H:m:s');
              
-             $maxID = Yii::app()->db->createCommand("SELECT MAX(id) AS maximo FROM ticket")->queryRow();
-             $max = $maxID['maximo'] + 1;
-             $typeUser = '';
-             if (Yii::app()->user->checkAccess('cliente')) $typeUser = '-C';
-             if (Yii::app()->user->checkAccess('interno')) $typeUser = '-I';
-             if (Yii::app()->user->checkAccess('proveedor')) $typeUser = '-P';
-             if (Yii::app()->user->checkAccess('admin')) $typeUser = '-A';
-//             if (Yii::app()->user->checkAccess('subadmin')) $typeUser = '-SA';
+             $maximo = $modelTicket::model()->findBySql("SELECT MAX(id) AS maximo FROM ticket");
+             $maximo->maximo += 1;
              
-             $ticketNumber = date('Ymd') . '-' . $max . $typeUser . $modelTicket->id_failure;
+             $ticketNumber = date('Ymd') . '-' . $maximo->maximo . '-' . CrugeAuthassignment::getRoleUser() . $modelTicket->id_failure;
              $modelTicket->ticket_number= $ticketNumber;
              
              if($modelTicket->save()){

@@ -43,9 +43,9 @@ $cols[] = array(
 );
 $this->widget(Yii::app()->user->ui->CGridViewClass, 
 	array(
-    'dataProvider'=>$dataProvider,
-    'columns'=>$cols,
-	'filter'=>$model,
-));
+            'dataProvider'=>$dataProvider,
+            'columns'=>$cols,
+            'filter'=>$model,
+        ));
 ?>
 </div>

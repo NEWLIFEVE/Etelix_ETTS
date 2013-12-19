@@ -1,7 +1,6 @@
 <?php
 /* @var $this TicketsController */
 /* @var $model Tickets */
-
 $this->breadcrumbs=array(
 	'Tickets'=>array('index'),
 	'Create',
@@ -22,6 +21,8 @@ $form=$this->beginWidget('CActiveForm', array(
 	'enableAjaxValidation'=>false,
         'htmlOptions' => array('enctype' => 'multipart/form-data', 'onsubmit' => 'return false'),
 )); ?>
+
+
 
 
 <div class="span9">

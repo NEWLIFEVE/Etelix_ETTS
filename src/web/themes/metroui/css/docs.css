@@ -407,3 +407,21 @@ a#imprimir {
     height: 0;
     visibility: hidden;
 }
+
+footer {
+    border-top: 1px solid silver;
+    text-align: center;
+    margin: 20px 0;
+    padding: 10px 0;
+    
+    
+/*    background:#333333;
+    bottom:0px;*/
+    color: #8B8B8B;
+    font-size: 0.8em;
+/*    height:30px;
+    left:0px;
+    position:fixed;
+    text-align: center;
+    width:100%;*/
+}
