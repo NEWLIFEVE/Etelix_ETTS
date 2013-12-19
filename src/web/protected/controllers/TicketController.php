@@ -73,6 +73,7 @@ class TicketController extends Controller
                 $modelTestedNumbers= new TestedNumber;
                 $modelDescripcionTicket= new DescriptionTicket;
                 
+                
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
@@ -115,7 +116,7 @@ class TicketController extends Controller
 		}
 
 		$this->render('create',array(
-			'model'=>$model,
+			'model'=>$model
 		));
 	}
 
