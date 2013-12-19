@@ -178,7 +178,7 @@ $(document).on('ready', function(){
             $('#ok_confirm').on('click', function(){
                 $.ajax({
                    type: 'POST',
-                   url: '/mailuser/deletemail',
+                   url: '/mailUser/deletemail',
                    data:"id="+mailSeleccionado,
                    success:function(data){
                        $('#cargar_mails option[value='+mailSeleccionado+']').remove();
