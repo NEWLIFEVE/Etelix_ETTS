@@ -44,11 +44,11 @@
                         <?php echo CHtml::link('<i class="icon-home on-right on-left"></i> Home', array('/site/index'), array('class' => 'element')); ?>
                         <div class="element">
                             <?php echo CHtml::link('<i class="icon-box-add on-right on-left"></i> Tickets', '#', array('class' => 'dropdown-toggle')); ?>
-                            <?php $this->widget('zii.widgets.CMenu',array(
-                                'items'=>array(
-                                        array('label'=>'My tickets', 'url'=>array('/ticket/admin')),
-                                        array('label'=>'Open ticket', 'url'=>array('/ticket/create')),
-                                ),
+                            <?php
+                            Yii::import('webroot.protected.controllers.SiteController');
+                            $menuItems=SiteController::controlAcceso();
+                            $this->widget('zii.widgets.CMenu',array(
+                                'items'=>$menuItems,
                                 'htmlOptions' => array(
                                     'class' => 'dropdown-menu',
                                     'id' => 'base-submenu',

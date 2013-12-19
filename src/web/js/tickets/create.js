@@ -22,7 +22,12 @@ function miConfirm(mensaje)
         title: false,
         width: 500,
         padding: 10,
-        content: mensaje + '<button id="ok_confirm" type="button">OK</button>  <button id="cancel_confirm" type="button">Cancel</button>'
+        content: 
+            '<div id="content_mensaje"><h2>' + mensaje + '</h2></div>' + 
+            '<div id="content_botones">' +
+                '<button class="primary large" id="ok_confirm" type="button">OK</button>' +
+                '<button class="primary large" id="cancel_confirm" type="button">Cancel</button>' +
+            '</div>'
     });
 }
 
@@ -178,7 +183,7 @@ $(document).on('ready', function(){
             $('#ok_confirm').on('click', function(){
                 $.ajax({
                    type: 'POST',
-                   url: '/mailuser/deletemail',
+                   url: '/mailUser/deletemail',
                    data:"id="+mailSeleccionado,
                    success:function(data){
                        $('#cargar_mails option[value='+mailSeleccionado+']').remove();
@@ -470,7 +475,8 @@ $(document).on('ready', function(){
                              title: 'Sending email',
                              width: 500,
                              padding: 10,
-                             content: '<center><h2>Wait a few seconds...<h2></center>'
+                             content: '<center><h2>Wait a few seconds...<h2><img src="/images/loader.GIF"></center>'
+                                 
                        });
                    },
                    data:{

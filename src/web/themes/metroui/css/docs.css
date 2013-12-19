@@ -425,3 +425,23 @@ footer {
     text-align: center;
     width:100%;*/
 }
+
+div.errorMessage {
+	color: red;
+	font-size: 0.9em;
+}
+
+/* Confirm del borrar los correos */
+#content_mensaje, #content_botones {
+    width: 100%;
+    text-align: center;
+}
+#content_botones {
+    margin-top: 50px;
+}
+#ok_confirm, #cancel_confirm {
+    width: 140px;
+}
+#cancel_confirm {
+    margin-left: 10px;
+}

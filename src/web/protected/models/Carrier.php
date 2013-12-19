@@ -141,26 +141,18 @@ class Carrier extends CActiveRecord
             return self::model()->findAll();
         }
         
+        public static function getListUserCarriers()
+        {
+            $idCarriers = array();
+            foreach (CrugeUser2::getUsuerByIdCarrier() as $carrier) {
+                $idCarriers[] = $carrier->id_carrier;
+            }
+            return $idCarriers;
+        }
         
         public static function getCarriers()
         {
-            $idCarriers = array();
-            foreach (CrugeUser2::getIdCarrier() as $carrier) {
-                $idCarriers[] = $carrier->id_carrier;
-            }
-            return CHtml::listData(self::model()->findAll("id not in(".implode(",", $idCarriers).") order by id asc"), 'id', 'name');
-            
-//            return CHtml::listData(self::model()
-//                    ->findAllBySql
-//                    ("SELECT 
-//                    c.id, c.name
-//                    FROM
-//                    carrier c
-//                    LEFT JOIN
-//                    dblink('hostaddr=172.16.17.190 port=5432 dbname=etts user=postgres password=123', 'SELECT id_carrier FROM cruge_user') as t(id_carrier int)
-//                    ON  c.id = t.id_carrier
-//                    WHERE t.id_carrier IS NULL ORDER BY c.name ASC"), 
-//                    'id', 'name');
+            return CHtml::listData(self::model()->findAll("id not in(".implode(",", self::getListUserCarriers()).") order by name asc"), 'id', 'name');
         }
         
 }
