@@ -140,7 +140,7 @@ class Carrier extends CActiveRecord
         {
             return self::model()->findAll();
         }
-        
+
         public static function getListUserCarriers()
         {
             $idCarriers = array();
