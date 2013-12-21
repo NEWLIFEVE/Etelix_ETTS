@@ -391,9 +391,6 @@ $(document).on('ready', function(){
                             '<input type="text" value="'+$('#Ticket_id_failure option:selected').html()+'" disabled>' +
                         '</div>'+
 
-                        '<div class="grid" >' +
-                            '<div class="row" id="separador-prefijo"></div>' +
-                        '</div>' +
 
                         '<div class="_label">Origination IP <small class="text-muted "><em>(Customer IP)</em></small><span class="margen_17px"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DestinationIP  <small class="text-muted "><em>(Etelix IP)</em></small></div>'+
                         '<div class="input-control text block" data-role="input-control">'+
@@ -415,22 +412,12 @@ $(document).on('ready', function(){
                             '<input type="text" value="'+$('#Ticket_prefix').val()+'" disabled>' +
                         '</div>'+
 
-                        '<div class="grid" >'+
-                            '<div class="row" id="separador-prefijo"></div>'+
-                       '</div>'+
 
                         '<div class="input-control text block">'+
                             'GMT'+
                             '<input type="text" value="'+$('#Ticket_idGmt option:selected').html()+'" disabled>' +
                         '</div>'+
 
-                        '<div class="grid" >' +
-                            '<div class="row" id="separador-prefijo"></div>' +
-                        '</div>' +
-
-                        '<div class="grid" >' +
-                            '<div class="row" id="separador-prefijo"></div>' +
-                        '</div>' +
 
                         '<div id="tabla_tested_number" class="grid">'+
                             tablaNumber + 
@@ -503,7 +490,6 @@ $(document).on('ready', function(){
                    success:function(data){
                        if (data == 'success') {
                            $.Dialog.close();
-
                            $.Dialog({
                                 shadow: true,
                                 overlay: false,
@@ -512,6 +498,17 @@ $(document).on('ready', function(){
                                 width: 500,
                                 padding: 10,
                                 content: '<center><h2>Success<h2></center>'
+                          });
+                       } else {
+                           $.Dialog.close();
+                           $.Dialog({
+                                shadow: true,
+                                overlay: false,
+                                icon: '<span class="icon-rocket"></span>',
+                                title: 'Operation complete',
+                                width: 500,
+                                padding: 10,
+                                content: '<center>'+data+'</center>'
                           });
                        }
                    }

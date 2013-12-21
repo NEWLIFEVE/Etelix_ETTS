@@ -123,9 +123,14 @@ text-shadow: none;
 span.margen_22px{margin: 0 44px;}
 span.margen_17px{margin: 0 34px;}
 
-div.input-control.select.span2.margen-number, div.input-control.text.span2.margen-number, div.input-control.text.span1.margen-number {margin-left: 10px !important;}
+/*div.input-control.text, div.input-control.select, div.input-control.textarea{ border: 1px solid !important;}*/
+
+div.input-control.select.span2.margen-number, 
+div.input-control.text.span2.margen-number, 
+div.input-control.text.span1.margen-number {margin-left: 10px !important;}
+
 div.input-control.text.span2.margen-number.fecha_div{width: 100px !important}
-div.input-control.text.span1.margen-number.hour_div{width: 80px !important}
+div.input-control.text.span1.margen-number.hour_div{width: 80px !important; height: 34px !important;}
 
 .margen-number {
     margin-left: 5px;
@@ -444,4 +449,8 @@ div.errorMessage {
 }
 #cancel_confirm {
     margin-left: 10px;
+}
+
+#preview_tested_number {
+    margin-top: -12px !important;
 }

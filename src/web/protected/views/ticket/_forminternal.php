@@ -5,51 +5,41 @@
 ?>
 <div id="content_attached_file"></div>
 <fieldset>
-        <legend>Use this form to submit a ticket.</legend>
-<?php echo $form->errorSummary($model); ?>       
-<div class="input-control select block">
-        Select the recipients emails that will received the ticket confirmation
-
-        <small class="text-muted "><em> (maximum 5 emails)</em></small>
-        <select id="cargar_mails" multiple>
-            <?php foreach (MailUser::getMails(Yii::app()->user->id) as $mails): ?>
-                <option value="<?php echo $mails['id']; ?>"><?php echo $mails['mail']; ?></option>
-            <?php endforeach; ?>
-        </select>
+    <legend>Use this form to submit a ticket.</legend>
+<?php echo $form->errorSummary($model); ?>
+    
+    
+<div class="input-control text block" >
+    To
+    <input type="text" id="to">
 </div>
-
-  
-        
-<div class="input-control select block">
-    Response to <small class="text-muted "><em>(required)</em></small>&nbsp;&nbsp;
-    <a href="javascript:void(0)" class="a-agregar_correo"><i class="icon-plus-2"></i></a>
-    &nbsp;
-    <a href="javascript:void(0)" class="a-bajar_correo"><i class="icon-arrow-down"></i></a>
-    &nbsp;
-    <a href="javascript:void(0)" class="a-borrar_correo" ><i class="icon-cancel-2 fg-red "></i></a>
-    &nbsp;
-    <a href="javascript:void(0)" id="add_all_email" >Add all emails</a>
-    <div class="div-agregar_correo">
-        <div class="input-control text span3"  data-role="input-control">
-            <input type="text" id="new_mail" class="validate[custom[email]]" name="new_mail" placeholder="example@example.com" />
-        </div>
-        
-        <div class="input-control text span2">
-            <button class="btn-agregar-correo primary" type="button"><i class="icon-floppy on-left"></i>Save</button>
-        </div>
-    </div>
-    <?php echo $form->ListBox(
-                $model,'mail[]', 
-                array(),  
-                array('multiple' => 'multiple', 'class' => 'validate[required]')) ?>
-    <?php echo $form->error($model,'mail[]'); ?>
+    
+<div class="input-control text block" >
+    CC
+    <input type="text" id="cc">
 </div>
+    
+<div class="input-control text block" >
+    BBC
+    <input type="text" id="bbc">
+</div>
+    
 
 
 <div class="input-control select block">
         Failure<small class="text-muted "><em> (required)</em></small>
         <?php echo $form->dropDownList($model,'id_failure', CHtml::listData(Failure::model()->findAll(), 'id', 'name'),  array('empty' => '' ,'class' => 'validate[required]')); ?>
         <?php echo $form->error($model,'id_failure'); ?>
+</div>
+    
+<div class="input-control select block">
+        Class<small class="text-muted "><em> (required)</em></small>
+        <select id="class"></select>
+</div>
+    
+<div class="input-control select block">
+        Asociate to TT
+        <select id="tt_asociado"></select>
 </div>
 
         <div class="_label">Origination IP<input type="text" id="originationIp" class="validate[required,custom[ipv4]]"><small class="text-muted "><em>(Customer IP)(required)</em></small><span class="margen_17px"></span>Destination IP<input type="text" id="destinationIp" class="validate[required,custom[ipv4]]"><small class="text-muted "><em>(Etelix IP)(required)</em></small></div>
@@ -75,59 +65,21 @@
         <?php echo $form->error($model,'prefix'); ?>
 </div>
 
-<div class="grid">
-    <div class="row" id="separador-prefijo"></div>
-</div>
-
-
-
+        
 <div class="input-control select block">
-        GMT <small class="text-muted "><em>(required)</em></small>
-        <?php echo $form->dropDownList($model,'idGmt', CHtml::listData(Gmt::model()->findAll(), 'id', 'name'),  array('empty' => '', 'class' => 'validate[required]')); ?>
-        <?php echo $form->error($model,'idGmt'); ?>
-</div>
-
-<!--Preview tested number-->
-<div id="preview_tested_number"> 
-<div class="grid" >
-        <div class="input-control text span3" >
-            Tested numbers<small class="text-muted "><em> (required)</em></small>
-            <?php echo $form->textField($model,'tested_numbers[]',array('placeholder' => 'Without prefix', 'class' => 'validate[required,custom[integer]]')); ?>
-            <?php echo $form->error($model,'tested_numbers[]'); ?>
-        </div>
-
-        <div id="content_country">
-            <div class="input-control select span2 margen-number">
-                <br>
-                <?php echo $form->dropDownList($model,'country[]', Country::getNames(),  array('empty'=>'Country')); ?>
-                <?php echo $form->error($model,'country[]'); ?>
-            </div>
-        </div>
-
-        <div class="input-control text span2 margen-number fecha_div">
-            <br>
-            <?php echo $form->textField($model,'date_number[]',array('placeholder' => 'Date', 'class' => 'fecha', 'readonly' => 'readonly')); ?>
-            <?php echo $form->error($model,'date_number[]'); ?>
-        </div>
-
-        <div class="input-control text span1 margen-number hour_div">
-            <br>
-            <?php echo $form->textField($model,'hour_number[]',array('placeholder' => 'Hour', 'class' => 'hour')); ?>
-            <?php echo $form->error($model,'hour_number[]'); ?>
-        </div>
-
-
-        <div class="input-control text span1" style="margin-left: 5px; padding-top: 5px; width: 10px !important;">
-            <br>
-            <a href="javascript:void(0)" class="_agregar"><i class="icon-plus-2"></i></a>
-        </div>
+        Status<small class="text-muted "><em> (required)</em></small>
+        <select id="status"></select>
 </div>
         
-<div style="clear: left;"></div>
-
-<div class="container_agregar"></div>
-</div> <!--/.preview_tested_number-->
-
+<div class="input-control select block">
+        Account Manager<small class="text-muted "><em> (required)</em></small>
+        <select id="class"></select>
+</div>
+        
+<div class="input-control select block">
+        SPEECHS
+        <select id="speechs"></select>
+</div>
 
 <div class="input-control textarea" data-role="input-control">
     <label>

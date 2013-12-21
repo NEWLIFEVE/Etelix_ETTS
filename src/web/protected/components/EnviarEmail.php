@@ -74,13 +74,14 @@ class EnviarEmail extends CApplicationComponent
             }
             $message=$html;
             $mailer->Body=$message;
+            
             if($mailer->Send())
             {
-                return 'true';
+                return true;
             }
             else
             {
-                return 'false';
+                return $mailer->ErrorInfo;
             }
         }
     }

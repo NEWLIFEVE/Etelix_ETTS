@@ -172,7 +172,7 @@ class TicketController extends Controller
                         }
 		}
 
-		$this->render('create',array(
+		$this->render('createinternal',array(
 			'model'=>$model
 		));
 	}
@@ -423,12 +423,14 @@ class TicketController extends Controller
 		</p>
                 </div>
                 ';
-                
-                $mailer->enviar($cuerpo, $_POST['emails'], '', 'ETTS TICKET TEST', $rutaAttachFile);
-                
-                echo 'success';
+                $envioMail = $mailer->enviar($cuerpo, $_POST['emails'], '', 'ETTS TICKET TEST', $rutaAttachFile);
+                if ($envioMail === true) {
+                    echo 'success';
+                } else {
+                    echo 'Error al enviar el correo: ' . $envioMail;
+                }
             } else {
-                echo 'error';
+                echo 'Error al enviar el ticket';
             }
         }
 }
