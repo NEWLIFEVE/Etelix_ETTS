@@ -73,7 +73,8 @@
         
 <div class="input-control select block">
         Account Manager<small class="text-muted "><em> (required)</em></small>
-        <select id="class"></select>
+        <?php echo $form->dropDownList($model,'id_manager', Managers::getListManagers(),  array('empty' => '' ,'class' => 'validate[required]')); ?>
+        <?php echo $form->error($model,'id_manager'); ?>
 </div>
         
 <div class="input-control select block">

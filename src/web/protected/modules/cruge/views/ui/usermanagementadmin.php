@@ -26,19 +26,19 @@ foreach(Yii::app()->user->um->getSortFieldNamesForICrugeStoredUser() as $key=>$f
 	
 $cols[] = array(
 	'class'=>'CButtonColumn',
-	
-	'template' => '{update} {eliminar}',
+	'template' => '{update}',
+//	'template' => '{update} {eliminar}',
 	'deleteConfirmation'=>CrugeTranslator::t('admin', 'Are you sure you want to delete this user'),
 	'buttons' => array(
 			'update'=>array(
 				'label'=>CrugeTranslator::t('admin', 'Update User'),
 				'url'=>'array("usermanagementupdate","id"=>$data->getPrimaryKey())'
 			),
-			'eliminar'=>array(
-				'label'=>CrugeTranslator::t('admin', 'Delete User'),
-				'imageUrl'=>Yii::app()->user->ui->getResource("delete.png"),
-				'url'=>'array("usermanagementdelete","id"=>$data->getPrimaryKey())'
-			),
+//			'eliminar'=>array(
+//				'label'=>CrugeTranslator::t('admin', 'Delete User'),
+//				'imageUrl'=>Yii::app()->user->ui->getResource("delete.png"),
+//				'url'=>'array("usermanagementdelete","id"=>$data->getPrimaryKey())'
+//			),
 		),	
 );
 $this->widget(Yii::app()->user->ui->CGridViewClass, 
