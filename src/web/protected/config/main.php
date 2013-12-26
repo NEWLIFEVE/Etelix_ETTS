@@ -178,6 +178,9 @@ return array(
                 'format' => array(
                         'datetimeFormat'=>"d M, Y h:m:s a",
                 ),
+                'session' => array (
+                    'timeout' => 43200,
+                ),
 	),
 
 	// application-level parameters that can be accessed
