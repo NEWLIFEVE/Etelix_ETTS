@@ -1,5 +1,5 @@
 <div class="form">
-<h1><?php echo ucwords(CrugeTranslator::t("campos personalizados"));?></h1>
+<h2><?php echo ucwords(CrugeTranslator::t("custom fields"));?></h2>
 
 <?php echo Yii::app()->user->ui->getFieldAdminCreateLink(CrugeTranslator::t("Crear un nuevo Campo Personalizado")); ?>
 

@@ -1,4 +1,4 @@
-<h1><?php echo ucwords(CrugeTranslator::t("roles"));?></h1>
+<h2><?php echo ucwords(CrugeTranslator::t("roles"));?></h2>
 
 <div class='auth-item-create-button'>
 <?php echo CHtml::link(CrugeTranslator::t("Crear Nuevo Rol")

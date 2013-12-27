@@ -31,6 +31,9 @@ function miConfirm(mensaje)
     });
 }
 
+jQuery.fn.reset = function () {
+  $(this).each (function() { this.reset(); });
+}
 
 $(document).on('ready', function(){
     
@@ -499,6 +502,10 @@ $(document).on('ready', function(){
                                 padding: 10,
                                 content: '<center><h2>Success<h2></center>'
                           });
+                          $("#Ticket_mail").children('option').remove();
+                          $('#Ticket_mail').addClass('validate[required]');
+                          $("#ticket-form").reset();
+                          
                        } else {
                            $.Dialog.close();
                            $.Dialog({

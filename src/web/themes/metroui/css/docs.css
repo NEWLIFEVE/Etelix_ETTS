@@ -522,3 +522,8 @@ ul.yiiPager .last
 {
 	display:none !important;
 }
+
+/******** registration cruge ***********/
+#content_password {
+    margin-top: -5px !important;
+}

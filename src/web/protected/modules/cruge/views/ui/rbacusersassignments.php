@@ -8,12 +8,12 @@
 	$loaderSrc = Yii::app()->user->ui->getResource('loading.gif');
 	$loaderImg = "<img src='{$loaderSrc}'>";
 
-	$selectedUserGetter = 'userdescription';
+	$selectedUserGetter = 'username';
 ?>
 <div class='form'>
 <div class='crugepanel user-assignments-role-list'>
-	<h1><?php echo ucfirst(CrugeTranslator::t("Roles Disponibles"));?></h1>
-	<p><?php echo ucfirst(CrugeTranslator::t("Haz click en un rol para ver los usuarios asignados a el"));?></p>
+	<h2><?php echo ucfirst(CrugeTranslator::t("roles available"));?></h2>
+	<p><?php echo ucfirst(CrugeTranslator::t("Click on a role to see the users assigned to it"));?></p>
 	<ul class='auth-item'>
 	<?php 
 		$loader = "<span class='loader'></span>";

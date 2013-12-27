@@ -3,9 +3,9 @@
 		$model:  es una instancia que implementa a ICrugeField
 	*/
 ?>
-<h1><?php echo ucwords(CrugeTranslator::t(	
-		(($model->isNewRecord==1) ? "creando nuevo campo personalizado" :"editando campo personalizado")
-	));?></h1>
+<h2><?php echo ucwords(CrugeTranslator::t(	
+		(($model->isNewRecord==1) ? "creating new custom field" :"updating custom field")
+	));?></h2>
 <div class="form">
 <?php $form = $this->beginWidget('CActiveForm', array(
     'id'=>'crugefield-form',
