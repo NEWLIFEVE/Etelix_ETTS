@@ -523,7 +523,11 @@ ul.yiiPager .last
 	display:none !important;
 }
 
-/******** registration cruge ***********/
+/******** cruge (registration - update)***********/
 #content_password {
     margin-top: -5px !important;
+}
+
+select#CrugeStoredUser_id_carrier.select_carrier {
+    width:390px !important;
 }
