@@ -28,7 +28,7 @@ $form=$this->beginWidget('CActiveForm', array(
 <div class="span9">
     <h2>Ticket Information</h2>
     <div class="example">
-        <?php $this->renderPartial('_form', array('form'=>$form,'model'=>$model)); ?>
+        <?php $this->renderPartial('_forminternal', array('form'=>$form,'model'=>$model)); ?>
     </div>
 </div>
 
@@ -42,9 +42,9 @@ $form=$this->beginWidget('CActiveForm', array(
                     'id'=>'uploadFile',
                     'config'=>array(
                            'action'=>Yii::app()->createUrl('file/upload'),
-                           'allowedExtensions'=>array('pdf', 'gif', 'jpeg', 'png', 'jpg', 'xlsx', 'xls', 'txt', 'cap', 'pcap', 'csv'),
+                           'allowedExtensions'=>array('pdf', 'gif', 'jpeg', 'png', 'jpg', 'xlsx', 'xls', 'txt'),
                            'sizeLimit'=>10*1024*1024,// maximum file size in bytes
-                           'minSizeLimit'=>1,// minimum file size in bytes
+                           'minSizeLimit'=>512,// minimum file size in bytes
                            'onComplete'=>"js:function(id, fileName, responseJSON){ $('#content_attached_file').append('<input type=\'hidden\' name=\'attachFile[]\' value=\''+fileName+'\'> <input type=\'hidden\' name=\'attachFileSave[]\' value=\''+responseJSON.filename+'\'> <input type=\'hidden\' name=\'attachFileSize[]\' value=\''+responseJSON.size+'\'>'); }",
                             
                            /*'onComplete'=>"js:function(id, fileName, responseJSON){ alert(fileName); }",

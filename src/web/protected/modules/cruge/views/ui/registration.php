@@ -1,6 +1,6 @@
 <div class="span12">
     <h2>Create New User</h2>
-    <div class="form">
+    <!--<div class="form">-->
     <?php
             /*
                     $model:  es una instancia que implementa a ICrugeStoredUser
@@ -15,45 +15,66 @@
         
             <legend>Account data</legend>
             
-            <div class="separador-vertical"></div>
-            <?php echo $form->labelEx($model, 'id_carrier') ?>
-            <?php echo $form->dropDownList($model,'id_carrier', Carrier::getCarriers(),  array('empty' => 'Select carrier')); ?>
+<!--            <div class="separador-vertical"></div>
+            <?php // echo $form->labelEx($model, 'id_carrier') ?>
+            <?php // echo $form->dropDownList($model,'id_carrier', Carrier::getCarriers(),  array('empty' => 'Select carrier')); ?>
             <span id="disable_enable">Disable</span> <input type="checkbox" id="disable_carrier" name="disable_carrier" value="ok">
-            <?php echo $form->error($model, 'id_carrier'); ?>
-            <div class="separador-vertical"></div>
+            <?php // echo $form->error($model, 'id_carrier'); ?>
+            <div class="separador-vertical"></div>-->
+            
+            
+            <div class="input-control select block">
+                <?php echo $form->labelEx($model, 'id_carrier') ?>
+                <?php echo $form->dropDownList($model,'id_carrier', Carrier::getCarriers(),  array('empty' => 'Select carrier', 'style' => 'width:390px')); ?>
+                <span id="disable_enable">Disable</span> <input type="checkbox" id="disable_carrier" name="disable_carrier" value="ok">
+                <?php echo $form->error($model, 'id_carrier'); ?>
+                
+            </div>
             
             <?php 
                     foreach (CrugeUtil::config()->availableAuthModes as $authmode){
-                        echo "<div class='col'>";
+                        echo "<div class='input-control text block span6'>";
                             echo $form->labelEx($model,$authmode);
                             echo $form->textField($model,$authmode);
                             echo $form->error($model,$authmode);
                         echo "</div>";
                     }
             ?>
-            <div class="col">
+
+<!--        <div id="content_password" class="row">   -->
+                <div class="input-control text span4">
                     <?php echo $form->labelEx($model,'newPassword'); ?>
-                    <div class='item'>
-                            <?php echo $form->textField($model,'newPassword'); ?>
-                            <p class='hint'><?php echo CrugeTranslator::t(
-                                    "su contrase�a, letras o digitos o los caracteres @#$%. minimo 6 simbolos.");?></p>
-                    </div>
+                    <?php echo $form->textField($model,'newPassword'); ?>
                     <?php echo $form->error($model,'newPassword'); ?>
+                </div>
+
+
+                <div class="span2">
+                    <div class="input-control text span2">
                     <script>
-                            function fnSuccess(data){
-                                    $('#CrugeStoredUser_newPassword').val(data);
-                            }
-                            function fnError(e){
-                                    alert("error: "+e.responseText);
-                            }
+                                function fnSuccess(data){
+                                        $('#CrugeStoredUser_newPassword').val(data);
+                                }
+                                function fnError(e){
+                                        alert("error: "+e.responseText);
+                                }
                     </script>
-                    <?php echo CHtml::ajaxbutton(
-                            CrugeTranslator::t("Generar una nueva clave")
-                            ,Yii::app()->user->ui->ajaxGenerateNewPasswordUrl
-                            ,array('success'=>new CJavaScriptExpression('fnSuccess'),
-                                    'error'=>new CJavaScriptExpression('fnError'))
-                    ); ?>
-            </div>
+                    <p></p><br>
+                        <?php 
+                        echo CHtml::ajaxbutton(
+                        CrugeTranslator::t("Generate a new key")
+                        ,Yii::app()->user->ui->ajaxGenerateNewPasswordUrl
+                        ,array('success'=>new CJavaScriptExpression('fnSuccess'),
+                                'error'=>new CJavaScriptExpression('fnError'))
+                        ,array('class' => 'default')
+                        );  
+                        ?>
+                    </div>
+                </div>
+            <!--</div>-->
+            <!--<div></div>-->
+            <?php // echo CHtml::submitButton('Save', array('class' => 'primary large', 'name'=>'preview', 'style' => 'width:460px')); ?>
+           
     </div>
 
 
@@ -64,7 +85,7 @@
                     echo '<legend>Profile</legend>';
                     foreach($model->getFields() as $f){
                             // aqui $f es una instancia que implementa a: ICrugeField
-                            echo "<div class='col'>";
+                            echo "<div class='input-control text block span6'>";
                             echo Yii::app()->user->um->getLabelField($f);
                             echo Yii::app()->user->um->getInputField($model,$f);
                             echo $form->error($model,$f->fieldname);
@@ -111,14 +132,11 @@
     </div>
     <?php } ?>
     <!-- fin pide captcha-->
-
-
-
-    <div class="row buttons">
-            <?php Yii::app()->user->ui->tbutton("Registrarse"); ?>
+    <div class="row buttons" style="text-align: center;">
+	<?php echo CHtml::submitButton('Save', array('class' => 'primary large', 'name'=>'preview', 'style' => 'width:500px')); ?>
     </div>
-    <?php echo $form->errorSummary($model); ?>
+    <?php // echo $form->errorSummary($model); ?>
     <?php $this->endWidget(); ?>
-    </div>
+    <!--</div>-->
 </div>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/cruge/registration.js',CClientScript::POS_END); ?>

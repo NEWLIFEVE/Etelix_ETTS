@@ -133,8 +133,10 @@ class CrugeUser2 extends CActiveRecord
 		return parent::model($className);
 	}
         
-        public static function getIdCarrier()
+        public static function getUsuerByIdCarrier()
         {
             return self::model()->findAll("id_carrier is not null");
         }
+        
+        
 }

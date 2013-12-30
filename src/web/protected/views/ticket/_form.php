@@ -75,10 +75,10 @@
         <?php echo $form->error($model,'prefix'); ?>
 </div>
 
-<div class="grid">
+<!--<div class="grid">
     <div class="row" id="separador-prefijo"></div>
 </div>
-
+-->
 
 
 <div class="input-control select block">

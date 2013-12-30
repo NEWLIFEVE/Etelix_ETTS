@@ -123,4 +123,41 @@ class SiteController extends Controller
 		Yii::app()->user->logout();
 		$this->redirect(Yii::app()->homeUrl);
 	}
+        
+        public static function controlAcceso() 
+        {
+            $tipoUsuario = CrugeAuthassignment::getRoleUser();
+            /* ADMIN */
+            if ($tipoUsuario == "A") {
+                return array(
+                    array('label'=>'My tickets', 'url'=>array('/ticket/admin')),
+                    array('label'=>'Open ticket', 'url'=>array('/ticket/create')),
+                );
+            }
+            
+            /* SUBADMIN */
+            if ($tipoUsuario == "S") {
+                return array(
+                    array('label'=>'My tickets', 'url'=>array('/ticket/admin')),
+                    array('label'=>'Open ticket', 'url'=>array('/ticket/create')),
+                );
+            }
+            
+            /* CLIENTE */
+            if ($tipoUsuario == "C") {
+                return array(
+                    array('label'=>'My tickets', 'url'=>array('/ticket/admin')),
+                    array('label'=>'Open ticket', 'url'=>array('/ticket/create')),
+                );
+            }
+            
+            /* INTERNO */
+            if ($tipoUsuario == "I") {
+                return array(
+                    array('label'=>'My tickets', 'url'=>array('/ticket/admin')),
+                    array('label'=>'Open ticket', 'url'=>array('/ticket/createinternal')),
+                );
+            }
+        
+        }
 }

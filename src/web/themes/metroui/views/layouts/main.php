@@ -8,11 +8,11 @@
         <link href="<?php echo Yii::app()->theme->baseUrl; ?>/js/prettify/prettify.css" rel="stylesheet">
         <link href="<?php echo Yii::app()->theme->baseUrl; ?>/css/docs.css" rel="stylesheet" type="text/css">
         <link href="<?php echo Yii::app()->theme->baseUrl; ?>/css/datepicker.css" rel="stylesheet" type="text/css">
-                
-        <?php Yii::app()->clientScript->registerCoreScript('jquery'); ?>
-        <?php Yii::app()->clientScript->registerCoreScript('jquery.ui'); ?>
+        
         <?php Yii::app()->clientScript->registerCssFile(Yii::app()->clientScript->getCoreScriptUrl().'/jui/css/base/jquery-ui.css'); ?>
         
+        <?php Yii::app()->clientScript->registerCoreScript('jquery'); ?>
+        <?php Yii::app()->clientScript->registerCoreScript('jquery.ui'); ?>
         <!--<script src="<?php // echo Yii::app()->theme->baseUrl; ?>/js/jquery/jquery.min.js"></script>-->
         <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/jquery/jquery.widget.min.js"></script>
         <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/jquery/jquery.mousewheel.js"></script>
@@ -44,11 +44,11 @@
                         <?php echo CHtml::link('<i class="icon-home on-right on-left"></i> Home', array('/site/index'), array('class' => 'element')); ?>
                         <div class="element">
                             <?php echo CHtml::link('<i class="icon-box-add on-right on-left"></i> Tickets', '#', array('class' => 'dropdown-toggle')); ?>
-                            <?php $this->widget('zii.widgets.CMenu',array(
-                                'items'=>array(
-                                        array('label'=>'My tickets', 'url'=>array('/ticket/admin')),
-                                        array('label'=>'Open ticket', 'url'=>array('/ticket/create')),
-                                ),
+                            <?php
+                            Yii::import('webroot.protected.controllers.SiteController');
+                            $menuItems=SiteController::controlAcceso();
+                            $this->widget('zii.widgets.CMenu',array(
+                                'items'=>$menuItems,
                                 'htmlOptions' => array(
                                     'class' => 'dropdown-menu',
                                     'id' => 'base-submenu',

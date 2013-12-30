@@ -36,6 +36,14 @@ class Ticket extends CActiveRecord
 	 * @return Ticket the static model class
 	 */
         public $maximo;
+        public $id_manager;
+        public $description;
+        public $mail = array();
+        public $tested_numbers = array();
+        public $country = array();
+        public $date_number = array();
+        public $hour_number = array();
+        
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
@@ -49,12 +57,6 @@ class Ticket extends CActiveRecord
 		return 'ticket';
 	}
         
-        public $description;
-        public $mail = array();
-        public $tested_numbers = array();
-        public $country = array();
-        public $date_number = array();
-        public $hour_number = array();
 
 	/**
 	 * @return array validation rules for model attributes.
@@ -126,8 +128,10 @@ class Ticket extends CActiveRecord
 		// should not be searched.
 
 		$criteria=new CDbCriteria;
-
-		$criteria->compare('id',$this->id);
+                $criteria->join = "left join mail_ticket mt on mt.id_ticket = t.id left join mail_user mu on mu.id = mt.id_mail_user";
+		$criteria->condition = "mu.id_user = ".Yii::app()->user->id."";
+                $criteria->order = "t.id DESC";             
+                $criteria->compare('id',$this->id);
 		$criteria->compare('id_ticket',$this->id_ticket);
 		$criteria->compare('id_failure',$this->id_failure);
 		$criteria->compare('id_status',$this->id_status);

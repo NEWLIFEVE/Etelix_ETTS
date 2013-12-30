@@ -22,10 +22,18 @@ function miConfirm(mensaje)
         title: false,
         width: 500,
         padding: 10,
-        content: mensaje + '<button id="ok_confirm" type="button">OK</button>  <button id="cancel_confirm" type="button">Cancel</button>'
+        content: 
+            '<div id="content_mensaje"><h2>' + mensaje + '</h2></div>' + 
+            '<div id="content_botones">' +
+                '<button class="primary large" id="ok_confirm" type="button">OK</button>' +
+                '<button class="primary large" id="cancel_confirm" type="button">Cancel</button>' +
+            '</div>'
     });
 }
 
+jQuery.fn.reset = function () {
+  $(this).each (function() { this.reset(); });
+}
 
 $(document).on('ready', function(){
     
@@ -386,9 +394,6 @@ $(document).on('ready', function(){
                             '<input type="text" value="'+$('#Ticket_id_failure option:selected').html()+'" disabled>' +
                         '</div>'+
 
-                        '<div class="grid" >' +
-                            '<div class="row" id="separador-prefijo"></div>' +
-                        '</div>' +
 
                         '<div class="_label">Origination IP <small class="text-muted "><em>(Customer IP)</em></small><span class="margen_17px"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DestinationIP  <small class="text-muted "><em>(Etelix IP)</em></small></div>'+
                         '<div class="input-control text block" data-role="input-control">'+
@@ -410,22 +415,12 @@ $(document).on('ready', function(){
                             '<input type="text" value="'+$('#Ticket_prefix').val()+'" disabled>' +
                         '</div>'+
 
-                        '<div class="grid" >'+
-                            '<div class="row" id="separador-prefijo"></div>'+
-                       '</div>'+
 
                         '<div class="input-control text block">'+
                             'GMT'+
                             '<input type="text" value="'+$('#Ticket_idGmt option:selected').html()+'" disabled>' +
                         '</div>'+
 
-                        '<div class="grid" >' +
-                            '<div class="row" id="separador-prefijo"></div>' +
-                        '</div>' +
-
-                        '<div class="grid" >' +
-                            '<div class="row" id="separador-prefijo"></div>' +
-                        '</div>' +
 
                         '<div id="tabla_tested_number" class="grid">'+
                             tablaNumber + 
@@ -470,7 +465,8 @@ $(document).on('ready', function(){
                              title: 'Sending email',
                              width: 500,
                              padding: 10,
-                             content: '<center><h2>Wait a few seconds...<h2></center>'
+                             content: '<center><h2>Wait a few seconds...<h2><img src="/images/loader.GIF"></center>'
+                                 
                        });
                    },
                    data:{
@@ -497,7 +493,6 @@ $(document).on('ready', function(){
                    success:function(data){
                        if (data == 'success') {
                            $.Dialog.close();
-
                            $.Dialog({
                                 shadow: true,
                                 overlay: false,
@@ -506,6 +501,21 @@ $(document).on('ready', function(){
                                 width: 500,
                                 padding: 10,
                                 content: '<center><h2>Success<h2></center>'
+                          });
+                          $("#Ticket_mail").children('option').remove();
+                          $('#Ticket_mail').addClass('validate[required]');
+                          $("#ticket-form").reset();
+                          
+                       } else {
+                           $.Dialog.close();
+                           $.Dialog({
+                                shadow: true,
+                                overlay: false,
+                                icon: '<span class="icon-rocket"></span>',
+                                title: 'Operation complete',
+                                width: 500,
+                                padding: 10,
+                                content: '<center>'+data+'</center>'
                           });
                        }
                    }

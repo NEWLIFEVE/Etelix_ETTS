@@ -3615,7 +3615,7 @@ a {
   cursor: pointer;
   /*background-color: #fff;*/
   outline: 0;
-  height: 34px;
+  /*height: 34px;*/
   position: relative;
   width: 100%;
 }
@@ -3793,7 +3793,8 @@ a {
 .metro .input-control.file input {
   border: 1px #d9d9d9 solid;
   width: 100%;
-  height: 100%;
+  /*height: 100%;*/
+  height: 34px;
   padding: 5px;
   z-index: 1;
 }

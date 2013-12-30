@@ -7,7 +7,7 @@ class TicketController extends Controller
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
 	public $layout='//layouts/column2';
-        
+                
 	/**
 	 * @return array action filters
 	 */
@@ -119,6 +119,64 @@ class TicketController extends Controller
 			'model'=>$model
 		));
 	}
+        
+        
+        
+        
+        public function actionCreateinternal()
+	{
+		$model=new Ticket;
+                /*Instancio los modelos donde se harán inserts*/
+                $modelTestedNumbers= new TestedNumber;
+                $modelDescripcionTicket= new DescriptionTicket;
+                
+                
+		// Uncomment the following line if AJAX validation is needed
+		// $this->performAjaxValidation($model);
+
+		if(isset($_POST['Ticket']))
+		{
+                        
+			$model->attributes=$_POST['Ticket'];
+                        
+                        //Demás atributos que no estan en el formualrio
+                        $model->id_status = 1;
+                        $model->date = new CDbExpression('NOW()');
+                        $model->machine_ip = Yii::app()->request->userHostAddress;
+                        
+			if($model->save()) {
+                               
+                                $countDestination = $_POST['Ticket']['country'];
+                                $countTestedNumbers = $_POST['Ticket']['tested_numbers'];
+                                $countFecha = $_POST['Ticket']['date_number'];
+                                
+                                for ($i = 0; $i < count($countTestedNumbers); $i++) {
+                                    // Guardo en TestedNumbers
+                                    $model->addTestedNumbers(
+                                            $model->primaryKey, 
+                                            $countDestination[$i], 
+                                            $countTestedNumbers[$i], 
+                                            $countFecha[$i]
+                                            );
+                                }
+                                
+                                // Guardo en DescripcionTicket
+                                $modelDescripcionTicket->id_ticket = $model->primaryKey;
+                                $modelDescripcionTicket->description = $_POST['Ticket']['description'];
+                                $modelDescripcionTicket->date = new CDbExpression('NOW()');
+                                
+                                $modelTestedNumbers->save();
+                                $modelDescripcionTicket->save();
+                                
+				$this->redirect(array('view','id'=>$model->id));
+                        }
+		}
+
+		$this->render('createinternal',array(
+			'model'=>$model
+		));
+	}
+        
 
 	/**
 	 * Updates a particular model.
@@ -365,12 +423,15 @@ class TicketController extends Controller
 		</p>
                 </div>
                 ';
-                
-                $mailer->enviar($cuerpo, $_POST['emails'], '', $ticketNumber, $rutaAttachFile);
-                
-                echo 'success';
+
+                $envioMail = $mailer->enviar($cuerpo, $_POST['emails'], '', 'ETTS TICKET TEST', $rutaAttachFile);
+                if ($envioMail === true) {
+                    echo 'success';
+                } else {
+                    echo 'Error al enviar el correo: ' . $envioMail;
+                }
             } else {
-                echo 'error';
+                echo 'Error al enviar el ticket';
             }
         }
 }
