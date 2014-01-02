@@ -2,10 +2,27 @@
 function fnFormatDetails ( oTable, nTr )
 {
         var aData = oTable.fnGetData( nTr );
+        
+        //Tested numbers
+        var number = aData[10].split(',');
+        var date = aData[11].split(',');
+        var hour = aData[12].split(',');
+        var country = aData[13].split('|');
+        // end tested numbers
+        
+        // Response to
+//        var mails = aData[14].split(',');
+        // end response to
+        
         var sOut = '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">';
-        sOut += '<tr><td>Rendering engine:</td><td>'+aData[1]+' '+aData[4]+'</td></tr>';
-        sOut += '<tr><td>Link to source:</td><td>Could provide a link here</td></tr>';
-        sOut += '<tr><td>Extra info:</td><td>And any further details here (images etc)</td></tr>';
+        sOut += '<tr><td>Description:</td><td>'+aData[7]+'</td></tr>';
+        sOut += '<tr><td>Prefix:</td><td>'+aData[8]+'</td></tr>';
+        sOut += '<tr><td>GMT:</td><td>'+aData[9]+'</td></tr>';
+        sOut += '<tr><td>Tested Number:</td><td>'+number.join('<br>')+'</td></tr>';
+        sOut += '<tr><td>Date:</td><td>'+date.join('<br>')+'</td></tr>';
+        sOut += '<tr><td>Hour:</td><td>'+hour.join('<br>')+'</td></tr>';
+        sOut += '<tr><td>Country:</td><td>'+country.join('<br>')+'</td></tr>';
+//        sOut += '<tr><td>Response to:</td><td>'+mails.join('<br>')+'</td></tr>';
         sOut += '</table>';
 
         return sOut;
@@ -35,7 +52,7 @@ $(document).ready(function() {
                 "aoColumnDefs": [
                         { "bSortable": false, "aTargets": [ 0 ] }
                 ],
-                "aaSorting": [[1, 'asc']],
+                "aaSorting": [[1, 'desc']],
                 "sPaginationType": "full_numbers"
         });
 

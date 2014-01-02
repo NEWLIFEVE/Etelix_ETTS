@@ -531,3 +531,8 @@ ul.yiiPager .last
 select#CrugeStoredUser_id_carrier.select_carrier {
     width:390px !important;
 }
+
+
+.hidden{
+    display: none !important;
+}

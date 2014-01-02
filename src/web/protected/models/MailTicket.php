@@ -92,4 +92,9 @@ class MailTicket extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+        
+        public static function getMails($id_tickets)
+        {
+            return self::model()->findAll("id_ticket = $id_tickets");
+        }
 }

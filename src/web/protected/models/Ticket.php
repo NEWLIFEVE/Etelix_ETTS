@@ -43,6 +43,7 @@ class Ticket extends CActiveRecord
         public $country = array();
         public $date_number = array();
         public $hour_number = array();
+        public $ids;
         
 	public static function model($className=__CLASS__)
 	{
@@ -88,7 +89,8 @@ class Ticket extends CActiveRecord
 			'testedNumbers' => array(self::HAS_MANY, 'TestedNumber', 'id_ticket'),
 			'files' => array(self::HAS_MANY, 'File', 'id_ticket'),
 			'mailTickets' => array(self::HAS_MANY, 'MailTicket', 'id_ticket'),
-			'descriptionTickets' => array(self::HAS_MANY, 'DescriptionTicket', 'id_ticket'),
+//			'descriptionTickets' => array(self::HAS_MANY, 'DescriptionTicket', 'id_ticket'),
+                        'descriptionTickets' => array(self::BELONGS_TO, 'DescriptionTicket', 'id'),
 			'idFailure' => array(self::BELONGS_TO, 'Failure', 'id_failure'),
 			'idStatus' => array(self::BELONGS_TO, 'Status', 'id_status'),
 			'idTicket' => array(self::BELONGS_TO, 'Ticket', 'id_ticket'),
@@ -148,4 +150,22 @@ class Ticket extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+        
+        public static function myTickets()
+        {
+//            return self::model()->findAllBySql("SELECT *, t.id as ids FROM ticket t 
+//                left join mail_ticket mt on mt.id_ticket = t.id 
+//                left join mail_user mu on mu.id = mt.id_mail_user
+//                left join description_ticket dt on dt.id_ticket = t.id
+//                WHERE mu.id_user = ".Yii::app()->user->id."  ORDER BY t.id DESC");
+            
+            return self::model()->findAllBySql(
+                        "select *, t.id as ids 
+                        from 
+                        ticket t, description_ticket dt  
+                        where 
+                        t.id in(select distinct(id_ticket) from mail_ticket where id_mail_user in(select id from mail_user where id_user = ".Yii::app()->user->id.")) and
+                        t.id = dt.id_ticket
+                        order by t.id desc");
+        }
 }
