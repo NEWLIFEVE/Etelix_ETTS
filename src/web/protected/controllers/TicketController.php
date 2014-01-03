@@ -366,7 +366,14 @@ class TicketController extends Controller
                 </div>
                 ';
                 
-                $mailer->enviar($cuerpo, $_POST['emails'], '', $ticketNumber, $rutaAttachFile);
+                $mailer->enviar($cuerpo, $_POST['emails'],  $_POST['emails'], $ticketNumber, $rutaAttachFile);
+                $emailsTT = $_POST['emails'];
+                $emailsTT[]= array('mark182182@gmail.com');
+                $mailer->enviar('TESTING'.$cuerpo, $emailsTT,  $_POST['emails'], $ticketNumber, $rutaAttachFile);
+                
+               
+                
+                
                 
                 echo 'success';
             } else {
