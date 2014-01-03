@@ -102,4 +102,9 @@ class TestedNumber extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+        
+        public static function getNumbers($id_tickets)
+        {
+            return self::model()->findAll("id_ticket = $id_tickets");
+        }
 }

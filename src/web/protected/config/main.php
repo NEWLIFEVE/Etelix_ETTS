@@ -179,7 +179,7 @@ return array(
                         'datetimeFormat'=>"d M, Y h:m:s a",
                 ),
                 'session' => array (
-                    'timeout' => 43200,
+                    'timeout' => false,
                 ),
 	),
 

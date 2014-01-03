@@ -88,5 +88,27 @@ class Mail extends CActiveRecord
 		));
 	}
         
+        public static function getMails($condition = false)
+        {
+            if (!$condition)
+                return self::model()->findAll();
+            else
+                return self::model()->findAll($condition);
+        }
+
+
+        public static function getNameMails($id_ticket)
+        {
+            $mailID = array();
+            $correo = array();
+            
+            foreach (MailTicket::getMails($id_ticket) as $value)
+                $mailID[] = $value->idMailUser->id_mail;
+            
+            foreach (self::getMails("id in(".implode(",", $mailID).")") as $value)
+                $correo[] = $value->mail;
+            
+            return $correo;
+        }
         
 }
