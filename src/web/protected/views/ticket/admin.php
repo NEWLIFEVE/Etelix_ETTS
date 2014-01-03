@@ -112,13 +112,13 @@ $this->renderPartial('_search',array(
                     <th class="hidden">Date</th>
                     <th class="hidden">Hour</th>
                     <th class="hidden">Country</th>
-                    <!--<th class="hidden">Mail</th>-->
+                    <th class="hidden">Mail</th>
 		</tr>
 	</thead>
 	<tbody>
                 <?php foreach (Ticket::myTickets() as $ticket): ?>
-                    <tr <?php if ($ticket->idStatus->id === 2) echo 'class="gradeX"'; else echo 'class="gradeA"'; ?> >
-                        <td><?php echo $ticket->ids; ?></td>
+                    <tr <?php if ($ticket->idStatus->id === 2) echo 'class="gradeX"'; ?> >
+                        <td><?php echo $ticket->ticket_number; ?></td>
                         <td><?php echo $ticket->idFailure->name; ?></td>
                         <td ><?php echo $ticket->idStatus->name; ?></td>
                         <td><?php echo $ticket->origination_ip; ?></td>
@@ -131,13 +131,14 @@ $this->renderPartial('_search',array(
                         <td class="hidden"><?php foreach (TestedNumber::getNumbers($ticket->ids) as $value) echo $value->date . ','; ?></td>
                         <td class="hidden"><?php foreach (TestedNumber::getNumbers($ticket->ids) as $value) echo $value->hour . ','; ?></td>
                         <td class="hidden"><?php foreach (TestedNumber::getNumbers($ticket->ids) as $value) echo $value->idCountry->name . '|'; ?></td>
-                        <!--<td class="hidden"><?php // echo implode(',', Mail::getNameMails($ticket->ids)); ?></td>-->
+                        <td class="hidden"><?php echo implode(',', Mail::getNameMails($ticket->ids)); ?></td>
                     </tr>
                 <?php endforeach; ?>
 	</tbody>
 </table>
 </div>
 
-<?php Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl . '/css/table_detail.css'); ?>
+<?php Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl . '/css/demo_table_jui.css'); ?>
+<?php Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl . '/css/datatable.css'); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/plugins/jquery/jquery.dataTables.min.js',CClientScript::POS_END); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/admin.js',CClientScript::POS_END); ?>

@@ -11,20 +11,23 @@ function fnFormatDetails ( oTable, nTr )
         // end tested numbers
         
         // Response to
-//        var mails = aData[14].split(',');
+        var mails = aData[14].split(',');
         // end response to
         
-        var sOut = '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">';
-        sOut += '<tr><td>Description:</td><td>'+aData[7]+'</td></tr>';
-        sOut += '<tr><td>Prefix:</td><td>'+aData[8]+'</td></tr>';
-        sOut += '<tr><td>GMT:</td><td>'+aData[9]+'</td></tr>';
-        sOut += '<tr><td>Tested Number:</td><td>'+number.join('<br>')+'</td></tr>';
-        sOut += '<tr><td>Date:</td><td>'+date.join('<br>')+'</td></tr>';
-        sOut += '<tr><td>Hour:</td><td>'+hour.join('<br>')+'</td></tr>';
-        sOut += '<tr><td>Country:</td><td>'+country.join('<br>')+'</td></tr>';
-//        sOut += '<tr><td>Response to:</td><td>'+mails.join('<br>')+'</td></tr>';
-        sOut += '</table>';
-
+        var sOut = '<div style="float:left"><div class="input-control select block"><select><option>Change status</option></select></div>';
+        sOut += '<table class="tablas">';
+        sOut += '<tr><th colspan="4">Response to</th></tr>';
+        sOut += '<tr><td colspan="4">'+mails.join('<br>')+'</td></tr>';
+        sOut += '<tr><th colspan="4">Prefix</th></tr>';
+        sOut += '<tr><td colspan="4">'+aData[8]+'</td></tr>';
+        sOut += '<tr><th colspan="4">GMT</th></tr>';
+        sOut += '<tr><td colspan="4">'+aData[9]+'</td></tr>';
+        sOut += '<tr><th>Tested Number</th><th>Country</th><th>Date</th><th>Hour</th></tr>';
+        sOut += '<tr><td>'+number.join('<br>')+'</td><td>'+country.join('<br>')+'</td><td>'+date.join('<br>')+'</td><td>'+hour.join('<br>')+'</td></tr>';
+        sOut += '<tr><th colspan="4">Description</th></tr>';
+        sOut += '<tr><td colspan="4" style="text-align:justify">'+aData[7]+'</td></tr>';
+        sOut += '</table></div>';
+        
         return sOut;
 }
 
@@ -49,11 +52,15 @@ $(document).ready(function() {
          * Initialse DataTables, with no sorting on the 'details' column
          */
         var oTable = $('#example').dataTable( {
+//                "sScrollY": "400px",
+//                "bScrollCollapse": true,
+                "bJQueryUI": true,
+                "sPaginationType": "full_numbers",
                 "aoColumnDefs": [
                         { "bSortable": false, "aTargets": [ 0 ] }
                 ],
-                "aaSorting": [[1, 'desc']],
-                "sPaginationType": "full_numbers"
+                "aaSorting": [[1, 'desc']]
+                
         });
 
         /* Add event listener for opening and closing details

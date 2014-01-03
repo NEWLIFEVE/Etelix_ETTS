@@ -142,10 +142,6 @@ div.input-control.text.span1.margen-number.hour_div{width: 80px !important; heig
     margin: 0 !important;
 }
 
-/*#pp {
-    margin-bottom: 30px;
-}*/
-
 .separador-vertical {
     clear: left;
     padding: 5px 0;
@@ -399,6 +395,57 @@ table#tabla_preview tr:last-child td:last-child {
     border-radius: 0 0 6px 0;
 }*/
 
+
+/********Detalle del ticket*********/
+table.tablas {
+    border-collapse: collapse; /* IE7 and lower */
+    border-spacing: 0;
+    width: 100%;    
+}
+
+table.tablas {
+    border: solid #aaa 1px;
+/*    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;*/
+    -webkit-box-shadow: 0 1px 1px #ccc; 
+    -moz-box-shadow: 0 1px 1px #ccc; 
+    box-shadow: 0 1px 1px #ccc;
+    max-width: 400px !important;
+}
+
+table.tablas tr:hover {
+    background: #fbf8e9;
+    -o-transition: all 0.1s ease-in-out;
+    -webkit-transition: all 0.1s ease-in-out;
+    -moz-transition: all 0.1s ease-in-out;
+    -ms-transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out;     
+}    
+    
+table.tablas td, table.tablas th {
+    border-left: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    padding: 3px;
+    text-align: left;    
+}
+
+table.tablas th {
+    background-color: #16499a !important;
+    -webkit-box-shadow: 0 1px 0 rgba(255,255,255,.8) inset; 
+    -moz-box-shadow:0 1px 0 rgba(255,255,255,.8) inset;  
+    box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;        
+    border-top: none;
+    color: #ffffff !important;
+    font-family: 'Segoe UI Light_', 'Open Sans Light', Verdana, Arial, Helvetica, sans-serif !important;
+    font-size: 14px;
+    font-weight: normal;
+}
+
+table.tablas td:first-child, table.tablas th:first-child {
+    border-left: none;
+}
+/* ./detalle del ticket */
 
 
 a#imprimir {
