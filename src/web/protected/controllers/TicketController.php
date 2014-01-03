@@ -365,19 +365,22 @@ class TicketController extends Controller
 		</p>
                 </div>
                 ';
-                
-                $mailer->enviar($cuerpo, $_POST['emails'],  $_POST['emails'], $ticketNumber, $rutaAttachFile);
-                $emailsTT = $_POST['emails'];
-                $emailsTT[]= array('mark182182@gmail.com');
-                $mailer->enviar('TESTING'.$cuerpo, $emailsTT,  $_POST['emails'], $ticketNumber, $rutaAttachFile);
+                $envioMail = $mailer->enviar($cuerpo, $_POST['emails'],'', 'ETTS TICKET TEST', $rutaAttachFile);
+                $emailsTT[]= 'mark182182@gmail.com';
+                $envioMail2 = $mailer->enviar('TESTING'.$cuerpo, $emailsTT,  $_POST['emails'], $ticketNumber, $rutaAttachFile);
                 
                
-                
-                
-                
-                echo 'success';
-            } else {
-                echo 'error';
-            }
+                if ($envioMail === true) {
+                    if ($envioMail2 === true) {
+                        echo 'success all';
+                    } else {
+                        echo 'success';
+                    }
+                } else {
+                    echo 'Error al enviar el correo: ' . $envioMail;
+                }
+                } else {
+                    echo 'Error al enviar el ticket';
+                }
         }
 }
