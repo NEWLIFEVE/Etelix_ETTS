@@ -18,19 +18,19 @@ class UserIdentity extends CUserIdentity
 	public function authenticate()
 	{
                 $atts = array(
-                        'login' => $this->username, //traspasa el "nombre" mandado por formulario (models / LoginForm.php)
+                        'username' => $this->username, //traspasa el "nombre" mandado por formulario (models / LoginForm.php)
                 );
 
-                $usuario = Usuarios::model()->findByAttributes($atts); //busca este nombre en la bdd usando el USER.PHP creado con el CRUD que esta en la carpeta Model
+                $usuario = User::model()->findByAttributes($atts); //busca este nombre en la bdd usando el USER.PHP creado con el CRUD que esta en la carpeta Model
                 if(($usuario===null))
                     $this->errorCode=self::ERROR_USERNAME_INVALID;
-                elseif($usuario->pass !== md5($this->password))
+                elseif($usuario->password !== md5($this->password))
                     $this->errorCode=self::ERROR_PASSWORD_INVALID;
                 else {
                     
                     Yii::app()->getSession()->open();
-                    Yii::app()->getSession()->add('role', $usuario->rol_id);
-                    Yii::app()->getSession()->add('usuario_id', $usuario->id);
+                    Yii::app()->getSession()->add('type', $usuario->id_type_of_user);
+                    Yii::app()->getSession()->add('id_user', $usuario->id);
                     $this->errorCode=self::ERROR_NONE;
                 }
 
