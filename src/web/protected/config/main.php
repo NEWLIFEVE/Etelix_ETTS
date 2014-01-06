@@ -8,11 +8,10 @@
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 	'name'=>'ETTS',
-        'language' => 'es',
+//        'language' => 'en',
         'sourceLanguage' => 'en',
         'charset'=> 'utf-8',
         'theme' => 'metroui',
-//        'defaultController' => 'site/login',
 
 	// preloading 'log' component
 	'preload'=>array('log'),
@@ -21,8 +20,10 @@ return array(
 	'import'=>array(
 		'application.models.*',
 		'application.components.*',
+                'application.modules.cruge.components.*',
+                'application.modules.cruge.extensions.crugemailer.*',
 	),
-
+    
 	'modules'=>array(
 		// uncomment the following to enable the Gii tool
 
@@ -32,14 +33,74 @@ return array(
 			// If removed, Gii defaults to localhost only. Edit carefully to taste.
 			'ipFilters'=>array('127.0.0.1','::1'),
 		),
+                'cruge'=>array(
+				'tableprefix'=>'cruge_',
+
+				// para que utilice a protected.modules.cruge.models.auth.CrugeAuthDefault.php
+				//
+				// en vez de 'default' pon 'authdemo' para que utilice el demo de autenticacion alterna
+				// para saber mas lee documentacion de la clase modules/cruge/models/auth/AlternateAuthDemo.php
+				//
+				'availableAuthMethods'=>array('default'),
+
+				'availableAuthModes'=>array('username','email'),
+
+                                // url base para los links de activacion de cuenta de usuario
+				'baseUrl'=>'http://coco.com/',
+
+				 // NO OLVIDES PONER EN FALSE TRAS INSTALAR
+				 'debug'=>false,
+				 'rbacSetupEnabled'=>false,
+				 'allowUserAlways'=>false,
+
+				// MIENTRAS INSTALAS..PONLO EN: false
+				// lee mas abajo respecto a 'Encriptando las claves'
+				//
+				'useEncryptedPassword' => true,
+
+				// Algoritmo de la función hash que deseas usar
+				// Los valores admitidos están en: http://www.php.net/manual/en/function.hash-algos.php
+				'hash' => 'md5',
+
+				// Estos tres atributos controlan la redirección del usuario. Solo serán son usados si no
+				// hay un filtro de sesion definido (el componente MiSesionCruge), es mejor usar un filtro.
+				//  lee en la wiki acerca de:
+                                //   "CONTROL AVANZADO DE SESIONES Y EVENTOS DE AUTENTICACION Y SESION"
+                                //
+				// ejemplo:
+				//		'afterLoginUrl'=>array('/site/welcome'),  ( !!! no olvidar el slash inicial / )
+				//		'afterLogoutUrl'=>array('/site/page','view'=>'about'),
+				//
+				'afterLoginUrl'=>array('/site/index'),
+				'afterLogoutUrl'=>array('/site/index'),
+				'afterSessionExpiredUrl'=>array('/site/index'),
+
+				// manejo del layout con cruge.
+				//
+				'loginLayout'=>'//layouts/column2',
+				'registrationLayout'=>'//layouts/column2',
+				'activateAccountLayout'=>'//layouts/column2',
+				'editProfileLayout'=>'//layouts/column2',
+				// en la siguiente puedes especificar el valor "ui" o "column2" para que use el layout
+				// de fabrica, es basico pero funcional.  si pones otro valor considera que cruge
+				// requerirá de un portlet para desplegar un menu con las opciones de administrador.
+				//
+				'generalUserManagementLayout'=>'ui',
+
+				// permite indicar un array con los nombres de campos personalizados, 
+				// incluyendo username y/o email para personalizar la respuesta de una consulta a: 
+				// $usuario->getUserDescription(); 
+				'userDescriptionFieldsArray'=>array('email'), 
+                                'superuserName'=>'ettsadmin',
+			),
 	),
 
 	// application components
 	'components'=>array(
-		'user'=>array(
-			// enable cookie-based authentication
-			'allowAutoLogin'=>true,
-		),
+//		'user'=>array(
+//			// enable cookie-based authentication
+//			'allowAutoLogin'=>true,
+//		),
 		// uncomment the following to enable URLs in path-format
 
 		'urlManager'=>array(
@@ -51,16 +112,31 @@ return array(
 				'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
 			),
 		),
+                'mail' => array(
+                        'class' => "application.components.EnviarEmail",
+                ),
 		'db'=>array(
 			'connectionString' => 'sqlite:'.dirname(__FILE__).'/../data/testdrive.db',
 		),
 		// uncomment the following to use a MySQL database
 	
 		'db'=>array(
-			'connectionString' => 'pgsql:host=192.168.1.110;port=5432;dbname=etts',
+
+//			'connectionString' => 'pgsql:host=172.16.17.190;port=5432;dbname=etts',
+			'connectionString' => 'pgsql:host=localhost;port=5432;dbname=etts',
 			'emulatePrepare' => true,
 			'username' => 'postgres',
-			'password' => '123',
+//			'password' => '123',
+			'password' => 'Nsusfd8263',
+			'charset' => 'utf8',
+		),
+                'soriDB'=>array(
+                        'class' => 'CDbConnection',
+//			'connectionString' => 'pgsql:host=172.16.17.190;port=5432;dbname=sori',
+			'connectionString' => 'pgsql:host=localhost;port=5432;dbname=sori',
+			'username' => 'postgres',
+//			'password' => '123',
+			'password' => 'Nsusfd8263',
 			'charset' => 'utf8',
 		),
 		'errorHandler'=>array(
@@ -82,6 +158,26 @@ return array(
 				*/
 			),
 		),
+                //  IMPORTANTE:  asegurate de que la entrada 'user' (y format) que por defecto trae Yii
+                //               sea sustituida por estas a continuación:
+                //
+                'user'=>array(
+                        'allowAutoLogin'=>true,
+                        'class' => 'application.modules.cruge.components.CrugeWebUser',
+                        'loginUrl' => array('/cruge/ui/login'),
+                ),
+                'authManager' => array(
+                        'class' => 'application.modules.cruge.components.CrugeAuthManager',
+                ),
+                'crugemailer'=>array(
+                        'class' => 'application.modules.cruge.components.CrugeMailer',
+                        'mailfrom' => 'email-desde-donde-quieres-enviar-los-mensajes@xxxx.com',
+                        'subjectprefix' => 'Tu Encabezado del asunto - ',
+                        'debug' => true,
+                ),
+                'format' => array(
+                        'datetimeFormat'=>"d M, Y h:m:s a",
+                ),
 	),
 
 	// application-level parameters that can be accessed

@@ -28,7 +28,11 @@ class SiteController extends Controller
 				'class'=>'CViewAction',
 			),
 		);
+                
+                return array( );
 	}
+        
+        
 
 	/**
 	 * This is the default 'index' action that is invoked
@@ -36,32 +40,13 @@ class SiteController extends Controller
 	 */
 	public function actionIndex()
 	{
+            
             if(!Yii::app()->user->isGuest)
             {
                 $this->render('index');
-            }else{
-		// renders the view file 'protected/views/site/index.php'
-		// using the default layout 'protected/views/layouts/main.php'
-                $model=new LoginForm;
-
-		// if it is ajax validation request
-		if(isset($_POST['ajax']) && $_POST['ajax']==='login-form')
-		{
-			echo CActiveForm::validate($model);
-			Yii::app()->end();
-		}
-
-		// collect user input data
-		if(isset($_POST['LoginForm']))
-		{
-			$model->attributes=$_POST['LoginForm'];
-			// validate user input and redirect to the previous page if valid
-			if($model->validate() && $model->login())
-				$this->redirect(Yii::app()->user->returnUrl);
-		}
-		// display the login form
-		$this->render('login',array('model'=>$model));
-	}
+            } else {
+                $this->redirect(Yii::app()->user->ui->loginUrl);
+            }
         }
 
 	/**
@@ -124,7 +109,7 @@ class SiteController extends Controller
 			$model->attributes=$_POST['LoginForm'];
 			// validate user input and redirect to the previous page if valid
 			if($model->validate() && $model->login())
-				$this->redirect(Yii::app()->baseUrl . '/tickets');
+				$this->redirect(Yii::app()->baseUrl . '/ticket');
 		}
 		// display the login form
 		$this->render('login',array('model'=>$model));
