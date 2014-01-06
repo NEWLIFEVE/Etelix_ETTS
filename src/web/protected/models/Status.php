@@ -87,4 +87,9 @@ class Status extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+        
+        public static function getStatus()
+        {
+            return self::model()->findAll(array("order" => "name ASC"));
+        }
 }

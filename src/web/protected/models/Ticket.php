@@ -18,6 +18,8 @@
  * @property string $ticket_number
  *
  * The followings are the available model relations:
+ * @property TicketRelation[] $ticketRelations
+ * @property TicketRelation[] $ticketRelations1
  * @property TestedNumber[] $testedNumbers
  * @property File[] $files
  * @property MailTicket[] $mailTickets
@@ -67,6 +69,7 @@ class Ticket extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
+                        
 			array('id_failure, id_status, origination_ip, destination_ip, date, machine_ip', 'required'),
 			array('id_ticket, id_failure, id_status, id_gmt', 'numerical', 'integerOnly'=>true),
 			array('origination_ip, destination_ip, machine_ip', 'length', 'max'=>64),
@@ -86,6 +89,8 @@ class Ticket extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+                        'ticketRelations' => array(self::HAS_MANY, 'TicketRelation', 'id_ticket_father'),
+			'ticketRelations1' => array(self::HAS_MANY, 'TicketRelation', 'id_ticket_son'),
 			'testedNumbers' => array(self::HAS_MANY, 'TestedNumber', 'id_ticket'),
 			'files' => array(self::HAS_MANY, 'File', 'id_ticket'),
 			'mailTickets' => array(self::HAS_MANY, 'MailTicket', 'id_ticket'),
@@ -168,4 +173,19 @@ class Ticket extends CActiveRecord
                         t.id = dt.id_ticket
                         order by t.id desc");
         }
+        
+        public static function ticketsRelations($idTicket)
+        {
+            return self::model()->findAllBySql(
+                        "select * from ticket where id in(
+                        select tr.id_ticket_son
+                        from 
+                        ticket t, ticket_relation tr
+                        where 
+                        t.id in(select distinct(id_ticket) from mail_ticket where id_mail_user in(select id from mail_user where id_user = 3)) and
+                        t.id = tr.id_ticket_father and t.id = $idTicket
+                        order by t.id desc
+                        )");
+        }
+        
 }

@@ -105,14 +105,20 @@ $this->renderPartial('_search',array(
                     <th>Origination Ip</th>
                     <th>Destination Ip</th>
                     <th>Date</th>
-                    <th class="hidden">Date</th>
+                    <th class="hidden">Tickets Relations</th>
+                    <th class="hidden">Tickets Relations</th>
+                    <th class="hidden">Tickets Relations</th>
+                    <th class="hidden">Tickets Relations</th>
+                    <th class="hidden">Tickets Relations</th>
+                    <th class="hidden">Tickets Relations</th>
+<!--                    <th class="hidden">Date</th>
                     <th class="hidden">Prefix</th>
                     <th class="hidden">GMT</th>
                     <th class="hidden">Number</th>
                     <th class="hidden">Date</th>
                     <th class="hidden">Hour</th>
                     <th class="hidden">Country</th>
-                    <th class="hidden">Mail</th>
+                    <th class="hidden">Mail</th>-->
 		</tr>
 	</thead>
 	<tbody>
@@ -120,18 +126,32 @@ $this->renderPartial('_search',array(
                     <tr <?php if ($ticket->idStatus->id === 2) echo 'class="gradeX"'; ?> >
                         <td><?php echo $ticket->ticket_number; ?></td>
                         <td><?php echo $ticket->idFailure->name; ?></td>
-                        <td ><?php echo $ticket->idStatus->name; ?></td>
+                        <td >
+                            
+                            <select id="status">
+                                <?php foreach (Status::getStatus() as $value): ?>
+                                    <option value="<?php  echo $value->id; ?>" <?php if ($ticket->idStatus->id === $value->id) echo 'selected';?>><?php echo $value->name; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                            <input type="hidden" id="<?php echo $ticket->ids; ?>" value="<?php echo $ticket->ids; ?>">
+                        </td>
                         <td><?php echo $ticket->origination_ip; ?></td>
                         <td><?php echo $ticket->destination_ip; ?></td>
                         <td><?php echo $ticket->date; ?></td>
-                        <td class="hidden"><?php echo $ticket->descriptionTickets->description; ?></td>
-                        <td class="hidden"><?php echo $ticket->prefix; ?></td>
-                        <td class="hidden"><?php echo $ticket->idGmt->name; ?></td>
-                        <td class="hidden"><?php foreach (TestedNumber::getNumbers($ticket->ids) as $value) echo $value->numero . ','; ?></td>
-                        <td class="hidden"><?php foreach (TestedNumber::getNumbers($ticket->ids) as $value) echo $value->date . ','; ?></td>
-                        <td class="hidden"><?php foreach (TestedNumber::getNumbers($ticket->ids) as $value) echo $value->hour . ','; ?></td>
-                        <td class="hidden"><?php foreach (TestedNumber::getNumbers($ticket->ids) as $value) echo $value->idCountry->name . '|'; ?></td>
-                        <td class="hidden"><?php echo implode(',', Mail::getNameMails($ticket->ids)); ?></td>
+                        <td class="hidden"><?php foreach (Ticket::ticketsRelations($ticket->ids) as $value) echo $value->ticket_number . '|'; ?></td>
+                        <td class="hidden"><?php foreach (Ticket::ticketsRelations($ticket->ids) as $value) echo $value->idFailure->name . '|'; ?></td>
+                        <td class="hidden"><?php foreach (Ticket::ticketsRelations($ticket->ids) as $value) echo $value->idStatus->name . '|'; ?></td>
+                        <td class="hidden"><?php foreach (Ticket::ticketsRelations($ticket->ids) as $value) echo $value->origination_ip . '|'; ?></td>
+                        <td class="hidden"><?php foreach (Ticket::ticketsRelations($ticket->ids) as $value) echo $value->destination_ip . '|'; ?></td>
+                        <td class="hidden"><?php foreach (Ticket::ticketsRelations($ticket->ids) as $value) echo $value->date . '|'; ?></td>
+<!--                        <td class="hidden"><?php // echo $ticket->descriptionTickets->description; ?></td>
+                        <td class="hidden"><?php // echo $ticket->prefix; ?></td>
+                        <td class="hidden"><?php // echo $ticket->idGmt->name; ?></td>
+                        <td class="hidden"><?php // foreach (TestedNumber::getNumbers($ticket->ids) as $value) echo $value->numero . ','; ?></td>
+                        <td class="hidden"><?php // foreach (TestedNumber::getNumbers($ticket->ids) as $value) echo $value->date . ','; ?></td>
+                        <td class="hidden"><?php // foreach (TestedNumber::getNumbers($ticket->ids) as $value) echo $value->hour . ','; ?></td>
+                        <td class="hidden"><?php // foreach (TestedNumber::getNumbers($ticket->ids) as $value) echo $value->idCountry->name . '|'; ?></td>
+                        <td class="hidden"><?php // echo implode(',', Mail::getNameMails($ticket->ids)); ?></td>-->
                     </tr>
                 <?php endforeach; ?>
 	</tbody>

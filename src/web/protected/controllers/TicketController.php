@@ -441,4 +441,9 @@ class TicketController extends Controller
                     echo 'Error al enviar el ticket';
                 }
         }
+        
+        public function actionUpdatestatus()
+        {
+            Ticket::model()->updateByPk($_POST['idTicket'], array('id_status' => $_POST['idStatus']));
+        }
 }
