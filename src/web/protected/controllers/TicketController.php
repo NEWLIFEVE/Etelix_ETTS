@@ -278,12 +278,13 @@ class TicketController extends Controller
                 
                 $mailer = new EnviarEmail;
                 
-                $cuerpo = 
+                $header = 
                 '<div style="width:100%">
                         <img src="http://deve.sacet.com.ve/images/logo.jpg" height="100"/>
                         <hr>
                         <div style="text-align:right">Ticket Confirmation<br>Ticket #: '.$ticketNumber.'</div>
-                        <div>
+                ';
+                 $info = '  <div>
                                 <h2>Hello "'. Yii::app()->user->name .'"</h2>
                                 <p style="text-align:justify">
                                     <div>Dear Customer:</div><br/>
@@ -298,8 +299,17 @@ class TicketController extends Controller
                                 </p>
                         </div>
                         <hr>
-                </div>
-                <h2>Ticket Details</h2>
+                </div>';
+                 
+                 $info_tt = '  <div>
+                                <p style="text-align:justify">
+                                    Probando información distinta (info) 
+                                </p>
+                        </div>
+                        <hr>
+                </div>';
+                 
+                $detail = '<h2>Ticket Details</h2>
                 <table style="border-spacing: 0; width:100%; border: solid #ccc 1px;">
 			<tr>
 			    <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc; padding: 5px 10px; text-align: left;">Response to</th>
@@ -358,29 +368,40 @@ class TicketController extends Controller
 			<tr>
                                 <td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$_POST['description'].'</td>
 			</tr>
-		</table>
-                <div style="width:100%">
+		</table>';
+                
+                $footer = '<div style="width:100%">
 		<p style="text-align:justify">
                     <br/><div style="font-style:italic;">Please do not reply to this email. Replies to this message are routed to an unmonitored mailbox.</div>
 		</p>
                 </div>
                 ';
-                $envioMail = $mailer->enviar($cuerpo, $_POST['emails'],'', 'ETTS TICKET TEST', $rutaAttachFile);
-                $emailsTT[]= 'mark182182@gmail.com';
-                $envioMail2 = $mailer->enviar('TESTING'.$cuerpo, $emailsTT,  $_POST['emails'], $ticketNumber, $rutaAttachFile);
+                $footer_tt = '<div style="width:100%">
+		<p style="text-align:justify">
+                    <br/><div style="font-style:italic;">Please do not reply to this email. Replies to this message are routed to an unmonitored mailbox.</div>
+		</p>
+                </div>
+                ';
+                
+                $cuerpo = $header.$info.$detail.$footer;
+                $cuerpo_tt = $header.$info_tt.$detail.$footer_tt;
+                
+                $envioMail = $mailer->enviar($cuerpo, $_POST['emails'],'', $ticketNumber, $rutaAttachFile);
+                $emailsTT[]= 'tt@etelix.com';
+                $envioMail2 = $mailer->enviar($cuerpo_tt, $emailsTT,  $_POST['emails'], $ticketNumber, $rutaAttachFile);
                 
                
                 if ($envioMail === true) {
                     if ($envioMail2 === true) {
-                        echo 'success all';
+                        echo 'success';
                     } else {
                         echo 'success';
                     }
                 } else {
                     echo 'Error al enviar el correo: ' . $envioMail;
                 }
-                } else {
-                    echo 'Error al enviar el ticket';
-                }
+            } else {
+                echo 'Error al enviar el ticket';
+            }
         }
 }
