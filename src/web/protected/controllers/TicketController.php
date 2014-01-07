@@ -302,8 +302,9 @@ class TicketController extends Controller
                 </div>';
                  
                  $info_tt = '  <div>
+                                <h2>Hello</h2>
                                 <p style="text-align:justify">
-                                    Probando información distinta (info) 
+                                    You have a new ticket from <h2>"'. Yii::app()->user->name .'"</h2>
                                 </p>
                         </div>
                         <hr>
