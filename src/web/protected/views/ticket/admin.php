@@ -75,24 +75,18 @@ $this->widget('zii.widgets.grid.CGridView', array(
 	'dataProvider'=>$model->search(),
 	'filter'=>$model,
 	'columns'=>array(
-//		'id',
 		'ticket_number',
-//		'id_ticket',
-//		'id_failure',
              array(
             'name'=>'idFailure',
             'value'=>'$data->idFailure->name',
             'type'=>'text',
-//            'filter'=>  Accionlog::getListAccionLog(),
-//            'htmlOptions'=>array(
-//                'style'=>'text-align: center',
-//                ),
+            'header' => 'Failure'
             ),
-//		'id_status',
              array(
             'name'=>'idStatus',
             'value'=>'$data->idStatus->name',
             'type'=>'text',
+            'header' => 'Status'
             ),
 		'origination_ip',
 		'destination_ip',
@@ -106,7 +100,31 @@ $this->widget('zii.widgets.grid.CGridView', array(
 		*/
 		array(
 			'class'=>'CButtonColumn',
+                        'template'=>'{detail}',
+                        'buttons'=>array(
+                            'detail' => array( //botón para la acción nueva
+//                                'class'=>'CLinkColumn',
+                                'label'=>'descripción accion_nueva', // titulo del enlace del botón nuevo
+                                'imageUrl'=>Yii::app()->request->baseUrl.'/images/view.gif', //ruta icono para el botón
+//                                'url'=>'$data->id',
+                                'click'=>'js:function(e){ e.preventDefault();   
+                                    $.Dialog({
+                                    shadow: true,
+                                    overlay: true,
+                                    flat:true,
+                                    icon:false,
+                                    title: false,
+                                    width: 510,
+                                    height: 300,
+                                    padding: 0,
+                                    draggable: true,
+                                    content:"<img src='.Yii::app()->request->baseUrl.'/images/work.jpg>"
+
+                                });}',
+                                'header'=>'button'
+                            ),
+                        ),
 		),
 	),
-)); 
+));
 ?>
