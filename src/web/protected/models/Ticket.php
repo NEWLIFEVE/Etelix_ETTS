@@ -135,9 +135,9 @@ class Ticket extends CActiveRecord
 		// should not be searched.
 
 		$criteria=new CDbCriteria;
-                $criteria->join = "left join mail_ticket mt on mt.id_ticket = t.id left join mail_user mu on mu.id = mt.id_mail_user";
-		$criteria->condition = "mu.id_user = ".Yii::app()->user->id."";
-                $criteria->order = "t.id DESC";             
+                
+		$criteria->condition = "id in(".implode(",", self::getIdTicketsByuser()).")";
+                $criteria->order = "id DESC";             
                 $criteria->compare('id',$this->id);
 		$criteria->compare('id_ticket',$this->id_ticket);
 		$criteria->compare('id_failure',$this->id_failure);
@@ -156,6 +156,29 @@ class Ticket extends CActiveRecord
 		));
 	}
         
+        public static function ticketsByUsers($idUser)
+        {
+            
+            
+            return self::model()->findAllBySql(
+                                "select *
+                                from 
+                                ticket 
+                                where 
+                                id in(select distinct(id_ticket) from mail_ticket where id_mail_user in(select id from mail_user where id_user = $idUser))
+                                order by id desc");
+        }
+        
+        
+        public static function getIdTicketsByuser()
+        {
+            $ids = array();
+            foreach (self::ticketsByUsers(Yii::app()->user->id) as $value) {
+                $ids[] = $value->id;
+            }
+            return $ids;
+        }
+
         public static function myTickets()
         {
 //            return self::model()->findAllBySql("SELECT *, t.id as ids FROM ticket t 
@@ -187,5 +210,7 @@ class Ticket extends CActiveRecord
                         order by t.id desc
                         )");
         }
+        
+        
         
 }
