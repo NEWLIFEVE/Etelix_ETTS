@@ -126,14 +126,15 @@ $this->renderPartial('_search',array(
                     <tr <?php if ($ticket->idStatus->id === 2) echo 'class="gradeX"'; ?> >
                         <td><?php echo $ticket->ticket_number; ?></td>
                         <td><?php echo $ticket->idFailure->name; ?></td>
-                        <td >
-                            
-                            <select id="status">
-                                <?php foreach (Status::getStatus() as $value): ?>
-                                    <option value="<?php  echo $value->id; ?>" <?php if ($ticket->idStatus->id === $value->id) echo 'selected';?>><?php echo $value->name; ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                            <input type="hidden" id="<?php echo $ticket->ids; ?>" value="<?php echo $ticket->ids; ?>">
+                        <td>
+                            <div class="input-control select block select-status" >
+                                <select id="status">
+                                    <?php foreach (Status::getStatus() as $value): ?>
+                                        <option value="<?php  echo $value->id; ?>" <?php if ($ticket->idStatus->id === $value->id) echo 'selected';?>><?php echo $value->name; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                                <input type="hidden" id="<?php echo $ticket->ids; ?>" value="<?php echo $ticket->ids; ?>">
+                            <div>
                         </td>
                         <td><?php echo $ticket->origination_ip; ?></td>
                         <td><?php echo $ticket->destination_ip; ?></td>

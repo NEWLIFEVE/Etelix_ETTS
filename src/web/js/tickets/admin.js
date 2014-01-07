@@ -4,7 +4,7 @@ function fnFormatDetails ( oTable, nTr )
         var aData = oTable.fnGetData( nTr );
         var sOut = '<table class="tablas">';
         
-        for(var i= 0; i < aData[7].split('|').length; i++) {
+        for(var i= 0; i < aData[7].split('|').length - 1; i++) {
             sOut +=  '<tr><td>&nbsp;</td><td>' + 
                 aData[7].split('|')[i] + '</td><td>' + 
                 aData[8].split('|')[i] + '</td><td>' + 
@@ -15,30 +15,6 @@ function fnFormatDetails ( oTable, nTr )
         }
         
         sOut += '</table>';
-//        //Tested numbers
-//        var number = aData[10].split(',');
-//        var date = aData[11].split(',');
-//        var hour = aData[12].split(',');
-//        var country = aData[13].split('|');
-//        // end tested numbers
-//        
-//        // Response to
-//        var mails = aData[14].split(',');
-//        // end response to
-//        
-//        var sOut = '<div style="float:left"><div class="input-control select block"><select><option>Change status</option></select></div>';
-//        sOut += '<table class="tablas">';
-//        sOut += '<tr><th colspan="4">Response to</th></tr>';
-//        sOut += '<tr><td colspan="4">'+mails.join('<br>')+'</td></tr>';
-//        sOut += '<tr><th colspan="4">Prefix</th></tr>';
-//        sOut += '<tr><td colspan="4">'+aData[8]+'</td></tr>';
-//        sOut += '<tr><th colspan="4">GMT</th></tr>';
-//        sOut += '<tr><td colspan="4">'+aData[9]+'</td></tr>';
-//        sOut += '<tr><th>Tested Number</th><th>Country</th><th>Date</th><th>Hour</th></tr>';
-//        sOut += '<tr><td>'+number.join('<br>')+'</td><td>'+country.join('<br>')+'</td><td>'+date.join('<br>')+'</td><td>'+hour.join('<br>')+'</td></tr>';
-//        sOut += '<tr><th colspan="4">Description</th></tr>';
-//        sOut += '<tr><td colspan="4" style="text-align:justify">'+aData[7]+'</td></tr>';
-//        sOut += '</table></div>';
         
         return sOut;
 }
@@ -49,7 +25,7 @@ $(document).ready(function() {
 //           $(this).closest('td').find("input").each(function() {
 //                alert(this.value)
 //           });
-            _tr = $(this).parent('td').parent('tr');
+            _tr = $(this).parent('div').parent('td').parent('tr');
             _status = $(this).val();
             $.ajax({
                 type:'POST',
@@ -63,7 +39,6 @@ $(document).ready(function() {
                         _tr.addClass('gradeX')
                     } else {
                         _tr.removeClass('gradeX')
-//                        $(this).removeClass(class)
                     }
                 }
             });
