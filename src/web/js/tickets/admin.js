@@ -59,10 +59,11 @@ $(document).ready(function() {
                       idStatus:_status
                 },
                 success:function(data){
-                    if (_status === 2) {
+                    if (_status == 2) {
                         _tr.addClass('gradeX')
                     } else {
-                        _tr.removeClass('gradeX');
+                        _tr.removeClass('gradeX')
+//                        $(this).removeClass(class)
                     }
                 }
             });
