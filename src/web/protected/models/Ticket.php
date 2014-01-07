@@ -127,7 +127,10 @@ class Ticket extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('id',$this->id);
+		$criteria->join = "left join mail_ticket mt on mt.id_ticket = t.id left join mail_user mu on mu.id = mt.id_mail_user";
+		$criteria->condition = "mu.id_user = ".Yii::app()->user->id."";
+                $criteria->order = "t.id DESC";             
+                $criteria->compare('id',$this->id);
 		$criteria->compare('id_ticket',$this->id_ticket);
 		$criteria->compare('id_failure',$this->id_failure);
 		$criteria->compare('id_status',$this->id_status);
