@@ -52,6 +52,7 @@ class Ticket extends CActiveRecord
 	}
         
         public $description;
+        public $User;
         public $mail = array();
         public $tested_numbers = array();
         public $country = array();

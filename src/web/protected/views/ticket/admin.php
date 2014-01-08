@@ -42,18 +42,27 @@ $this->widget('zii.widgets.grid.CGridView', array(
 	'filter'=>$model,
 	'columns'=>array(
 		'ticket_number',
-             array(
-            'name'=>'idFailure',
-            'value'=>'$data->idFailure->name',
-            'type'=>'text',
-            'header' => 'Failure'
-            ),
-             array(
-            'name'=>'idStatus',
-            'value'=>'$data->idStatus->name',
-            'type'=>'text',
-            'header' => 'Status'
-            ),
+                array(
+//                'name'=>'User',
+                'value'=>'CrugeUser2::getUserTicket($data->id)',
+                'type'=>'text',
+                'header' => 'User',
+                'htmlOptions'=>array(
+                    'width'=>'100',
+                ),
+                ),
+                array(
+               'name'=>'idFailure',
+               'value'=>'$data->idFailure->name',
+               'type'=>'text',
+               'header' => 'Failure'
+               ),
+                array(
+               'name'=>'idStatus',
+               'value'=>'$data->idStatus->name',
+               'type'=>'text',
+               'header' => 'Status'
+               ),
 		'origination_ip',
 		'destination_ip',
 		/*
