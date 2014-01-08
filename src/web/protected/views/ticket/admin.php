@@ -27,6 +27,7 @@
                     <th class="hidden">Hour</th>
                     <th class="hidden">Country</th>
                     <th class="hidden">Mail</th>-->
+                    <th>&nbsp;</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -61,6 +62,7 @@
                         <td class="hidden"><?php // foreach (TestedNumber::getNumbers($ticket->ids) as $value) echo $value->hour . ','; ?></td>
                         <td class="hidden"><?php // foreach (TestedNumber::getNumbers($ticket->ids) as $value) echo $value->idCountry->name . '|'; ?></td>
                         <td class="hidden"><?php // echo implode(',', Mail::getNameMails($ticket->ids)); ?></td>-->
+                        <td><a href="javascript:void(0)"><img src="<?php echo Yii::app(); ?>"></a></td>
                     </tr>
                 <?php endforeach; ?>
 	</tbody>
