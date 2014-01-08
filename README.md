@@ -3,6 +3,11 @@ Etelix_ETTS
 
 Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
 
+Realese 1.0.2:
+-Se muestran solo tickets de Usuario para cliente
+-Se agrego envio de correo a tt@etelix.com
+-Preview de ticket en gridview
+
 Realese 1.0.1:
 -se ordenaron los carriers alfabeticamente
 -se eliminan carriers de la lista desplegable que ya existan como usuarios
