@@ -495,9 +495,8 @@ $(document).on('ready', function(){
                        _ticketComplete: ticketComplete
                    },
                    success:function(data){
-                       if (data == 'success') {
+                        if (data == 'success') {
                            $.Dialog.close();
-
                            $.Dialog({
                                 shadow: true,
                                 overlay: false,
@@ -506,6 +505,21 @@ $(document).on('ready', function(){
                                 width: 500,
                                 padding: 10,
                                 content: '<center><h2>Success<h2></center>'
+                          });
+                          $("#Ticket_mail").children('option').remove();
+                          $('#Ticket_mail').addClass('validate[required]');
+                          $("#ticket-form").reset();
+                          
+                       } else {
+                           $.Dialog.close();
+                           $.Dialog({
+                                shadow: true,
+                                overlay: false,
+                                icon: '<span class="icon-rocket"></span>',
+                                title: 'Operation complete',
+                                width: 500,
+                                padding: 10,
+                                content: '<center>'+data+'</center>'
                           });
                        }
                    }
