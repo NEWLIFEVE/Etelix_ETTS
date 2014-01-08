@@ -62,7 +62,7 @@
                         <td class="hidden"><?php // foreach (TestedNumber::getNumbers($ticket->ids) as $value) echo $value->hour . ','; ?></td>
                         <td class="hidden"><?php // foreach (TestedNumber::getNumbers($ticket->ids) as $value) echo $value->idCountry->name . '|'; ?></td>
                         <td class="hidden"><?php // echo implode(',', Mail::getNameMails($ticket->ids)); ?></td>-->
-                        <td><a href="javascript:void(0)"><img src="<?php echo Yii::app(); ?>"></a></td>
+                        <td><a href="javascript:void(0)"><img src="<?php echo Yii::app()->request->baseUrl.'/images/view.gif'; ?>"></a></td>
                     </tr>
                 <?php endforeach; ?>
 	</tbody>

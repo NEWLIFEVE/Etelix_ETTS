@@ -21,6 +21,7 @@ function fnFormatDetails ( oTable, nTr )
 
 $(document).ready(function() {
         
+        
         $(document).on('change', 'select#status', function(){
 //           $(this).closest('td').find("input").each(function() {
 //                alert(this.value)
@@ -49,9 +50,9 @@ $(document).ready(function() {
          */
         var nCloneTh = document.createElement( 'th' );
         var nCloneTd = document.createElement( 'td' );
-        nCloneTd.innerHTML = '<img src="/images/details_open.png">';
+        nCloneTd.innerHTML = '<img class="detalle" src="/images/details_open.png">';
         nCloneTd.className = "center";
-
+        
         $('#example thead tr').each( function () {
                 this.insertBefore( nCloneTh, this.childNodes[0] );
         } );
@@ -59,7 +60,7 @@ $(document).ready(function() {
         $('#example tbody tr').each( function () {
                 this.insertBefore(  nCloneTd.cloneNode( true ), this.childNodes[0] );
         } );
-
+        
         /*
          * Initialse DataTables, with no sorting on the 'details' column
          */
@@ -79,7 +80,7 @@ $(document).ready(function() {
          * Note that the indicator for showing which row is open is not controlled by DataTables,
          * rather it is done here
          */
-        $('#example tbody td img').live('click', function () {
+        $('#example tbody td img.detalle').live('click', function () {
                 var nTr = $(this).parents('tr')[0];
                 if ( oTable.fnIsOpen(nTr) )
                 {
