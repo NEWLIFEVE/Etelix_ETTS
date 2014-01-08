@@ -54,7 +54,7 @@
                         <td class="hidden"><?php foreach (Ticket::ticketsRelations($ticket->ids) as $value) echo $value->origination_ip . '|'; ?></td>
                         <td class="hidden"><?php foreach (Ticket::ticketsRelations($ticket->ids) as $value) echo $value->destination_ip . '|'; ?></td>
                         <td class="hidden"><?php foreach (Ticket::ticketsRelations($ticket->ids) as $value) echo $value->date . '|'; ?></td>
-<!--                        <td class="hidden"><?php // echo $ticket->descriptionTickets->description; ?></td>
+                        <!--<td class="hidden"><?php // echo $ticket->descriptionTickets->description; ?></td>
                         <td class="hidden"><?php // echo $ticket->prefix; ?></td>
                         <td class="hidden"><?php // echo $ticket->idGmt->name; ?></td>
                         <td class="hidden"><?php // foreach (TestedNumber::getNumbers($ticket->ids) as $value) echo $value->numero . ','; ?></td>
@@ -62,7 +62,7 @@
                         <td class="hidden"><?php // foreach (TestedNumber::getNumbers($ticket->ids) as $value) echo $value->hour . ','; ?></td>
                         <td class="hidden"><?php // foreach (TestedNumber::getNumbers($ticket->ids) as $value) echo $value->idCountry->name . '|'; ?></td>
                         <td class="hidden"><?php // echo implode(',', Mail::getNameMails($ticket->ids)); ?></td>-->
-                        <td><a href="javascript:void(0)"><img src="<?php echo Yii::app()->request->baseUrl.'/images/view.gif'; ?>"></a></td>
+                        <td><a href="javascript:void(0)" rel="<?php echo $ticket->ids; ?>"><img width="12" height="12" src="<?php echo Yii::app()->request->baseUrl.'/images/view.gif'; ?>"></a></td>
                     </tr>
                 <?php endforeach; ?>
 	</tbody>

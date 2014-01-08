@@ -20,7 +20,10 @@ function fnFormatDetails ( oTable, nTr )
 }
 
 $(document).ready(function() {
-        
+       
+       $(document).on('click', '#example tbody tr td a', function () {
+                alert($(this).attr('rel'))
+        } );
         
         $(document).on('change', 'select#status', function(){
 //           $(this).closest('td').find("input").each(function() {
@@ -70,7 +73,7 @@ $(document).ready(function() {
                 "bJQueryUI": true,
                 "sPaginationType": "full_numbers",
                 "aoColumnDefs": [
-                        { "bSortable": false, "aTargets": [ 0 ] }
+                        { "bSortable": false, "aTargets": [ 0,13 ] }
                 ],
                 "aaSorting": [[1, 'desc']]
                 
