@@ -31,8 +31,8 @@ class EnviarEmail extends CApplicationComponent
             $mailer=new PHPMailer();
             $mailer->IsSMTP();
             $mailer->Host='mail.etelix.com';
-            $mailer->Port='475';
-            $mailer->SMTPSecure='tls';
+            $mailer->Port='587';
+           // $mailer->SMTPSecure='tls';
             $mailer->Username='etts@etelix.com';
             $mailer->SMTPAuth=true;
             $mailer->Password="3t3l1x.etts";
