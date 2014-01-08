@@ -7,6 +7,12 @@
 <table cellpadding="0" cellspacing="0" border="0" class="display" id="example">
 	<thead>
 		<tr>
+                    <?php $tipoUsuario = CrugeAuthassignment::getRoleUser(); ?>
+                    <?php if ($tipoUsuario != "C"): ?>
+                        <th>User</th>
+                    <?php else: ?>
+                        <th class="hidden">&nbsp;</th>
+                    <?php endif; ?>
                     <th>Ticket Number</th>
                     <th>Failure</th>
                     <th>Status(s)</th>
@@ -33,17 +39,23 @@
 	<tbody>
                 <?php foreach (Ticket::ticketsByUsers(Yii::app()->user->id, false) as $ticket): ?>
                     <tr <?php if ($ticket->idStatus->id === 2) echo 'class="gradeX"'; ?> >
+                        <?php if ($tipoUsuario != "C"): ?>
+                            <td><?php echo CrugeUser2::getUserTicket($ticket->ids); ?></td>
+                        <?php else: ?>
+                            <td class="hidden">&nbsp;</td>
+                        <?php endif; ?>
                         <td><?php echo $ticket->ticket_number; ?></td>
                         <td><?php echo $ticket->idFailure->name; ?></td>
                         <td>
-                            <div class="input-control select block select-status" >
+                            <?php echo $ticket->idStatus->name; ?>
+                            <!--<div class="input-control select block select-status" >
                                 <select id="status">
-                                    <?php foreach (Status::getStatus() as $value): ?>
-                                        <option value="<?php  echo $value->id; ?>" <?php if ($ticket->idStatus->id === $value->id) echo 'selected';?>><?php echo $value->name; ?></option>
-                                    <?php endforeach; ?>
+                                    <?php // foreach (Status::getStatus() as $value): ?>
+                                        <option value="<?php // echo $value->id; ?>" <?php // if ($ticket->idStatus->id === $value->id) echo 'selected';?>><?php // echo $value->name; ?></option>
+                                    <?php // endforeach; ?>
                                 </select>
-                                <input type="hidden" id="<?php echo $ticket->ids; ?>" value="<?php echo $ticket->ids; ?>">
-                            <div>
+                                <input type="hidden" id="<?php // echo $ticket->ids; ?>" value="<?php // echo $ticket->ids; ?>">
+                            <div>-->
                         </td>
                         <td><?php echo $ticket->origination_ip; ?></td>
                         <td><?php echo $ticket->destination_ip; ?></td>

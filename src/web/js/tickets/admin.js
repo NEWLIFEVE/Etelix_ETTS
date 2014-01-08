@@ -4,14 +4,14 @@ function fnFormatDetails ( oTable, nTr )
         var aData = oTable.fnGetData( nTr );
         var sOut = '<table class="tablas">';
         
-        for(var i= 0; i < aData[7].split('|').length - 1; i++) {
+        for(var i= 0; i < aData[8].split('|').length - 1; i++) {
             sOut +=  '<tr><td>&nbsp;</td><td>' + 
-                aData[7].split('|')[i] + '</td><td>' + 
                 aData[8].split('|')[i] + '</td><td>' + 
                 aData[9].split('|')[i] + '</td><td>' + 
                 aData[10].split('|')[i] + '</td><td>' + 
                 aData[11].split('|')[i] + '</td><td>' + 
-                aData[12].split('|')[i] + '</td></tr>';
+                aData[12].split('|')[i] + '</td><td>' + 
+                aData[13].split('|')[i] + '</td></tr>';
         }
         
         sOut += '</table>';
@@ -22,7 +22,26 @@ function fnFormatDetails ( oTable, nTr )
 $(document).ready(function() {
        
        $(document).on('click', '#example tbody tr td a', function () {
-                alert($(this).attr('rel'))
+                
+                $.ajax({
+                    type:"POST",
+                    url:"getdataticket",
+                    data:{idTicket:$(this).attr('rel')},
+                    success:function(data){
+                        $.Dialog({
+                            shadow: true,
+                            overlay: true,
+                            flat:true,
+                            icon: "<span class=icon-eye-2></span>",
+                            title: "Ticket Information",
+                            width: 510,
+                            height: 300,
+                            padding: 0,
+                            draggable: true,
+                            content:"<div id=content_preview>"+data+"</div>"
+                        });
+                    }
+                });
         } );
         
         $(document).on('change', 'select#status', function(){
@@ -73,9 +92,9 @@ $(document).ready(function() {
                 "bJQueryUI": true,
                 "sPaginationType": "full_numbers",
                 "aoColumnDefs": [
-                        { "bSortable": false, "aTargets": [ 0,13 ] }
+                        { "bSortable": false, "aTargets": [ 0,14 ] }
                 ],
-                "aaSorting": [[1, 'desc']]
+                "aaSorting": [[2, 'desc']]
                 
         });
 

@@ -471,6 +471,6 @@ class TicketController extends Controller
         
         public function actionGetdataticket()
         {
-            $this->renderPartial('_dataticket', array('datos' => Ticket::ticketsByUsers(Yii::app()->user->id, $_POST['idTicket'])));
+            $this->renderPartial('_dataticket', array('datos' => Ticket::ticketsByUsers(Yii::app()->user->id, $_POST['idTicket'], false)));
         }
 }

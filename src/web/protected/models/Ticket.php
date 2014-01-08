@@ -159,7 +159,7 @@ class Ticket extends CActiveRecord
 		));
 	}
         
-        public static function ticketsByUsers($idUser, $idTicket = false)
+        public static function ticketsByUsers($idUser, $idTicket = false, $returnArray = true)
         {
             
             $tipoUsuario = CrugeAuthassignment::getRoleUser();
@@ -177,7 +177,8 @@ class Ticket extends CActiveRecord
             if ($idTicket) 
                 $conditionTicket = ' and t.id = ' . $idTicket;
             
-            return self::model()->findAllBySql(
+            if ($returnArray) {
+                return self::model()->findAllBySql(
                                     "select *, t.id as ids 
                                     from 
                                     ticket t, description_ticket dt  
@@ -185,6 +186,16 @@ class Ticket extends CActiveRecord
                                     t.id in(select distinct(id_ticket) from mail_ticket where id_mail_user in(select id from mail_user $conditionUser)) and
                                     t.id = dt.id_ticket $conditionTicket
                                     order by t.id desc");
+            } else {
+                return self::model()->findBySql(
+                                    "select *, t.id as ids 
+                                    from 
+                                    ticket t, description_ticket dt  
+                                    where 
+                                    t.id in(select distinct(id_ticket) from mail_ticket where id_mail_user in(select id from mail_user $conditionUser)) and
+                                    t.id = dt.id_ticket $conditionTicket
+                                    order by t.id desc");
+            }
         }
         
         
