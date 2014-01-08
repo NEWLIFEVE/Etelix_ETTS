@@ -175,4 +175,6 @@ class StatusController extends Controller
 			Yii::app()->end();
 		}
 	}
+        
+        
 }

@@ -161,6 +161,7 @@ $(document).on('ready', function(){
             
             if ($('#Ticket_mail option').length <= 4) {
                 $('#Ticket_mail').append('<option value="'+$('#cargar_mails').val()+'">'+$('#cargar_mails option:selected').html()+'</option>');
+                $('#cargar_mails option:selected').attr('selected',false);
                 $('#Ticket_mail').removeClass('validate[required]');
             } else {
                 alert('Only five emails allowed')

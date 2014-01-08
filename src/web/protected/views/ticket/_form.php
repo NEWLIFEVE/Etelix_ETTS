@@ -17,9 +17,7 @@
             <?php endforeach; ?>
         </select>
 </div>
-
-  
-        
+      
 <div class="input-control select block">
     Response to <small class="text-muted "><em>(required)</em></small>&nbsp;&nbsp;
     <a href="javascript:void(0)" class="a-agregar_correo"><i class="icon-plus-2"></i></a>
@@ -74,12 +72,6 @@
         <?php echo $form->textField($model,'prefix', array('class' => 'validate[required,custom[integer]]')); ?>
         <?php echo $form->error($model,'prefix'); ?>
 </div>
-
-<!--<div class="grid">
-    <div class="row" id="separador-prefijo"></div>
-</div>
--->
-
 
 <div class="input-control select block">
         GMT <small class="text-muted "><em>(required)</em></small>

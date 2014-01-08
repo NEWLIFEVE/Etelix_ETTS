@@ -18,6 +18,8 @@
  * @property string $ticket_number
  *
  * The followings are the available model relations:
+ * @property TicketRelation[] $ticketRelations
+ * @property TicketRelation[] $ticketRelations1
  * @property TestedNumber[] $testedNumbers
  * @property File[] $files
  * @property MailTicket[] $mailTickets
@@ -67,6 +69,7 @@ class Ticket extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
+                        
 			array('id_failure, id_status, origination_ip, destination_ip, date, machine_ip', 'required'),
 			array('id_ticket, id_failure, id_status, id_gmt', 'numerical', 'integerOnly'=>true),
 			array('origination_ip, destination_ip, machine_ip', 'length', 'max'=>64),
@@ -86,6 +89,8 @@ class Ticket extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+                        'ticketRelations' => array(self::HAS_MANY, 'TicketRelation', 'id_ticket_father'),
+			'ticketRelations1' => array(self::HAS_MANY, 'TicketRelation', 'id_ticket_son'),
 			'testedNumbers' => array(self::HAS_MANY, 'TestedNumber', 'id_ticket'),
 			'files' => array(self::HAS_MANY, 'File', 'id_ticket'),
 			'mailTickets' => array(self::HAS_MANY, 'MailTicket', 'id_ticket'),
@@ -130,9 +135,12 @@ class Ticket extends CActiveRecord
 		// should not be searched.
 
 		$criteria=new CDbCriteria;
-                $criteria->join = "left join mail_ticket mt on mt.id_ticket = t.id left join mail_user mu on mu.id = mt.id_mail_user";
-		$criteria->condition = "mu.id_user = ".Yii::app()->user->id."";
-                $criteria->order = "t.id DESC";             
+                
+                $tipoUsuario = CrugeAuthassignment::getRoleUser();
+                if ($tipoUsuario == "C") 
+                    $criteria->condition = "id in(".implode(",", self::getIdTicketsByuser()).")";
+                
+                $criteria->order = "id DESC";             
                 $criteria->compare('id',$this->id);
 		$criteria->compare('id_ticket',$this->id_ticket);
 		$criteria->compare('id_failure',$this->id_failure);
@@ -151,21 +159,89 @@ class Ticket extends CActiveRecord
 		));
 	}
         
-        public static function myTickets()
+//        public static function ticketsByUsers($idUser)
+//        {
+//            
+//            
+//            return self::model()->findAllBySql(
+//                                "select *
+//                                from 
+//                                ticket 
+//                                where 
+//                                id in(select distinct(id_ticket) from mail_ticket where id_mail_user in(select id from mail_user where id_user = $idUser))
+//                                order by id desc");
+//        }
+        
+        public static function ticketsByUsers($idUser, $idTicket = false)
         {
-//            return self::model()->findAllBySql("SELECT *, t.id as ids FROM ticket t 
-//                left join mail_ticket mt on mt.id_ticket = t.id 
-//                left join mail_user mu on mu.id = mt.id_mail_user
-//                left join description_ticket dt on dt.id_ticket = t.id
-//                WHERE mu.id_user = ".Yii::app()->user->id."  ORDER BY t.id DESC");
+            
+            $tipoUsuario = CrugeAuthassignment::getRoleUser();
+            $conditionUser = '';
+            $conditionTicket = '';
+            
+            // Si el tipo de usuario es cliente, se muestran sus tickets, de lo
+            // contrario la condicion queda en blanco, es decir, se muestran todos
+            // los tickets de todos los usuarios
+            if ($tipoUsuario == "C")
+                $conditionUser = ' where id_user = ' . $idUser;
+            
+            // Si no se envía el id de un ticket se muestran todos los tickets,
+            // De lo contrario se muestra solo el ticket seleccionado
+            if ($idTicket) 
+                $conditionTicket = ' and t.id = ' . $idTicket;
             
             return self::model()->findAllBySql(
-                        "select *, t.id as ids 
-                        from 
-                        ticket t, description_ticket dt  
-                        where 
-                        t.id in(select distinct(id_ticket) from mail_ticket where id_mail_user in(select id from mail_user where id_user = ".Yii::app()->user->id.")) and
-                        t.id = dt.id_ticket
-                        order by t.id desc");
+                                    "select *, t.id as ids 
+                                    from 
+                                    ticket t, description_ticket dt  
+                                    where 
+                                    t.id in(select distinct(id_ticket) from mail_ticket where id_mail_user in(select id from mail_user $conditionUser)) and
+                                    t.id = dt.id_ticket $conditionTicket
+                                    order by t.id desc");
         }
+        
+        
+        public static function getIdTicketsByuser()
+        {
+            $ids = array();
+            foreach (self::ticketsByUsers(Yii::app()->user->id) as $value) {
+                $ids[] = $value->id;
+            }
+            return $ids;
+        }
+
+//        public static function myTickets()
+//        {
+////            return self::model()->findAllBySql("SELECT *, t.id as ids FROM ticket t 
+////                left join mail_ticket mt on mt.id_ticket = t.id 
+////                left join mail_user mu on mu.id = mt.id_mail_user
+////                left join description_ticket dt on dt.id_ticket = t.id
+////                WHERE mu.id_user = ".Yii::app()->user->id."  ORDER BY t.id DESC");
+//            
+//            return self::model()->findAllBySql(
+//                        "select *, t.id as ids 
+//                        from 
+//                        ticket t, description_ticket dt  
+//                        where 
+//                        t.id in(select distinct(id_ticket) from mail_ticket where id_mail_user in(select id from mail_user where id_user = ".Yii::app()->user->id.")) and
+//                        t.id = dt.id_ticket
+//                        order by t.id desc");
+//        }
+        
+        public static function ticketsRelations($idTicket, $idUser = false)
+        {
+            return self::model()->findAllBySql(
+                        "select * from ticket where id in(
+                        select tr.id_ticket_son
+                        from 
+                        ticket t, ticket_relation tr
+                        where 
+                        t.id in(select distinct(id_ticket) from mail_ticket where id_mail_user in(select id from mail_user where id_user = 3)) and
+                        t.id = tr.id_ticket_father and t.id = $idTicket
+                        order by t.id desc
+                        )");
+        }
+        
+        
+        
 }
