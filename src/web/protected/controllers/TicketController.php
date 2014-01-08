@@ -468,4 +468,9 @@ class TicketController extends Controller
         {
             Ticket::model()->updateByPk($_POST['idTicket'], array('id_status' => $_POST['idStatus']));
         }
+        
+        public function actionGetdataticket()
+        {
+            $this->renderPartial('_dataticket', array('datos' => Ticket::ticketsByUsers(Yii::app()->user->id, $_POST['idTicket'])));
+        }
 }
