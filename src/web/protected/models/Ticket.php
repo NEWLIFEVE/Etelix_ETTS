@@ -36,6 +36,8 @@ class Ticket extends CActiveRecord
 	 * @return Ticket the static model class
 	 */
         public $maximo;
+        public $ids;
+        
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
@@ -83,10 +85,11 @@ class Ticket extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'testedNumbers' => array(self::HAS_MANY, 'TestedNumber', 'id_ticket'),
+                        'testedNumbers' => array(self::HAS_MANY, 'TestedNumber', 'id_ticket'),
 			'files' => array(self::HAS_MANY, 'File', 'id_ticket'),
 			'mailTickets' => array(self::HAS_MANY, 'MailTicket', 'id_ticket'),
-			'descriptionTickets' => array(self::HAS_MANY, 'DescriptionTicket', 'id_ticket'),
+//			'descriptionTickets' => array(self::HAS_MANY, 'DescriptionTicket', 'id_ticket'),
+                        'descriptionTickets' => array(self::BELONGS_TO, 'DescriptionTicket', 'id'),
 			'idFailure' => array(self::BELONGS_TO, 'Failure', 'id_failure'),
 			'idStatus' => array(self::BELONGS_TO, 'Status', 'id_status'),
 			'idTicket' => array(self::BELONGS_TO, 'Ticket', 'id_ticket'),
@@ -127,7 +130,10 @@ class Ticket extends CActiveRecord
 
 		$criteria=new CDbCriteria;
                 
-		$criteria->condition = "id in(".implode(",", self::getIdTicketsByuser()).")";
+                $tipoUsuario = CrugeAuthassignment::getRoleUser();
+                if ($tipoUsuario == "C") 
+                    $criteria->condition = "id in(".implode(",", self::getIdTicketsByuser()).")";
+                
                 $criteria->order = "id DESC";             
                 $criteria->compare('id',$this->id);
 		$criteria->compare('id_ticket',$this->id_ticket);
@@ -147,17 +153,41 @@ class Ticket extends CActiveRecord
 		));
 	}
         
-        public static function ticketsByUsers($idUser)
+        public static function ticketsByUsers($idUser, $idTicket = false)
         {
             
-            
-            return self::model()->findAllBySql(
-                                "select *
-                                from 
-                                ticket 
-                                where 
-                                id in(select distinct(id_ticket) from mail_ticket where id_mail_user in(select id from mail_user where id_user = $idUser))
-                                order by id desc");
+            if (!$idTicket) {
+                return self::model()->findAllBySql(
+                                    "select *, t.id as ids 
+                                    from 
+                                    ticket t, description_ticket dt  
+                                    where 
+                                    t.id in(select distinct(id_ticket) from mail_ticket where id_mail_user in(select id from mail_user where id_user = $idUser)) and
+                                    t.id = dt.id_ticket
+                                    order by t.id desc");
+                
+            } else {
+                $tipoUsuario = CrugeAuthassignment::getRoleUser();
+                if ($tipoUsuario == "C")  {
+                    return self::model()->findBySql(
+                                        "select *, t.id as ids 
+                                        from 
+                                        ticket t, description_ticket dt  
+                                        where 
+                                        t.id in(select distinct(id_ticket) from mail_ticket where id_mail_user in(select id from mail_user where id_user = $idUser)) and
+                                        t.id = dt.id_ticket and t.id = $idTicket
+                                        order by t.id desc");
+                } else {
+                    return self::model()->findBySql(
+                                        "select *, t.id as ids 
+                                        from 
+                                        ticket t, description_ticket dt  
+                                        where 
+                                        t.id in(select distinct(id_ticket) from mail_ticket where id_mail_user in(select id from mail_user)) and
+                                        t.id = dt.id_ticket and t.id = $idTicket
+                                        order by t.id desc");
+                }
+            }
         }
         
         
@@ -165,7 +195,7 @@ class Ticket extends CActiveRecord
         {
             $ids = array();
             foreach (self::ticketsByUsers(Yii::app()->user->id) as $value) {
-                $ids[] = $value->id;
+                $ids[] = $value->ids;
             }
             return $ids;
         }

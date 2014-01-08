@@ -212,6 +212,12 @@ class TicketController extends Controller
 		}
 	}
         
+        public function actionGetdataticket()
+        {
+//            echo CJSON::encode(Ticket::ticketsByUsers(Yii::app()->user->id, $_POST['idTicket']));
+            $this->renderPartial('_dataticket', array('datos' => Ticket::ticketsByUsers(Yii::app()->user->id, $_POST['idTicket'])));
+        }
+        
         public function actionSaveticket()
         {
             $modelTicket = new Ticket;

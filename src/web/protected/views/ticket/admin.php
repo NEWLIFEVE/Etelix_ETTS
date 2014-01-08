@@ -26,40 +26,6 @@ $('.search-form form').submit(function(){
 ");
 ?>
 
-
-
-
-<!--<div class="span12">
-    <h2>My Tickets</h2>
-    <div class="example">
-        <table id="tabla_preview">
-            <thead>
-                <tr>
-                    <th>Ticket Number</th>
-                    <th>Failure</th>
-                    <th>Status</th>
-                    <th>Origination IP</th>
-                    <th>Destination IP</th>
-                    <th>Prefix</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>-->
-
-
-
-
-
-<!--<h1>Manage Tickets</h1>-->
-
-
-
 <?php // echo CHtml::link('Advanced Search','#',array('class'=>'search-button')); ?>
 <div class="search-form" style="display:none">
 <?php 
@@ -102,29 +68,41 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			'class'=>'CButtonColumn',
                         'template'=>'{detail}',
                         'buttons'=>array(
+                            
                             'detail' => array( //botón para la acción nueva
 //                                'class'=>'CLinkColumn',
+//                                'options' => array('rel' => '$data->id'),
                                 'label'=>'descripción accion_nueva', // titulo del enlace del botón nuevo
                                 'imageUrl'=>Yii::app()->request->baseUrl.'/images/view.gif', //ruta icono para el botón
-//                                'url'=>'$data->id',
-                                'click'=>'js:function(e){ e.preventDefault();   
-                                    $.Dialog({
-                                    shadow: true,
-                                    overlay: true,
-                                    flat:true,
-                                    icon:false,
-                                    title: false,
-                                    width: 510,
-                                    height: 300,
-                                    padding: 0,
-                                    draggable: true,
-                                    content:"<img src='.Yii::app()->request->baseUrl.'/images/work.jpg>"
-
-                                });}',
-                                'header'=>'button'
+                                'url'=>'$data->id',
+                                'click'=>'js:function(e){ 
+                                    e.preventDefault();
+                                    $.ajax({
+                                        type:"POST",
+                                        url:"getdataticket",
+                                        data:{idTicket:$(this).attr("href")},
+                                        success:function(data){
+                                            $.Dialog({
+                                                shadow: true,
+                                                overlay: true,
+                                                flat:true,
+                                                icon: "<span class=icon-eye-2></span>",
+                                                title: "Ticket Information",
+                                                width: 510,
+                                                height: 300,
+                                                padding: 0,
+                                                draggable: true,
+                                                content:"<div id=content_preview>"+data+"</div>"
+                                            });
+                                        }
+                                    });
+                                    
+                                }',
                             ),
                         ),
 		),
 	),
 ));
 ?>
+
+<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/admin.js',CClientScript::POS_END); ?>

@@ -111,7 +111,13 @@ class MailUser extends CActiveRecord
             }
         }
         
-       public static function getCountMail($user){
+        public static function getMailsByTicket($idTicket)
+        {
+            return self::model()->findAll("id in(select id_mail_user from mail_ticket where id_ticket = $idTicket)");
+        }
+
+        public static function getCountMail($user)
+        {
             $count =self::model()->findBySql("SELECT COUNT(id_user) AS mailcount FROM mail_user WHERE id_user = $user AND status = 1");
             if($count->mailcount < 5){
                 return TRUE;
