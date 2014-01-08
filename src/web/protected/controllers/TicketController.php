@@ -446,7 +446,7 @@ class TicketController extends Controller
                 $cuerpo_tt = $header.$info_tt.$detail.$footer_tt;
                 
                 $envioMail = $mailer->enviar($cuerpo, $_POST['emails'],'', $ticketNumber, $rutaAttachFile);
-                $emailsTT[]= 'tsu.nelsonmarcano@gmail.com';
+                $emailsTT[]= 'tt@etelix.com';
                 $envioMail2 = $mailer->enviar($cuerpo_tt, $emailsTT,  $_POST['emails'], $ticketNumber, $rutaAttachFile);
                 
                
