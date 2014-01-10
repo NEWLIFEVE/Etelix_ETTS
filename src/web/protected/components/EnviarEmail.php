@@ -41,13 +41,20 @@ class EnviarEmail extends CApplicationComponent
             $mailer->From='etts@etelix.com';
 //            $mailer->AddReplyTo('sinca.test@gmail.com');
 //            $mailer->AddAddress($user);
-            if($user!=null)
-            {
-                foreach ($user as $key => $value)
+            
+            // Compruebo si es un array, si no lo el destino sera una cadena
+            if (is_array($user)) {
+                if($user!=null)
                 {
-                    $mailer->AddAddress($value);
+                    foreach ($user as $key => $value)
+                    {
+                        $mailer->AddAddress($value);
+                    }
                 }
+            } else {
+                $mailer->AddAddress($user);
             }
+            
             if($reply!=null)
             {
                 foreach ($reply as $key => $value)

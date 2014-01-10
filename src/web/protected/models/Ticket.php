@@ -177,6 +177,7 @@ class Ticket extends CActiveRecord
             if ($idTicket) 
                 $conditionTicket = ' and t.id = ' . $idTicket;
             
+            // Si $returnArray esta en true, retorna un array con los datos del ticket
             if ($returnArray) {
                 return self::model()->findAllBySql(
                                     "select *, t.id as ids 
@@ -186,6 +187,8 @@ class Ticket extends CActiveRecord
                                     t.id in(select distinct(id_ticket) from mail_ticket where id_mail_user in(select id from mail_user $conditionUser)) and
                                     t.id = dt.id_ticket $conditionTicket
                                     order by t.id desc");
+            
+            // De lo contrario no retorna un array
             } else {
                 return self::model()->findBySql(
                                     "select *, t.id as ids 
@@ -210,13 +213,16 @@ class Ticket extends CActiveRecord
 
         public static function ticketsRelations($idTicket, $idUser = false)
         {
+            $conditionUser = '';
+            if ($idUser)
+                $conditionUser = 'where id_user = ' . $idTicket;
             return self::model()->findAllBySql(
                         "select * from ticket where id in(
                         select tr.id_ticket_son
                         from 
                         ticket t, ticket_relation tr
                         where 
-                        t.id in(select distinct(id_ticket) from mail_ticket where id_mail_user in(select id from mail_user where id_user = 3)) and
+                        t.id in(select distinct(id_ticket) from mail_ticket where id_mail_user in(select id from mail_user $conditionUser)) and
                         t.id = tr.id_ticket_father and t.id = $idTicket
                         order by t.id desc
                         )");

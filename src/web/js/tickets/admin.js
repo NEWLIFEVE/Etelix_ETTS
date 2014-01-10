@@ -11,7 +11,8 @@ function fnFormatDetails ( oTable, nTr )
                 aData[10].split('|')[i] + '</td><td>' + 
                 aData[11].split('|')[i] + '</td><td>' + 
                 aData[12].split('|')[i] + '</td><td>' + 
-                aData[13].split('|')[i] + '</td></tr>';
+                aData[13].split('|')[i] + '</td><td>' +
+                aData[14].split('|')[i] + '</td></tr>';
         }
         
         sOut += '</table>';
@@ -20,9 +21,14 @@ function fnFormatDetails ( oTable, nTr )
 }
 
 $(document).ready(function() {
+       // Boton para aparecer la opciones del status del ticket
+       $(document).on('click', '#example tbody tr td a.edit-status', function () {
+           $(this).parent('span.span-status').hide();
+           $(this).parent('span.span-status').parent('td').prepend($('#status').clone().removeAttr('class'));
+       });
        
-       $(document).on('click', '#example tbody tr td a', function () {
-                
+       // Boton para abrir el preview del ticket
+       $(document).on('click', 'table#example tbody tr td a.preview', function () {
                 $.ajax({
                     type:"POST",
                     url:"getdataticket",
@@ -44,23 +50,28 @@ $(document).ready(function() {
                 });
         } );
         
-        $(document).on('change', 'select#status', function(){
-//           $(this).closest('td').find("input").each(function() {
-//                alert(this.value)
-//           });
-            _tr = $(this).parent('div').parent('td').parent('tr');
+        // Evento para cambiar el status
+        $(document).on('change', 'table#example tbody tr td select#status', function(){
+            
+            _select = $(this);
+            _tr = $(this).parent('td').parent('tr');
             _status = $(this).val();
             $.ajax({
                 type:'POST',
                 url:'updatestatus',
                 data:{
-                      idTicket:$(this).next('input').val(),
+                      idTicket:$(this).parent('td').attr('id'),
                       idStatus:_status
                 },
                 success:function(data){
+                   
                     if (_status == 2) {
+                        _select.next('span.span-status').show().children('span').text('close');
+                        _select.remove('select')
                         _tr.addClass('gradeX')
                     } else {
+                        _select.next('span.span-status').show().children('span').text('open');
+                        _select.remove('select')
                         _tr.removeClass('gradeX')
                     }
                 }
@@ -92,7 +103,7 @@ $(document).ready(function() {
                 "bJQueryUI": true,
                 "sPaginationType": "full_numbers",
                 "aoColumnDefs": [
-                        { "bSortable": false, "aTargets": [ 0,14 ] }
+                        { "bSortable": false, "aTargets": [ 0,15 ] }
                 ],
                 "aaSorting": [[2, 'desc']]
                 
