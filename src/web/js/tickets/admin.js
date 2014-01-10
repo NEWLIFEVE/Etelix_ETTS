@@ -4,14 +4,15 @@ function fnFormatDetails ( oTable, nTr )
         var aData = oTable.fnGetData( nTr );
         var sOut = '<table class="tablas">';
         
-        for(var i= 0; i < aData[7].split('|').length - 1; i++) {
+        for(var i= 0; i < aData[8].split('|').length - 1; i++) {
             sOut +=  '<tr><td>&nbsp;</td><td>' + 
-                aData[7].split('|')[i] + '</td><td>' + 
                 aData[8].split('|')[i] + '</td><td>' + 
                 aData[9].split('|')[i] + '</td><td>' + 
                 aData[10].split('|')[i] + '</td><td>' + 
                 aData[11].split('|')[i] + '</td><td>' + 
-                aData[12].split('|')[i] + '</td></tr>';
+                aData[12].split('|')[i] + '</td><td>' + 
+                aData[13].split('|')[i] + '</td><td>' +
+                aData[14].split('|')[i] + '</td></tr>';
         }
         
         sOut += '</table>';
@@ -20,25 +21,57 @@ function fnFormatDetails ( oTable, nTr )
 }
 
 $(document).ready(function() {
+       // Boton para aparecer la opciones del status del ticket
+       $(document).on('click', '#example tbody tr td a.edit-status', function () {
+           $(this).parent('span.span-status').hide();
+           $(this).parent('span.span-status').parent('td').prepend($('#status').clone().removeAttr('class'));
+       });
+       
+       // Boton para abrir el preview del ticket
+       $(document).on('click', 'table#example tbody tr td a.preview', function () {
+                $.ajax({
+                    type:"POST",
+                    url:"getdataticket",
+                    data:{idTicket:$(this).attr('rel')},
+                    success:function(data){
+                        $.Dialog({
+                            shadow: true,
+                            overlay: true,
+                            flat:true,
+                            icon: "<span class=icon-eye-2></span>",
+                            title: "Ticket Information",
+                            width: 510,
+                            height: 300,
+                            padding: 0,
+                            draggable: true,
+                            content:"<div id=content_preview>"+data+"</div>"
+                        });
+                    }
+                });
+        } );
         
-        
-        $(document).on('change', 'select#status', function(){
-//           $(this).closest('td').find("input").each(function() {
-//                alert(this.value)
-//           });
-            _tr = $(this).parent('div').parent('td').parent('tr');
+        // Evento para cambiar el status
+        $(document).on('change', 'table#example tbody tr td select#status', function(){
+            
+            _select = $(this);
+            _tr = $(this).parent('td').parent('tr');
             _status = $(this).val();
             $.ajax({
                 type:'POST',
                 url:'updatestatus',
                 data:{
-                      idTicket:$(this).next('input').val(),
+                      idTicket:$(this).parent('td').attr('id'),
                       idStatus:_status
                 },
                 success:function(data){
+                   
                     if (_status == 2) {
+                        _select.next('span.span-status').show().children('span').text('close');
+                        _select.remove('select')
                         _tr.addClass('gradeX')
                     } else {
+                        _select.next('span.span-status').show().children('span').text('open');
+                        _select.remove('select')
                         _tr.removeClass('gradeX')
                     }
                 }
@@ -70,9 +103,9 @@ $(document).ready(function() {
                 "bJQueryUI": true,
                 "sPaginationType": "full_numbers",
                 "aoColumnDefs": [
-                        { "bSortable": false, "aTargets": [ 0 ] }
+                        { "bSortable": false, "aTargets": [ 0,15 ] }
                 ],
-                "aaSorting": [[1, 'desc']]
+                "aaSorting": [[2, 'desc']]
                 
         });
 

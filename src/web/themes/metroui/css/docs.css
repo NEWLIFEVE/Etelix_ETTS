@@ -587,6 +587,10 @@ select#CrugeStoredUser_id_carrier.select_carrier {
 }
 
 /*AMDIN TICKET*/
-div.input-control.select.block.select-status {
+/*div.input-control.select.block.select-status {
     margin: 0 !important;
+}*/
+select#status {
+    margin: 0 !important;
+    padding: 0px 2px !important;
 }

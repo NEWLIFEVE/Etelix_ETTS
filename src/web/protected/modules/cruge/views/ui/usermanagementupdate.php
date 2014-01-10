@@ -128,9 +128,8 @@
 
 
 
-    <div class="row buttons">
-            <?php Yii::app()->user->ui->tbutton("Guardar Cambios"); ?>
-
+    <div class="row buttons" style="text-align: center;">
+	<?php echo CHtml::submitButton('Update', array('class' => 'primary large', 'name'=>'preview', 'style' => 'width:500px')); ?>
     </div>
     <?php echo $form->errorSummary($model); ?>
     <?php $this->endWidget(); ?>

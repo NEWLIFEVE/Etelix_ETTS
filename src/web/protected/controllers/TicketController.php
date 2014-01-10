@@ -447,7 +447,7 @@ class TicketController extends Controller
                 $cuerpo_tt = $header.$info_tt.$detail.$footer_tt;
                 
                 $envioMail = $mailer->enviar($cuerpo, $_POST['emails'],'', $ticketNumber, $rutaAttachFile);
-                $emailsTT[]= 'tsu.nelsonmarcano@gmail.com';
+                $emailsTT[]= 'tt@etelix.com';
                 $envioMail2 = $mailer->enviar($cuerpo_tt, $emailsTT,  $_POST['emails'], $ticketNumber, $rutaAttachFile);
 
                 if ($envioMail === true) {
@@ -467,5 +467,10 @@ class TicketController extends Controller
         public function actionUpdatestatus()
         {
             Ticket::model()->updateByPk($_POST['idTicket'], array('id_status' => $_POST['idStatus']));
+        }
+        
+        public function actionGetdataticket()
+        {
+            $this->renderPartial('_dataticket', array('datos' => Ticket::ticketsByUsers(Yii::app()->user->id, $_POST['idTicket'], false)));
         }
 }
