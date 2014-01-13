@@ -12,9 +12,6 @@ Failure
 <input type="text" value="<?php echo $datos->idFailure->name; ?>" disabled>
 </div>
 
-<div class="grid" >
-    <div class="row" id="separador-prefijo"></div>
-</div>
 <?php $originationIp = explode('.', $datos->origination_ip); ?>
 <?php $destinationIp = explode('.', $datos->destination_ip); ?>
 <div class="_label">Origination IP <small class="text-muted "><em>(Customer IP)</em></small><span class="margen_17px"></span>&nbsp;&nbsp;&nbsp;&nbsp;DestinationIP  <small class="text-muted "><em>(Etelix IP)</em></small></div>
@@ -36,22 +33,15 @@ Failure
     <input type="text" value="<?php echo $datos->prefix; ?>" disabled>
 </div>
 
-<div class="grid" >
-    <div class="row" id="separador-prefijo"></div>
-</div>
-
 <div class="input-control text block">
     GMT
     <input type="text" value="<?php echo $datos->idGmt->name; ?>" disabled>
 </div>
 
-<div class="grid" >
-    <div class="row" id="separador-prefijo"></div>
-</div>
-
 <div id="tabla_tested_number" class="grid">
     <?php $tabla = '<div><table id="tabla_preview"><thead><tr><th>Tested Numbers</th><th>Country</th><th>Date</th><th>Hour</th></thead><tbody>';
-    foreach (TestedNumber::getTestednumber($datos->ids) as $value){
+    foreach (TestedNumber::getNumbers($datos->ids) as $value){
+
         $tabla .= '<tr><td>' . $value->numero . '</td><td>' . $value->idCountry->name . '</td><td>' . $value->date . '</td><td>' . $value->hour . '</td></tr>';
     } 
     echo $tabla . '</tbody></table></div>';
@@ -63,3 +53,4 @@ Failure
         Description
         <textarea disabled><?php echo $datos->descriptionTickets->description; ?></textarea>
 </div>
+

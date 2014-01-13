@@ -30,43 +30,52 @@ class EnviarEmail extends CApplicationComponent
             $mailer=Yii::createComponent('application.extensions.mailer.EMailer');
             $mailer=new PHPMailer();
             $mailer->IsSMTP();
-            $mailer->Host='smtp.gmail.com';
-            $mailer->Port='587';
+            $mailer->Host='mail.etelix.com';
+            $mailer->Port='475';
             $mailer->SMTPSecure='tls';
-            $mailer->Username='sinca.test@gmail.com';
+            $mailer->Username='etts@etelix.com';
             $mailer->SMTPAuth=true;
-            $mailer->Password="sincatest";
-//            $mailer->Host='mail.etelix.com';
-//            $mailer->Port='475';
-//            $mailer->SMTPSecure='tls';
-//            $mailer->Username='etts@etelix.com';
-//            $mailer->SMTPAuth=true;
-//            $mailer->Password="3t3l1x.etts";
+            $mailer->Password="3t3l1x.etts";
             $mailer->IsSMTP();
             $mailer->IsHTML(true);
-            $mailer->From='sinca.test@gmail.com';
-//            $mailer->From='etts@etelix.com';
-//            $mailer->AddReplyTo('sinca.test@gmail.com');
-//            $mailer->AddAddress($user);
+
+            $mailer->From='etts@etelix.com';
+            
+
             if($user!=null)
             {
-                foreach ($user as $key => $value)
-                {
-                    $mailer->AddAddress($value);
+                // Compruebo si es un array, si no el destino sera una cadena
+                if (is_array($user)) {
+                    foreach ($user as $key => $value)
+                    {
+                        $mailer->AddAddress($value);
+                    }
+                } else {
+                    $mailer->AddAddress($user);
                 }
             }
+            
             if($reply!=null)
             {
-                foreach ($reply as $key => $value)
-                {
-                    $mailer->AddReplyTo($value);
+                if (is_array($reply)) {
+                    foreach ($reply as $key => $value)
+                    {
+                        $mailer->AddReplyTo($value);
+                    }
+                } else {
+                    $mailer->AddReplyTo($reply);
                 }
             }
+            
             if($copia!=null)
             {
-                foreach ($copia as $key => $value)
-                {
-                    $mailer->addCC($value);
+                if (is_array($copia)) {
+                    foreach ($copia as $key => $value)
+                    {
+                        $mailer->addCC($value);
+                    }
+                } else {
+                    $mailer->addCC($copia);
                 }
             }
             $mailer->FromName='ETTS';
@@ -74,9 +83,13 @@ class EnviarEmail extends CApplicationComponent
             $mailer->Subject=Yii::t('', $asunto);
             
             if ($ruta!= null){ 
-                foreach ($ruta as $key)
-                {
-                    $mailer->AddAttachment($key); //Archivo adjunto
+                if (is_array($ruta)) {
+                    foreach ($ruta as $key)
+                    {
+                        $mailer->AddAttachment($key); //Archivo adjunto
+                    }
+                } else {
+                    $mailer->AddAttachment($ruta); //Archivo adjunto
                 }
             }
             $message=$html;

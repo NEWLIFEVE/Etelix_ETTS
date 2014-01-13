@@ -94,7 +94,6 @@ return array(
                                 'superuserName'=>'ettsadmin',
 			),
 	),
-
 	// application components
 	'components'=>array(
 //		'user'=>array(
@@ -102,42 +101,32 @@ return array(
 //			'allowAutoLogin'=>true,
 //		),
 		// uncomment the following to enable URLs in path-format
-
 		'urlManager'=>array(
 			'urlFormat'=>'path',
-                        'showScriptName'=>false,
+			'showScriptName'=>false,
 			'rules'=>array(
 				'<controller:\w+>/<id:\d+>'=>'<controller>/view',
 				'<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
 				'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
 			),
 		),
-                'mail' => array(
-                        'class' => "application.components.EnviarEmail",
-                ),
-		'db'=>array(
-			'connectionString' => 'sqlite:'.dirname(__FILE__).'/../data/testdrive.db',
-		),
+		'mail'=>array(
+			'class'=>"application.components.EnviarEmail",
+			),
 		// uncomment the following to use a MySQL database
-	
 		'db'=>array(
-
-//			'connectionString' => 'pgsql:host=172.16.17.190;port=5432;dbname=etts',
-			'connectionString' => 'pgsql:host=localhost;port=5432;dbname=etts',
-			'emulatePrepare' => true,
-			'username' => 'postgres',
-//			'password' => '123',
-			'password' => 'Nsusfd8263',
+			'connectionString'=>'pgsql:host=localhost;port=5432;dbname=etts',
+			'emulatePrepare'=>true,
+			'username'=>'postgres',
+			'password'=>'Nsusfd8263',
 			'charset' => 'utf8',
 		),
-                'soriDB'=>array(
-                        'class' => 'CDbConnection',
-//			'connectionString' => 'pgsql:host=172.16.17.190;port=5432;dbname=sori',
-			'connectionString' => 'pgsql:host=localhost;port=5432;dbname=sori',
-			'username' => 'postgres',
-//			'password' => '123',
-			'password' => 'Nsusfd8263',
-			'charset' => 'utf8',
+		'soriDB'=>array(
+			'class'=>'CDbConnection',
+			'connectionString'=>'pgsql:host=localhost;port=5432;dbname=test_sori',
+			'username'=>'postgres',
+			'password'=>'Nsusfd8263',
+			'charset'=>'utf8',
 		),
 		'errorHandler'=>array(
 			// use 'site/error' action to display errors
@@ -177,6 +166,9 @@ return array(
                 ),
                 'format' => array(
                         'datetimeFormat'=>"d M, Y h:m:s a",
+                ),
+                'session' => array (
+                    'timeout' => false,
                 ),
 	),
 

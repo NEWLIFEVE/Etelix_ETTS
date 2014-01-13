@@ -133,12 +133,14 @@ class CrugeUser2 extends CActiveRecord
 		return parent::model($className);
 	}
         
-        public static function getIdCarrier()
+        public static function getUsuerByIdCarrier()
         {
             return self::model()->findAll("id_carrier is not null");
         }
         
-        public static function getUserTicket($id_ticket){
+
+        public static function getUserTicket($id_ticket)
+        {
             return self::model()->findBySql("select distinct(u.username) as username
                                              from ticket t, mail_ticket mt, mail_user mu, cruge_user u
                                              where t.id = mt.id_ticket and mt.id_mail_user = mu.id and mu.id_user = u.iduser and t.id = $id_ticket")->username;
