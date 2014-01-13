@@ -26,7 +26,7 @@
             <div class="input-control select block">
                 <?php echo $form->labelEx($model, 'id_carrier') ?>
                 <?php echo $form->dropDownList($model,'id_carrier', Carrier::getCarriers(),  array('empty' => 'Select carrier',  'class' => 'select_carrier')); ?>
-                <span id="disable_enable">Disable</span> <input type="checkbox" id="disable_carrier" name="disable_carrier" value="ok">
+                <div class="input-control checkbox" data-role="input-control"><label><span id="disable_enable">Disable</span> <input type="checkbox" id="disable_carrier" name="disable_carrier" value="ok"><span class="check"></span></label></div>
                 <?php echo $form->error($model, 'id_carrier'); ?>
                 
             </div>

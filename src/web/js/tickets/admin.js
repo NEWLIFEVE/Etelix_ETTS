@@ -79,7 +79,7 @@ $(document).ready(function() {
                       idStatus:_status
                 },
                 success:function(data){
-                   $(location).attr('href', 'http://etts.local/ticket/admin');
+                   $(location).attr('href', _root_ + '/ticket/admin');
 //                    if (_status == 2) {
 //                        _select.next('span.span-status').show().children('span').text('close');
 //                        _select.remove('select')
