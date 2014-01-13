@@ -435,6 +435,7 @@ class TicketController extends Controller
 		</p>
                 </div>
                 ';
+
                 $footer_tt = '<div style="width:100%">
 		<p style="text-align:justify">
                     <br/><div style="font-style:italic;">Please do not reply to this email. Replies to this message are routed to an unmonitored mailbox.</div>
@@ -449,8 +450,7 @@ class TicketController extends Controller
                 $emailsTT[] = 'tt@etelix.com';
 //                $emailsTT[] = 'tsu.nelsonmarcano@gmail.com';
                 $envioMail2 = $mailer->enviar($cuerpo_tt, $emailsTT,  $_POST['emails'], $ticketNumber, $rutaAttachFile);
-                
-               
+
                 if ($envioMail === true) {
                     if ($envioMail2 === true) {
                         echo 'success';
