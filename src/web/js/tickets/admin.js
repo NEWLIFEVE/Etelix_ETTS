@@ -16,9 +16,9 @@ function fnFormatDetails ( oTable, nTr )
         for(var i= 0; i < aData[8].split('|').length - 1; i++) {
             
             if (i%2 == 0)
-                style = '#A9A9A9';
+                style = '#C0C0C0';
             else
-                style = '#B0C4DE';
+                style = '#D3D3D3';
             
             sOut +=  '<tr style="background:'+style+'"><td>&nbsp;&nbsp;</td><td style="width:'+(widthTicket+13)+'px !important; ">' + 
                 aData[8].split('|')[i] + '</td><td style="width:'+(widthFailure+13)+'px !important; ">' + 
