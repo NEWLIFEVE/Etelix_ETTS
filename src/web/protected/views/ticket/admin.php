@@ -9,16 +9,16 @@
 		<tr>
                     <?php $tipoUsuario = CrugeAuthassignment::getRoleUser(); ?>
                     <?php if ($tipoUsuario !== "C"): ?>
-                        <th>User</th>
+                        <th id="th-user">User</th>
                     <?php else: ?>
-                        <th class="hidden">&nbsp;</th>
+                        <th id="th-user" class="hidden">&nbsp;</th>
                     <?php endif; ?>
-                    <th>Ticket Number</th>
-                    <th>Failure</th>
-                    <th>Status(s)</th>
-                    <th>Origination Ip</th>
-                    <th>Destination Ip</th>
-                    <th>Date</th>
+                    <th id="th-ticket-number">Ticket Number</th>
+                    <th id="th-failure">Failure</th>
+                    <th id="th-status">Statu(s)</th>
+                    <th id="th-oip">Origination Ip</th>
+                    <th id="th-dip">Destination Ip</th>
+                    <th id="th-date">Date</th>
                     <th class="hidden">Tickets Relations</th>
                     <th class="hidden">Tickets Relations</th>
                     <th class="hidden">Tickets Relations</th>
@@ -26,7 +26,7 @@
                     <th class="hidden">Tickets Relations</th>
                     <th class="hidden">Tickets Relations</th>
                     <th class="hidden">&nbsp;</th>
-                    <th>&nbsp;</th>
+                    <th id="th-preview">&nbsp;</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -38,11 +38,15 @@
                             <td class="hidden">&nbsp;</td>
                         <?php endif; ?>
                         <td><?php echo $ticket->ticket_number; ?></td>
-                        <td><?php echo $ticket->idFailure->name; ?></td>
+                        <td><?php echo  $failure = strlen($ticket->idFailure->name) <= 15 ? $ticket->idFailure->name : substr($ticket->idFailure->name, 0, 15) .'...';  ?></td>
                         <td id="<?php echo $ticket->ids; ?>">
                             <span class="span-status">
                                 <span><?php echo $ticket->idStatus->name; ?></span>
-                                <a href="javascript:void(0)" class="edit-status" rel="<?php echo $ticket->ids; ?>"><img width="12" height="12" src="<?php echo Yii::app()->request->baseUrl.'/images/edit.png'; ?>"></a>
+                                <?php if ($tipoUsuario !== "C"): ?>
+                                    <a href="javascript:void(0)" class="edit-status" rel="<?php echo $ticket->ids; ?>">
+                                        <img width="12" height="12" src="<?php echo Yii::app()->request->baseUrl.'/images/edit.png'; ?>">
+                                    </a>
+                                <?php endif; ?>
                             </span>
                         </td>
                         <td><?php echo $ticket->origination_ip; ?></td>
@@ -73,4 +77,9 @@
 <?php Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl . '/css/datatable.css'); ?>
 <?php Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl . '/css/demo_table_jui.css'); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/plugins/jquery/jquery.dataTables.min.js',CClientScript::POS_END); ?>
-<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/admin.js',CClientScript::POS_END); ?>
+<?php if ($tipoUsuario === "C"): ?>
+    <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/admin_cliente.js',CClientScript::POS_END); ?>
+<?php else: ?>
+    <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/admin.js',CClientScript::POS_END); ?>
+<?php endif; ?>
+

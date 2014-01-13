@@ -513,7 +513,7 @@ $(document).on('ready', function(){
                                 shadow: true,
                                 overlay: false,
                                 icon: '<span class="icon-rocket"></span>',
-                                title: 'Operation complete',
+                                title: 'Error',
                                 width: 500,
                                 padding: 10,
                                 content: '<center>'+data+'</center>'
@@ -526,7 +526,7 @@ $(document).on('ready', function(){
         } // Fin if del status
                     
                     
-            }  
+        }  // Fin onValidationComplete
     }); // Fin de validaciones
     
 });
