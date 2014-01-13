@@ -42,7 +42,11 @@
                         <td id="<?php echo $ticket->ids; ?>">
                             <span class="span-status">
                                 <span><?php echo $ticket->idStatus->name; ?></span>
-                                <a href="javascript:void(0)" class="edit-status" rel="<?php echo $ticket->ids; ?>"><img width="12" height="12" src="<?php echo Yii::app()->request->baseUrl.'/images/edit.png'; ?>"></a>
+                                <?php if ($tipoUsuario !== "C"): ?>
+                                    <a href="javascript:void(0)" class="edit-status" rel="<?php echo $ticket->ids; ?>">
+                                        <img width="12" height="12" src="<?php echo Yii::app()->request->baseUrl.'/images/edit.png'; ?>">
+                                    </a>
+                                <?php endif; ?>
                             </span>
                         </td>
                         <td><?php echo $ticket->origination_ip; ?></td>
@@ -73,4 +77,9 @@
 <?php Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl . '/css/datatable.css'); ?>
 <?php Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl . '/css/demo_table_jui.css'); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/plugins/jquery/jquery.dataTables.min.js',CClientScript::POS_END); ?>
-<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/admin.js',CClientScript::POS_END); ?>
+<?php if ($tipoUsuario === "C"): ?>
+    <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/admin_cliente.js',CClientScript::POS_END); ?>
+<?php else: ?>
+    <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/admin.js',CClientScript::POS_END); ?>
+<?php endif; ?>
+

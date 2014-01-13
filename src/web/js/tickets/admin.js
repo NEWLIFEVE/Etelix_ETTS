@@ -12,11 +12,13 @@ function fnFormatDetails ( oTable, nTr )
         var aData = oTable.fnGetData( nTr );
         var sOut = '<table class="display">';
         var style = '';
+        
         for(var i= 0; i < aData[8].split('|').length - 1; i++) {
+            
             if (i%2 == 0)
-                style = '#F0F8FF';
+                style = '#C0C0C0';
             else
-                style = '#FAFFFF';
+                style = '#D3D3D3';
             
             sOut +=  '<tr style="background:'+style+'"><td>&nbsp;&nbsp;</td><td style="width:'+(widthTicket+13)+'px !important; ">' + 
                 aData[8].split('|')[i] + '</td><td style="width:'+(widthFailure+13)+'px !important; ">' + 
@@ -96,7 +98,7 @@ $(document).ready(function() {
          */
         var nCloneTh = document.createElement( 'th' );
         var nCloneTd = document.createElement( 'td' );
-        nCloneTd.innerHTML = '<img class="detalle" src="/images/details_open.png">';
+        nCloneTd.innerHTML = '<img class="detalle" width="12" height="12" src="/images/details_open.png">';
         nCloneTd.className = "center";
         
         $('#example thead tr').each( function () {
