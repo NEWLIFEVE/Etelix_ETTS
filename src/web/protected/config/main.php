@@ -123,7 +123,7 @@ return array(
 		),
 		'soriDB'=>array(
 			'class'=>'CDbConnection',
-			'connectionString'=>'pgsql:host=localhost;port=5432;dbname=test_sori',
+			'connectionString'=>'pgsql:host=localhost;port=5432;dbname=sori',
 			'username'=>'postgres',
 			'password'=>'Nsusfd8263',
 			'charset'=>'utf8',
