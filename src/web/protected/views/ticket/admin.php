@@ -10,6 +10,7 @@
                     <?php $tipoUsuario = CrugeAuthassignment::getRoleUser(); ?>
                     <?php if ($tipoUsuario !== "C"): ?>
                         <th id="th-user">User</th>
+                        <th id="th-carrier">Carrier</th>
                     <?php else: ?>
                         <th id="th-user" class="hidden">&nbsp;</th>
                     <?php endif; ?>
@@ -34,6 +35,7 @@
                     <tr <?php if ($ticket->idStatus->id === 2) echo 'class="gradeX"'; ?> >
                         <?php if ($tipoUsuario !== "C"): ?>
                             <td><?php echo CrugeUser2::getUserTicket($ticket->ids); ?></td>
+                            <td><?php  echo Carrier::getCarriers(true, $ticket->ids) != null ?  Carrier::getCarriers(true, $ticket->ids): ''; ?></td>
                         <?php else: ?>
                             <td class="hidden">&nbsp;</td>
                         <?php endif; ?>

@@ -13,7 +13,7 @@ function fnFormatDetails ( oTable, nTr )
         var sOut = '<table class="display">';
         var style = '';
         
-        for(var i= 0; i < aData[8].split('|').length - 1; i++) {
+        for(var i= 0; i < aData[9].split('|').length - 1; i++) {
             
             if (i%2 == 0)
                 style = '#C0C0C0';
@@ -21,13 +21,13 @@ function fnFormatDetails ( oTable, nTr )
                 style = '#D3D3D3';
             
             sOut +=  '<tr style="background:'+style+'"><td>&nbsp;&nbsp;</td><td style="width:'+(widthTicket+13)+'px !important; ">' + 
-                aData[8].split('|')[i] + '</td><td style="width:'+(widthFailure+13)+'px !important; ">' + 
-                aData[9].split('|')[i] + '</td><td style="width:'+(widthStatus+9)+'px !important; ">' + 
-                aData[10].split('|')[i] + '</td><td style="width:'+(widthOip+11)+'px !important; ">' + 
-                aData[11].split('|')[i] + '</td><td style="width:'+(widthDip+12)+'px !important; ">' + 
-                aData[12].split('|')[i] + '</td><td style="width:'+(widthDate+9)+'px !important; ">' + 
-                aData[13].split('|')[i] + '</td><td style="width:'+(widthPreview+11)+'px !important; ">' +
-                aData[14].split('|')[i] + '</td></tr>';
+                aData[9].split('|')[i] + '</td><td style="width:'+(widthFailure+13)+'px !important; ">' + 
+                aData[10].split('|')[i] + '</td><td style="width:'+(widthStatus+9)+'px !important; ">' + 
+                aData[11].split('|')[i] + '</td><td style="width:'+(widthOip+11)+'px !important; ">' + 
+                aData[12].split('|')[i] + '</td><td style="width:'+(widthDip+12)+'px !important; ">' + 
+                aData[13].split('|')[i] + '</td><td style="width:'+(widthDate+9)+'px !important; ">' + 
+                aData[14].split('|')[i] + '</td><td style="width:'+(widthPreview+11)+'px !important; ">' +
+                aData[15].split('|')[i] + '</td></tr>';
         }
         
         sOut += '</table>';
@@ -118,9 +118,9 @@ $(document).ready(function() {
                 "bJQueryUI": true,
                 "sPaginationType": "full_numbers",
                 "aoColumnDefs": [
-                        { "bSortable": false, "aTargets": [ 0,15 ] }
+                        { "bSortable": false, "aTargets": [ 0,16 ] }
                 ],
-                "aaSorting": [[2, 'desc']]
+                "aaSorting": [[3, 'desc']]
                 
         });
 
