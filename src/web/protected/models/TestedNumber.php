@@ -102,8 +102,8 @@ class TestedNumber extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
-        
-        public static function getTestednumber($idTicket = false)
+
+        public static function getNumbers($idTicket = false)
         {
             if ($idTicket) {
                 return self::model()->findAll("id_ticket = $idTicket");

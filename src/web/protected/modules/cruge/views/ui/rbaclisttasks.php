@@ -1,4 +1,4 @@
-<h1><?php echo ucwords(CrugeTranslator::t("tareas"));?></h1>
+<h2><?php echo ucwords(CrugeTranslator::t("tasks"));?></h2>
 
 <div class='auth-item-create-button'>
 <?php echo CHtml::link(CrugeTranslator::t("Crear Nueva Tarea")

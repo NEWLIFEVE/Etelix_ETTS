@@ -7,7 +7,7 @@ class TicketController extends Controller
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
 	public $layout='//layouts/column2';
-        
+                
 	/**
 	 * @return array action filters
 	 */
@@ -119,6 +119,64 @@ class TicketController extends Controller
 			'model'=>$model
 		));
 	}
+        
+        
+        
+        
+        public function actionCreateinternal()
+	{
+		$model=new Ticket;
+                /*Instancio los modelos donde se harán inserts*/
+                $modelTestedNumbers= new TestedNumber;
+                $modelDescripcionTicket= new DescriptionTicket;
+                
+                
+		// Uncomment the following line if AJAX validation is needed
+		// $this->performAjaxValidation($model);
+
+		if(isset($_POST['Ticket']))
+		{
+                        
+			$model->attributes=$_POST['Ticket'];
+                        
+                        //Demás atributos que no estan en el formualrio
+                        $model->id_status = 1;
+                        $model->date = new CDbExpression('NOW()');
+                        $model->machine_ip = Yii::app()->request->userHostAddress;
+                        
+			if($model->save()) {
+                               
+                                $countDestination = $_POST['Ticket']['country'];
+                                $countTestedNumbers = $_POST['Ticket']['tested_numbers'];
+                                $countFecha = $_POST['Ticket']['date_number'];
+                                
+                                for ($i = 0; $i < count($countTestedNumbers); $i++) {
+                                    // Guardo en TestedNumbers
+                                    $model->addTestedNumbers(
+                                            $model->primaryKey, 
+                                            $countDestination[$i], 
+                                            $countTestedNumbers[$i], 
+                                            $countFecha[$i]
+                                            );
+                                }
+                                
+                                // Guardo en DescripcionTicket
+                                $modelDescripcionTicket->id_ticket = $model->primaryKey;
+                                $modelDescripcionTicket->description = $_POST['Ticket']['description'];
+                                $modelDescripcionTicket->date = new CDbExpression('NOW()');
+                                
+                                $modelTestedNumbers->save();
+                                $modelDescripcionTicket->save();
+                                
+				$this->redirect(array('view','id'=>$model->id));
+                        }
+		}
+
+		$this->render('createinternal',array(
+			'model'=>$model
+		));
+	}
+        
 
 	/**
 	 * Updates a particular model.
@@ -212,11 +270,6 @@ class TicketController extends Controller
 		}
 	}
         
-        public function actionGetdataticket()
-        {
-//            echo CJSON::encode(Ticket::ticketsByUsers(Yii::app()->user->id, $_POST['idTicket']));
-            $this->renderPartial('_dataticket', array('datos' => Ticket::ticketsByUsers(Yii::app()->user->id, $_POST['idTicket'])));
-        }
         
         public function actionSaveticket()
         {
@@ -378,6 +431,16 @@ class TicketController extends Controller
 		</table>';
                 
                 $footer = '<div style="width:100%">
+<<<<<<< HEAD
+=======
+		<p style="text-align:justify">
+                    <br/><div style="font-style:italic;">Please do not reply to this email. Replies to this message are routed to an unmonitored mailbox.</div>
+		</p>
+                </div>
+                ';
+
+                $footer_tt = '<div style="width:100%">
+>>>>>>> dev
 		<p style="text-align:justify">
                     <br/><div style="font-style:italic;">Please do not reply to this email. Replies to this message are routed to an unmonitored mailbox.</div>
 		</p>
@@ -393,11 +456,14 @@ class TicketController extends Controller
                 $cuerpo = $header.$info.$detail.$footer;
                 $cuerpo_tt = $header.$info_tt.$detail.$footer_tt;
                 
-                $envioMail = $mailer->enviar($cuerpo, $_POST['emails'],'', $ticketNumber, $rutaAttachFile);
-                $emailsTT[]= 'tt@etelix.com';
-                $envioMail2 = $mailer->enviar($cuerpo_tt, $emailsTT,  $_POST['emails'], $ticketNumber, $rutaAttachFile);
+                $cuerpo = $header.$info.$detail.$footer;
+                $cuerpo_tt = $header.$info_tt.$detail.$footer_tt;
                 
-               
+                $envioMail = $mailer->enviar($cuerpo, $_POST['emails'],'', $ticketNumber, $rutaAttachFile);
+                $emailsTT[] = 'tt@etelix.com';
+//                $emailsTT[] = 'tsu.nelsonmarcano@gmail.com';
+                $envioMail2 = $mailer->enviar($cuerpo_tt, $emailsTT,  $_POST['emails'], $ticketNumber, $rutaAttachFile);
+
                 if ($envioMail === true) {
                     if ($envioMail2 === true) {
                         echo 'success';
@@ -410,5 +476,15 @@ class TicketController extends Controller
             } else {
                 echo 'Error al enviar el ticket';
             }
+        }
+        
+        public function actionUpdatestatus()
+        {
+            Ticket::model()->updateByPk($_POST['idTicket'], array('id_status' => $_POST['idStatus']));
+        }
+        
+        public function actionGetdataticket()
+        {
+            $this->renderPartial('_dataticket', array('datos' => Ticket::ticketsByUsers(Yii::app()->user->id, $_POST['idTicket'], false)));
         }
 }
