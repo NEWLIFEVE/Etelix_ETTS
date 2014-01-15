@@ -9,6 +9,7 @@
 		<tr>
                     <?php $tipoUsuario = CrugeAuthassignment::getRoleUser(); ?>
                     <?php if ($tipoUsuario !== "C"): ?>
+                        <th id="th-plus">&nbsp;</th>
                         <th id="th-user">User</th>
                         <th id="th-carrier">Carrier</th>
                     <?php else: ?>
@@ -20,6 +21,10 @@
                     <th id="th-oip">Origination Ip</th>
                     <th id="th-dip">Destination Ip</th>
                     <th id="th-date">Date</th>
+                    
+                    <th class="hidden">Tickets Relations</th>
+                    <th class="hidden">Tickets Relations</th>
+                    
                     <th class="hidden">Tickets Relations</th>
                     <th class="hidden">Tickets Relations</th>
                     <th class="hidden">Tickets Relations</th>
@@ -32,8 +37,26 @@
 	</thead>
 	<tbody>
                 <?php foreach (Ticket::ticketsByUsers(Yii::app()->user->id, false) as $ticket): ?>
-                    <tr <?php if ($ticket->idStatus->id === 2) echo 'class="gradeX"'; ?> >
+                    <tr <?php switch ($ticket->idStatus->id) {
+                                case '1':
+                                    $date = explode('-', $ticket->date);
+                                    $hour = explode(':', $ticket->hour);
+                                    $timestamp = mktime($hour[0],$hour[1],$hour[2], $date[1],$date[2],$date[0]);
+                                    if( (time() - $timestamp) > 72000 )
+                                        echo 'class="late"';
+                                    else
+                                        echo 'class="open"'; 
+                                    break;
+                                case '2':
+                                    echo 'class="close"';
+                                    break;
+                                }?>>
                         <?php if ($tipoUsuario !== "C"): ?>
+                            <?php if (Ticketrelation::getTicketRelation($ticket->ids) != null): ?>
+                                <td><img class="detalle" width="12" height="12" src="<?php echo Yii::app()->request->baseUrl.'/images/details_open.png'; ?>"</td>
+                            <?php else: ?>
+                                <td>&nbsp;</td>
+                            <?php endif; ?>
                             <td><?php echo CrugeUser2::getUserTicket($ticket->ids); ?></td>
                             <td><?php  echo Carrier::getCarriers(true, $ticket->ids) != null ?  Carrier::getCarriers(true, $ticket->ids): ''; ?></td>
                         <?php else: ?>
@@ -54,6 +77,10 @@
                         <td><?php echo $ticket->origination_ip; ?></td>
                         <td><?php echo $ticket->destination_ip; ?></td>
                         <td><?php echo $ticket->date; ?></td>
+                        
+                        <td class="hidden"><?php foreach (Ticket::ticketsRelations($ticket->ids) as $value) echo CrugeUser2::getUserTicket($value->id) . '|'; ?></td>
+                        <td class="hidden"><?php foreach (Ticket::ticketsRelations($ticket->ids) as $value) echo Carrier::getCarriers(true, $value->id) . '|'; ?></td>
+
                         <td class="hidden"><?php foreach (Ticket::ticketsRelations($ticket->ids) as $value) echo $value->ticket_number . '|'; ?></td>
                         <td class="hidden"><?php foreach (Ticket::ticketsRelations($ticket->ids) as $value) echo $value->idFailure->name . '|'; ?></td>
                         <td class="hidden"><?php foreach (Ticket::ticketsRelations($ticket->ids) as $value) echo $value->idStatus->name . '|'; ?></td>

@@ -101,4 +101,14 @@ class Ticketrelation extends CActiveRecord
 		return parent::model($className);
 	}
         
+        
+        public static function getTicketRelation($idTicketFather = false, $idTicketson = false)
+        {
+            $ticket = self::model()->find("id_ticket_father = $idTicketFather");
+            if ($ticket != null)
+                return $ticket;
+            else
+                return null;
+        }
+        
 }
