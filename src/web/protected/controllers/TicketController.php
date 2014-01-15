@@ -431,8 +431,6 @@ class TicketController extends Controller
 		</table>';
                 
                 $footer = '<div style="width:100%">
-<<<<<<< HEAD
-=======
 		<p style="text-align:justify">
                     <br/><div style="font-style:italic;">Please do not reply to this email. Replies to this message are routed to an unmonitored mailbox.</div>
 		</p>
@@ -440,7 +438,6 @@ class TicketController extends Controller
                 ';
 
                 $footer_tt = '<div style="width:100%">
->>>>>>> dev
 		<p style="text-align:justify">
                     <br/><div style="font-style:italic;">Please do not reply to this email. Replies to this message are routed to an unmonitored mailbox.</div>
 		</p>
