@@ -58,5 +58,4 @@ Failure
         }
         ?>
         </ul>
-        <!--<textarea disabled="disabled"><?php // echo $datos->descriptionTickets->description; ?></textarea>-->
 </div>
