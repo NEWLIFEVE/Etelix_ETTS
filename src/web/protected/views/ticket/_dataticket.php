@@ -50,6 +50,13 @@ Failure
 </div>
 
 <div class="input-control textarea" data-role="input-control">
-        Description
-        <textarea disabled><?php echo $datos->descriptionTickets->description; ?></textarea>
+        Description<hr>
+        <ul>
+        <?php 
+        foreach ($datos->descriptionTickets as $value) {
+            echo '<li>' . $value->description . '   <br><strong>Date: </strong>' . $value->date . ' || <strong>Hour: </strong>' . $value->hour . '<hr></li>';
+        }
+        ?>
+        </ul>
+        <!--<textarea disabled="disabled"><?php // echo $datos->descriptionTickets->description; ?></textarea>-->
 </div>

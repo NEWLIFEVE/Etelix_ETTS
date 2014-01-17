@@ -2,10 +2,10 @@ $(document).ready(function() {
       
        // Boton para abrir el preview del ticket
        $(document).on('click', 'table#example tbody tr td a.preview', function () {
+                var idTicket = $(this).attr('rel');
                 $.ajax({
                     type:"POST",
-                    url:"getdataticket",
-                    data:{idTicket:$(this).attr('rel')},
+                    url:"getdataticket/" + idTicket,
                     success:function(data){
                         $.Dialog({
                             shadow: true,
@@ -30,7 +30,7 @@ $(document).ready(function() {
                 "bJQueryUI": true,
                 "sPaginationType": "full_numbers",
                 "aoColumnDefs": [
-                        { "bSortable": false, "aTargets": [ false,15 ] }
+                        { "bSortable": false, "aTargets": [ 6 ] }
                 ]
         });
         

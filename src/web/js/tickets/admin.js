@@ -63,11 +63,12 @@ $(document).ready(function() {
        
        // Boton para abrir el preview del ticket
        $(document).on('click', 'table#example tbody tr td a.preview', function () {
+                var idTicket = $(this).attr('rel');
                 $.ajax({
                     type:"POST",
-                    url:"getdataticket",
-                    data:{idTicket:$(this).attr('rel')},
+                    url:"getdataticket/" + idTicket,
                     success:function(data){
+//                        alert(data)
                         $.Dialog({
                             shadow: true,
                             overlay: true,
