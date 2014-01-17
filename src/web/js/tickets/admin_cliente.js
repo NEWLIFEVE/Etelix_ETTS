@@ -30,7 +30,7 @@ $(document).ready(function() {
                 "bJQueryUI": true,
                 "sPaginationType": "full_numbers",
                 "aoColumnDefs": [
-                        { "bSortable": false, "aTargets": [ 0,14 ] }
+                        { "bSortable": false, "aTargets": [ false,15 ] }
                 ]
         });
         

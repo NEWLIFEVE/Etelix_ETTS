@@ -467,11 +467,36 @@ class TicketController extends Controller
         
         public function actionUpdatestatus()
         {
+//            $idTicketSon = Ticketrelation::getTicketRelation($_POST['idTicket'], true);
+//            
+//            Ticket::model()->updateByPk($_POST['idTicket'], array('id_status' => $_POST['idStatus']));
             Ticket::model()->updateByPk($_POST['idTicket'], array('id_status' => $_POST['idStatus']));
         }
         
         public function actionGetdataticket()
         {
             $this->renderPartial('_dataticket', array('datos' => Ticket::ticketsByUsers(Yii::app()->user->id, $_POST['idTicket'], false)));
+        }
+        
+        /**
+         * Action para retornar los tickets relacionados codificados en json
+         * @param int $id
+         */
+        public function actionGetticketrelation($id)
+        {
+        	$array=null;
+        	foreach (Ticket::ticketsRelations($id) as $key => $value)
+        	{
+        		$array[$key]['id_ticket']=$value->id;
+        		$array[$key]['user']=CrugeUser2::getUserTicket($value->id);
+        		$array[$key]['carrier']=Carrier::getCarriers(true, $value->id);
+        		$array[$key]['ticket_number']=$value->ticket_number;
+        		$array[$key]['failure']=$value->idFailure->name;
+        		$array[$key]['status_ticket']=$value->idStatus->name;
+        		$array[$key]['origination_ip']=$value->origination_ip;
+        		$array[$key]['destination_ip']=$value->destination_ip;
+        		$array[$key]['date']=$value->date;
+        	}
+            echo json_encode($array);
         }
 }

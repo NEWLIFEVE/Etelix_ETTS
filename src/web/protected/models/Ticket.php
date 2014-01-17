@@ -45,7 +45,6 @@ class Ticket extends CActiveRecord
         public $country = array();
         public $date_number = array();
         public $hour_number = array();
-        public $ids;
         
 	public static function model($className=__CLASS__)
 	{
@@ -180,7 +179,7 @@ class Ticket extends CActiveRecord
             // Si $returnArray esta en true, retorna un array con los datos del ticket
             if ($returnArray) {
                 return self::model()->findAllBySql(
-                                    "select *, t.id as ids 
+                                    "select *, t.id as id 
                                     from 
                                     ticket t, description_ticket dt  
                                     where 
@@ -191,7 +190,7 @@ class Ticket extends CActiveRecord
             // De lo contrario no retorna un array
             } else {
                 return self::model()->findBySql(
-                                    "select *, t.id as ids 
+                                    "select *, t.id as id 
                                     from 
                                     ticket t, description_ticket dt  
                                     where 
@@ -210,7 +209,12 @@ class Ticket extends CActiveRecord
             }
             return $ids;
         }
-
+        /**
+         * Retorna los tickets relacionados a un ticket padre y a un usuario
+         * @param int $idTicket 
+         * @param int $idUser
+         * @return array
+         */
         public static function ticketsRelations($idTicket, $idUser = false)
         {
             $conditionUser = '';
