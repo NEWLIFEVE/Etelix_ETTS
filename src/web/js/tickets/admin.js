@@ -89,16 +89,18 @@ $(document).ready(function() {
         $(document).on('change', 'table#example tbody tr td select#status', function(){
             var id = $(this).parent('td').attr('id'),
             _select = $(this),
-            _status = $(this).val();
+            _status = $(this).val(),
+            _date = $(this).parent('td').attr('time');
             
             $.ajax({
                 type:'POST',
-                url:'updatestatus',
+                url:'updatestatus/' + id,
+                dataType:'html',
                 data:{
-                      idTicket:$(this).parent('td').attr('id'),
                       idStatus:_status
                 },
                 success:function(data){
+                    
                     if (_status == 2) {
                        $("td[id='"+id+"'], td[son='"+id+"']").children('span.span-status').children('span').text('close');
                          _select.next('span.span-status').show()
@@ -107,11 +109,19 @@ $(document).ready(function() {
                         _select.remove('select')
                         
                     } else {
-                        $("td[id='"+id+"'], td[son='"+id+"']").children('span.span-status').children('span').text('open');
-                        _select.next('span.span-status').show()
-                        $("td[id='"+id+"']").parent('tr').removeAttr('class')
-                         $("td[id='"+id+"']").parent('tr').addClass('open even')
-                        _select.remove('select')
+                        if(_date > 72000 ) {
+                            $("td[id='"+id+"'], td[son='"+id+"']").children('span.span-status').children('span').text('open');
+                            _select.next('span.span-status').show()
+                            $("td[id='"+id+"']").parent('tr').removeAttr('class')
+                             $("td[id='"+id+"']").parent('tr').addClass('late even')
+                            _select.remove('select')
+                        } else {
+                            $("td[id='"+id+"'], td[son='"+id+"']").children('span.span-status').children('span').text('open');
+                            _select.next('span.span-status').show()
+                            $("td[id='"+id+"']").parent('tr').removeAttr('class')
+                             $("td[id='"+id+"']").parent('tr').addClass('open even')
+                            _select.remove('select')
+                        }
                     }
                 }
             });
@@ -131,7 +141,7 @@ $(document).ready(function() {
                 "aoColumnDefs": [
                         { "bSortable": false, "aTargets": [ 0,9 ] }
                 ],
-                "aaSorting": [[3, 'desc']]
+                "aaSorting": [[5, 'desc', 8, 'asc']]
                 
         });
 

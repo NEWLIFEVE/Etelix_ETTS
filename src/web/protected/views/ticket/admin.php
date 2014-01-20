@@ -24,12 +24,11 @@
 	</thead>
 	<tbody>
                 <?php foreach (Ticket::ticketsByUsers(Yii::app()->user->id, false) as $ticket): ?>
-                    <tr <?php switch ($ticket->idStatus->id) {
+                    <tr <?php
+                            $timeTicket = Utility::getTime($ticket->date, $ticket->hour);
+                            switch ($ticket->idStatus->id) {
                                 case '1':
-                                    $date = explode('-', $ticket->date);
-                                    $hour = explode(':', $ticket->hour);
-                                    $timestamp = mktime($hour[0],$hour[1],$hour[2], $date[1],$date[2],$date[0]);
-                                    if( (time() - $timestamp) > 72000 )
+                                    if($timeTicket > 72000 )
                                         echo 'class="late"';
                                     else
                                         echo 'class="open"'; 
@@ -37,7 +36,8 @@
                                 case '2':
                                     echo 'class="close"';
                                     break;
-                                }?>>
+                                }
+                                ?>>
                         <?php if ($tipoUsuario !== "C"): ?>
                             <?php if (Ticketrelation::getTicketRelation($ticket->id) != null): ?>
                                 <td><img class="detalle" width="14" height="14" src="<?php echo Yii::app()->request->baseUrl.'/images/details_open.png'; ?>"</td>
@@ -49,7 +49,7 @@
                         <?php endif; ?>
                         <td><?php echo $ticket->ticket_number; ?></td>
                         <td><?php echo  $failure = strlen($ticket->idFailure->name) <= 15 ? $ticket->idFailure->name : substr($ticket->idFailure->name, 0, 15) .'...';  ?></td>
-                        <td name="id" id="<?php echo $ticket->id; ?>">
+                        <td name="id" id="<?php echo $ticket->id; ?>" time="<?php echo Utility::getTime($ticket->date, $ticket->hour); ?>">
                             <span class="span-status">
                                 <span><?php echo $ticket->idStatus->name; ?></span>
                                 <?php if ($tipoUsuario !== "C"): ?>

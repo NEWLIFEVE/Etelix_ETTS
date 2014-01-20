@@ -446,8 +446,8 @@ class TicketController extends Controller
                 $cuerpo_tt = $header.$info_tt.$detail.$footer_tt;
                 
                 $envioMail = $mailer->enviar($cuerpo, $_POST['emails'],'', $ticketNumber, $rutaAttachFile);
-//                $emailsTT[] = 'tt@etelix.com';
-                $emailsTT[] = 'tsu.nelsonmarcano@gmail.com';
+                $emailsTT[] = 'tt@etelix.com';
+//                $emailsTT[] = 'tsu.nelsonmarcano@gmail.com';
                 $envioMail2 = $mailer->enviar($cuerpo_tt, $emailsTT,  $_POST['emails'], $ticketNumber, $rutaAttachFile);
 
                 if ($envioMail === true) {
@@ -464,12 +464,27 @@ class TicketController extends Controller
             }
         }
         
-        public function actionUpdatestatus()
+        
+        /**
+         * Action para actualizar el status del ticket. Si el ticket padre está
+         * en la tabla "ticket_relation", se actualizaran sus tickets hijos al 
+         * status que sea seleccionado, si no se encuentra en dicha tabla, solo 
+         * se modificara en la tabla del ticket
+         */
+        public function actionUpdatestatus($id)
         {
-//            $idTicketSon = Ticketrelation::getTicketRelation($_POST['idTicket'], true);
-//            
-//            Ticket::model()->updateByPk($_POST['idTicket'], array('id_status' => $_POST['idStatus']));
-            Ticket::model()->updateByPk($_POST['idTicket'], array('id_status' => $_POST['idStatus']));
+            $idTickets = Ticketrelation::getTicketRelation($id, true);
+            
+            if ($idTickets != null) {
+                $ticketSon = array();
+                foreach ($idTickets as $value) {
+                    $ticketSon[] = $value->id_ticket_son;
+                }
+                $ticketSon[] = $id;
+                Ticket::model()->updateAll(array('id_status'=>$_POST['idStatus']), 'id in('.implode(",", $ticketSon).')');
+            } else {
+                Ticket::model()->updateByPk($id, array('id_status' => $_POST['idStatus']));
+            }
         }
         
         public function actionGetdataticket($id)

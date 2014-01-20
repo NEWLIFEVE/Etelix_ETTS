@@ -3,6 +3,11 @@ Etelix_ETTS
 
 Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
 
+-Soporte para modificar el status de los tickets hijos
+-Orden de tickets por status y asc y fecha desc
+-Cambio del color de los tickets por ajax
+-Se corrigió el description ticket al mostrar el preview del mismo
+
 Realese 1.0.3:
 -Nueva Tabla para Tickets, Datatable
 -Se pueden visualizar tickets asociados
