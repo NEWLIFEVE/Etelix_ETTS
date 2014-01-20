@@ -6,7 +6,7 @@ body {
 header {
   height: 45px;
 }
-.metro .page {
+.metro div.page {
   width: 980px;
   margin: 0 auto;
   padding: 0 20px;
@@ -123,9 +123,14 @@ text-shadow: none;
 span.margen_22px{margin: 0 44px;}
 span.margen_17px{margin: 0 34px;}
 
-div.input-control.select.span2.margen-number, div.input-control.text.span2.margen-number, div.input-control.text.span1.margen-number {margin-left: 10px !important;}
+/*div.input-control.text, div.input-control.select, div.input-control.textarea{ border: 1px solid !important;}*/
+
+div.input-control.select.span2.margen-number, 
+div.input-control.text.span2.margen-number, 
+div.input-control.text.span1.margen-number {margin-left: 10px !important;}
+
 div.input-control.text.span2.margen-number.fecha_div{width: 100px !important}
-div.input-control.text.span1.margen-number.hour_div{width: 80px !important}
+div.input-control.text.span1.margen-number.hour_div{width: 80px !important; height: 34px !important;}
 
 .margen-number {
     margin-left: 5px;
@@ -136,10 +141,6 @@ div.input-control.text.span1.margen-number.hour_div{width: 80px !important}
     padding: 0 !important; 
     margin: 0 !important;
 }
-
-/*#pp {
-    margin-bottom: 30px;
-}*/
 
 .separador-vertical {
     clear: left;
@@ -395,6 +396,43 @@ table#tabla_preview tr:last-child td:last-child {
 }*/
 
 
+/********Detalle del ticket*********/
+table.tablas {
+    border-collapse: collapse; /* IE7 and lower */
+    border-spacing: 0;
+    width: 100%;   
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+table.tablas {
+    width: 100% !important;
+}
+   
+table.tablas td, table.tablas th {
+    border-left: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    padding:3px 10px !important;
+    text-align: left;    
+}
+
+table.tablas th {
+    background-color: #16499a !important;
+    -webkit-box-shadow: 0 1px 0 rgba(255,255,255,.8) inset; 
+    -moz-box-shadow:0 1px 0 rgba(255,255,255,.8) inset;  
+    box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;        
+    border-top: none;
+    color: #ffffff !important;
+    font-family: 'Segoe UI Light_', 'Open Sans Light', Verdana, Arial, Helvetica, sans-serif !important;
+    font-size: 14px;
+    font-weight: normal;
+}
+
+table.tablas td:first-child, table.tablas th:first-child {
+    border-left: none;
+}
+/* ./detalle del ticket */
+
 
 a#imprimir {
     font-size: 22px;
@@ -424,4 +462,119 @@ footer {
     position:fixed;
     text-align: center;
     width:100%;*/
+}
+
+div.errorMessage {
+	color: red;
+	font-size: 0.9em;
+}
+
+/* Confirm del borrar los correos */
+#content_mensaje, #content_botones {
+    width: 100%;
+    text-align: center;
+}
+#content_botones {
+    margin-top: 50px;
+}
+#ok_confirm, #cancel_confirm {
+    width: 140px;
+}
+#cancel_confirm {
+    margin-left: 10px;
+}
+
+#preview_tested_number {
+    margin-top: -12px !important;
+}
+
+
+/******** PAGER *************/
+ul.yiiPager
+{
+	font-size:11px !important;
+	border:0 !important;
+	margin:0 !important;
+	padding:0 !important;
+	line-height:100% !important;
+	display:inline !important;
+}
+
+ul.yiiPager li
+{
+	display:inline !important;
+}
+
+
+.metro ul.yiiPager li.page:before,
+.metro ul.yiiPager li.page:after {
+  display: inline;
+  content: "";
+}
+
+
+ul.yiiPager a:link,
+ul.yiiPager a:visited
+{
+	border:solid 1px #9aafe5 !important;
+	font-weight:bold !important;
+	color:#0e509e !important;
+	padding:1px 6px !important;
+	text-decoration:none !important;
+        
+}
+
+ul.yiiPager .page a
+{
+	font-weight:normal !important;
+}
+
+ul.yiiPager a:hover
+{
+	border:solid 1px #0e509e !important;
+}
+
+ul.yiiPager .selected a
+{
+	background:#2e6ab1 !important;
+	color:#FFFFFF !important;
+	font-weight:bold !important;
+}
+
+ul.yiiPager .hidden a
+{
+	border:solid 1px #DEDEDE !important;
+	color:#888888 !important;
+}
+
+/**
+ * Hide first and last buttons by default.
+ */
+ul.yiiPager .first,
+ul.yiiPager .last
+{
+	display:none !important;
+}
+
+/******** cruge (registration - update)***********/
+#content_password {
+    margin-top: -5px !important;
+}
+
+select#CrugeStoredUser_id_carrier.select_carrier {
+    width:390px !important;
+}
+
+
+.hidden{
+    display: none !important;
+}
+
+/*AMDIN TICKET*/
+/*div.input-control.select.block.select-status {
+    margin: 0 !important;
+}*/
+select#status {
+    margin: 0 !important;
+    padding: 0px 2px !important;
 }

@@ -24,10 +24,10 @@
 	$granticonOn = "<img {$tit2} class='iconhelp grant-icon' src='{$handimgurl}'>";
 	$granticonOff = "<img {$tit3} class='iconhelp grant-icon' src='{$handoffimgurl}'>";
 ?>
-<div class='row form-group'>
+<div class='example'>
     
-	<h6><?php echo ucfirst(CrugeTranslator::t("opciones avanzadas"));?></h6>
-	<div class='field-group'>
+        <legend>Advanced</legend>
+	<!--<div class='field-group'>-->
 		<div class='col'>
 			<?php echo $form->labelEx($model,'state'); ?>
 			<?php echo $form->dropDownList($model,'state'
@@ -58,14 +58,14 @@
 				disabled='disabled'
 			>
 		<?php } ?>
-	</div>
+	<!--</div>-->
 		
 	<?php 
 		/*
 			funciones de asignacion de roles al usuario
 		*/
 	?>	
-	<div class='field-group'>
+	<!--<div class='field-group'>-->
 	
 		<h5><?php echo ucfirst(CrugeTranslator::t("asignacion de roles"));?></h5>
 		<p class='hind'>
@@ -126,7 +126,7 @@
 		?>
 		</ul>
 		<p class='hint'><?php echo CrugeTranslator::t("notese que a los usuarios se le asignan solo roles, esto es por cuestiones de facilitar la asignacion sobre todo en escenarios de alto volumen de usuarios.");?></p>
-	</div>	
+	<!--</div>-->	
 </div>
 
 <?php 

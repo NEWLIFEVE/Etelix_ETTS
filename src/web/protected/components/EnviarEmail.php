@@ -39,27 +39,41 @@ class EnviarEmail extends CApplicationComponent
             $mailer->IsSMTP();
             $mailer->IsHTML(true);
             $mailer->From='etts@etelix.com';
-//            $mailer->AddReplyTo('sinca.test@gmail.com');
-//            $mailer->AddAddress($user);
+            
             if($user!=null)
             {
-                foreach ($user as $key => $value)
-                {
-                    $mailer->AddAddress($value);
+                // Compruebo si es un array, si no el destino sera una cadena
+                if (is_array($user)) {
+                    foreach ($user as $key => $value)
+                    {
+                        $mailer->AddAddress($value);
+                    }
+                } else {
+                    $mailer->AddAddress($user);
                 }
             }
+            
             if($reply!=null)
             {
-                foreach ($reply as $key => $value)
-                {
-                    $mailer->AddReplyTo($value);
+                if (is_array($reply)) {
+                    foreach ($reply as $key => $value)
+                    {
+                        $mailer->AddReplyTo($value);
+                    }
+                } else {
+                    $mailer->AddReplyTo($reply);
                 }
             }
+            
             if($copia!=null)
             {
-                foreach ($copia as $key => $value)
-                {
-                    $mailer->addCC($value);
+                if (is_array($copia)) {
+                    foreach ($copia as $key => $value)
+                    {
+                        $mailer->addCC($value);
+                    }
+                } else {
+                    $mailer->addCC($copia);
                 }
             }
             $mailer->FromName='ETTS';
@@ -67,20 +81,25 @@ class EnviarEmail extends CApplicationComponent
             $mailer->Subject=Yii::t('', $asunto);
             
             if ($ruta!= null){ 
-                foreach ($ruta as $key)
-                {
-                    $mailer->AddAttachment($key); //Archivo adjunto
+                if (is_array($ruta)) {
+                    foreach ($ruta as $key)
+                    {
+                        $mailer->AddAttachment($key); //Archivo adjunto
+                    }
+                } else {
+                    $mailer->AddAttachment($ruta); //Archivo adjunto
                 }
             }
             $message=$html;
             $mailer->Body=$message;
+            
             if($mailer->Send())
             {
-                return 'true';
+                return true;
             }
             else
             {
-                return 'false';
+                return $mailer->ErrorInfo;
             }
         }
     }

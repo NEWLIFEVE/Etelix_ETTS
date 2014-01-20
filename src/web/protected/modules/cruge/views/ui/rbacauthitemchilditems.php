@@ -24,11 +24,11 @@
 	$treeDataOps = array();
 
 	// titulos
-	echo "<h1>".ucfirst($model->name)." (".
-		CrugeTranslator::t($rbac->getAuthItemTypeName($model->type)).")</h1>";
+	echo "<h2>".ucfirst($model->name)." (".
+		CrugeTranslator::t($rbac->getAuthItemTypeName($model->type)).")</h2>";
 	echo "<h3 class='hint'>".$model->description."</h3>";
 	echo "<p>".ucfirst(CrugeTranslator::t(
-	"haga click en un item para activarlo o desactivarlo"))."</p>";
+	"click an item to enable or disable"))."</p>";
 
 	$iconPin = Yii::app()->user->ui->getResource('pin.png');
 	$imgPin = "<img class='pin-on' src='{$iconPin}' title='"

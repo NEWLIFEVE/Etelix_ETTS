@@ -89,6 +89,6 @@ class Country extends CActiveRecord
 	}
         static public function getNames()
         {
-            return CHtml::listData(Country::model()->findAll(), 'id', 'name');
+            return CHtml::listData(Country::model()->findAll(array('order' => 'name')), 'id', 'name');
         }
 }

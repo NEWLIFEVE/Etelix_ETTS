@@ -7,7 +7,7 @@ class TicketController extends Controller
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
 	public $layout='//layouts/column2';
-        
+                
 	/**
 	 * @return array action filters
 	 */
@@ -119,6 +119,64 @@ class TicketController extends Controller
 			'model'=>$model
 		));
 	}
+        
+        
+        
+        
+        public function actionCreateinternal()
+	{
+		$model=new Ticket;
+                /*Instancio los modelos donde se harán inserts*/
+                $modelTestedNumbers= new TestedNumber;
+                $modelDescripcionTicket= new DescriptionTicket;
+                
+                
+		// Uncomment the following line if AJAX validation is needed
+		// $this->performAjaxValidation($model);
+
+		if(isset($_POST['Ticket']))
+		{
+                        
+			$model->attributes=$_POST['Ticket'];
+                        
+                        //Demás atributos que no estan en el formualrio
+                        $model->id_status = 1;
+                        $model->date = new CDbExpression('NOW()');
+                        $model->machine_ip = Yii::app()->request->userHostAddress;
+                        
+			if($model->save()) {
+                               
+                                $countDestination = $_POST['Ticket']['country'];
+                                $countTestedNumbers = $_POST['Ticket']['tested_numbers'];
+                                $countFecha = $_POST['Ticket']['date_number'];
+                                
+                                for ($i = 0; $i < count($countTestedNumbers); $i++) {
+                                    // Guardo en TestedNumbers
+                                    $model->addTestedNumbers(
+                                            $model->primaryKey, 
+                                            $countDestination[$i], 
+                                            $countTestedNumbers[$i], 
+                                            $countFecha[$i]
+                                            );
+                                }
+                                
+                                // Guardo en DescripcionTicket
+                                $modelDescripcionTicket->id_ticket = $model->primaryKey;
+                                $modelDescripcionTicket->description = $_POST['Ticket']['description'];
+                                $modelDescripcionTicket->date = new CDbExpression('NOW()');
+                                
+                                $modelTestedNumbers->save();
+                                $modelDescripcionTicket->save();
+                                
+				$this->redirect(array('view','id'=>$model->id));
+                        }
+		}
+
+		$this->render('createinternal',array(
+			'model'=>$model
+		));
+	}
+        
 
 	/**
 	 * Updates a particular model.
@@ -225,7 +283,6 @@ class TicketController extends Controller
              $modelTicket->origination_ip=$_POST['originationIp'];
              $modelTicket->prefix=$_POST['prefix'];
              $modelTicket->machine_ip=Yii::app()->request->userHostAddress;
-             $modelTicket->id_ticket=NULL;
              $modelTicket->hour=date('H:m:s');
              
              $maximo = $modelTicket::model()->findBySql("SELECT MAX(id) AS maximo FROM ticket");
@@ -278,12 +335,13 @@ class TicketController extends Controller
                 
                 $mailer = new EnviarEmail;
                 
-                $cuerpo = 
+                $header = 
                 '<div style="width:100%">
                         <img src="http://deve.sacet.com.ve/images/logo.jpg" height="100"/>
                         <hr>
                         <div style="text-align:right">Ticket Confirmation<br>Ticket #: '.$ticketNumber.'</div>
-                        <div>
+                ';
+                 $info = '  <div>
                                 <h2>Hello "'. Yii::app()->user->name .'"</h2>
                                 <p style="text-align:justify">
                                     <div>Dear Customer:</div><br/>
@@ -298,8 +356,18 @@ class TicketController extends Controller
                                 </p>
                         </div>
                         <hr>
-                </div>
-                <h2>Ticket Details</h2>
+                </div>';
+                 
+                 $info_tt = '  <div>
+                                <h2>Hello</h2>
+                                <p style="text-align:justify">
+                                    You have a new ticket from <h2>"'. Yii::app()->user->name .'"</h2>
+                                </p>
+                        </div>
+                        <hr>
+                </div>';
+                 
+                $detail = '<h2>Ticket Details</h2>
                 <table style="border-spacing: 0; width:100%; border: solid #ccc 1px;">
 			<tr>
 			    <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc; padding: 5px 10px; text-align: left;">Response to</th>
@@ -358,19 +426,91 @@ class TicketController extends Controller
 			<tr>
                                 <td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$_POST['description'].'</td>
 			</tr>
-		</table>
-                <div style="width:100%">
+		</table>';
+                
+                $footer = '<div style="width:100%">
+		<p style="text-align:justify">
+                    <br/><div style="font-style:italic;">Please do not reply to this email. Replies to this message are routed to an unmonitored mailbox.</div>
+		</p>
+                </div>
+                ';
+
+                $footer_tt = '<div style="width:100%">
 		<p style="text-align:justify">
                     <br/><div style="font-style:italic;">Please do not reply to this email. Replies to this message are routed to an unmonitored mailbox.</div>
 		</p>
                 </div>
                 ';
                 
-                $mailer->enviar($cuerpo, $_POST['emails'], '', $ticketNumber, $rutaAttachFile);
+                $cuerpo = $header.$info.$detail.$footer;
+                $cuerpo_tt = $header.$info_tt.$detail.$footer_tt;
                 
-                echo 'success';
+                $envioMail = $mailer->enviar($cuerpo, $_POST['emails'],'', $ticketNumber, $rutaAttachFile);
+                $emailsTT[] = 'tt@etelix.com';
+//                $emailsTT[] = 'tsu.nelsonmarcano@gmail.com';
+                $envioMail2 = $mailer->enviar($cuerpo_tt, $emailsTT,  $_POST['emails'], $ticketNumber, $rutaAttachFile);
+
+                if ($envioMail === true) {
+                    if ($envioMail2 === true) {
+                        echo 'success';
+                    } else {
+                        echo 'success';
+                    }
+                } else {
+                    echo 'Error al enviar el correo: ' . $envioMail;
+                }
             } else {
-                echo 'error';
+                echo 'Error al enviar el ticket';
             }
+        }
+        
+        
+        /**
+         * Action para actualizar el status del ticket. Si el ticket padre está
+         * en la tabla "ticket_relation", se actualizaran sus tickets hijos al 
+         * status que sea seleccionado, si no se encuentra en dicha tabla, solo 
+         * se modificara en la tabla del ticket
+         */
+        public function actionUpdatestatus($id)
+        {
+            $idTickets = Ticketrelation::getTicketRelation($id, true);
+            
+            if ($idTickets != null) {
+                $ticketSon = array();
+                foreach ($idTickets as $value) {
+                    $ticketSon[] = $value->id_ticket_son;
+                }
+                $ticketSon[] = $id;
+                Ticket::model()->updateAll(array('id_status'=>$_POST['idStatus']), 'id in('.implode(",", $ticketSon).')');
+            } else {
+                Ticket::model()->updateByPk($id, array('id_status' => $_POST['idStatus']));
+            }
+        }
+        
+        public function actionGetdataticket($id)
+        {
+            $this->renderPartial('_dataticket', array('datos' => Ticket::ticketsByUsers(Yii::app()->user->id, $id, false)));
+        }
+        
+        /**
+         * Action para retornar los tickets relacionados codificados en json
+         * @param int $id
+         */
+        public function actionGetticketrelation($id)
+        {
+        	$array=null;
+        	foreach (Ticket::ticketsRelations($id) as $key => $value)
+        	{
+        		$array[$key]['id_ticket']=$value->id;
+        		$array[$key]['user']=CrugeUser2::getUserTicket($value->id);
+        		$array[$key]['carrier']=Carrier::getCarriers(true, $value->id);
+        		$array[$key]['ticket_number']=$value->ticket_number;
+        		$array[$key]['failure']=$value->idFailure->name;
+        		$array[$key]['status_ticket']=$value->idStatus->name;
+        		$array[$key]['origination_ip']=$value->origination_ip;
+        		$array[$key]['destination_ip']=$value->destination_ip;
+        		$array[$key]['date']=$value->date;
+        	}
+            echo json_encode($array);
         }
 }

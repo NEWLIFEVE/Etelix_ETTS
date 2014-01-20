@@ -100,12 +100,26 @@ class CrugeAuthassignment extends CActiveRecord
 		return parent::model($className);
 	}
         
-        public static function getRoleUser()
+        public static function getRoleUser($nameFull = false, $userId = false, $prefix = false)
         {
-            $role = self::model()->find("userid=" . Yii::app()->user->id);
-            if ($role != null)
-                return substr(ucfirst($role->itemname), 0, 1);
-            else
-                return 'A';
+            if ($userId) {
+                $userId = $userId;
+            } else {
+                $userId = Yii::app()->user->id;
+            }
+            
+            $role = self::model()->find("userid=" . $userId);
+            
+            if ($role != null) {
+                if ($nameFull) 
+                    return $role->itemname;
+                else 
+                    return substr(ucfirst($role->itemname), 0, 1);
+            } else {
+                if ($nameFull) 
+                    return 'admin';
+                else
+                    return 'A';
+            }
         }
 }

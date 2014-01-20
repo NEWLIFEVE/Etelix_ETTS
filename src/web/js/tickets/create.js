@@ -22,10 +22,18 @@ function miConfirm(mensaje)
         title: false,
         width: 500,
         padding: 10,
-        content: mensaje + '<button id="ok_confirm" type="button">OK</button>  <button id="cancel_confirm" type="button">Cancel</button>'
+        content: 
+            '<div id="content_mensaje"><h2>' + mensaje + '</h2></div>' + 
+            '<div id="content_botones">' +
+                '<button class="primary large" id="ok_confirm" type="button">OK</button>' +
+                '<button class="primary large" id="cancel_confirm" type="button">Cancel</button>' +
+            '</div>'
     });
 }
 
+jQuery.fn.reset = function () {
+  $(this).each (function() { this.reset(); });
+}
 
 $(document).on('ready', function(){
     
@@ -153,6 +161,7 @@ $(document).on('ready', function(){
             
             if ($('#Ticket_mail option').length <= 4) {
                 $('#Ticket_mail').append('<option value="'+$('#cargar_mails').val()+'">'+$('#cargar_mails option:selected').html()+'</option>');
+                $('#cargar_mails option:selected').attr('selected',false);
                 $('#Ticket_mail').removeClass('validate[required]');
             } else {
                 alert('Only five emails allowed')
@@ -255,11 +264,11 @@ $(document).on('ready', function(){
                 country.html() +
 
                 '<div class="input-control text span2 margen-number fecha_div">' +
-                    '<input type="text" class="fecha" name="Ticket[date_number][]" placeholder="Date" readonly="readonly" >' +
+                    '<input type="text" class="fecha validate[required]" name="Ticket[date_number][]" placeholder="Date" readonly="readonly" >' +
                 '</div>' +
                 
                 '<div class="input-control text span1 margen-number hour_div">' +
-                    '<input type="text" name="Ticket[hour_number][]" placeholder="Hour" class="hour" >' +
+                    '<input type="text" name="Ticket[hour_number][]" placeholder="Hour" class="hour validate[required]" >' +
                 '</div>' +
                 '<a href="javascript:void(0)" style="margin-left: 5px; padding-top: 5px; width: 10px !important;"  class="_cancelar input-control text span1"><i class="icon-cancel-2 fg-red "></i></a>' +
             '</div>'
@@ -386,9 +395,6 @@ $(document).on('ready', function(){
                             '<input type="text" value="'+$('#Ticket_id_failure option:selected').html()+'" disabled>' +
                         '</div>'+
 
-                        '<div class="grid" >' +
-                            '<div class="row" id="separador-prefijo"></div>' +
-                        '</div>' +
 
                         '<div class="_label">Origination IP <small class="text-muted "><em>(Customer IP)</em></small><span class="margen_17px"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DestinationIP  <small class="text-muted "><em>(Etelix IP)</em></small></div>'+
                         '<div class="input-control text block" data-role="input-control">'+
@@ -410,22 +416,12 @@ $(document).on('ready', function(){
                             '<input type="text" value="'+$('#Ticket_prefix').val()+'" disabled>' +
                         '</div>'+
 
-                        '<div class="grid" >'+
-                            '<div class="row" id="separador-prefijo"></div>'+
-                       '</div>'+
 
                         '<div class="input-control text block">'+
                             'GMT'+
                             '<input type="text" value="'+$('#Ticket_idGmt option:selected').html()+'" disabled>' +
                         '</div>'+
 
-                        '<div class="grid" >' +
-                            '<div class="row" id="separador-prefijo"></div>' +
-                        '</div>' +
-
-                        '<div class="grid" >' +
-                            '<div class="row" id="separador-prefijo"></div>' +
-                        '</div>' +
 
                         '<div id="tabla_tested_number" class="grid">'+
                             tablaNumber + 
@@ -470,7 +466,8 @@ $(document).on('ready', function(){
                              title: 'Sending email',
                              width: 500,
                              padding: 10,
-                             content: '<center><h2>Wait a few seconds...<h2></center>'
+                             content: '<center><h2>Wait a few seconds...<h2><img src="/images/loader.GIF"></center>'
+                                 
                        });
                    },
                    data:{
@@ -497,7 +494,6 @@ $(document).on('ready', function(){
                    success:function(data){
                        if (data == 'success') {
                            $.Dialog.close();
-
                            $.Dialog({
                                 shadow: true,
                                 overlay: false,
@@ -507,6 +503,21 @@ $(document).on('ready', function(){
                                 padding: 10,
                                 content: '<center><h2>Success<h2></center>'
                           });
+                          $("#Ticket_mail").children('option').remove();
+                          $('#Ticket_mail').addClass('validate[required]');
+                          $("#ticket-form").reset();
+                          
+                       } else {
+                           $.Dialog.close();
+                           $.Dialog({
+                                shadow: true,
+                                overlay: false,
+                                icon: '<span class="icon-rocket"></span>',
+                                title: 'Error',
+                                width: 500,
+                                padding: 10,
+                                content: '<center>'+data+'</center>'
+                          });
                        }
                    }
                 });
@@ -515,7 +526,7 @@ $(document).on('ready', function(){
         } // Fin if del status
                     
                     
-            }  
+        }  // Fin onValidationComplete
     }); // Fin de validaciones
     
 });
