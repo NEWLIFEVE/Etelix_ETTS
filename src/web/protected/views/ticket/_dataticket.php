@@ -49,13 +49,26 @@ Failure
     
 </div>
 
-<div class="input-control textarea" data-role="input-control">
-        Description<hr>
-        <ul>
-        <?php 
-        foreach ($datos->descriptionTickets as $value) {
-            echo '<li>' . $value->description . '   <br><strong>Date: </strong>' . $value->date . ' || <strong>Hour: </strong>' . $value->hour . '<hr></li>';
-        }
-        ?>
-        </ul>
+
+Description<hr>
+<ul>
+    <?php 
+    foreach ($datos->descriptionTickets as $value) {
+        echo '<li>' . $value->description . '   <br><strong>Date: </strong>' . $value->date . ' || <strong>Hour: </strong>' . $value->hour . ' || <strong>User: </strong>' . $value->idUser->username .  '<hr></li>';
+    }
+    ?>
+</ul>
+<div class="input-control select block">
+    <select>
+        <option></option>
+    </select>
 </div>
+
+<div class="input-control textarea" data-role="input-control">
+    <label>
+        <textarea></textarea>
+    </label>
+</div>
+<div></div>
+<button type="submit" id="send-msg" class="primary large">Send</button>
+

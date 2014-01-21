@@ -93,11 +93,8 @@ class Ticket extends CActiveRecord
 			'files' => array(self::HAS_MANY, 'File', 'id_ticket'),
 			'mailTickets' => array(self::HAS_MANY, 'MailTicket', 'id_ticket'),
 			'descriptionTickets' => array(self::HAS_MANY, 'DescriptionTicket', 'id_ticket'),
-//                        'descriptionTickets' => array(self::BELONGS_TO, 'DescriptionTicket', 'id_ticket'),
 			'idFailure' => array(self::BELONGS_TO, 'Failure', 'id_failure'),
 			'idStatus' => array(self::BELONGS_TO, 'Status', 'id_status'),
-//			'idTicket' => array(self::BELONGS_TO, 'Ticket', 'id_ticket'),
-//			'tickets' => array(self::HAS_MANY, 'Ticket', 'id_ticket'),
 			'idGmt' => array(self::BELONGS_TO, 'Gmt', 'id_gmt'),
 		);
 	}
