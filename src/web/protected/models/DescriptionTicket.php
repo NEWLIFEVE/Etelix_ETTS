@@ -97,4 +97,13 @@ class DescriptionTicket extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+        
+        /**
+         * 
+         * @param int $idTicket
+         */
+        public static function getDescription($idTicket)
+        {
+            return self::model()->findAll("id_ticket = $idTicket");
+        }
 }

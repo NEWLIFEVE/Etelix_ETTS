@@ -136,10 +136,10 @@ class Carrier extends CActiveRecord
 	}
         
         
-        public static function getListCarrier()
-        {
-            return self::model()->findAll();
-        }
+//        public static function getListCarrier()
+//        {
+//            return self::model()->findAll();
+//        }
 
         public static function getListUserCarriers()
         {
@@ -150,9 +150,23 @@ class Carrier extends CActiveRecord
             return $idCarriers;
         }
         
-        public static function getCarriers()
+        public static function getCarriers($returnNameCarrier = false, $idTicket = false)
         {
-            return CHtml::listData(self::model()->findAll("id not in(".implode(",", self::getListUserCarriers()).") order by name asc"), 'id', 'name');
+            if ($returnNameCarrier) {
+                $idCarrier = CrugeUser2::getUserTicket($idTicket, true, true)->id_carrier;
+                $idUser = CrugeUser2::getUserTicket($idTicket, true)->iduser;
+                
+                if ($idCarrier != null) {
+                    return self::model()->find("id = $idCarrier")->name;
+                } else {
+                    return 'ETELIX('.CrugeAuthassignment::getRoleUser(true, $idUser) . ')';
+                }
+            } else {
+                return CHtml::listData(self::model()->findAll("id not in(".implode(",", self::getListUserCarriers()).") order by name asc"), 'id', 'name');
+            }
+            
         }
+        
+       
         
 }

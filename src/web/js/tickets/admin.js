@@ -1,41 +1,60 @@
 /* Formating function for row details */
-function fnFormatDetails ( oTable, nTr )
+function fnFormatDetails ( data,id )
 {
-        var widthTicket = $('th#th-ticket-number').clone().outerWidth();
-        var widthFailure = $('th#th-failure').clone().outerWidth();
-        var widthStatus = $('th#th-status').clone().outerWidth();
-        var widthOip = $('th#th-oip').clone().outerWidth();
-        var widthDip = $('th#th-dip').clone().outerWidth();
-        var widthDate = $('th#th-date').clone().outerWidth();
-        var widthPreview = $('th#th-preview').clone().outerWidth();
+        var widthThPlus = $('th#th-plus').clone().outerWidth(),
+        widthUser = $('th#th-user').clone().outerWidth(),
+        widthCarrier = $('th#th-carrier').clone().outerWidth(),
+        widthTicket = $('th#th-ticket-number').clone().outerWidth(),
+        widthFailure = $('th#th-failure').clone().outerWidth(),
+        widthStatus = $('th#th-status').clone().outerWidth(),
+        widthOip = $('th#th-oip').clone().outerWidth(),
+        widthDip = $('th#th-dip').clone().outerWidth(),
+        widthDate = $('th#th-date').clone().outerWidth(),
+        widthPreview = $('th#th-preview').clone().outerWidth(),
+        aData = data,
+        sOut = '<table class="display">',
+        length = data.length;
         
-        var aData = oTable.fnGetData( nTr );
-        var sOut = '<table class="display">';
-        var style = '';
-        
-        for(var i= 0; i < aData[8].split('|').length - 1; i++) {
-            
-            if (i%2 == 0)
-                style = '#C0C0C0';
-            else
-                style = '#D3D3D3';
-            
-            sOut +=  '<tr style="background:'+style+'"><td>&nbsp;&nbsp;</td><td style="width:'+(widthTicket+13)+'px !important; ">' + 
-                aData[8].split('|')[i] + '</td><td style="width:'+(widthFailure+13)+'px !important; ">' + 
-                aData[9].split('|')[i] + '</td><td style="width:'+(widthStatus+9)+'px !important; ">' + 
-                aData[10].split('|')[i] + '</td><td style="width:'+(widthOip+11)+'px !important; ">' + 
-                aData[11].split('|')[i] + '</td><td style="width:'+(widthDip+12)+'px !important; ">' + 
-                aData[12].split('|')[i] + '</td><td style="width:'+(widthDate+9)+'px !important; ">' + 
-                aData[13].split('|')[i] + '</td><td style="width:'+(widthPreview+11)+'px !important; ">' +
-                aData[14].split('|')[i] + '</td></tr>';
+        for(var i= 0; i < length; i++)
+        {
+             sOut += '<tr style="background:#C0C0C0">';
+             sOut += '<td style="width:'+(widthThPlus+11)+'px !important; ">&nbsp;&nbsp;</td>';
+             sOut += '<td style="width:'+(widthUser+4)+'px !important; ">'+aData[i].user +'</td>';
+             sOut += '<td style="width:'+(widthCarrier+11)+'px !important; ">'+aData[i].carrier+'</td>';
+             sOut += '<td style="width:'+(widthTicket+7)+'px !important; ">'+aData[i].ticket_number+'</td>';
+             sOut += '<td style="width:'+(widthFailure+5)+'px !important; ">'+aData[i].failure+'</td>';
+             sOut += '<td father="'+id+'" son="'+aData[i].id_ticket+'" style="width:'+(widthStatus+15)+'px !important; " >';
+             sOut += '<span class="span-status">';
+             sOut += '<span>'+aData[i].status_ticket+'</span>';
+             sOut += '</span>';
+             sOut += '</td>';
+             sOut += '<td style="width:'+(widthOip+17 )+'px !important; ">'+aData[i].origination_ip + '</td>';
+             sOut += '<td style="width:'+(widthDip+9)+'px !important; ">' +aData[i].destination_ip + '</td>';
+             sOut += '<td style="width:'+(widthDate+16)+'px !important; ">' + aData[i].date + '</td>';
+             sOut += '<td style="width:'+(widthPreview+14)+'px !important; "><a href="javascript:void(0)" class="preview" rel="'+aData[i].id_ticket+'"><img width="12" height="12" src="/images/view.gif"></a></td>';
+             sOut += '</tr>';
         }
-        
+
         sOut += '</table>';
+        return sOut
         
-        return sOut;
+}
+
+
+function getTicketsRelated(id, nTr, oTable)
+{
+    $.ajax({
+        type:"POST",
+        url:"Getticketrelation/"+id,
+        dataType:'json',
+        success:function(data){
+            oTable.fnOpen( nTr, fnFormatDetails(data, id) , 'details' );
+        }
+    });
 }
 
 $(document).ready(function() {
+        
        // Boton para aparecer la opciones del status del ticket
        $(document).on('click', '#example tbody tr td a.edit-status', function () {
            $(this).parent('span.span-status').hide();
@@ -44,11 +63,12 @@ $(document).ready(function() {
        
        // Boton para abrir el preview del ticket
        $(document).on('click', 'table#example tbody tr td a.preview', function () {
+                var idTicket = $(this).attr('rel');
                 $.ajax({
                     type:"POST",
-                    url:"getdataticket",
-                    data:{idTicket:$(this).attr('rel')},
+                    url:"getdataticket/" + idTicket,
                     success:function(data){
+//                        alert(data)
                         $.Dialog({
                             shadow: true,
                             overlay: true,
@@ -67,60 +87,61 @@ $(document).ready(function() {
         
         // Evento para cambiar el status
         $(document).on('change', 'table#example tbody tr td select#status', function(){
+            var id = $(this).parent('td').attr('id'),
+            _select = $(this),
+            _status = $(this).val(),
+            _date = $(this).parent('td').attr('time');
             
-            _select = $(this);
-            _tr = $(this).parent('td').parent('tr');
-            _status = $(this).val();
             $.ajax({
                 type:'POST',
-                url:'updatestatus',
+                url:'updatestatus/' + id,
+                dataType:'html',
                 data:{
-                      idTicket:$(this).parent('td').attr('id'),
                       idStatus:_status
                 },
                 success:function(data){
-                   $(location).attr('href', _root_ + 'ticket/admin');
-//                    if (_status == 2) {
-//                        _select.next('span.span-status').show().children('span').text('close');
-//                        _select.remove('select')
-//                        _tr.addClass('gradeX')
-//                    } else {
-//                        _select.next('span.span-status').show().children('span').text('open');
-//                        _select.remove('select')
-//                        _tr.removeClass('gradeX')
-//                    }
+                    
+                    if (_status == 2) {
+                       $("td[id='"+id+"'], td[son='"+id+"']").children('span.span-status').children('span').text('close');
+                         _select.next('span.span-status').show()
+                         $("td[id='"+id+"']").parent('tr').removeAttr('class')
+                         $("td[id='"+id+"']").parent('tr').addClass('close even')
+                        _select.remove('select')
+                        
+                    } else {
+                        if(_date > 72000 ) {
+                            $("td[id='"+id+"'], td[son='"+id+"']").children('span.span-status').children('span').text('open');
+                            _select.next('span.span-status').show()
+                            $("td[id='"+id+"']").parent('tr').removeAttr('class')
+                             $("td[id='"+id+"']").parent('tr').addClass('late even')
+                            _select.remove('select')
+                        } else {
+                            $("td[id='"+id+"'], td[son='"+id+"']").children('span.span-status').children('span').text('open');
+                            _select.next('span.span-status').show()
+                            $("td[id='"+id+"']").parent('tr').removeAttr('class')
+                             $("td[id='"+id+"']").parent('tr').addClass('open even')
+                            _select.remove('select')
+                        }
+                    }
                 }
             });
         });
         
-        /*
-         * Insert a 'details' column to the table
-         */
-        var nCloneTh = document.createElement( 'th' );
-        var nCloneTd = document.createElement( 'td' );
-        nCloneTd.innerHTML = '<img class="detalle" width="12" height="12" src="/images/details_open.png">';
-        nCloneTd.className = "center";
-        
-        $('#example thead tr').each( function () {
-                this.insertBefore( nCloneTh, this.childNodes[0] );
-        } );
-
-        $('#example tbody tr').each( function () {
-                this.insertBefore(  nCloneTd.cloneNode( true ), this.childNodes[0] );
-        } );
+        $(document).on('blur', 'table#example tbody tr td select#status', function(){
+            $(this).next('span.span-status').show();
+            $(this).remove('select')
+        });
         
         /*
          * Initialse DataTables, with no sorting on the 'details' column
          */
         var oTable = $('#example').dataTable( {
-//                "sScrollY": "400px",
-//                "bScrollCollapse": true,
                 "bJQueryUI": true,
                 "sPaginationType": "full_numbers",
                 "aoColumnDefs": [
-                        { "bSortable": false, "aTargets": [ 0,15 ] }
+                        { "bSortable": false, "aTargets": [ 0,9 ] }
                 ],
-                "aaSorting": [[2, 'desc']]
+                "aaSorting": [[5, 'desc', 8, 'asc']]
                 
         });
 
@@ -128,7 +149,8 @@ $(document).ready(function() {
          * Note that the indicator for showing which row is open is not controlled by DataTables,
          * rather it is done here
          */
-        $('#example tbody td img.detalle').live('click', function () {
+        $(document).on('click', '#example tbody td img.detalle', function () {
+                id=$(this).parents('tr').children('td[name="id"]').attr('id');
                 var nTr = $(this).parents('tr')[0];
                 if ( oTable.fnIsOpen(nTr) )
                 {
@@ -140,7 +162,8 @@ $(document).ready(function() {
                 {
                         /* Open this row */
                         this.src = "/images/details_close.png";
-                        oTable.fnOpen( nTr, fnFormatDetails(oTable, nTr), 'details' );
+                        oTable.fnOpen( nTr, getTicketsRelated(id, nTr, oTable) , 'details' );
                 }
         } );
+        
 } );

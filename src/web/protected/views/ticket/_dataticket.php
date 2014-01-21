@@ -1,7 +1,7 @@
 <div class="input-control select block">
 Response to
 <select multiple="multiple" disabled="disabled" id="preview_response_to">
-    <?php foreach (MailUser::getMailsByTicket($datos->ids) as $value): ?>
+    <?php foreach (MailUser::getMailsByTicket($datos->id) as $value): ?>
         <option><?php echo $value->idMail->mail; ?></option>
     <?php endforeach; ?>
 </select>
@@ -40,8 +40,7 @@ Failure
 
 <div id="tabla_tested_number" class="grid">
     <?php $tabla = '<div><table id="tabla_preview"><thead><tr><th>Tested Numbers</th><th>Country</th><th>Date</th><th>Hour</th></thead><tbody>';
-    foreach (TestedNumber::getNumbers($datos->ids) as $value){
-
+    foreach (TestedNumber::getNumbers($datos->id) as $value){
         $tabla .= '<tr><td>' . $value->numero . '</td><td>' . $value->idCountry->name . '</td><td>' . $value->date . '</td><td>' . $value->hour . '</td></tr>';
     } 
     echo $tabla . '</tbody></table></div>';
@@ -50,7 +49,12 @@ Failure
 </div>
 
 <div class="input-control textarea" data-role="input-control">
-        Description
-        <textarea disabled><?php echo $datos->descriptionTickets->description; ?></textarea>
+        Description<hr>
+        <ul>
+        <?php 
+        foreach ($datos->descriptionTickets as $value) {
+            echo '<li>' . $value->description . '   <br><strong>Date: </strong>' . $value->date . ' || <strong>Hour: </strong>' . $value->hour . '<hr></li>';
+        }
+        ?>
+        </ul>
 </div>
-
