@@ -492,7 +492,7 @@ $(document).on('ready', function(){
                        _ticketComplete: ticketComplete
                    },
                    success:function(data){
-                       if (data == 'success') {
+                        if (data == 'success') {
                            $.Dialog.close();
                            $.Dialog({
                                 shadow: true,

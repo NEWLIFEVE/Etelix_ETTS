@@ -11,6 +11,7 @@ header {
   margin: 0 auto;
   padding: 0 20px;
 }
+
 .description {
   margin: 10px 0;
 }
@@ -488,7 +489,6 @@ div.errorMessage {
     margin-top: -12px !important;
 }
 
-
 /******** PAGER *************/
 ul.yiiPager
 {
@@ -578,3 +578,4 @@ select#status {
     margin: 0 !important;
     padding: 0px 2px !important;
 }
+

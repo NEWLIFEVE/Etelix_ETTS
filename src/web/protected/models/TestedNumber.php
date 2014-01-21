@@ -102,7 +102,7 @@ class TestedNumber extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
-        
+
         public static function getNumbers($idTicket = false)
         {
             if ($idTicket) {

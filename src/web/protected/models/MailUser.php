@@ -115,6 +115,7 @@ class MailUser extends CActiveRecord
         {
             return self::model()->findAll("id in(select id_mail_user from mail_ticket where id_ticket = $idTicket)");
         }
+
         
         public static function getCountMail($user)
         {

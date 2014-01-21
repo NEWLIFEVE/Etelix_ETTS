@@ -38,8 +38,10 @@ class EnviarEmail extends CApplicationComponent
             $mailer->Password="3t3l1x.etts";
             $mailer->IsSMTP();
             $mailer->IsHTML(true);
+
             $mailer->From='etts@etelix.com';
             
+
             if($user!=null)
             {
                 // Compruebo si es un array, si no el destino sera una cadena

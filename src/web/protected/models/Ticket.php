@@ -44,6 +44,7 @@ class Ticket extends CActiveRecord
         public $country = array();
         public $date_number = array();
         public $hour_number = array();
+
         
 	public static function model($className=__CLASS__)
 	{
@@ -56,8 +57,7 @@ class Ticket extends CActiveRecord
 	public function tableName()
 	{
 		return 'ticket';
-	}
-        
+	}     
 
 	/**
 	 * @return array validation rules for model attributes.
@@ -87,6 +87,7 @@ class Ticket extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+
                         'ticketRelations' => array(self::HAS_MANY, 'TicketRelation', 'id_ticket_father'),
 			'ticketRelations1' => array(self::HAS_MANY, 'TicketRelation', 'id_ticket_son'),
 			'testedNumbers' => array(self::HAS_MANY, 'TestedNumber', 'id_ticket'),
@@ -175,6 +176,7 @@ class Ticket extends CActiveRecord
             
             // Si $returnArray esta en true, retorna un array con los datos del ticket
             if ($returnArray) {
+
                 return self::model()->findAllBySql(
                                     "select *, t.id as id 
                                     from 
@@ -202,6 +204,7 @@ class Ticket extends CActiveRecord
         {
             $ids = array();
             foreach (self::ticketsByUsers(Yii::app()->user->id) as $value) {
+
                 $ids[] = $value->id;
             }
             return $ids;
@@ -228,7 +231,5 @@ class Ticket extends CActiveRecord
                         order by t.id desc
                         )");
         }
-        
-        
-        
+
 }

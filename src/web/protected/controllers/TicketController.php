@@ -270,6 +270,7 @@ class TicketController extends Controller
 		}
 	}
         
+        
         public function actionSaveticket()
         {
             $modelTicket = new Ticket;
@@ -441,6 +442,15 @@ class TicketController extends Controller
 		</p>
                 </div>
                 ';
+                $footer_tt = '<div style="width:100%">
+		<p style="text-align:justify">
+                    <br/><div style="font-style:italic;">Please do not reply to this email. Replies to this message are routed to an unmonitored mailbox.</div>
+		</p>
+                </div>
+                ';
+                
+                $cuerpo = $header.$info.$detail.$footer;
+                $cuerpo_tt = $header.$info_tt.$detail.$footer_tt;
                 
                 $cuerpo = $header.$info.$detail.$footer;
                 $cuerpo_tt = $header.$info_tt.$detail.$footer_tt;

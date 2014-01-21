@@ -12,7 +12,6 @@ Failure
 <input type="text" value="<?php echo $datos->idFailure->name; ?>" disabled>
 </div>
 
-
 <?php $originationIp = explode('.', $datos->origination_ip); ?>
 <?php $destinationIp = explode('.', $datos->destination_ip); ?>
 <div class="_label">Origination IP <small class="text-muted "><em>(Customer IP)</em></small><span class="margen_17px"></span>&nbsp;&nbsp;&nbsp;&nbsp;DestinationIP  <small class="text-muted "><em>(Etelix IP)</em></small></div>
