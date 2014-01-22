@@ -175,4 +175,27 @@ class DescriptionTicketController extends Controller
 			Yii::app()->end();
 		}
 	}
+        
+        /**
+         * Action para salvar la descripción o respeusta que se de en el preview
+         * del ticket
+         */
+        public function actionSavedescription()
+        {   
+            $speech = null;
+            if (isset($_POST['idSpeech'])) $speech = $_POST['idSpeech'];
+            
+            $model = new DescriptionTicket; 
+            $model->id_ticket = $_POST['idTicket'];
+            $model->description = $_POST['message'];
+            $model->date = date('Y-m-d');
+            $model->hour = date('H:m:s');
+            $model->id_speech = $speech;
+            $model->id_user = Yii::app()->user->id;
+            if ($model->save()) {
+                echo 'true';
+            } else {
+                echo 'false';
+            }
+        }
 }

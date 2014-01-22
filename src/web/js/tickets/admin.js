@@ -54,8 +54,15 @@ function getTicketsRelated(id, nTr, oTable)
 }
 
 $(document).ready(function() {
+        /*
+         * Append Speech
+         */
+        $(document).on('change', 'select#speech', function(){
+            if ($(this).val())
+                $('#answer').val($('#speech option:selected').text());
+        });
         
-       // Boton para aparecer la opciones del status del ticket
+       // Boton para aparecer las opciones del status del ticket
        $(document).on('click', '#example tbody tr td a.edit-status', function () {
            $(this).parent('span.span-status').hide();
            $(this).parent('span.span-status').parent('td').prepend($('#status').clone().removeAttr('class'));
@@ -68,7 +75,6 @@ $(document).ready(function() {
                     type:"POST",
                     url:"getdataticket/" + idTicket,
                     success:function(data){
-//                        alert(data)
                         $.Dialog({
                             shadow: true,
                             overlay: true,

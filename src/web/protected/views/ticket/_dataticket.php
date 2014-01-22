@@ -1,3 +1,4 @@
+<input type="hidden" id="id_ticket" value="<?php echo $datos->id; ?>">
 <div class="input-control select block">
 Response to
 <select multiple="multiple" disabled="disabled" id="preview_response_to">
@@ -46,29 +47,42 @@ Failure
     } 
     echo $tabla . '</tbody></table></div>';
     ?>
-    
 </div>
 
 
-Description<hr>
-<ul>
+Description
+<div class="answer-ticket">
     <?php 
     foreach ($datos->descriptionTickets as $value) {
-        echo '<li>' . $value->description . '   <br><strong>Date: </strong>' . $value->date . ' || <strong>Hour: </strong>' . $value->hour . ' || <strong>User: </strong>' . $value->idUser->username .  '<hr></li>';
+        if ($value->idUser->iduser === CrugeUser2::getUserTicket($datos->id, true)->iduser)
+            $float = 'left';
+        else
+            $float = 'right';
+        echo '<div class="msg-ticket '.$float.'">' . 
+                $value->description . '   <br><strong>Date: </strong>' . $value->date . ' || <strong>Hour: </strong>' . $value->hour . ' || <strong>User: </strong>' . $value->idUser->username .  
+             '</div>';    
     }
     ?>
-</ul>
-<div class="input-control select block">
-    <select>
-        <option></option>
+</div>
+<?php
+$tipoUsuario = CrugeAuthassignment::getRoleUser();
+if ($tipoUsuario !== 'C'):
+?>
+<div class="input-control select">
+    Speech
+    <select id="speech">
+        <option value=""></option>
+        <?php foreach (Speech::getSpeech() as $value): ?>
+            <option value="<?php echo $value->id; ?>"><?php echo $value->speech; ?></option>
+        <?php endforeach; ?>
     </select>
 </div>
-
+<?php endif; ?>
 <div class="input-control textarea" data-role="input-control">
     <label>
-        <textarea></textarea>
+        Message
+        <textarea id="answer"></textarea>
     </label>
 </div>
 <div></div>
-<button type="submit" id="send-msg" class="primary large">Send</button>
-
+<input type="button" value="Send" class="primary large" id="sendmsg" onclick="saveMessage()">

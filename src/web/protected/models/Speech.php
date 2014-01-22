@@ -95,4 +95,13 @@ class Speech extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+        
+        /**
+         * Método para retornar una lista de los speech
+         * @return array
+         */
+        public static function getSpeech()
+        {
+            return self::model()->findAll(array('order' => 'speech ASC'));
+        }
 }

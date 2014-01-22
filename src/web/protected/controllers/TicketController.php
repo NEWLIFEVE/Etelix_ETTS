@@ -331,6 +331,8 @@ class TicketController extends Controller
                 $modelDescriptionTicket->description = $_POST['description'];
                 $modelDescriptionTicket->date = date('Y-m-d');
                 $modelDescriptionTicket->hour = date('H:m:s');
+                $modelDescriptionTicket->idSpeech = null;
+                $modelDescriptionTicket->id_user = Yii::app()->user->id;
                 $modelDescriptionTicket->save();
                 
                 $mailer = new EnviarEmail;
@@ -513,4 +515,6 @@ class TicketController extends Controller
         	}
             echo json_encode($array);
         }
+        
+        
 }

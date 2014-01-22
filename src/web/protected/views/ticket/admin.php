@@ -85,4 +85,5 @@
 <?php else: ?>
     <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/admin.js',CClientScript::POS_END); ?>
 <?php endif; ?>
+<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/save_message_ticket.js',CClientScript::POS_END); ?>
 

@@ -100,7 +100,16 @@ class CrugeAuthassignment extends CActiveRecord
 		return parent::model($className);
 	}
         
-        public static function getRoleUser($nameFull = false, $userId = false, $prefix = false)
+        /**
+         * Método para retornar el rol de usuarios, si el primer parametro es true
+         * se retornará el nombre completo del rol, de lo contrario solo retorna
+         * la primera letra del rol
+         * 
+         * @param boolean $nameFull
+         * @param int $userId
+         * @return string
+         */
+        public static function getRoleUser($nameFull = false, $userId = false)
         {
             if ($userId) {
                 $userId = $userId;

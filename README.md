@@ -7,7 +7,13 @@ Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
 -Orden de tickets por status y asc y fecha desc
 -Cambio del color de los tickets por ajax
 -Se corrigió el description ticket al mostrar el preview del mismo
+
+21/01/2014
 -Se agregó el campo id_user a la tabla answer_ticket
+-Se muestra la respuesta del ticket
+
+22/01/2014
+-Estilos tipo chat de facebook para la descripcion del ticket en el preview
 
 Realese 1.0.3:
 -Nueva Tabla para Tickets, Datatable
