@@ -2,7 +2,7 @@
 /* @var $this TicketController */
 /* @var $model Ticket */
 ?>
-
+<!--<textarea name="pp" id="pp"></textarea>-->
 <div id="demo">
 <table cellpadding="0" cellspacing="0" border="0" class="display" id="example">
 	<thead>
@@ -15,7 +15,7 @@
                     <?php endif; ?>
                     <th id="th-ticket-number">Ticket Number</th>
                     <th id="th-failure">Failure</th>
-                    <th id="th-status">Statu(s)</th>
+                    <th id="th-status">Statu</th>
                     <th id="th-oip">Origination Ip</th>
                     <th id="th-dip">Destination Ip</th>
                     <th id="th-date">Date</th>
@@ -58,6 +58,10 @@
                                     </a>
                                 <?php endif; ?>
                             </span>
+                            <br>
+                            <div class="font-small">
+                                (<?php echo Utility::restarHoras($ticket->hour, date('H:i:s'), floor($timeTicket/ (60 * 60 * 24))); ?>)
+                            </div>
                         </td>
                         <td><?php echo $ticket->origination_ip; ?></td>
                         <td><?php echo $ticket->destination_ip; ?></td>
@@ -86,4 +90,6 @@
     <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/admin.js',CClientScript::POS_END); ?>
 <?php endif; ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/save_message_ticket.js',CClientScript::POS_END); ?>
+<?php Yii::app()->clientScript->registerScriptFile('http://js.nicedit.com/nicEdit-latest.js',CClientScript::POS_HEAD); ?>
+<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/textarea_enriquecido.js',CClientScript::POS_HEAD); ?>
 

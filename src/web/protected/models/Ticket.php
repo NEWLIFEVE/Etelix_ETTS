@@ -179,7 +179,7 @@ class Ticket extends CActiveRecord
                                     where 
                                     t.id in(select distinct(id_ticket) from mail_ticket where id_mail_user in(select id from mail_user $conditionUser)) 
                                     $conditionTicket
-                                    order by t.id_status asc, t.date desc");
+                                    order by t.id_status, t.id  desc ");
             
             // De lo contrario no retorna un array
             } else {
@@ -190,7 +190,7 @@ class Ticket extends CActiveRecord
                                     where 
                                     t.id in(select distinct(id_ticket) from mail_ticket where id_mail_user in(select id from mail_user $conditionUser))
                                     $conditionTicket
-                                    order by t.id_status asc, t.date desc");
+                                    order by t.id_status, t.id  desc");
             }
         }
         

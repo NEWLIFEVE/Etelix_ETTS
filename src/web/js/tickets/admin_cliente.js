@@ -19,6 +19,7 @@ $(document).ready(function() {
                             draggable: true,
                             content:"<div id=content_preview>"+data+"</div>"
                         });
+                        $('div.answer-ticket').scrollTop(100000);
                     }
                 });
         } );

@@ -18,8 +18,12 @@ function saveMessage()
             },
             success:function(data){
                 if (data !== 'false') {
+                    
                     $('div.answer-ticket').empty();
                     $('div.answer-ticket').html(data);
+                    $('div.answer-ticket').scrollTop(100000);
+                    $('#answer').val('')
+                    
                 } else {
                     alert('error al guardar');
                 }

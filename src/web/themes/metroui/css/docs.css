@@ -581,4 +581,12 @@ div.answer-ticket div.msg-ticket.right {
     background: #6badf6;
 }
 
-
+div.font-small {
+    font-size: 12px !important;
+    line-height: 1 !important;
+    font-weight: normal !important;
+    clear: both;
+    width: 100%;
+    text-align: left;
+    margin-top: 1px;
+}

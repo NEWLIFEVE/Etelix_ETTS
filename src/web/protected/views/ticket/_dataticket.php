@@ -52,9 +52,7 @@ Failure
 
 Description
 <div class="answer-ticket">
-    
     <?php $this->renderPartial('_answer', array('datos'=>$datos)); ?>
-    
 </div>
 <?php
 $tipoUsuario = CrugeAuthassignment::getRoleUser();
@@ -73,7 +71,7 @@ if ($tipoUsuario !== 'C'):
 <div class="input-control textarea" data-role="input-control">
     <label>
         Message
-        <textarea id="answer"></textarea>
+        <textarea name="answer" id="answer"></textarea>
     </label>
 </div>
 <div></div>

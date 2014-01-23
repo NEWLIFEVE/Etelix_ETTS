@@ -87,6 +87,7 @@ $(document).ready(function() {
                             draggable: true,
                             content:"<div id=content_preview>"+data+"</div>"
                         });
+                        $('div.answer-ticket').scrollTop(100000);
                     }
                 });
         } );
@@ -143,11 +144,12 @@ $(document).ready(function() {
          */
         var oTable = $('#example').dataTable( {
                 "bJQueryUI": true,
+                "bDestroy": true,
                 "sPaginationType": "full_numbers",
                 "aoColumnDefs": [
+                        { "aDataSort": false, "aTargets": [ 0,9 ] },
                         { "bSortable": false, "aTargets": [ 0,9 ] }
-                ],
-                "aaSorting": [[5, 'desc', 8, 'asc']]
+                ]
                 
         });
 
