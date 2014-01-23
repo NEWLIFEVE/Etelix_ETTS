@@ -489,10 +489,16 @@ class TicketController extends Controller
             }
         }
         
+        /**
+         * Action para retornar los datos del ticket por su id
+         * @param int $id
+         */
         public function actionGetdataticket($id)
         {
             $this->renderPartial('_dataticket', array('datos' => Ticket::ticketsByUsers(Yii::app()->user->id, $id, false)));
         }
+        
+        
         
         /**
          * Action para retornar los tickets relacionados codificados en json

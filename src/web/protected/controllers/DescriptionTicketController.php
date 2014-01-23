@@ -193,7 +193,7 @@ class DescriptionTicketController extends Controller
             $model->id_speech = $speech;
             $model->id_user = Yii::app()->user->id;
             if ($model->save()) {
-                echo 'true';
+                $this->renderPartial('_answer', array('datos' => Ticket::ticketsByUsers(Yii::app()->user->id, $_POST['idTicket'], false)));
             } else {
                 echo 'false';
             }

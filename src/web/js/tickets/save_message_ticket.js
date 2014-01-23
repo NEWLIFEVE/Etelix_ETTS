@@ -17,10 +17,11 @@ function saveMessage()
                 idTicket: $('#id_ticket').val()
             },
             success:function(data){
-                if (data == 'true') {
-                    alert('guardo')
+                if (data !== 'false') {
+                    $('div.answer-ticket').empty();
+                    $('div.answer-ticket').html(data);
                 } else {
-                    alert('error al guardar')
+                    alert('error al guardar');
                 }
             }
         });
