@@ -18,11 +18,14 @@ class StatusController extends Controller
 //			'postOnly + delete', // we only allow deletion via POST request
 //		);
 //	}
-        
-        public function filters()
-        {
-            return array(array('CrugeAccessControlFilter'));
-        }
+    
+    /**
+     *
+     */  
+    public function filters()
+    {
+        return array(array('CrugeAccessControlFilter'));
+    }
 
 	/**
 	 * Specifies the access control rules.
@@ -174,7 +177,5 @@ class StatusController extends Controller
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}
-	}
-        
-        
+	}      
 }
