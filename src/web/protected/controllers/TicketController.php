@@ -18,11 +18,14 @@ class TicketController extends Controller
 //			'postOnly + delete', // we only allow deletion via POST request
 //		);
 //	}
-        
-        public function filters()
-        {
-            return array(array('CrugeAccessControlFilter'));
-        }
+
+	/**
+	 *
+	 */
+    public function filters()
+    {
+        return array(array('CrugeAccessControlFilter'));
+    }
         
 
 	/**
