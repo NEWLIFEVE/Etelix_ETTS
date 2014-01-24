@@ -605,8 +605,7 @@ div.font-small {
 }
 
 div.input-control.select.medium {
-    max-width: 180px;
-    float: right;
+    
     margin-bottom: -1px;
 }
 div.input-control.select.medium select {
