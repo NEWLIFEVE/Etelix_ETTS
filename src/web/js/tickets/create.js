@@ -264,11 +264,11 @@ $(document).on('ready', function(){
                 country.html() +
 
                 '<div class="input-control text span2 margen-number fecha_div">' +
-                    '<input type="text" class="fecha" name="Ticket[date_number][]" placeholder="Date" readonly="readonly" >' +
+                    '<input type="text" class="fecha validate[required]" name="Ticket[date_number][]" placeholder="Date" readonly="readonly" >' +
                 '</div>' +
                 
                 '<div class="input-control text span1 margen-number hour_div">' +
-                    '<input type="text" name="Ticket[hour_number][]" placeholder="Hour" class="hour" >' +
+                    '<input type="text" name="Ticket[hour_number][]" placeholder="Hour" class="hour validate[required]" >' +
                 '</div>' +
                 '<a href="javascript:void(0)" style="margin-left: 5px; padding-top: 5px; width: 10px !important;"  class="_cancelar input-control text span1"><i class="icon-cancel-2 fg-red "></i></a>' +
             '</div>'
@@ -513,7 +513,7 @@ $(document).on('ready', function(){
                                 shadow: true,
                                 overlay: false,
                                 icon: '<span class="icon-rocket"></span>',
-                                title: 'Operation complete',
+                                title: 'Error',
                                 width: 500,
                                 padding: 10,
                                 content: '<center>'+data+'</center>'
@@ -526,7 +526,7 @@ $(document).on('ready', function(){
         } // Fin if del status
                     
                     
-            }  
+        }  // Fin onValidationComplete
     }); // Fin de validaciones
     
 });

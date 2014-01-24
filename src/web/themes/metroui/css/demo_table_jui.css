@@ -179,6 +179,7 @@ table.display tr.heading2 td {
 
 table.display td {
 	padding: 3px 10px;
+        /*padding: 3px 3px;*/
 }
 
 table.display td.center {
@@ -217,17 +218,39 @@ table.display td.center {
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * DataTables row classes
  */
-table.display tr.odd.gradeA {
-	background-color: #ddffdd;
+ table.display tr{
+     color: white;
+ }
+table.display tr.odd.close{
+	background-color: #61CF61;
+	/*background-color: #ddffdd;*/
 }
 
-table.display tr.even.gradeA {
-	background-color: #eeffee;
+table.display tr.even.close {
+	background-color: #61CF61;
+	/*background-color: #ddffdd;*/
+	/*background-color: #eeffee;*/
+}
+table.display tr.odd.open{
+	background-color: #FFDC51;
+	/*background-color: #FDFFDF;*/
+	/*background-color: #FAFFBE;*/
 }
 
+table.display tr.even.open {
+	background-color: #FFDC51;
+	/*background-color: #FDFFDF;*/
+}
+table.display tr.odd.late{
+	background-color: #EEB8B8;
+	/*background-color: #ffeeee;*/
+	/*background-color: #ffdddd;*/
+}
 
-
-
+table.display tr.even.late {
+	background-color: #EEB8B8;
+	/*background-color: #ffeeee;*/
+}
 table.display tr.odd.gradeA {
 	background-color: #ddffdd;
 }
@@ -403,6 +426,83 @@ tr.even td.sorting_3 {
 	  dd > d1
 	  ee > e2
  */
+ 
+tr.odd.open td.sorting_1 {
+	background-color: #FFCC00
+	/*background-color: #FAFFBE*/
+	/*background-color: rgba(248, 248, 119, 0.75);*/
+}
+
+tr.odd.open td.sorting_2 {
+	background-color: #d1d1ff;
+}
+
+tr.odd.open td.sorting_3 {
+	background-color: #d1d1ff;
+}
+
+tr.even.open td.sorting_1 {
+	background-color: #FFCC00;
+	/*background-color: #FAFFBE;*/
+}
+
+tr.even.open td.sorting_2 {
+	background-color: #e2e2ff;
+}
+
+tr.even.open td.sorting_3 {
+	background-color: #e2e2ff;
+}
+tr.odd.late td.sorting_1 {
+	background-color: rgba(224, 91, 91, 0.8);
+	/*background-color: #ffc4c4;*/
+}
+
+tr.odd.late td.sorting_2 {
+	background-color: #ffd1d1;
+}
+
+tr.odd.late td.sorting_3 {
+	background-color: #ffd1d1;
+}
+
+tr.even.late td.sorting_1 {
+	background-color: rgba(224, 91, 91, 0.8);
+}
+
+tr.even.late td.sorting_2 {
+	background-color: #ffe2e2;
+}
+
+tr.even.late td.sorting_3 {
+	background-color: #ffe2e2;
+}
+tr.odd.close td.sorting_1 {
+	background-color: #49BD49;
+	/*background-color: #c4ffc4;*/
+}
+
+tr.odd.close td.sorting_2 {
+	background-color: #d1ffd1;
+}
+
+tr.odd.close td.sorting_3 {
+	background-color: #d1ffd1;
+}
+
+tr.even.close td.sorting_1 {
+	background-color: #49BD49;
+	/*background-color: #c4ffc4;*/
+	/*background-color: #d5ffd5;*/
+}
+
+tr.even.close td.sorting_2 {
+	background-color: #e2ffe2;
+}
+
+tr.even.close td.sorting_3 {
+	background-color: #e2ffe2;
+}
 tr.odd.gradeA td.sorting_1 {
 	background-color: #c4ffc4;
 }
@@ -426,7 +526,6 @@ tr.even.gradeA td.sorting_2 {
 tr.even.gradeA td.sorting_3 {
 	background-color: #e2ffe2;
 }
-
 tr.odd.gradeC td.sorting_1 {
 	background-color: #c4c4ff;
 }

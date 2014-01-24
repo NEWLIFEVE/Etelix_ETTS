@@ -7,12 +7,15 @@
         <link href="<?php echo Yii::app()->theme->baseUrl; ?>/css/metro-bootstrap-responsive.css" rel="stylesheet" type="text/css">
         <link href="<?php echo Yii::app()->theme->baseUrl; ?>/js/prettify/prettify.css" rel="stylesheet">
         <link href="<?php echo Yii::app()->theme->baseUrl; ?>/css/docs.css" rel="stylesheet" type="text/css">
+        <!--<link href="<?php // echo Yii::app()->theme->baseUrl; ?>/css/jui/base/jquery-ui.css" rel="stylesheet" type="text/css">-->
                 
         <?php Yii::app()->clientScript->registerCssFile(Yii::app()->clientScript->getCoreScriptUrl().'/jui/css/base/jquery-ui.css'); ?>
         
         <?php Yii::app()->clientScript->registerCoreScript('jquery'); ?>
         <?php Yii::app()->clientScript->registerCoreScript('jquery.ui'); ?>
         <!--<script src="<?php // echo Yii::app()->theme->baseUrl; ?>/js/jquery/jquery.min.js"></script>-->
+        <!--<script src="<?php // echo Yii::app()->request->baseUrl; ?>/js/plugins/jui/jquery-ui.min.js"></script>-->
+        
         <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/jquery/jquery.widget.min.js"></script>
         <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/jquery/jquery.mousewheel.js"></script>
         <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/prettify/prettify.js"></script>
@@ -23,7 +26,7 @@
                 
         <!-- Local JavaScript -->
         <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/docs.js"></script>
-        <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/github.info.js"></script>
+        <!--<script src="<?php // echo Yii::app()->theme->baseUrl; ?>/js/github.info.js"></script>-->
         
         <link rel="shortcut icon" href="<?php echo Yii::app()->request->baseUrl; ?>/images/favicon.ico" type="image/x-icon"/> 
     </head>
@@ -119,7 +122,7 @@
                 </div>
             </div>
             <footer>
-                Copyright &copy; <?php echo date('Y'); ?> ETELIX All Rights Reserved. Version 1.0
+                Copyright &copy; <?php echo date('Y'); ?> ETELIX All Rights Reserved. Version 1.0.3
             </footer>
         </div>
         <script>

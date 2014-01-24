@@ -113,6 +113,9 @@ return array(
 		'mail'=>array(
 			'class'=>"application.components.EnviarEmail",
 			),
+                'utility' => array(
+                    'class'=>"application.components.Utility",
+                ),
 		// uncomment the following to use a MySQL database
 		'db'=>array(
 			'connectionString'=>'pgsql:host=172.16.17.190;port=5432;dbname=etts',
@@ -176,6 +179,6 @@ return array(
 	// using Yii::app()->params['paramName']
 	'params'=>array(
 		// this is used in contact page
-		'adminEmail'=>'webmaster@example.com',
+		'adminEmail'=>'manuelz@sacet.biz',
 	),
 );

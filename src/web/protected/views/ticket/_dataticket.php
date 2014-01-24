@@ -1,7 +1,8 @@
+<input type="hidden" id="id_ticket" value="<?php echo $datos->id; ?>">
 <div class="input-control select block">
 Response to
 <select multiple="multiple" disabled="disabled" id="preview_response_to">
-    <?php foreach (MailUser::getMailsByTicket($datos->ids) as $value): ?>
+    <?php foreach (MailUser::getMailsByTicket($datos->id) as $value): ?>
         <option><?php echo $value->idMail->mail; ?></option>
     <?php endforeach; ?>
 </select>
@@ -41,15 +42,37 @@ Failure
 
 <div id="tabla_tested_number" class="grid">
     <?php $tabla = '<div><table id="tabla_preview"><thead><tr><th>Tested Numbers</th><th>Country</th><th>Date</th><th>Hour</th></thead><tbody>';
-    foreach (TestedNumber::getNumbers($datos->ids) as $value){
+    foreach (TestedNumber::getNumbers($datos->id) as $value){
         $tabla .= '<tr><td>' . $value->numero . '</td><td>' . $value->idCountry->name . '</td><td>' . $value->date . '</td><td>' . $value->hour . '</td></tr>';
     } 
     echo $tabla . '</tbody></table></div>';
     ?>
-    
 </div>
 
-<div class="input-control textarea" data-role="input-control">
-        Description
-        <textarea disabled><?php echo $datos->descriptionTickets->description; ?></textarea>
+
+Description
+<div class="answer-ticket">
+    <?php $this->renderPartial('_answer', array('datos'=>$datos)); ?>
 </div>
+<?php
+$tipoUsuario = CrugeAuthassignment::getRoleUser();
+if ($tipoUsuario !== 'C'):
+?>
+<div class="input-control select">
+    Speech
+    <select id="speech">
+        <option value=""></option>
+        <?php foreach (Speech::getSpeech() as $value): ?>
+            <option value="<?php echo $value->id; ?>"><?php echo $value->speech; ?></option>
+        <?php endforeach; ?>
+    </select>
+</div>
+<?php endif; ?>
+<div class="input-control textarea" data-role="input-control">
+    <label>
+        Message
+        <textarea name="answer" id="answer"></textarea>
+    </label>
+</div>
+<div></div>
+<input type="button" value="Send" class="primary large" id="sendmsg" onclick="saveMessage()">

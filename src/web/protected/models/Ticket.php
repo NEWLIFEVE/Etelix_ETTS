@@ -5,7 +5,6 @@
  *
  * The followings are the available columns in table 'ticket':
  * @property integer $id
- * @property integer $id_ticket
  * @property integer $id_failure
  * @property integer $id_status
  * @property string $origination_ip
@@ -45,7 +44,6 @@ class Ticket extends CActiveRecord
         public $country = array();
         public $date_number = array();
         public $hour_number = array();
-        public $ids;
         
 	public static function model($className=__CLASS__)
 	{
@@ -71,13 +69,13 @@ class Ticket extends CActiveRecord
 		return array(
                         
 			array('id_failure, id_status, origination_ip, destination_ip, date, machine_ip', 'required'),
-			array('id_ticket, id_failure, id_status, id_gmt', 'numerical', 'integerOnly'=>true),
+			array('id_failure, id_status, id_gmt', 'numerical', 'integerOnly'=>true),
 			array('origination_ip, destination_ip, machine_ip', 'length', 'max'=>64),
 			array('ticket_number', 'length', 'max'=>50),
 			array('hour', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, id_ticket, id_failure, id_status, origination_ip, destination_ip, date, machine_ip, hour, prefix, id_gmt, ticket_number', 'safe', 'on'=>'search'),
+			array('id, id_failure, id_status, origination_ip, destination_ip, date, machine_ip, hour, prefix, id_gmt, ticket_number', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -94,12 +92,9 @@ class Ticket extends CActiveRecord
 			'testedNumbers' => array(self::HAS_MANY, 'TestedNumber', 'id_ticket'),
 			'files' => array(self::HAS_MANY, 'File', 'id_ticket'),
 			'mailTickets' => array(self::HAS_MANY, 'MailTicket', 'id_ticket'),
-//			'descriptionTickets' => array(self::HAS_MANY, 'DescriptionTicket', 'id_ticket'),
-                        'descriptionTickets' => array(self::BELONGS_TO, 'DescriptionTicket', 'id'),
+			'descriptionTickets' => array(self::HAS_MANY, 'DescriptionTicket', 'id_ticket'),
 			'idFailure' => array(self::BELONGS_TO, 'Failure', 'id_failure'),
 			'idStatus' => array(self::BELONGS_TO, 'Status', 'id_status'),
-			'idTicket' => array(self::BELONGS_TO, 'Ticket', 'id_ticket'),
-			'tickets' => array(self::HAS_MANY, 'Ticket', 'id_ticket'),
 			'idGmt' => array(self::BELONGS_TO, 'Gmt', 'id_gmt'),
 		);
 	}
@@ -111,7 +106,6 @@ class Ticket extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'id_ticket' => 'Id Ticket',
 			'id_failure' => 'Id Failure',
 			'id_status' => 'Id Status',
 			'origination_ip' => 'Origination Ip',
@@ -142,7 +136,6 @@ class Ticket extends CActiveRecord
                 
                 $criteria->order = "id DESC";             
                 $criteria->compare('id',$this->id);
-		$criteria->compare('id_ticket',$this->id_ticket);
 		$criteria->compare('id_failure',$this->id_failure);
 		$criteria->compare('id_status',$this->id_status);
 		$criteria->compare('origination_ip',$this->origination_ip,true);
@@ -177,24 +170,27 @@ class Ticket extends CActiveRecord
             if ($idTicket) 
                 $conditionTicket = ' and t.id = ' . $idTicket;
             
+            // Si $returnArray esta en true, retorna un array con los datos del ticket
             if ($returnArray) {
                 return self::model()->findAllBySql(
-                                    "select *, t.id as ids 
+                                    "select *, t.id as id 
                                     from 
-                                    ticket t, description_ticket dt  
+                                    ticket t  
                                     where 
-                                    t.id in(select distinct(id_ticket) from mail_ticket where id_mail_user in(select id from mail_user $conditionUser)) and
-                                    t.id = dt.id_ticket $conditionTicket
-                                    order by t.id desc");
+                                    t.id in(select distinct(id_ticket) from mail_ticket where id_mail_user in(select id from mail_user $conditionUser)) 
+                                    $conditionTicket
+                                    order by t.id_status, t.id  desc ");
+            
+            // De lo contrario no retorna un array
             } else {
                 return self::model()->findBySql(
-                                    "select *, t.id as ids 
+                                    "select *, t.id as id 
                                     from 
-                                    ticket t, description_ticket dt  
+                                    ticket t
                                     where 
-                                    t.id in(select distinct(id_ticket) from mail_ticket where id_mail_user in(select id from mail_user $conditionUser)) and
-                                    t.id = dt.id_ticket $conditionTicket
-                                    order by t.id desc");
+                                    t.id in(select distinct(id_ticket) from mail_ticket where id_mail_user in(select id from mail_user $conditionUser))
+                                    $conditionTicket
+                                    order by t.id_status, t.id  desc");
             }
         }
         
@@ -207,16 +203,24 @@ class Ticket extends CActiveRecord
             }
             return $ids;
         }
-
+        /**
+         * Retorna los tickets relacionados a un ticket padre y a un usuario
+         * @param int $idTicket 
+         * @param int $idUser
+         * @return array
+         */
         public static function ticketsRelations($idTicket, $idUser = false)
         {
+            $conditionUser = '';
+            if ($idUser)
+                $conditionUser = 'where id_user = ' . $idTicket;
             return self::model()->findAllBySql(
                         "select * from ticket where id in(
                         select tr.id_ticket_son
                         from 
                         ticket t, ticket_relation tr
                         where 
-                        t.id in(select distinct(id_ticket) from mail_ticket where id_mail_user in(select id from mail_user where id_user = 3)) and
+                        t.id in(select distinct(id_ticket) from mail_ticket where id_mail_user in(select id from mail_user $conditionUser)) and
                         t.id = tr.id_ticket_father and t.id = $idTicket
                         order by t.id desc
                         )");
