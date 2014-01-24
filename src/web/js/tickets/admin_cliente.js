@@ -17,7 +17,7 @@ $(document).ready(function() {
                             height: 300,
                             padding: 0,
                             draggable: true,
-                            content:"<div id=content_preview>"+data+"</div>"
+                            content:"<div id=content_detail>"+data+"</div>"
                         });
                         $('div.answer-ticket').scrollTop(100000);
                     }

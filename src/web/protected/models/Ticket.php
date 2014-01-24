@@ -152,7 +152,7 @@ class Ticket extends CActiveRecord
 		));
 	}
         
-        public static function ticketsByUsers($idUser, $idTicket = false, $returnArray = true)
+        public static function ticketsByUsers($idUser, $idTicket = false, $returnArray = true, $onlyOpen = false)
         {
             
             $tipoUsuario = CrugeAuthassignment::getRoleUser();
@@ -170,27 +170,52 @@ class Ticket extends CActiveRecord
             if ($idTicket) 
                 $conditionTicket = ' and t.id = ' . $idTicket;
             
-            // Si $returnArray esta en true, retorna un array con los datos del ticket
-            if ($returnArray) {
-                return self::model()->findAllBySql(
-                                    "select *, t.id as id 
-                                    from 
-                                    ticket t  
-                                    where 
-                                    t.id in(select distinct(id_ticket) from mail_ticket where id_mail_user in(select id from mail_user $conditionUser)) 
-                                    $conditionTicket
-                                    order by t.id_status, t.id  desc ");
-            
-            // De lo contrario no retorna un array
+            if ($onlyOpen) {
+                // Si $returnArray esta en true, retorna un array con los datos del ticket
+                if ($returnArray) {
+                    return self::model()->findAllBySql(
+                                        "select *, t.id as id 
+                                        from 
+                                        ticket t  
+                                        where 
+                                        t.id in(select distinct(id_ticket) from mail_ticket where id_mail_user in(select id from mail_user $conditionUser)) 
+                                        and t.id_status = 1 $conditionTicket
+                                        order by t.id_status, t.id  desc ");
+
+                // De lo contrario no retorna un array
+                } else {
+                    return self::model()->findBySql(
+                                        "select *, t.id as id 
+                                        from 
+                                        ticket t
+                                        where 
+                                        t.id in(select distinct(id_ticket) from mail_ticket where id_mail_user in(select id from mail_user $conditionUser))
+                                        and t.id_status = 1 $conditionTicket
+                                        order by t.id_status, t.id  desc");
+                }
             } else {
-                return self::model()->findBySql(
-                                    "select *, t.id as id 
-                                    from 
-                                    ticket t
-                                    where 
-                                    t.id in(select distinct(id_ticket) from mail_ticket where id_mail_user in(select id from mail_user $conditionUser))
-                                    $conditionTicket
-                                    order by t.id_status, t.id  desc");
+                // Si $returnArray esta en true, retorna un array con los datos del ticket
+                if ($returnArray) {
+                    return self::model()->findAllBySql(
+                                        "select *, t.id as id 
+                                        from 
+                                        ticket t  
+                                        where 
+                                        t.id in(select distinct(id_ticket) from mail_ticket where id_mail_user in(select id from mail_user $conditionUser)) 
+                                        $conditionTicket
+                                        order by t.id_status, t.id  desc ");
+
+                // De lo contrario no retorna un array
+                } else {
+                    return self::model()->findBySql(
+                                        "select *, t.id as id 
+                                        from 
+                                        ticket t
+                                        where 
+                                        t.id in(select distinct(id_ticket) from mail_ticket where id_mail_user in(select id from mail_user $conditionUser))
+                                        $conditionTicket
+                                        order by t.id_status, t.id  desc");
+                }
             }
         }
         

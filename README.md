@@ -13,7 +13,17 @@ Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
 -Se muestra la respuesta del ticket
 
 22/01/2014
--Estilos tipo chat de facebook para la descripcion del ticket en el preview
+-Estilos tipo chat de facebook para la descripcion del ticket en el detalle
+
+23/01/2014
+-Se refresca el area de respuesta al mandar la misma
+-El scroll del area de respuesta queda abajo al abrir el detalle del ticket
+
+24/01/2014
+-Modificado el método ticketsByUser del model Ticket, con parámetro de solo traer
+ticket abiertos
+-Cambiada interfaz de respuesta del ticket
+
 
 Realese 1.0.3:
 -Nueva Tabla para Tickets, Datatable

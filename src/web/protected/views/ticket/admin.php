@@ -28,7 +28,7 @@
                             $timeTicket = Utility::getTime($ticket->date, $ticket->hour);
                             switch ($ticket->idStatus->id) {
                                 case '1':
-                                    if($timeTicket > 72000 )
+                                    if($timeTicket > 86400 )
                                         echo 'class="late"';
                                     else
                                         echo 'class="open"'; 

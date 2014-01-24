@@ -45,7 +45,7 @@ function getTicketsRelated(id, nTr, oTable)
 {
     $.ajax({
         type:"POST",
-        url:"Getticketrelation/"+id,
+        url:"/ticket/Getticketrelation/"+id,
         dataType:'json',
         success:function(data){
             oTable.fnOpen( nTr, fnFormatDetails(data, id) , 'details' );
@@ -73,7 +73,7 @@ $(document).ready(function() {
                 var idTicket = $(this).attr('rel');
                 $.ajax({
                     type:"POST",
-                    url:"getdataticket/" + idTicket,
+                    url:"/ticket/getdataticket/" + idTicket,
                     success:function(data){
                         $.Dialog({
                             shadow: true,
@@ -85,7 +85,7 @@ $(document).ready(function() {
                             height: 300,
                             padding: 0,
                             draggable: true,
-                            content:"<div id=content_preview>"+data+"</div>"
+                            content:"<div id=content_detail>"+data+"</div>"
                         });
                         $('div.answer-ticket').scrollTop(100000);
                     }
@@ -101,7 +101,7 @@ $(document).ready(function() {
             
             $.ajax({
                 type:'POST',
-                url:'updatestatus/' + id,
+                url:'/ticket/updatestatus/' + id,
                 dataType:'html',
                 data:{
                       idStatus:_status
@@ -116,7 +116,7 @@ $(document).ready(function() {
                         _select.remove('select')
                         
                     } else {
-                        if(_date > 72000 ) {
+                        if(_date > 86400) {
                             $("td[id='"+id+"'], td[son='"+id+"']").children('span.span-status').children('span').text('open');
                             _select.next('span.span-status').show()
                             $("td[id='"+id+"']").parent('tr').removeAttr('class')
