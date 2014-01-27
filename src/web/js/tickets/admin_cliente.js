@@ -5,7 +5,7 @@ $(document).ready(function() {
                 var idTicket = $(this).attr('rel');
                 $.ajax({
                     type:"POST",
-                    url:"getdataticket/" + idTicket,
+                    url:"/ticket/getdataticket/" + idTicket,
                     success:function(data){
                         $.Dialog({
                             shadow: true,
