@@ -24,6 +24,9 @@ Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
 ticket abiertos
 -Cambiada interfaz de respuesta del ticket
 
+27/01/2014
+-Agregado el envío del mail al dar respuesta en el ticket y al cambiar de status
+
 
 Realese 1.0.3:
 -Nueva Tabla para Tickets, Datatable

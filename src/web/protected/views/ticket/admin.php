@@ -92,9 +92,3 @@
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/save_message_ticket.js',CClientScript::POS_END); ?>
 <?php Yii::app()->clientScript->registerScriptFile('http://js.nicedit.com/nicEdit-latest.js',CClientScript::POS_HEAD); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/textarea_enriquecido.js',CClientScript::POS_HEAD); ?>
-
-<?php
-//$tested = TestedNumber::getTestedNumberArray(116);
-//print_r($tested['country']);
-//echo implode('<br>', $tested['country']);
-?>
