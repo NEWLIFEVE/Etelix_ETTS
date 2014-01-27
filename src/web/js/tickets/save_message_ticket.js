@@ -10,18 +10,18 @@ function saveMessage()
     if ($('#answer').val() !== '') {
         $.ajax({
             type:"POST",
-            url:"/descriptionticket/savedescription",
+            url:"/descriptionTicket/savedescription",
             data: {
                 idSpeech: $('select#speech option:selected').val(),
                 message:  $('#answer').val(),
                 idTicket: $('#id_ticket').val()
             },
             success:function(data){
+                $('#answer').val('')
                 if (data !== 'false') {
                     $('div.answer-ticket').empty();
                     $('div.answer-ticket').html(data);
                     $('div.answer-ticket').scrollTop(100000);
-                    $('#answer').val('')
                 }
             }
         });

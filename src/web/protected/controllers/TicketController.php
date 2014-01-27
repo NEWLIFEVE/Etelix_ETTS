@@ -303,11 +303,11 @@ class TicketController extends Controller
 			$modelDescriptionTicket->save();
 
 			$mailer=new EnviarEmail;                
-            $header='<div style="width:100%">
-            			<img src="http://deve.sacet.com.ve/images/logo.jpg" height="100"/>
-            			<hr>
-                        <div style="text-align:right">Ticket Confirmation<br>Ticket #: '.$ticketNumber.'</div>';
-            $info='  <div>
+                        $header='<div style="width:100%">
+                                            <img src="http://deve.sacet.com.ve/images/logo.jpg" height="100"/>
+                                            <hr>
+                                    <div style="text-align:right">Ticket Confirmation<br>Ticket #: '.$ticketNumber.'</div>';
+                        $info='  <div>
                                 <h2>Hello "'. Yii::app()->user->name .'"</h2>
                                 <p style="text-align:justify">
                                     <div>Dear Customer:</div><br/>
@@ -322,20 +322,20 @@ class TicketController extends Controller
                                 </p>
                         </div>
                         <hr>
-                </div>';
-                 
-                 $info_tt = '  <div>
-                                <h2>Hello</h2>
+                        </div>';
+
+                         $info_tt = '  <div>
+                                        <h2>Hello</h2>
                                 <p style="text-align:justify">
                                     You have a new ticket from <h2>"'. Yii::app()->user->name .'"</h2>
                                 </p>
                         </div>
                         <hr>
-                </div>';
-                 
-                $detail = '<h2>Ticket Details</h2>
-                <table style="border-spacing: 0; width:100%; border: solid #ccc 1px;">
-			<tr>
+                        </div>';
+
+                        $detail = '<h2>Ticket Details</h2>
+                        <table style="border-spacing: 0; width:100%; border: solid #ccc 1px;">
+                                <tr>
 			    <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc; padding: 5px 10px; text-align: left;">Response to</th>
 			</tr>
 			<tr>
@@ -392,42 +392,42 @@ class TicketController extends Controller
 			<tr>
                                 <td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$_POST['description'].'</td>
 			</tr>
-		</table>';
-                
-                $footer = '<div style="width:100%">
-		<p style="text-align:justify">
-                    <br/><div style="font-style:italic;">Please do not reply to this email. Replies to this message are routed to an unmonitored mailbox.</div>
-		</p>
-                </div>
-                ';
+                        </table>';
 
-                $footer_tt = '<div style="width:100%">
-		<p style="text-align:justify">
-                    <br/><div style="font-style:italic;">Please do not reply to this email. Replies to this message are routed to an unmonitored mailbox.</div>
-		</p>
-                </div>
-                ';
-                
-                $cuerpo = $header.$info.$detail.$footer;
-                $cuerpo_tt = $header.$info_tt.$detail.$footer_tt;
-                
-                $envioMail = $mailer->enviar($cuerpo, $_POST['emails'],'', $ticketNumber, $rutaAttachFile);
-//                $emailsTT[] = 'tt@etelix.com';
-                $emailsTT[] = 'tsu.nelsonmarcano@gmail.com';
-                $envioMail2 = $mailer->enviar($cuerpo_tt, $emailsTT,  $_POST['emails'], $ticketNumber, $rutaAttachFile);
+                        $footer = '<div style="width:100%">
+                        <p style="text-align:justify">
+                            <br/><div style="font-style:italic;">Please do not reply to this email. Replies to this message are routed to an unmonitored mailbox.</div>
+                        </p>
+                        </div>
+                        ';
 
-                if ($envioMail === true) {
-                    if ($envioMail2 === true) {
-                        echo 'success';
+                        $footer_tt = '<div style="width:100%">
+                        <p style="text-align:justify">
+                            <br/><div style="font-style:italic;">Please do not reply to this email. Replies to this message are routed to an unmonitored mailbox.</div>
+                        </p>
+                        </div>
+                        ';
+
+                        $cuerpo = $header.$info.$detail.$footer;
+                        $cuerpo_tt = $header.$info_tt.$detail.$footer_tt;
+
+                        $envioMail = $mailer->enviar($cuerpo, $_POST['emails'],'', $ticketNumber, $rutaAttachFile);
+        //                $emailsTT[] = 'tt@etelix.com';
+                        $emailsTT[] = 'tsu.nelsonmarcano@gmail.com';
+                        $envioMail2 = $mailer->enviar($cuerpo_tt, $emailsTT,  $_POST['emails'], $ticketNumber, $rutaAttachFile);
+
+                        if ($envioMail === true) {
+                            if ($envioMail2 === true) {
+                                echo 'success';
+                            } else {
+                                echo 'success';
+                            }
+                        } else {
+                            echo 'Error al enviar el correo: ' . $envioMail;
+                        }
                     } else {
-                        echo 'success';
+                        echo 'Error al enviar el ticket';
                     }
-                } else {
-                    echo 'Error al enviar el correo: ' . $envioMail;
-                }
-            } else {
-                echo 'Error al enviar el ticket';
-            }
         }
         
         
@@ -436,21 +436,44 @@ class TicketController extends Controller
          * en la tabla "ticket_relation", se actualizaran sus tickets hijos al 
          * status que sea seleccionado, si no se encuentra en dicha tabla, solo 
          * se modificara en la tabla del ticket
+         * @param int $id
          */
         public function actionUpdatestatus($id)
         {
             $idTickets = Ticketrelation::getTicketRelation($id, true);
+            $statuName = Status::getStatus(true, $_POST['idStatus'])->name;
+            $body = '<h2>Change ticket status by "' . $statuName . '"</h2>';
             
+            $mailer=new EnviarEmail;
+            $ticketModel = new Ticket;
+            $mailModel = new Mail;
+
             if ($idTickets != null) {
-                $ticketSon = array();
-                foreach ($idTickets as $value) {
-                    $ticketSon[] = $value->id_ticket_son;
-                }
+                $ticketSon = self::getTicketsSon($idTickets);
                 $ticketSon[] = $id;
-                Ticket::model()->updateAll(array('id_status'=>$_POST['idStatus']), 'id in('.implode(",", $ticketSon).')');
+                $ticketModel::model()->updateAll(array('id_status'=>$_POST['idStatus']), 'id in('.implode(",", $ticketSon).')');
             } else {
-                Ticket::model()->updateByPk($id, array('id_status' => $_POST['idStatus']));
+                $ticketModel::model()->updateByPk($id, array('id_status' => $_POST['idStatus']));
             }
+            
+            $envioMail = $mailer->enviar($body, $mailModel::getNameMails($id), '', 'Change ticket status', null);
+            if ($envioMail === true)
+                echo 'true';
+            else 
+                echo 'Error al enviar el correo: ' . $envioMail;
+        }
+        /**
+         * Método para retornar los tickets hijos de la tabla ticket_relation
+         * @param Ticketrelation $idTickets
+         * @return array
+         */
+        public static function getTicketsSon($idTickets) 
+        {
+            $ticketSon = array();
+            foreach ($idTickets as $value) {
+                $ticketSon[] = $value->id_ticket_son;
+            }
+            return $ticketSon;
         }
         
         /**
@@ -462,8 +485,7 @@ class TicketController extends Controller
             $this->renderPartial('_dataticket', array('datos' => Ticket::ticketsByUsers(Yii::app()->user->id, $id, false)));
         }
         
-        
-        
+       
         /**
          * Action para retornar los tickets relacionados codificados en json
          * @param int $id

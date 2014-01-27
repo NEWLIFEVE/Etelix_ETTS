@@ -53,6 +53,28 @@ function getTicketsRelated(id, nTr, oTable)
     });
 }
 
+function changeStatus(id, select, status, _class)
+{   
+    $.Dialog.close();
+    $.Dialog({
+        shadow: true,
+        overlay: false,
+        icon: '<span class="icon-rocket"></span>',
+        title: 'Change status',
+        width: 500,
+        padding: 10,
+        content: '<center><p>El status del ticket ha sido cambiado, se ha mandado un correo con los detalles del mismo</p></center>'
+    });
+    
+    $("td[id='"+id+"'], td[son='"+id+"']").children('span.span-status').children('span').text(status);
+    select.next('span.span-status').show()
+    $("td[id='"+id+"']").parent('tr').removeAttr('class')
+    $("td[id='"+id+"']").parent('tr').addClass(_class)
+    select.remove('select');
+    
+    
+}
+
 $(document).ready(function() {
         /*
          * Append Speech
@@ -95,7 +117,7 @@ $(document).ready(function() {
         // Evento para cambiar el status
         $(document).on('change', 'table#example tbody tr td select#status', function(){
             var id = $(this).parent('td').attr('id'),
-            _select = $(this),
+            select = $(this),
             _status = $(this).val(),
             _date = $(this).parent('td').attr('time');
             
@@ -107,28 +129,26 @@ $(document).ready(function() {
                       idStatus:_status
                 },
                 success:function(data){
-                    
-                    if (_status == 2) {
-                       $("td[id='"+id+"'], td[son='"+id+"']").children('span.span-status').children('span').text('close');
-                         _select.next('span.span-status').show()
-                         $("td[id='"+id+"']").parent('tr').removeAttr('class')
-                         $("td[id='"+id+"']").parent('tr').addClass('close even')
-                        _select.remove('select')
-                        
-                    } else {
-                        if(_date > 86400) {
-                            $("td[id='"+id+"'], td[son='"+id+"']").children('span.span-status').children('span').text('open');
-                            _select.next('span.span-status').show()
-                            $("td[id='"+id+"']").parent('tr').removeAttr('class')
-                             $("td[id='"+id+"']").parent('tr').addClass('late even')
-                            _select.remove('select')
+                    if (data == 'true') {
+                        if (_status == 2) {
+                              changeStatus(id, select, 'close', 'close even')
                         } else {
-                            $("td[id='"+id+"'], td[son='"+id+"']").children('span.span-status').children('span').text('open');
-                            _select.next('span.span-status').show()
-                            $("td[id='"+id+"']").parent('tr').removeAttr('class')
-                             $("td[id='"+id+"']").parent('tr').addClass('open even')
-                            _select.remove('select')
+                            if(_date > 86400) {
+                                changeStatus(id, select, 'open', 'late even')
+                            } else {
+                                changeStatus(id, select, 'open', 'open even')
+                            }
                         }
+                    } else {
+                        $.Dialog({
+                                shadow: true,
+                                overlay: false,
+                                icon: '<span class="icon-rocket"></span>',
+                                title: 'Error',
+                                width: 500,
+                                padding: 10,
+                                content: '<center>'+data+'</center>'
+                          });
                     }
                 }
             });
