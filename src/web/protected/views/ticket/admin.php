@@ -49,19 +49,21 @@
                         <?php endif; ?>
                         <td><?php echo $ticket->ticket_number; ?></td>
                         <td><?php echo  $failure = strlen($ticket->idFailure->name) <= 15 ? $ticket->idFailure->name : substr($ticket->idFailure->name, 0, 15) .'...';  ?></td>
-                        <td name="id" id="<?php echo $ticket->id; ?>" time="<?php echo Utility::getTime($ticket->date, $ticket->hour); ?>">
+                        <td title="Open about <?php echo Utility::restarHoras($ticket->hour, date('H:i:s'), floor($timeTicket/ (60 * 60 * 24))); ?>" name="id" id="<?php echo $ticket->id; ?>" time="<?php echo Utility::getTime($ticket->date, $ticket->hour); ?>">
                             <span class="span-status">
-                                <span><?php echo $ticket->idStatus->name; ?></span>
+                                <span class="text-span"><?php echo $ticket->idStatus->name; ?></span>
                                 <?php if ($tipoUsuario !== "C"): ?>
-                                    <a href="javascript:void(0)" class="edit-status" rel="<?php echo $ticket->id; ?>">
-                                        <img width="12" height="12" src="<?php echo Yii::app()->request->baseUrl.'/images/edit.png'; ?>">
-                                    </a>
+                                <a href="javascript:void(0)" class="edit-status" rel="<?php echo $ticket->id; ?>">
+                                    <img width="12" height="12" src="<?php echo Yii::app()->request->baseUrl.'/images/edit.png'; ?>">
+                                </a>
                                 <?php endif; ?>
                             </span>
+<!--                            
                             <br>
                             <div class="font-small">
-                                (<?php echo Utility::restarHoras($ticket->hour, date('H:i:s'), floor($timeTicket/ (60 * 60 * 24))); ?>)
-                            </div>
+                                <i class="icon-info on-right on-left"></i>
+                                (<?php // echo Utility::restarHoras($ticket->hour, date('H:i:s'), floor($timeTicket/ (60 * 60 * 24))); ?>)
+                            </div>-->
                         </td>
                         <td><?php echo $ticket->origination_ip; ?></td>
                         <td><?php echo $ticket->destination_ip; ?></td>
@@ -83,12 +85,20 @@
 <!--</div>-->
 <?php Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl . '/css/datatable.css'); ?>
 <?php Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl . '/css/demo_table_jui.css'); ?>
+<?php Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl . '/css/uploadfile.css'); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/plugins/jquery/jquery.dataTables.min.js',CClientScript::POS_END); ?>
+<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/plugins/jquery/jquery.uploadfile.js',CClientScript::POS_END); ?>
 <?php if ($tipoUsuario === "C"): ?>
     <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/admin_cliente.js',CClientScript::POS_END); ?>
 <?php else: ?>
     <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/admin.js',CClientScript::POS_END); ?>
 <?php endif; ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/save_message_ticket.js',CClientScript::POS_END); ?>
-<?php Yii::app()->clientScript->registerScriptFile('http://js.nicedit.com/nicEdit-latest.js',CClientScript::POS_HEAD); ?>
-<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/textarea_enriquecido.js',CClientScript::POS_HEAD); ?>
+<?php // Yii::app()->clientScript->registerScriptFile('http://js.nicedit.com/nicEdit-latest.js',CClientScript::POS_HEAD); ?>
+<?php // Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/textarea_enriquecido.js',CClientScript::POS_HEAD); ?>
+
+<!--<br>
+-->
+<!--<div id="mulitplefileuploader">Add file</div>
+
+<div id="status"></div>-->

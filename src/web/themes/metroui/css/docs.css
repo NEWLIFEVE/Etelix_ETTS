@@ -637,3 +637,12 @@ div.option-panel.right {
     text-align: right;
     float: right;
 }
+
+a.edit-status {
+    float: left !important;
+}
+
+span.text-span {
+    float: left !important;
+    margin-right: 2px !important;
+}

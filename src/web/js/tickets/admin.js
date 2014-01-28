@@ -61,9 +61,9 @@ function changeStatus(id, select, status, _class)
         overlay: false,
         icon: '<span class="icon-rocket"></span>',
         title: 'Change status',
-        width: 500,
+        width: 300,
         padding: 10,
-        content: '<center><p>El status del ticket ha sido cambiado, se ha mandado un correo con los detalles del mismo</p></center>'
+        content: '<center><p>El status del ticket ha sido cambiado, se ha mandado un correo con el detalle del mismo</p></center>'
     });
     
     $("td[id='"+id+"'], td[son='"+id+"']").children('span.span-status').children('span').text(status);
@@ -75,7 +75,42 @@ function changeStatus(id, select, status, _class)
     
 }
 
-$(document).ready(function() {
+function attachFile()
+{
+    var settings = {
+                url: "/file/uploadjquery",
+                dragDrop:false,
+                showDone: false,
+                fileName: "myfile",
+                allowedTypes:"jpg,png,gif,doc,docx,xls,xlsx,pdf,zip",	
+                returnType:"json",
+                     onSuccess:function(files,data,xhr)
+                {
+                   // alert((data));
+                },
+                showDelete:true,
+                deleteCallback: function(data,pd){
+                    for(var i=0;i<data.length;i++)
+                    {
+                        $.post("/file/deletejquery",{op:"delete",name:data[i]},
+                        function(resp, textStatus, jqXHR)
+                        {
+                            //Show Message  
+                            $("#status").html("");      
+                        });
+                     }      
+                    pd.statusbar.hide(); //You choice to hide/not.
+                }
+            }
+    var uploadObj = $("#mulitplefileuploader").uploadFile(settings); 
+}
+
+$(document).on('ready', function() {
+        
+        $( document ).tooltip({
+         track: true
+        });
+    
         /*
          * Append Speech
          */
@@ -97,6 +132,7 @@ $(document).ready(function() {
                     type:"POST",
                     url:"/ticket/getdataticket/" + idTicket,
                     success:function(data){
+                       
                         $.Dialog({
                             shadow: true,
                             overlay: true,
@@ -112,6 +148,7 @@ $(document).ready(function() {
                         $('div.answer-ticket').scrollTop(100000);
                     }
                 });
+                setTimeout('attachFile()', 1000);
         } );
         
         // Evento para cambiar el status
@@ -193,5 +230,6 @@ $(document).ready(function() {
                         oTable.fnOpen( nTr, getTicketsRelated(id, nTr, oTable) , 'details' );
                 }
         } );
+        
         
 } );

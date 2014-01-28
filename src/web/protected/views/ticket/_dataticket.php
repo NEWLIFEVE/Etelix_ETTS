@@ -1,3 +1,4 @@
+
 <input type="hidden" id="id_ticket" value="<?php echo $datos->id; ?>">
 <div class="input-control select block">
 Response to
@@ -77,6 +78,11 @@ if ($tipoUsuario !== 'C'):
         <input type="button" value="Send message" class="primary" id="sendmsg" onclick="saveMessage()">
     </div>
     <div class="option-panel right">
-        <input type="button" value="Add file">
+        <!--<input type="button" value="Add file">-->
+        <div id="mulitplefileuploader">Add file</div>
+<!--<form method="post" action="" id="form" enctype="multipart/form-data">
+    <input type="file" id="ajax-upload-id-1390946876729" name="myfile[]" multiple="" >
+</form>-->
     </div>
 </div>
+<div id="status"></div>
