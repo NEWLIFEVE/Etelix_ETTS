@@ -142,7 +142,7 @@ $(document).on('ready', function() {
                             title: "Ticket Information",
                             width: 510,
                             height: 300,
-                            padding: 0,
+                            paddingBottom: 20,
                             draggable: true,
                             content:"<div id=content_detail>"+data+"</div>"
                         });
