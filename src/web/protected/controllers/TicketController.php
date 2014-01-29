@@ -247,7 +247,6 @@ class TicketController extends Controller
 		$modelTicket->origination_ip=$_POST['originationIp'];
 		$modelTicket->prefix=$_POST['prefix'];
 		$modelTicket->machine_ip=Yii::app()->request->userHostAddress;
-		$modelTicket->id_ticket=NULL;
 		$modelTicket->hour=date('H:m:s');
 
 		$maximo=$modelTicket::model()->findBySql("SELECT MAX(id) AS maximo FROM ticket");
