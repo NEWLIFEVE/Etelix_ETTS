@@ -160,13 +160,18 @@ class Ticket extends CActiveRecord
         $tipoUsuario=CrugeAuthassignment::getRoleUser();
         $conditionUser='';
         $conditionTicket='';
+        $order='ASC';
         
         /**
          * Si el tipo de usuario es cliente, se muestran sus tickets, de lo
          * contrario la condicion queda en blanco, es decir, se muestran todos
          * los tickets de todos los usuarios
          */
-        if($tipoUsuario=="C") $conditionUser=' where id_user='.$idUser;
+        if($tipoUsuario=="C") 
+        {
+            $conditionUser=' where id_user='.$idUser;
+            $order='DESC';
+        }
         
         /**
          * Si no se envía el id de un ticket se muestran todos los tickets,
@@ -182,7 +187,7 @@ class Ticket extends CActiveRecord
                 return self::model()->findAllBySql("SELECT *, t.id AS id
                                                     FROM ticket t
                                                     WHERE t.id IN (SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user $conditionUser)) AND t.id_status=1 $conditionTicket
-                                                    ORDER BY t.id_status, t.id  DESC");
+                                                    ORDER BY t.id_status, t.id  $order");
 
             // De lo contrario no retorna un array
             }
@@ -191,7 +196,7 @@ class Ticket extends CActiveRecord
                 return self::model()->findBySql("SELECT *, t.id AS id
                                                  FROM ticket t
                                                  WHERE t.id IN (SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user $conditionUser)) AND t.id_status=1 $conditionTicket
-                                                 ORDER BY t.id_status, t.id DESC");
+                                                 ORDER BY t.id_status, t.id $order");
             }
         }
         else
@@ -202,7 +207,7 @@ class Ticket extends CActiveRecord
                 return self::model()->findAllBySql("SELECT *, t.id AS id
                                                     FROM ticket t
                                                     WHERE t.id IN (SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user $conditionUser)) $conditionTicket
-                                                    ORDER BY t.id_status, t.id DESC");
+                                                    ORDER BY t.id_status, t.id $order");
             // De lo contrario no retorna un array
             }
             else
@@ -210,7 +215,7 @@ class Ticket extends CActiveRecord
                 return self::model()->findBySql("SELECT *, t.id AS id
                                                  FROM ticket t
                                                  WHERE t.id IN (SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user $conditionUser)) $conditionTicket
-                                                 ORDER BY t.id_status, t.id DESC");
+                                                 ORDER BY t.id_status, t.id $order");
             }
         }
     }

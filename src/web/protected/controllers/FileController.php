@@ -234,7 +234,7 @@ class FileController extends Controller
                     if (file_exists($filePath)) 
                     {
                     unlink($filePath);
-                }
+                    }
                 echo "Deleted File ".$fileName."<br>";
             }
         }

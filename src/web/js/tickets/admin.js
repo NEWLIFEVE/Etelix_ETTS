@@ -109,6 +109,8 @@ function attachFile()
 
 $(document).on('ready', function() {
         
+        $('div.page').addClass('width-page');
+        
         //Tooltip del statu y el tiempo que lleva desde que se abrió
         $( document ).tooltip({
             track: true
@@ -205,10 +207,11 @@ $(document).on('ready', function() {
         var oTable = $('#example').dataTable( {
                 "bJQueryUI": true,
                 "bDestroy": true,
+//                "bAutoWidth": false,
                 "sPaginationType": "full_numbers",
                 "aoColumnDefs": [
-                        { "aDataSort": false, "aTargets": [ 0,9 ] },
-                        { "bSortable": false, "aTargets": [ 0,9 ] }
+                        { "aDataSort": false, "aTargets": [ 0,10 ] },
+                        { "bSortable": false, "aTargets": [ 0,10 ] }
                 ]
                 
         });

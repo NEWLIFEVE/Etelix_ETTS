@@ -3,6 +3,7 @@
 
 $this->pageTitle=Yii::app()->name;
 ?>
+<!--<textarea name="pp" id="pp"></textarea>-->
 <div id="demo">
 <table cellpadding="0" cellspacing="0" border="0" class="display" id="example">
 	<thead>
@@ -19,11 +20,12 @@ $this->pageTitle=Yii::app()->name;
                     <th id="th-oip">Origination Ip</th>
                     <th id="th-dip">Destination Ip</th>
                     <th id="th-date">Date</th>
+                    <th id="th-life">TL</th>
                     <th id="th-preview">&nbsp;</th>
 		</tr>
 	</thead>
 	<tbody>
-                <?php foreach (Ticket::ticketsByUsers(Yii::app()->user->id, false, true, true) as $ticket): ?>
+                <?php foreach (Ticket::ticketsByUsers(Yii::app()->user->id, false) as $ticket): ?>
                     <tr <?php
                             $timeTicket = Utility::getTime($ticket->date, $ticket->hour);
                             switch ($ticket->idStatus->id) {
@@ -58,31 +60,23 @@ $this->pageTitle=Yii::app()->name;
                                 </a>
                                 <?php endif; ?>
                             </span>
-<!--                            
-                            <br>
-                            <div class="font-small">
-                                <i class="icon-info on-right on-left"></i>
-                                (<?php // echo Utility::restarHoras($ticket->hour, date('H:i:s'), floor($timeTicket/ (60 * 60 * 24))); ?>)
-                            </div>-->
                         </td>
                         <td><?php echo $ticket->origination_ip; ?></td>
                         <td><?php echo $ticket->destination_ip; ?></td>
                         <td><?php echo $ticket->date; ?></td>
+                        <td><?php echo Utility::restarHoras($ticket->hour, date('H:i:s'), floor($timeTicket/ (60 * 60 * 24))); ?></td>
                         <td><a href="javascript:void(0)" class="preview" rel="<?php echo $ticket->id; ?>"><img width="12" height="12" src="<?php echo Yii::app()->request->baseUrl.'/images/view.gif'; ?>"></a></td>
                     </tr>
                 <?php endforeach; ?>
 	</tbody>
 </table>
 </div>
-
-<!--<div class="input-control select block select-status" >-->
-    <select id="status" class="hidden">
-        <option value="">Select</option>
-        <?php foreach (Status::getStatus() as $value): ?>
-            <option value="<?php echo $value->id; ?>"><?php echo $value->name; ?></option>
-        <?php endforeach; ?>
-    </select>
-<!--</div>-->
+<select id="status" class="hidden">
+    <option value="">Select</option>
+    <?php foreach (Status::getStatus() as $value): ?>
+        <option value="<?php echo $value->id; ?>"><?php echo $value->name; ?></option>
+    <?php endforeach; ?>
+</select>
 <?php Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl . '/css/datatable.css'); ?>
 <?php Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl . '/css/demo_table_jui.css'); ?>
 <?php Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl . '/css/uploadfile.css'); ?>
@@ -96,4 +90,3 @@ $this->pageTitle=Yii::app()->name;
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/save_message_ticket.js',CClientScript::POS_END); ?>
 <?php // Yii::app()->clientScript->registerScriptFile('http://js.nicedit.com/nicEdit-latest.js',CClientScript::POS_HEAD); ?>
 <?php // Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/textarea_enriquecido.js',CClientScript::POS_HEAD); ?>
-
