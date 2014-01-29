@@ -45,7 +45,7 @@ class SiteController extends Controller
 	{
 		if(!Yii::app()->user->isGuest)
 		{
-			$this->render('index');
+			$this->redirect('/ticket/admin');
 		}
 		else
 		{

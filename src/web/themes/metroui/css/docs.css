@@ -646,3 +646,7 @@ span.text-span {
     float: left !important;
     margin-right: 2px !important;
 }
+
+div.page.width-page {
+    width: 90% !important;
+}

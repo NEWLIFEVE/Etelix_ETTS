@@ -19,6 +19,7 @@
                     <th id="th-oip">Origination Ip</th>
                     <th id="th-dip">Destination Ip</th>
                     <th id="th-date">Date</th>
+                    <th id="th-life">TL</th>
                     <th id="th-preview">&nbsp;</th>
 		</tr>
 	</thead>
@@ -58,31 +59,23 @@
                                 </a>
                                 <?php endif; ?>
                             </span>
-<!--                            
-                            <br>
-                            <div class="font-small">
-                                <i class="icon-info on-right on-left"></i>
-                                (<?php // echo Utility::restarHoras($ticket->hour, date('H:i:s'), floor($timeTicket/ (60 * 60 * 24))); ?>)
-                            </div>-->
                         </td>
                         <td><?php echo $ticket->origination_ip; ?></td>
                         <td><?php echo $ticket->destination_ip; ?></td>
                         <td><?php echo $ticket->date; ?></td>
+                        <td><?php echo Utility::restarHoras($ticket->hour, date('H:i:s'), floor($timeTicket/ (60 * 60 * 24))); ?></td>
                         <td><a href="javascript:void(0)" class="preview" rel="<?php echo $ticket->id; ?>"><img width="12" height="12" src="<?php echo Yii::app()->request->baseUrl.'/images/view.gif'; ?>"></a></td>
                     </tr>
                 <?php endforeach; ?>
 	</tbody>
 </table>
 </div>
-
-<!--<div class="input-control select block select-status" >-->
-    <select id="status" class="hidden">
-        <option value="">Select</option>
-        <?php foreach (Status::getStatus() as $value): ?>
-            <option value="<?php echo $value->id; ?>"><?php echo $value->name; ?></option>
-        <?php endforeach; ?>
-    </select>
-<!--</div>-->
+<select id="status" class="hidden">
+    <option value="">Select</option>
+    <?php foreach (Status::getStatus() as $value): ?>
+        <option value="<?php echo $value->id; ?>"><?php echo $value->name; ?></option>
+    <?php endforeach; ?>
+</select>
 <?php Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl . '/css/datatable.css'); ?>
 <?php Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl . '/css/demo_table_jui.css'); ?>
 <?php Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl . '/css/uploadfile.css'); ?>

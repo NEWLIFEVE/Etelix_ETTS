@@ -65,11 +65,16 @@ $(document).ready(function() {
          * Initialse DataTables, with no sorting on the 'details' column
          */
         var oTable = $('#example').dataTable( {
-                "bJQueryUI": true,
-                "sPaginationType": "full_numbers",
-                "aoColumnDefs": [
-                        { "bSortable": false, "aTargets": [ 6 ] }
-                ]
-        });
+            "bJQueryUI": true,
+            "bAutoWidth": false,
+            "bDestroy": true,
+            "sPaginationType": "full_numbers",
+            "aoColumnDefs": [
+                    { "aDataSort": false, "aTargets": [ 0,7 ] },
+                    { "bSortable": false, "aTargets": [ 7 ] }
+            ],
+            "aaSorting": [[ 0, "desc" ]]
+
+       });
         
 } );

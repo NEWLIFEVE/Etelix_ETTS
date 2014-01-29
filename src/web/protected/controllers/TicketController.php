@@ -257,7 +257,8 @@ class TicketController extends Controller
 		if($modelTicket->save())
 		{
 			// Guardando los mails
-			for($i=0; $i<count($_POST['responseTo']); $i++)
+                        $responseTo=count($_POST['responseTo']);
+			for($i=0; $i<$responseTo; $i++)
 			{
 				$modelMailTicket=new MailTicket;
 				$modelMailTicket->id_mail_user=$_POST['responseTo'][$i];
@@ -265,7 +266,8 @@ class TicketController extends Controller
 				$modelMailTicket->save();
 			}
 			// Guardando number
-			for($i=0; $i<count($_POST['testedNumber']); $i++)
+                        $number=count($_POST['testedNumber']);
+			for($i=0; $i<$number; $i++)
 			{
 				$modelTestedNumber=new TestedNumber;
 				$modelTestedNumber->id_ticket=$modelTicket->id;
@@ -281,7 +283,8 @@ class TicketController extends Controller
 				 * Se verifica si se envia por post
 				 * Guardando Attach File
 				 */
-				for($i=0; $i<count($_POST['_attachFile']); $i++)
+                                $file=count($_POST['_attachFile']);
+				for($i=0; $i<$file; $i++)
 				{
 					$modelAttachFile=new File;
 					$modelAttachFile->id_ticket=$modelTicket->id;
@@ -299,6 +302,7 @@ class TicketController extends Controller
 			$modelDescriptionTicket->description=$_POST['description'];
 			$modelDescriptionTicket->date=date('Y-m-d');
 			$modelDescriptionTicket->hour=date('H:m:s');
+                        $modelDescriptionTicket->id_user=Yii::app()->user->id;
 			$modelDescriptionTicket->save();
 
 			$mailer=new EnviarEmail;                
