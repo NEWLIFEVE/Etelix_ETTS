@@ -40,7 +40,7 @@ function fnFormatDetails ( data,id )
         
 }
 
-
+// Función con ajax para traer los tickets relacionados
 function getTicketsRelated(id, nTr, oTable)
 {
     $.ajax({
@@ -53,6 +53,7 @@ function getTicketsRelated(id, nTr, oTable)
     });
 }
 
+//Función para agregar o quitar estilos al cambiar el statu
 function changeStatus(id, select, status, _class)
 {   
     $.Dialog.close();
@@ -75,6 +76,7 @@ function changeStatus(id, select, status, _class)
     
 }
 
+// Función para agregar archivos en el description
 function attachFile()
 {
     var settings = {
@@ -107,13 +109,12 @@ function attachFile()
 
 $(document).on('ready', function() {
         
+        //Tooltip del statu y el tiempo que lleva desde que se abrió
         $( document ).tooltip({
-         track: true
+            track: true
         });
     
-        /*
-         * Append Speech
-         */
+        //Append Speech
         $(document).on('change', 'select#speech', function(){
             if ($(this).val())
                 $('#answer').val($('#speech option:selected').text());
@@ -170,6 +171,7 @@ $(document).on('ready', function() {
                         if (_status == 2) {
                               changeStatus(id, select, 'close', 'close even')
                         } else {
+                            // Si _date es mayor a 86400 segundos(24 horas)
                             if(_date > 86400) {
                                 changeStatus(id, select, 'open', 'late even')
                             } else {
@@ -191,6 +193,7 @@ $(document).on('ready', function() {
             });
         });
         
+        // Al perder el foco del select del cambio de statu
         $(document).on('blur', 'table#example tbody tr td select#status', function(){
             $(this).next('span.span-status').show();
             $(this).remove('select')
