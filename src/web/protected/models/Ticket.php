@@ -15,6 +15,7 @@
  * @property integer $prefix
  * @property integer $id_gmt
  * @property string $ticket_number
+ * @property integer $number_of_the_day
  *
  * The followings are the available model relations:
  * @property TicketRelation[] $ticketRelations
