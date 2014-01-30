@@ -178,4 +178,11 @@ class SpeechController extends Controller
 			Yii::app()->end();
 		}
 	}
+        
+        public function actionGettextspeech()
+        {
+            $model=new Speech;
+            $idSpeech=$_POST['_idSpeech'];
+            if ($idSpeech != null) echo $model::model()->find("id = '$idSpeech'")->speech;
+        }
 }

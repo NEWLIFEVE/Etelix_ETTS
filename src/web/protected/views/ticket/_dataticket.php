@@ -64,7 +64,7 @@ if ($tipoUsuario !== 'C'):
     <select id="speech">
         <option value="">Speech</option>
         <?php foreach (Speech::getSpeech() as $value): ?>
-            <option value="<?php echo $value->id; ?>"><?php echo $value->speech; ?></option>
+            <option value="<?php echo $value->id; ?>"><?php echo $value->title; ?></option>
         <?php endforeach; ?>
     </select>
 </div>

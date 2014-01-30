@@ -107,6 +107,20 @@ function attachFile()
     var uploadObj = $("#mulitplefileuploader").uploadFile(settings); 
 }
 
+function getSpeech(idSpeech)
+{
+    $.ajax({
+       type:'POST',
+       url:'/speech/gettextspeech',
+       data: {
+         _idSpeech:idSpeech   
+       },
+       success:function(data) {
+          $('#answer').val(data);
+       }
+    });
+}
+
 $(document).on('ready', function() {
         
         $('div.page').addClass('width-page');
@@ -118,8 +132,10 @@ $(document).on('ready', function() {
     
         //Append Speech
         $(document).on('change', 'select#speech', function(){
-            if ($(this).val())
-                $('#answer').val($('#speech option:selected').text());
+            if ($(this).val()){
+               var idTitle=$('#speech option:selected').val();
+               getSpeech(idTitle)
+            }
         });
         
        // Boton para aparecer las opciones del status del ticket
