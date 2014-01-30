@@ -58,7 +58,7 @@ $(document).ready(function() {
                         $('div.answer-ticket').scrollTop(100000);
                     }
                 });
-                setTimeout('attachFile()', 1000);
+//                setTimeout('attachFile()', 1000);
         } );
         
         /*
