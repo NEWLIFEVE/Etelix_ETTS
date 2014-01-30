@@ -15,11 +15,11 @@
                     <?php endif; ?>
                     <th id="th-ticket-number">Ticket Number</th>
                     <th id="th-failure">Failure</th>
-                    <th id="th-status">Statu</th>
+                    <th id="th-status">Status</th>
                     <th id="th-oip">Origination Ip</th>
                     <th id="th-dip">Destination Ip</th>
                     <th id="th-date">Date</th>
-                    <th id="th-life">TL</th>
+                    <th id="th-life">LT</th>
                     <th id="th-preview">&nbsp;</th>
 		</tr>
 	</thead>
@@ -63,7 +63,7 @@
                         <td><?php echo $ticket->origination_ip; ?></td>
                         <td><?php echo $ticket->destination_ip; ?></td>
                         <td><?php echo $ticket->date; ?></td>
-                        <td><?php echo Utility::restarHoras($ticket->hour, date('H:i:s'), floor($timeTicket/ (60 * 60 * 24))); ?></td>
+                        <td><?php  echo Utility::restarHoras($ticket->hour, date('H:i:s'), floor($timeTicket/ (60 * 60 * 24))); ?></td>
                         <td><a href="javascript:void(0)" class="preview" rel="<?php echo $ticket->id; ?>"><img width="12" height="12" src="<?php echo Yii::app()->request->baseUrl.'/images/view.gif'; ?>"></a></td>
                     </tr>
                 <?php endforeach; ?>
@@ -89,9 +89,3 @@
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/save_message_ticket.js',CClientScript::POS_END); ?>
 <?php // Yii::app()->clientScript->registerScriptFile('http://js.nicedit.com/nicEdit-latest.js',CClientScript::POS_HEAD); ?>
 <?php // Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/textarea_enriquecido.js',CClientScript::POS_HEAD); ?>
-
-<!--<br>
--->
-<!--<div id="mulitplefileuploader">Add file</div>
-
-<div id="status"></div>-->

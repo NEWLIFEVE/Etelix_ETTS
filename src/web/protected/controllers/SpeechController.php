@@ -179,6 +179,9 @@ class SpeechController extends Controller
 		}
 	}
         
+        /**
+         * Método para traer el texto de la tabla speech
+         */
         public function actionGettextspeech()
         {
             $model=new Speech;

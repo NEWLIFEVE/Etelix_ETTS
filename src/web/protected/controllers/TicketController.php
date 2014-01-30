@@ -12,10 +12,10 @@ class TicketController extends Controller
 	 * @access public
 	 * @return array
 	 */
-    public function filters()
-    {
-        return array(array('CrugeAccessControlFilter'));
-    }
+        public function filters()
+        {
+            return array(array('CrugeAccessControlFilter'));
+        }
         
 	/**
 	 * Specifies the access control rules.
@@ -236,6 +236,7 @@ class TicketController extends Controller
 	 */
 	public function actionSaveticket()
 	{
+                date_default_timezone_set('America/Caracas');
 		$modelTicket=new Ticket;
 		$rutaAttachFile=array();
 
@@ -247,7 +248,7 @@ class TicketController extends Controller
 		$modelTicket->origination_ip=$_POST['originationIp'];
 		$modelTicket->prefix=$_POST['prefix'];
 		$modelTicket->machine_ip=Yii::app()->request->userHostAddress;
-		$modelTicket->hour=date('H:m:s');
+		$modelTicket->hour=date('H:i:s');
 
 		$maximo=$modelTicket::model()->findBySql("SELECT MAX(id) AS maximo FROM ticket");
 		$maximo->maximo+=1;
@@ -433,6 +434,19 @@ class TicketController extends Controller
                     }
         }
         
+        public function actionHora() 
+        {   date_default_timezone_set('America/Caracas');
+//            echo date_timezone_get();
+        echo date('H:i:s');
+
+$script_tz = date_default_timezone_get();
+
+if (strcmp($script_tz, ini_get('date.timezone'))){
+    echo 'La zona horaria del script difiere de la zona horaria de la configuracion ini.';
+} else {
+    echo 'La zona horaria del script y la zona horaria de la configuración ini coinciden.';
+}
+        }
         
         /**
          * Action para actualizar el status del ticket. Si el ticket padre está
