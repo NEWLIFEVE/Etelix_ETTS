@@ -123,6 +123,7 @@ function getSpeech(idSpeech)
 
 $(document).on('ready', function() {
         
+        // Los usuarios que no sean clientes contendran esta clase en el div page
         $('div.page').addClass('width-page');
         
         //Tooltip del statu y el tiempo que lleva desde que se abrió
