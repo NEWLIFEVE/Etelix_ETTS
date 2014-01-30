@@ -250,10 +250,10 @@ class TicketController extends Controller
 		$modelTicket->machine_ip=Yii::app()->request->userHostAddress;
 		$modelTicket->hour=date('H:i:s');
 
-		$maximo=$modelTicket::model()->findBySql("SELECT MAX(id) AS maximo FROM ticket");
-		$maximo->maximo+=1;
+		$maximo=$modelTicket::model()->findBySql("SELECT COUNT(id) AS number_of_the_day FROM ticket WHERE date= '".date('Y-m-d')."'");
+		$maximo->number_of_the_day+=1;
 
-		$ticketNumber=date('Ymd').'-'.$maximo->maximo.'-'.CrugeAuthassignment::getRoleUser().$modelTicket->id_failure;
+		$ticketNumber=date('Ymd').'-'.str_pad($maximo->number_of_the_day, 3, "0", STR_PAD_LEFT).'-'.CrugeAuthassignment::getRoleUser().$modelTicket->id_failure;
 		$modelTicket->ticket_number=$ticketNumber;
 		if($modelTicket->save())
 		{
@@ -437,19 +437,7 @@ class TicketController extends Controller
                     }
         }
         
-        public function actionHora() 
-        {   date_default_timezone_set('America/Caracas');
-//            echo date_timezone_get();
-        echo date('H:i:s');
-
-$script_tz = date_default_timezone_get();
-
-if (strcmp($script_tz, ini_get('date.timezone'))){
-    echo 'La zona horaria del script difiere de la zona horaria de la configuracion ini.';
-} else {
-    echo 'La zona horaria del script y la zona horaria de la configuración ini coinciden.';
-}
-        }
+        
         
         /**
          * Action para actualizar el status del ticket. Si el ticket padre está
@@ -462,7 +450,9 @@ if (strcmp($script_tz, ini_get('date.timezone'))){
         {
             $idTickets = Ticketrelation::getTicketRelation($id, true);
             $statuName = Status::getStatus(true, $_POST['idStatus'])->name;
-            $body = '<h2>Change ticket status by "' . $statuName . '"</h2>';
+            $ticketNumber=  Ticket::model()->findByPk($id)->ticket_number;
+//            $body = '<h2>Change ticket status by "' . $statuName . '"</h2>';
+            $body=  self::getBodyMails($id, Mail::getNameMails($id), 'status', $statuName);
             
             $mailer=new EnviarEmail;
             $ticketModel = new Ticket;
@@ -476,7 +466,7 @@ if (strcmp($script_tz, ini_get('date.timezone'))){
                 $ticketModel::model()->updateByPk($id, array('id_status' => $_POST['idStatus']));
             }
             
-            $envioMail = $mailer->enviar($body, $mailModel::getNameMails($id), '', 'Change ticket status', null);
+            $envioMail = $mailer->enviar($body, $mailModel::getNameMails($id), '', 'Status changed '.$ticketNumber, null);
             if ($envioMail === true)
                 echo 'true';
             else 
@@ -526,6 +516,160 @@ if (strcmp($script_tz, ini_get('date.timezone'))){
         		$array[$key]['date']=$value->date;
         	}
             echo json_encode($array);
+        }
+        
+        /**
+         *
+         */  
+        public static function getBodyMails($idTicket, $email,  $typeOperation, $status = false)
+        {     
+            $datos = Ticket::ticketsByUsers(CrugeUser2::getUserTicket($idTicket, true)->iduser, $idTicket, false);
+            $user = CrugeUser2::getUserTicket($idTicket);
+            $testedNumber = TestedNumber::getTestedNumberArray($idTicket);
+            $info = '';
+            
+            $header='<div style="width:100%">
+                                <img src="http://deve.sacet.com.ve/images/logo.jpg" height="100"/>
+                                <hr>
+                        <div style="text-align:right">Ticket Confirmation<br>Ticket #: '.$datos->ticket_number.'</div>';
+            
+            switch ($typeOperation) {
+                // Al abrir el ticket por primera vez
+                case 'open':
+                    $info=
+                        '<div>
+                            <h2>Hello "'. $user .'"</h2>
+                            <p style="text-align:justify">
+                                <div>Dear Customer:</div>
+                                <br/>
+                                <div>
+                                    Thanks for using our online tool "Etelix Trouble Ticket System" (etts.etelix.com).<br/>
+
+                                    Your issue has been opened with the TT Number (please see below).<br/>
+
+                                    Your TT will be answered by an Etelix Analyst soon.
+                                </div>
+                                <br/>
+                                Etelix NOC Team.    
+                            </p>
+                        </div>
+                        <hr>
+                    </div>';
+                    break;
+                
+                // Al cambiar de status
+                case 'status':
+                    $info=
+                        '<div>
+                            <h2>Hello "'. $user .'"</h2>
+                            <p style="text-align:justify">
+                                <div>Dear Customer:</div>
+                                <br/>
+                                <div>
+                                   Change status: "'. $status .'"
+                                </div>
+                                <br/>
+                                Etelix NOC Team.    
+                            </p>
+                        </div>
+                        <hr>
+                    </div>';
+                    break;
+                
+                // Al responder la descripcion
+                case 'answer':
+                        $info=
+                            '<div>
+                                <h2>Hello "'. $user .'"</h2>
+                                <p style="text-align:justify">
+                                    <div>Dear Customer:</div>
+                                    <br/>
+                                    <div>
+                                       There is a new message related to your TT<br>
+                                       Please, <a href="http://etts.etelix.com">click here</a> to see it
+                                    </div>
+                                    <br/>
+                                    Etelix NOC Team.    
+                                </p>
+                            </div>
+                            <hr>
+                        </div>';
+                        break;
+
+                default:
+                    break;
+            }
+            
+
+            $detail = '<h2>Ticket Details</h2>
+            <table style="border-spacing: 0; width:100%; border: solid #ccc 1px;">
+                    <tr>
+                <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc; padding: 5px 10px; text-align: left;">Response to</th>
+            </tr>
+            <tr>
+                    <td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'. implode('<br>', $email) .'</td>
+            </tr>
+
+            <tr>
+                <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Failure</th>
+            </tr>
+            <tr>
+                    <td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$datos->idFailure->name.'</td>
+            </tr>
+
+            <tr>
+                <th colspan="1" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Origination IP</th>
+                <th colspan="3" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Destination IP</th>
+            </tr>
+            <tr>
+                    <td colspan="1" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$datos->origination_ip.'</td>
+                    <td colspan="3" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$datos->destination_ip.'</td>
+            </tr>
+
+            <tr>
+                <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Prefix</th>
+            </tr>
+            <tr>
+                    <td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$datos->prefix.'</td>
+            </tr>
+
+            <tr>
+                <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">GMT</th>
+            </tr>
+            <tr>
+                    <td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$datos->idGmt->name.'</td>
+            </tr>
+
+
+            <tr>
+                <th style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Tested number</th>
+                <th style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Country</th>
+                <th style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Date</th>
+                <th style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Hour</th>
+            </tr>
+            <tr>
+                    <td style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.implode('<br>', $testedNumber['number']).'</td>
+                    <td style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.implode('<br>', $testedNumber['country']).'</td>
+                    <td style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.implode('<br>', $testedNumber['date']).'</td>
+                    <td style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.implode('<br>', $testedNumber['hour']).'</td>
+            </tr>
+
+            <tr>
+                <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Description</th>
+            </tr>
+            <tr>
+                    <td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.  DescriptionTicketController::getDescription($idTicket, $datos).'</td>
+            </tr>
+            </table>';
+
+            $footer = '<div style="width:100%">
+            <p style="text-align:justify">
+                <br/><div style="font-style:italic;">Please do not reply to this email. Replies to this message are routed to an unmonitored mailbox.</div>
+            </p>
+            </div>
+            ';
+
+            return $header . $info . $detail . $footer;
         }
         
         
