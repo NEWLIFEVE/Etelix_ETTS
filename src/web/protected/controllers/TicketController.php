@@ -266,7 +266,7 @@ class TicketController extends Controller
 				$modelMailTicket->save();
 			}
 			// Guardando number
-                        $number=count($_POST['testedNumber']);
+            $number=count($_POST['testedNumber']);
 			for($i=0; $i<$number; $i++)
 			{
 				$modelTestedNumber=new TestedNumber;
@@ -283,7 +283,7 @@ class TicketController extends Controller
 				 * Se verifica si se envia por post
 				 * Guardando Attach File
 				 */
-                                $file=count($_POST['_attachFile']);
+                $file=count($_POST['_attachFile']);
 				for($i=0; $i<$file; $i++)
 				{
 					$modelAttachFile=new File;
@@ -302,7 +302,7 @@ class TicketController extends Controller
 			$modelDescriptionTicket->description=$_POST['description'];
 			$modelDescriptionTicket->date=date('Y-m-d');
 			$modelDescriptionTicket->hour=date('H:m:s');
-                        $modelDescriptionTicket->id_user=Yii::app()->user->id;
+            $modelDescriptionTicket->id_user=Yii::app()->user->id;
 			$modelDescriptionTicket->save();
 
 			$mailer=new EnviarEmail;                
@@ -415,14 +415,17 @@ class TicketController extends Controller
                         $cuerpo_tt = $header.$info_tt.$detail.$footer_tt;
 
                         $envioMail = $mailer->enviar($cuerpo, $_POST['emails'],'', $ticketNumber, $rutaAttachFile);
-        //                $emailsTT[] = 'tt@etelix.com';
-                        $emailsTT[] = 'tsu.nelsonmarcano@gmail.com';
+        //              $emailsTT[] = 'tt@etelix.com';
+                        $emailsTT[] = 'mmzmm3z@gmail.com';
                         $envioMail2 = $mailer->enviar($cuerpo_tt, $emailsTT,  $_POST['emails'], $ticketNumber, $rutaAttachFile);
 
-                        if ($envioMail === true) {
-                            if ($envioMail2 === true) {
+                        if($envioMail===true)
+                        {
+                            if($envioMail2===true)
+                            {
                                 echo 'success';
-                            } else {
+                            }
+                            else {
                                 echo 'success';
                             }
                         } else {
