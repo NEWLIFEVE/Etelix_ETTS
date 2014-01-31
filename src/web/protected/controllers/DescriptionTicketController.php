@@ -197,8 +197,7 @@ class DescriptionTicketController extends Controller
             $ticketNumber=Ticket::model()->findByPk($model->id_ticket)->ticket_number;
             $this->renderPartial('_answer', array('datos' => Ticket::ticketsByUsers(Yii::app()->user->id, $model->id_ticket, false)));
             $mailsAll=Mail::getNameMails($model->id_ticket);
-            //$mailsAll[]='noc@etelix.com';
-            $mailsAll[]='mmzmm3z@gmail.com';
+            $mailsAll[]='noc@etelix.com';
             $mailer->enviar(TicketController::getBodyMails($model->id_ticket, Mail::getNameMails($model->id_ticket), 'answer'), $mailsAll, '', 'New answer '.$ticketNumber);
         } else {
             echo 'false';
