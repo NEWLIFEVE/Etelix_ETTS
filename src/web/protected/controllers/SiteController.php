@@ -1,15 +1,21 @@
 <?php
-
+/**
+ *
+ */
 class SiteController extends Controller
 {
-    
-        public function init() 
-        {
-            Yii::app()->setComponents(array(
-                'user'=>array(
-                    'loginUrl'=>Yii::app()->createUrl('/site/index'),
-                )));
-        }
+	/**
+	 *
+	 */
+	public function init()
+	{
+		Yii::app()->setComponents(array(
+			'user'=>array(
+				'loginUrl'=>Yii::app()->createUrl('/site/index'),
+				)
+			)
+		);
+	}
     
 	/**
 	 * Declares class-based actions.
@@ -28,26 +34,24 @@ class SiteController extends Controller
 				'class'=>'CViewAction',
 			),
 		);
-                
-                return array( );
+		return array();
 	}
-        
-        
-
+    
 	/**
 	 * This is the default 'index' action that is invoked
 	 * when an action is not explicitly requested by users.
 	 */
 	public function actionIndex()
 	{
-            
-            if(!Yii::app()->user->isGuest)
-            {
-                $this->render('index');
-            } else {
-                $this->redirect(Yii::app()->user->ui->loginUrl);
-            }
-        }
+		if(!Yii::app()->user->isGuest)
+		{
+			$this->redirect('/ticket/admin');
+		}
+		else
+		{
+			$this->redirect(Yii::app()->user->ui->loginUrl);
+		}
+	}
 
 	/**
 	 * This is the action to handle external exceptions.
@@ -123,41 +127,70 @@ class SiteController extends Controller
 		Yii::app()->user->logout();
 		$this->redirect(Yii::app()->homeUrl);
 	}
-        
-        public static function controlAcceso() 
-        {
-            $tipoUsuario = CrugeAuthassignment::getRoleUser();
-            /* ADMIN */
-            if ($tipoUsuario == "A") {
-                return array(
-                    array('label'=>'My tickets', 'url'=>array('/ticket/admin')),
-                    array('label'=>'Open ticket', 'url'=>array('/ticket/create')),
+
+	/**
+	 * @access public
+	 * @static
+	 * @return array
+	 */
+	public static function controlAcceso()
+	{
+		$tipoUsuario=CrugeAuthassignment::getRoleUser();
+		// ADMIN
+		if($tipoUsuario=="A")
+		{
+			return array(
+				array(
+					'label'=>'My tickets',
+					'url'=>array('/ticket/admin')
+					),
+				array(
+					'label'=>'Open ticket',
+					'url'=>array('/ticket/create')
+					),
+				);
+		}
+		// SUBADMIN
+		if($tipoUsuario=="S")
+		{
+			return array(
+				array(
+					'label'=>'My tickets',
+					'url'=>array('/ticket/admin')
+					),
+				array(
+					'label'=>'Open ticket',
+					'url'=>array('/ticket/create')
+					),
+				);
+		}
+		// CLIENTE
+		if($tipoUsuario=="C")
+		{
+			return array(
+				array(
+					'label'=>'My tickets',
+					'url'=>array('/ticket/admin')
+					),
+				array(
+					'label'=>'Open ticket',
+					'url'=>array('/ticket/create')
+					),
                 );
-            }
-            
-            /* SUBADMIN */
-            if ($tipoUsuario == "S") {
-                return array(
-                    array('label'=>'My tickets', 'url'=>array('/ticket/admin')),
-                    array('label'=>'Open ticket', 'url'=>array('/ticket/create')),
-                );
-            }
-            
-            /* CLIENTE */
-            if ($tipoUsuario == "C") {
-                return array(
-                    array('label'=>'My tickets', 'url'=>array('/ticket/admin')),
-                    array('label'=>'Open ticket', 'url'=>array('/ticket/create')),
-                );
-            }
-            
-            /* INTERNO */
-            if ($tipoUsuario == "I") {
-                return array(
-                    array('label'=>'My tickets', 'url'=>array('/ticket/admin')),
-                    array('label'=>'Open ticket', 'url'=>array('/ticket/createinternal')),
-                );
-            }
-        
-        }
+		}
+		// INTERNO
+		if($tipoUsuario=="I")
+		{
+			return array(
+				array(
+					'label'=>'My tickets',
+					'url'=>array('/ticket/admin')
+					),
+				array(
+					'label'=>'Open ticket',
+					'url'=>array('/ticket/createinternal')
+					),
+				);
+		}
+	}
 }

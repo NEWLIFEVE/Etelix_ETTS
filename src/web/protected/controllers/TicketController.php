@@ -7,24 +7,16 @@ class TicketController extends Controller
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
 	public $layout='//layouts/column2';
-                
+
 	/**
-	 * @return array action filters
+	 * @access public
+	 * @return array
 	 */
-//	public function filters()
-//	{
-//		return array(
-//			'accessControl', // perform access control for CRUD operations
-//			'postOnly + delete', // we only allow deletion via POST request
-//		);
-//	}
-        
         public function filters()
         {
             return array(array('CrugeAccessControlFilter'));
         }
         
-
 	/**
 	 * Specifies the access control rules.
 	 * This method is used by the 'accessControl' filter.
@@ -69,115 +61,84 @@ class TicketController extends Controller
 	public function actionCreate()
 	{
 		$model=new Ticket;
-                /*Instancio los modelos donde se harán inserts*/
-                $modelTestedNumbers= new TestedNumber;
-                $modelDescripcionTicket= new DescriptionTicket;
-                
-                
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
+		//Instancio los modelos donde se harán inserts
+		$modelTestedNumbers=new TestedNumber;
+		$modelDescripcionTicket=new DescriptionTicket;
 
 		if(isset($_POST['Ticket']))
 		{
-                        
 			$model->attributes=$_POST['Ticket'];
-                        
-                        //Demás atributos que no estan en el formualrio
-                        $model->id_status = 1;
-                        $model->date = new CDbExpression('NOW()');
-                        $model->machine_ip = Yii::app()->request->userHostAddress;
-                        
-			if($model->save()) {
-                               
-                                $countDestination = $_POST['Ticket']['country'];
-                                $countTestedNumbers = $_POST['Ticket']['tested_numbers'];
-                                $countFecha = $_POST['Ticket']['date_number'];
-                                
-                                for ($i = 0; $i < count($countTestedNumbers); $i++) {
-                                    // Guardo en TestedNumbers
-                                    $model->addTestedNumbers(
-                                            $model->primaryKey, 
-                                            $countDestination[$i], 
-                                            $countTestedNumbers[$i], 
-                                            $countFecha[$i]
-                                            );
-                                }
-                                
-                                // Guardo en DescripcionTicket
-                                $modelDescripcionTicket->id_ticket = $model->primaryKey;
-                                $modelDescripcionTicket->description = $_POST['Ticket']['description'];
-                                $modelDescripcionTicket->date = new CDbExpression('NOW()');
-                                
-                                $modelTestedNumbers->save();
-                                $modelDescripcionTicket->save();
-                                
-				$this->redirect(array('view','id'=>$model->id));
-                        }
-		}
+			//Demás atributos que no estan en el formualrio
+			$model->id_status=1;
+			$model->date=new CDbExpression('NOW()');
+			$model->machine_ip=Yii::app()->request->userHostAddress;
+			if($model->save())
+			{
+				$countDestination=$_POST['Ticket']['country'];
+				$countTestedNumbers=$_POST['Ticket']['tested_numbers'];
+				$countFecha=$_POST['Ticket']['date_number'];
 
+				for($i=0; $i<count($countTestedNumbers);$i++)
+				{
+					// Guardo en TestedNumbers
+					$model->addTestedNumbers($model->primaryKey,$countDestination[$i],$countTestedNumbers[$i],$countFecha[$i]);
+				}
+				// Guardo en DescripcionTicket
+				$modelDescripcionTicket->id_ticket=$model->primaryKey;
+				$modelDescripcionTicket->description=$_POST['Ticket']['description'];
+				$modelDescripcionTicket->date=new CDbExpression('NOW()');
+				$modelTestedNumbers->save();
+				$modelDescripcionTicket->save();                              
+				$this->redirect(array('view','id'=>$model->id));
+			}
+		}
 		$this->render('create',array(
 			'model'=>$model
 		));
 	}
-        
-        
-        
-        
-        public function actionCreateinternal()
+
+	/**
+	 *
+	 */
+	public function actionCreateinternal()
 	{
 		$model=new Ticket;
-                /*Instancio los modelos donde se harán inserts*/
-                $modelTestedNumbers= new TestedNumber;
-                $modelDescripcionTicket= new DescriptionTicket;
-                
-                
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
+		//Instancio los modelos donde se harán inserts
+		$modelTestedNumbers=new TestedNumber;
+		$modelDescripcionTicket=new DescriptionTicket;        
 
 		if(isset($_POST['Ticket']))
-		{
-                        
+		{               
 			$model->attributes=$_POST['Ticket'];
-                        
-                        //Demás atributos que no estan en el formualrio
-                        $model->id_status = 1;
-                        $model->date = new CDbExpression('NOW()');
-                        $model->machine_ip = Yii::app()->request->userHostAddress;
-                        
-			if($model->save()) {
-                               
-                                $countDestination = $_POST['Ticket']['country'];
-                                $countTestedNumbers = $_POST['Ticket']['tested_numbers'];
-                                $countFecha = $_POST['Ticket']['date_number'];
-                                
-                                for ($i = 0; $i < count($countTestedNumbers); $i++) {
-                                    // Guardo en TestedNumbers
-                                    $model->addTestedNumbers(
-                                            $model->primaryKey, 
-                                            $countDestination[$i], 
-                                            $countTestedNumbers[$i], 
-                                            $countFecha[$i]
-                                            );
-                                }
-                                
-                                // Guardo en DescripcionTicket
-                                $modelDescripcionTicket->id_ticket = $model->primaryKey;
-                                $modelDescripcionTicket->description = $_POST['Ticket']['description'];
-                                $modelDescripcionTicket->date = new CDbExpression('NOW()');
-                                
-                                $modelTestedNumbers->save();
-                                $modelDescripcionTicket->save();
-                                
-				$this->redirect(array('view','id'=>$model->id));
-                        }
-		}
+			//Demás atributos que no estan en el formualrio
+			$model->id_status=1;
+			$model->date=new CDbExpression('NOW()');
+			$model->machine_ip=Yii::app()->request->userHostAddress;               
+			if($model->save())
+			{
+				$countDestination=$_POST['Ticket']['country'];
+				$countTestedNumbers=$_POST['Ticket']['tested_numbers'];
+				$countFecha=$_POST['Ticket']['date_number'];
 
+				for($i=0; $i<count($countTestedNumbers); $i++)
+				{
+					// Guardo en TestedNumbers
+					$model->addTestedNumbers($model->primaryKey,$countDestination[$i],$countTestedNumbers[$i],$countFecha[$i]);
+				}
+				// Guardo en DescripcionTicket
+				$modelDescripcionTicket->id_ticket=$model->primaryKey;
+				$modelDescripcionTicket->description=$_POST['Ticket']['description'];
+				$modelDescripcionTicket->date=new CDbExpression('NOW()');
+				$modelTestedNumbers->save();
+				$modelDescripcionTicket->save();
+				$this->redirect(array('view','id'=>$model->id));
+			}
+		}
 		$this->render('createinternal',array(
 			'model'=>$model
 		));
 	}
         
-
 	/**
 	 * Updates a particular model.
 	 * If update is successful, the browser will be redirected to the 'view' page.
@@ -269,80 +230,88 @@ class TicketController extends Controller
 			Yii::app()->end();
 		}
 	}
-        
-        
-        public function actionSaveticket()
-        {
-            $modelTicket = new Ticket;
-            $rutaAttachFile = array();
-            
-             $modelTicket->date=date('Y-m-d');
-             $modelTicket->id_failure=$_POST['failure'];
-             $modelTicket->id_status=1;
-             $modelTicket->id_gmt=$_POST['gmt'];
-             $modelTicket->destination_ip=$_POST['destinationIp'];
-             $modelTicket->origination_ip=$_POST['originationIp'];
-             $modelTicket->prefix=$_POST['prefix'];
-             $modelTicket->machine_ip=Yii::app()->request->userHostAddress;
-             $modelTicket->hour=date('H:m:s');
-             
-             $maximo = $modelTicket::model()->findBySql("SELECT MAX(id) AS maximo FROM ticket");
-             $maximo->maximo += 1;
-             
-             $ticketNumber = date('Ymd') . '-' . $maximo->maximo . '-' . CrugeAuthassignment::getRoleUser() . $modelTicket->id_failure;
-             $modelTicket->ticket_number= $ticketNumber;
-             
-             if($modelTicket->save()){
-                // Guardando los mails
-                for ($i = 0; $i < count($_POST['responseTo']); $i++){
-                    $modelMailTicket = new MailTicket;
-                    $modelMailTicket->id_mail_user = $_POST['responseTo'][$i];
-                    $modelMailTicket->id_ticket = $modelTicket->id;
-                    $modelMailTicket->save();
-                } 
-                
-                // Guardando number
-                for ($i = 0; $i < count($_POST['testedNumber']); $i++){
-                    $modelTestedNumber = new TestedNumber;
-                    $modelTestedNumber->id_ticket = $modelTicket->id;
-                    $modelTestedNumber->id_country = $_POST['_country'][$i];
-                    $modelTestedNumber->numero = $_POST['testedNumber'][$i];
-                    $modelTestedNumber->date = $_POST['_date'][$i];
-                    $modelTestedNumber->hour = $_POST['_hour'][$i];
-                    $modelTestedNumber->save();
-                }
-                
-                if (isset($_POST['_attachFile']) && count($_POST['_attachFile'])) { // Se verifica si se envia por post
-                    // Guardando Attach File
-                    for ($i = 0; $i < count($_POST['_attachFile']); $i++){
-                        $modelAttachFile = new File;
-                        $modelAttachFile->id_ticket = $modelTicket->id;
-                        $modelAttachFile->saved_name = $_POST['_attachFileSave'][$i];
-                        $modelAttachFile->real_name = $_POST['_attachFile'][$i];
-                        $modelAttachFile->size = $_POST['_attachFileSize'][$i];
-                        $modelAttachFile->rute = 'uploads/' . $_POST['_attachFileSave'][$i];
-                        $rutaAttachFile[] = $modelAttachFile->rute;
-                        $modelAttachFile->save();
-                    }
-                }
-                
-                // Guardando descripcion
-                $modelDescriptionTicket = new DescriptionTicket(); 
-                $modelDescriptionTicket->id_ticket = $modelTicket->id;
-                $modelDescriptionTicket->description = $_POST['description'];
-                $modelDescriptionTicket->date = date('Y-m-d');
-                $modelDescriptionTicket->hour = date('H:m:s');
-                $modelDescriptionTicket->save();
-                
-                $mailer = new EnviarEmail;
-                
-                $header = 
-                '<div style="width:100%">
-                        <img src="http://deve.sacet.com.ve/images/logo.jpg" height="100"/>
-                        <hr>
-                        <div style="text-align:right">Ticket Confirmation<br>Ticket #: '.$ticketNumber.'</div>
-                ';
-                 $info = '  <div>
+
+	/**
+	 *
+	 */
+	public function actionSaveticket()
+	{
+                date_default_timezone_set('America/Caracas');
+		$modelTicket=new Ticket;
+		$rutaAttachFile=array();
+
+		$modelTicket->date=date('Y-m-d');
+		$modelTicket->id_failure=$_POST['failure'];
+		$modelTicket->id_status=1;
+		$modelTicket->id_gmt=$_POST['gmt'];
+		$modelTicket->destination_ip=$_POST['destinationIp'];
+		$modelTicket->origination_ip=$_POST['originationIp'];
+		$modelTicket->prefix=$_POST['prefix'];
+		$modelTicket->machine_ip=Yii::app()->request->userHostAddress;
+		$modelTicket->hour=date('H:i:s');
+
+		$maximo=$modelTicket::model()->findBySql("SELECT COUNT(id) AS number_of_the_day FROM ticket WHERE date= '".date('Y-m-d')."'");
+		$maximo->number_of_the_day+=1;
+
+		$ticketNumber=date('Ymd').'-'.str_pad($maximo->number_of_the_day, 3, "0", STR_PAD_LEFT).'-'.CrugeAuthassignment::getRoleUser().$modelTicket->id_failure;
+		$modelTicket->ticket_number=$ticketNumber;
+		if($modelTicket->save())
+		{
+			// Guardando los mails
+                        $responseTo=count($_POST['responseTo']);
+			for($i=0; $i<$responseTo; $i++)
+			{
+				$modelMailTicket=new MailTicket;
+				$modelMailTicket->id_mail_user=$_POST['responseTo'][$i];
+				$modelMailTicket->id_ticket=$modelTicket->id;
+				$modelMailTicket->save();
+			}
+			// Guardando number
+            $number=count($_POST['testedNumber']);
+			for($i=0; $i<$number; $i++)
+			{
+				$modelTestedNumber=new TestedNumber;
+				$modelTestedNumber->id_ticket=$modelTicket->id;
+				$modelTestedNumber->id_country=$_POST['_country'][$i];
+				$modelTestedNumber->numero=$_POST['testedNumber'][$i];
+				$modelTestedNumber->date=$_POST['_date'][$i];
+				$modelTestedNumber->hour=$_POST['_hour'][$i];
+				$modelTestedNumber->save();
+			}
+			if(isset($_POST['_attachFile']) && count($_POST['_attachFile']))
+			{
+				/**
+				 * Se verifica si se envia por post
+				 * Guardando Attach File
+				 */
+                $file=count($_POST['_attachFile']);
+				for($i=0; $i<$file; $i++)
+				{
+					$modelAttachFile=new File;
+					$modelAttachFile->id_ticket=$modelTicket->id;
+					$modelAttachFile->saved_name=$_POST['_attachFileSave'][$i];
+					$modelAttachFile->real_name=$_POST['_attachFile'][$i];
+					$modelAttachFile->size=$_POST['_attachFileSize'][$i];
+					$modelAttachFile->rute='uploads/'.$_POST['_attachFileSave'][$i];
+					$rutaAttachFile[]=$modelAttachFile->rute;
+					$modelAttachFile->save();
+				}
+			}
+			// Guardando descripcion
+			$modelDescriptionTicket=new DescriptionTicket();
+			$modelDescriptionTicket->id_ticket=$modelTicket->id;
+			$modelDescriptionTicket->description=$_POST['description'];
+			$modelDescriptionTicket->date=date('Y-m-d');
+			$modelDescriptionTicket->hour=date('H:m:s');
+            $modelDescriptionTicket->id_user=Yii::app()->user->id;
+			$modelDescriptionTicket->save();
+
+			$mailer=new EnviarEmail;                
+                        $header='<div style="width:100%">
+                                            <img src="http://deve.sacet.com.ve/images/logo.jpg" height="100"/>
+                                            <hr>
+                                    <div style="text-align:right">Ticket Confirmation<br>Ticket #: '.$ticketNumber.'</div>';
+                        $info='  <div>
                                 <h2>Hello "'. Yii::app()->user->name .'"</h2>
                                 <p style="text-align:justify">
                                     <div>Dear Customer:</div><br/>
@@ -357,20 +326,20 @@ class TicketController extends Controller
                                 </p>
                         </div>
                         <hr>
-                </div>';
-                 
-                 $info_tt = '  <div>
-                                <h2>Hello</h2>
+                        </div>';
+
+                         $info_tt = '  <div>
+                                        <h2>Hello</h2>
                                 <p style="text-align:justify">
                                     You have a new ticket from <h2>"'. Yii::app()->user->name .'"</h2>
                                 </p>
                         </div>
                         <hr>
-                </div>';
-                 
-                $detail = '<h2>Ticket Details</h2>
-                <table style="border-spacing: 0; width:100%; border: solid #ccc 1px;">
-			<tr>
+                        </div>';
+
+                        $detail = '<h2>Ticket Details</h2>
+                        <table style="border-spacing: 0; width:100%; border: solid #ccc 1px;">
+                                <tr>
 			    <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc; padding: 5px 10px; text-align: left;">Response to</th>
 			</tr>
 			<tr>
@@ -427,52 +396,46 @@ class TicketController extends Controller
 			<tr>
                                 <td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$_POST['description'].'</td>
 			</tr>
-		</table>';
-                
-                $footer = '<div style="width:100%">
-		<p style="text-align:justify">
-                    <br/><div style="font-style:italic;">Please do not reply to this email. Replies to this message are routed to an unmonitored mailbox.</div>
-		</p>
-                </div>
-                ';
+                        </table>';
 
-                $footer_tt = '<div style="width:100%">
-		<p style="text-align:justify">
-                    <br/><div style="font-style:italic;">Please do not reply to this email. Replies to this message are routed to an unmonitored mailbox.</div>
-		</p>
-                </div>
-                ';
-                $footer_tt = '<div style="width:100%">
-		<p style="text-align:justify">
-                    <br/><div style="font-style:italic;">Please do not reply to this email. Replies to this message are routed to an unmonitored mailbox.</div>
-		</p>
-                </div>
-                ';
-                
-                $cuerpo = $header.$info.$detail.$footer;
-                $cuerpo_tt = $header.$info_tt.$detail.$footer_tt;
-                
-                $cuerpo = $header.$info.$detail.$footer;
-                $cuerpo_tt = $header.$info_tt.$detail.$footer_tt;
-                
-                $envioMail = $mailer->enviar($cuerpo, $_POST['emails'],'', $ticketNumber, $rutaAttachFile);
-                $emailsTT[] = 'tt@etelix.com';
-//                $emailsTT[] = 'tsu.nelsonmarcano@gmail.com';
-                $envioMail2 = $mailer->enviar($cuerpo_tt, $emailsTT,  $_POST['emails'], $ticketNumber, $rutaAttachFile);
+                        $footer = '<div style="width:100%">
+                        <p style="text-align:justify">
+                            <br/><div style="font-style:italic;">Please do not reply to this email. Replies to this message are routed to an unmonitored mailbox.</div>
+                        </p>
+                        </div>
+                        ';
 
-                if ($envioMail === true) {
-                    if ($envioMail2 === true) {
-                        echo 'success';
+                        $footer_tt = '<div style="width:100%">
+                        <p style="text-align:justify">
+                            <br/><div style="font-style:italic;">Please do not reply to this email. Replies to this message are routed to an unmonitored mailbox.</div>
+                        </p>
+                        </div>
+                        ';
+
+                        $cuerpo = $header.$info.$detail.$footer;
+                        $cuerpo_tt = $header.$info_tt.$detail.$footer_tt;
+
+                        $envioMail = $mailer->enviar($cuerpo, $_POST['emails'],'', $ticketNumber, $rutaAttachFile);
+                      $emailsTT[] = 'tt@etelix.com';
+                        $envioMail2 = $mailer->enviar($cuerpo_tt, $emailsTT,  $_POST['emails'], $ticketNumber, $rutaAttachFile);
+
+                        if($envioMail===true)
+                        {
+                            if($envioMail2===true)
+                            {
+                                echo 'success';
+                            }
+                            else {
+                                echo 'success';
+                            }
+                        } else {
+                            echo 'Error al enviar el correo: ' . $envioMail;
+                        }
                     } else {
-                        echo 'success';
+                        echo 'Error al enviar el ticket';
                     }
-                } else {
-                    echo 'Error al enviar el correo: ' . $envioMail;
-                }
-            } else {
-                echo 'Error al enviar el ticket';
-            }
         }
+        
         
         
         /**
@@ -480,28 +443,58 @@ class TicketController extends Controller
          * en la tabla "ticket_relation", se actualizaran sus tickets hijos al 
          * status que sea seleccionado, si no se encuentra en dicha tabla, solo 
          * se modificara en la tabla del ticket
+         * @param int $id
          */
         public function actionUpdatestatus($id)
         {
             $idTickets = Ticketrelation::getTicketRelation($id, true);
+            $statuName = Status::getStatus(true, $_POST['idStatus'])->name;
+            $ticketNumber=  Ticket::model()->findByPk($id)->ticket_number;
+//            $body = '<h2>Change ticket status by "' . $statuName . '"</h2>';
+            $body=  self::getBodyMails($id, Mail::getNameMails($id), 'status', $statuName);
             
+            $mailer=new EnviarEmail;
+            $ticketModel = new Ticket;
+            $mailModel = new Mail;
+
             if ($idTickets != null) {
-                $ticketSon = array();
-                foreach ($idTickets as $value) {
-                    $ticketSon[] = $value->id_ticket_son;
-                }
+                $ticketSon = self::getTicketsSon($idTickets);
                 $ticketSon[] = $id;
-                Ticket::model()->updateAll(array('id_status'=>$_POST['idStatus']), 'id in('.implode(",", $ticketSon).')');
+                $ticketModel::model()->updateAll(array('id_status'=>$_POST['idStatus']), 'id in('.implode(",", $ticketSon).')');
             } else {
-                Ticket::model()->updateByPk($id, array('id_status' => $_POST['idStatus']));
+                $ticketModel::model()->updateByPk($id, array('id_status' => $_POST['idStatus']));
             }
+            
+            $envioMail = $mailer->enviar($body, $mailModel::getNameMails($id), '', 'Status changed '.$ticketNumber, null);
+            if ($envioMail === true)
+                echo 'true';
+            else 
+                echo 'Error al enviar el correo: ' . $envioMail;
+        }
+        /**
+         * Método para retornar los tickets hijos de la tabla ticket_relation
+         * @param Ticketrelation $idTickets
+         * @return array
+         */
+        public static function getTicketsSon($idTickets) 
+        {
+            $ticketSon = array();
+            foreach ($idTickets as $value) {
+                $ticketSon[] = $value->id_ticket_son;
+            }
+            return $ticketSon;
         }
         
+        /**
+         * Action para retornar los datos del ticket por su id
+         * @param int $id
+         */
         public function actionGetdataticket($id)
         {
             $this->renderPartial('_dataticket', array('datos' => Ticket::ticketsByUsers(Yii::app()->user->id, $id, false)));
         }
         
+       
         /**
          * Action para retornar los tickets relacionados codificados en json
          * @param int $id
@@ -523,4 +516,159 @@ class TicketController extends Controller
         	}
             echo json_encode($array);
         }
+        
+        /**
+         *
+         */  
+        public static function getBodyMails($idTicket, $email,  $typeOperation, $status = false)
+        {     
+            $datos = Ticket::ticketsByUsers(CrugeUser2::getUserTicket($idTicket, true)->iduser, $idTicket, false);
+            $user = CrugeUser2::getUserTicket($idTicket);
+            $testedNumber = TestedNumber::getTestedNumberArray($idTicket);
+            $info = '';
+            
+            $header='<div style="width:100%">
+                                <img src="http://deve.sacet.com.ve/images/logo.jpg" height="100"/>
+                                <hr>
+                        <div style="text-align:right">Ticket Confirmation<br>Ticket #: '.$datos->ticket_number.'</div>';
+            
+            switch ($typeOperation) {
+                // Al abrir el ticket por primera vez
+                case 'open':
+                    $info=
+                        '<div>
+                            <h2>Hello "'. $user .'"</h2>
+                            <p style="text-align:justify">
+                                <div>Dear Customer:</div>
+                                <br/>
+                                <div>
+                                    Thanks for using our online tool "Etelix Trouble Ticket System" (etts.etelix.com).<br/>
+
+                                    Your issue has been opened with the TT Number (please see below).<br/>
+
+                                    Your TT will be answered by an Etelix Analyst soon.
+                                </div>
+                                <br/>
+                                Etelix NOC Team.    
+                            </p>
+                        </div>
+                        <hr>
+                    </div>';
+                    break;
+                
+                // Al cambiar de status
+                case 'status':
+                    $info=
+                        '<div>
+                            <h2>Hello "'. $user .'"</h2>
+                            <p style="text-align:justify">
+                                <div>Dear Customer:</div>
+                                <br/>
+                                <div>
+                                   Change status: "'. $status .'"
+                                </div>
+                                <br/>
+                                Etelix NOC Team.    
+                            </p>
+                        </div>
+                        <hr>
+                    </div>';
+                    break;
+                
+                // Al responder la descripcion
+                case 'answer':
+                        $info=
+                            '<div>
+                                <h2>Hello "'. $user .'"</h2>
+                                <p style="text-align:justify">
+                                    <div>Dear Customer:</div>
+                                    <br/>
+                                    <div>
+                                       There is a new message related to your TT
+                                    </div>
+                                    <br/>
+                                    Etelix NOC Team.    
+                                </p>
+                            </div>
+                            <hr>
+                        </div>';
+                        break;
+
+                default:
+                    break;
+            }
+            
+
+            $detail = '<h2>Ticket Details</h2>
+            <table style="border-spacing: 0; width:100%; border: solid #ccc 1px;">
+                    <tr>
+                <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc; padding: 5px 10px; text-align: left;">Response to</th>
+            </tr>
+            <tr>
+                    <td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'. implode('<br>', $email) .'</td>
+            </tr>
+
+            <tr>
+                <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Failure</th>
+            </tr>
+            <tr>
+                    <td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$datos->idFailure->name.'</td>
+            </tr>
+
+            <tr>
+                <th colspan="1" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Origination IP</th>
+                <th colspan="3" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Destination IP</th>
+            </tr>
+            <tr>
+                    <td colspan="1" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$datos->origination_ip.'</td>
+                    <td colspan="3" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$datos->destination_ip.'</td>
+            </tr>
+
+            <tr>
+                <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Prefix</th>
+            </tr>
+            <tr>
+                    <td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$datos->prefix.'</td>
+            </tr>
+
+            <tr>
+                <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">GMT</th>
+            </tr>
+            <tr>
+                    <td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$datos->idGmt->name.'</td>
+            </tr>
+
+
+            <tr>
+                <th style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Tested number</th>
+                <th style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Country</th>
+                <th style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Date</th>
+                <th style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Hour</th>
+            </tr>
+            <tr>
+                    <td style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.implode('<br>', $testedNumber['number']).'</td>
+                    <td style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.implode('<br>', $testedNumber['country']).'</td>
+                    <td style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.implode('<br>', $testedNumber['date']).'</td>
+                    <td style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.implode('<br>', $testedNumber['hour']).'</td>
+            </tr>
+
+            <tr>
+                <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Description</th>
+            </tr>
+            <tr>
+                    <td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.  DescriptionTicketController::getDescription($idTicket, $datos).'</td>
+            </tr>
+            </table>';
+
+            $footer = '<div style="width:100%">
+            <p style="text-align:justify">
+                <br/><div style="font-style:italic;">Please do not reply to this email. Replies to this message are routed to an unmonitored mailbox.</div>
+            </p>
+            </div>
+            ';
+
+            return $header . $info . $detail . $footer;
+        }
+        
+        
 }

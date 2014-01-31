@@ -16,6 +16,7 @@ return array(
 	// autoloading model and component classes
 	'import'=>array(
 		'application.models.*',
+                'application.controllers.*',
 		'application.components.*',
 		'application.modules.cruge.components.*',
 		'application.modules.cruge.extensions.crugemailer.*',
@@ -108,8 +109,8 @@ return array(
 			'emulatePrepare'=>true,
 			'username'=>'postgres',
 			'password'=>'Nsusfd8263',
-			'charset'=>'utf8',
-			),
+			'charset' => 'utf8',
+		),
 		'soriDB'=>array(
 			'class'=>'CDbConnection',
 			'connectionString'=>'pgsql:host=localhost;port=5432;dbname=sori',
