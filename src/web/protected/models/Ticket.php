@@ -183,19 +183,7 @@ class Ticket extends CActiveRecord
         if($onlyOpen)
         {
             // Si $returnArray esta en true, retorna un array con los datos del ticket
-<<<<<<< HEAD
-            if ($returnArray) {
 
-                return self::model()->findAllBySql(
-                                    "select *, t.id as id 
-                                    from 
-                                    ticket t  
-                                    where 
-                                    t.id in(select distinct(id_ticket) from mail_ticket where id_mail_user in(select id from mail_user $conditionUser)) 
-                                    $conditionTicket
-                                    order by t.id_status asc, t.date desc");
-            
-=======
             if($returnArray)
             {
                 return self::model()->findAllBySql("SELECT *, t.id AS id
@@ -203,7 +191,6 @@ class Ticket extends CActiveRecord
                                                     WHERE t.id IN (SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user $conditionUser)) AND t.id_status=1 $conditionTicket
                                                     ORDER BY t.id_status, t.id  $order");
 
->>>>>>> dev
             // De lo contrario no retorna un array
             }
             else
@@ -216,12 +203,6 @@ class Ticket extends CActiveRecord
         }
         else
         {
-<<<<<<< HEAD
-            $ids = array();
-            foreach (self::ticketsByUsers(Yii::app()->user->id) as $value) {
-
-                $ids[] = $value->id;
-=======
             // Si $returnArray esta en true, retorna un array con los datos del ticket
             if($returnArray)
             {
@@ -237,7 +218,6 @@ class Ticket extends CActiveRecord
                                                  FROM ticket t
                                                  WHERE t.id IN (SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user $conditionUser)) $conditionTicket
                                                  ORDER BY t.id_status, t.id $order");
->>>>>>> dev
             }
         }
     }
@@ -252,9 +232,6 @@ class Ticket extends CActiveRecord
         {
             $ids[]=$value->id;
         }
-<<<<<<< HEAD
-
-=======
         return $ids;
     }
 
@@ -278,5 +255,4 @@ class Ticket extends CActiveRecord
                                                                                                FROM mail_user $conditionUser)) AND t.id=tr.id_ticket_father AND t.id=$idTicket
                                             ORDER BY t.id DESC)");
     }
->>>>>>> dev
 }
