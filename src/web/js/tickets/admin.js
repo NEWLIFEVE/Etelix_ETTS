@@ -53,7 +53,7 @@ function getTicketsRelated(id, nTr, oTable)
     });
 }
 
-//Función para agregar o quitar estilos al cambiar el statu
+//Función para agregar o quitar estilos al cambiar el status
 function changeStatus(id, select, status, _class)
 {   
     $.Dialog.close();
@@ -86,6 +86,7 @@ function attachFile()
                 fileName: "myfile",
                 allowedTypes:"jpg,png,gif,doc,docx,xls,xlsx,pdf,zip",	
                 returnType:"json",
+                showFileCounter:false,
                      onSuccess:function(files,data,xhr)
                 {
                    // alert((data));
@@ -168,7 +169,7 @@ $(document).on('ready', function() {
                         $('div.answer-ticket').scrollTop(100000);
                     }
                 });
-//                setTimeout('attachFile()', 1000);
+                setTimeout('attachFile()', 1000);
         } );
         
         // Evento para cambiar el status

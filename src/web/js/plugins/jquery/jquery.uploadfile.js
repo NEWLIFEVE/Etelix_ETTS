@@ -52,7 +52,7 @@
             dragDropStr: "<span><b>Drag &amp; Drop Files</b></span>",
             abortStr: "Abort",
             cancelStr: "Cancel",
-            deletelStr: "Delete",
+            deletelStr: "X",
             doneStr: "Done",
             multiDragErrorStr: "Multiple File Drag &amp; Drop is not allowed.",
             extErrorStr: "is not allowed. Allowed extensions: ",
@@ -379,7 +379,9 @@
             this.cancel = $("<div class='ajax-file-upload-red'>" + s.cancelStr + "</div>").appendTo(this.statusbar).hide();
             this.done = $("<div class='ajax-file-upload-green'>" + s.doneStr + "</div>").appendTo(this.statusbar).hide();
             this.del = $("<div class='ajax-file-upload-red'>" + s.deletelStr + "</div>").appendTo(this.statusbar).hide();
-            obj.errorLog.after(this.statusbar);
+//            obj.errorLog.after(this.statusbar);
+            $('div#area-add-file').append(this.statusbar);
+//            setTimeout(function(){$('div#filename').append('<input type="hidden" name="archivo[]" id="archivo[]" value="'+$('div.ajax-file-upload-filename').text()+'">')}, 1000)
             return this;
         }
 

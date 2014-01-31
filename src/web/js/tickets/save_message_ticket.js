@@ -3,6 +3,14 @@
 */
 function saveMessage()
 {
+    var fileName = $('div.ajax-file-upload-filename'),
+    _length=fileName.length,
+    _files=[];
+    
+    for(var i=0; i<_length; i++)
+        _files.push(fileName[i].innerHTML);
+    
+    
     _idSpeech = null;
     if ($('select#speech').val()) {
         _idSpeech = $('select#speech option:selected').val();
@@ -14,7 +22,8 @@ function saveMessage()
             data: {
                 idSpeech: $('select#speech option:selected').val(),
                 message:  $('#answer').val(),
-                idTicket: $('#id_ticket').val()
+                idTicket: $('#id_ticket').val(),
+                files:_files
             },
             success:function(data){
                 $('#answer').val('')
