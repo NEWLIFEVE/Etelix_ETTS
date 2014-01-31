@@ -196,116 +196,20 @@ class DescriptionTicketController extends Controller
         if ($model->save()) {
             $ticketNumber=Ticket::model()->findByPk($model->id_ticket)->ticket_number;
             $this->renderPartial('_answer', array('datos' => Ticket::ticketsByUsers(Yii::app()->user->id, $model->id_ticket, false)));
-            $mailer->enviar(TicketController::getBodyMails($model->id_ticket, Mail::getNameMails($model->id_ticket), 'answer'), Mail::getNameMails($model->id_ticket), '', 'New answer '.$ticketNumber);
+            $mailsAll=Mail::getNameMails($model->id_ticket);
+            //$mailsAll[]='noc@etelix.com';
+            $mailsAll[]='mmzmm3z@gmail.com';
+            $mailer->enviar(TicketController::getBodyMails($model->id_ticket, Mail::getNameMails($model->id_ticket), 'answer'), $mailsAll, '', 'New answer '.$ticketNumber);
         } else {
             echo 'false';
         }
     }
 
     /**
-     *
-     */  
-//    public function getBodyMail($idTicket, $email)
-//    {
-//        $datos = Ticket::ticketsByUsers(Yii::app()->user->id, $idTicket, false);
-//        $user = CrugeUser2::getUserTicket($datos->id);
-//        $testedNumber = TestedNumber::getTestedNumberArray($datos->id);
-//        
-//        $header='<div style="width:100%">
-//                            <img src="http://deve.sacet.com.ve/images/logo.jpg" height="100"/>
-//                            <hr>
-//                    <div style="text-align:right">Ticket Confirmation<br>Ticket #: '.$datos->ticket_number.'</div>';
-//        $info='<div>
-//                <h2>Hello "'. $user .'"</h2>
-//                <p style="text-align:justify">
-//                    <div>Dear Customer:</div><br/>
-//
-//                    <div>Thanks for using our online tool "Etelix Trouble Ticket System" (etts.etelix.com).<br/>
-//
-//                    Your issue has been opened with the TT Number (please see below).<br/>
-//
-//                    Your TT will be answered by an Etelix Analyst soon.</div><br/>
-//
-//                    Etelix NOC Team.    
-//                </p>
-//        </div>
-//        <hr>
-//        </div>';
-//
-//
-//        $detail = '<h2>Ticket Details</h2>
-//        <table style="border-spacing: 0; width:100%; border: solid #ccc 1px;">
-//                <tr>
-//            <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc; padding: 5px 10px; text-align: left;">Response to</th>
-//        </tr>
-//        <tr>
-//                <td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'. implode('<br>', $email) .'</td>
-//        </tr>
-//
-//        <tr>
-//            <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Failure</th>
-//        </tr>
-//        <tr>
-//                <td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$datos->idFailure->name.'</td>
-//        </tr>
-//
-//        <tr>
-//            <th colspan="1" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Origination IP</th>
-//            <th colspan="3" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Destination IP</th>
-//        </tr>
-//        <tr>
-//                <td colspan="1" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$datos->origination_ip.'</td>
-//                <td colspan="3" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$datos->destination_ip.'</td>
-//        </tr>
-//
-//        <tr>
-//            <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Prefix</th>
-//        </tr>
-//        <tr>
-//                <td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$datos->prefix.'</td>
-//        </tr>
-//
-//        <tr>
-//            <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">GMT</th>
-//        </tr>
-//        <tr>
-//                <td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$datos->idGmt->name.'</td>
-//        </tr>
-//
-//
-//        <tr>
-//            <th style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Tested number</th>
-//            <th style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Country</th>
-//            <th style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Date</th>
-//            <th style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Hour</th>
-//        </tr>
-//        <tr>
-//                <td style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.implode('<br>', $testedNumber['number']).'</td>
-//                <td style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.implode('<br>', $testedNumber['country']).'</td>
-//                <td style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.implode('<br>', $testedNumber['date']).'</td>
-//                <td style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.implode('<br>', $testedNumber['hour']).'</td>
-//        </tr>
-//
-//        <tr>
-//            <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Description</th>
-//        </tr>
-//        <tr>
-//                <td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$this->getDescription($datos->id, $datos).'</td>
-//        </tr>
-//        </table>';
-//
-//        $footer = '<div style="width:100%">
-//        <p style="text-align:justify">
-//            <br/><div style="font-style:italic;">Please do not reply to this email. Replies to this message are routed to an unmonitored mailbox.</div>
-//        </p>
-//        </div>
-//        ';
-//        
-//        return $header . $info . $detail . $footer;
-//    }
-
-    /** 
-     *
+     * 
+     * @param int $idTicket
+     * @param array $datos
+     * @return string
      */  
     public static function getDescription($idTicket, $datos)
     {
