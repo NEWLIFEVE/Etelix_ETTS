@@ -77,7 +77,7 @@ if ($tipoUsuario !== 'C'):
     <div class="option-panel right">
         <input type="button" value="Send message" class="primary" id="sendmsg" onclick="saveMessage()">
     </div>
-    <div class="option-panel right" title="Not available">
+    <div class="option-panel right" title="Not available yet">
         <div id="mulitplefileuploader" >Add file</div>
     </div>
 </div>

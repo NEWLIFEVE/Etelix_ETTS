@@ -585,8 +585,7 @@ class TicketController extends Controller
                                     <div>Dear Customer:</div>
                                     <br/>
                                     <div>
-                                       There is a new message related to your TT<br>
-                                       Please, <a href="http://etts.etelix.com">click here</a> to see it
+                                       There is a new message related to your TT
                                     </div>
                                     <br/>
                                     Etelix NOC Team.    

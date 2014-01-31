@@ -15,7 +15,6 @@
  * @property integer $prefix
  * @property integer $id_gmt
  * @property string $ticket_number
- * @property integer $number_of_the_day
  *
  * The followings are the available model relations:
  * @property TicketRelation[] $ticketRelations
@@ -45,6 +44,7 @@ class Ticket extends CActiveRecord
     public $country = array();
     public $date_number = array();
     public $hour_number = array();
+    public $number_of_the_day;
         
 	public static function model($className=__CLASS__)
 	{
