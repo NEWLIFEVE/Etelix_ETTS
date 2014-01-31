@@ -1,3 +1,5 @@
+
+<input type="hidden" id="id_ticket" value="<?php echo $datos->id; ?>">
 <div class="input-control select block">
 Response to
 <select multiple="multiple" disabled="disabled" id="preview_response_to">
@@ -45,16 +47,37 @@ Failure
     } 
     echo $tabla . '</tbody></table></div>';
     ?>
-    
 </div>
 
-<div class="input-control textarea" data-role="input-control">
-        Description<hr>
-        <ul>
-        <?php 
-        foreach ($datos->descriptionTickets as $value) {
-            echo '<li>' . $value->description . '   <br><strong>Date: </strong>' . $value->date . ' || <strong>Hour: </strong>' . $value->hour . '<hr></li>';
-        }
-        ?>
-        </ul>
+
+Description
+<div class="answer-ticket">
+    <?php $this->renderPartial('_answer', array('datos'=>$datos)); ?>
 </div>
+
+<?php
+$tipoUsuario = CrugeAuthassignment::getRoleUser();
+if ($tipoUsuario !== 'C'):
+?>
+<div class="input-control select medium">
+    <select id="speech">
+        <option value="">Speech</option>
+        <?php foreach (Speech::getSpeech() as $value): ?>
+            <option value="<?php echo $value->id; ?>"><?php echo $value->title; ?></option>
+        <?php endforeach; ?>
+    </select>
+</div>
+
+<?php endif; ?>
+<div class="input-control textarea" data-role="input-control">
+    <textarea name="answer" id="answer"></textarea>
+</div>
+<div class="panel-down-textarea">
+    <div class="option-panel right">
+        <input type="button" value="Send message" class="primary" id="sendmsg" onclick="saveMessage()">
+    </div>
+    <div class="option-panel right" title="Not available yet">
+        <div id="mulitplefileuploader" >Add file</div>
+    </div>
+</div>
+<div id="status"></div>

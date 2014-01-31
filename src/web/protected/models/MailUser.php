@@ -117,6 +117,7 @@ class MailUser extends CActiveRecord
         }
 
         
+
         public static function getCountMail($user)
         {
                 $count =self::model()->findBySql("SELECT COUNT(id_user) AS mailcount FROM mail_user WHERE id_user = $user AND status = 1");

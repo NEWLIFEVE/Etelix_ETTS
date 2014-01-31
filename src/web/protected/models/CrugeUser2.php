@@ -132,29 +132,39 @@ class CrugeUser2 extends CActiveRecord
 	{
 		return parent::model($className);
 	}
-        
-        public static function getUsuerByIdCarrier()
+     
+    /**
+     *
+     */  
+    public static function getUsuerByIdCarrier()
+    {
+        return self::model()->findAll("id_carrier is not null");
+    }
+    
+    /**
+     *
+     */ 
+    public static function getUserTicket($id_ticket, $returnAllNoArray = false, $distinct = false)
+    {
+        if($returnAllNoArray)
         {
-            return self::model()->findAll("id_carrier is not null");
-        }
-        
-        public static function getUserTicket($id_ticket, $returnAllNoArray = false, $distinct = false)
-        {
-            if ($returnAllNoArray) {
-                if ($distinct){
-                    $distinct = 'distinct(u.*)';
-                } else {
-                    $distinct = 'u.*';
-                }
-                return self::model()->findBySql("select $distinct
-                                             from ticket t, mail_ticket mt, mail_user mu, cruge_user u
-                                             where t.id = mt.id_ticket and mt.id_mail_user = mu.id and mu.id_user = u.iduser and t.id = $id_ticket");
-            } else {
-                return self::model()->findBySql("select distinct(u.username) as username
-                                             from ticket t, mail_ticket mt, mail_user mu, cruge_user u
-                                             where t.id = mt.id_ticket and mt.id_mail_user = mu.id and mu.id_user = u.iduser and t.id = $id_ticket")->username;
+            if($distinct)
+            {
+                $distinct='distinct(u.*)';
             }
+            else
+            {
+                $distinct='u.*';
+            }
+            return self::model()->findBySql("SELECT $distinct
+            								 FROM ticket t, mail_ticket mt, mail_user mu, cruge_user u
+            								 WHERE t.id=mt.id_ticket AND mt.id_mail_user=mu.id AND mu.id_user=u.iduser AND t.id=$id_ticket");
         }
-        
-       
+        else
+        {
+        	return self::model()->findBySql("SELECT distinct(u.username) AS username
+        									 FROM ticket t, mail_ticket mt, mail_user mu, cruge_user u
+        									 WHERE t.id=mt.id_ticket AND mt.id_mail_user=mu.id AND mu.id_user=u.iduser AND t.id=$id_ticket")->username;
+        }
+    } 
 }

@@ -37,7 +37,7 @@
             -->
             <div class="navigation-bar dark">
                 <div class="navigation-bar-content container">
-                    <a href="/" class="element"><span class="icon-grid-view"></span> <?php echo Yii::app()->name; ?> <sup>ETELIX</sup></a>
+                    <a href="/" class="element"><span class=""><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/tkt.png"></span> <?php echo Yii::app()->name; ?> <sup>ETELIX</sup></a>
                     
                     <!-- ############################################################ -->
                     <!-- SI SE LOGUEA EL USUARIO -->
