@@ -119,7 +119,7 @@ return array(
                 ),
 		// uncomment the following to use a MySQL database
 		'db'=>array(
-			'connectionString'=>'pgsql:host=localhost;port=5432;dbname=dev_etts',
+			'connectionString'=>'pgsql:host=localhost;port=5432;dbname=etts',
 			'emulatePrepare'=>true,
 			'username'=>'postgres',
 			'password'=>'Nsusfd8263',
