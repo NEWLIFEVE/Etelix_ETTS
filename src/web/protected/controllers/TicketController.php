@@ -431,60 +431,56 @@ class TicketController extends Controller
         }
         
         
-        /**
-         * Action para actualizar el status del ticket. Si el ticket padre está
-         * en la tabla "ticket_relation", se actualizaran sus tickets hijos al 
-         * status que sea seleccionado, si no se encuentra en dicha tabla, solo 
-         * se modificara en la tabla del ticket
-         */
-        public function actionUpdatestatus($id)
-        {
-            $idTickets = Ticketrelation::getTicketRelation($id, true);
-            
-            if ($idTickets != null) {
-                $ticketSon = array();
-                foreach ($idTickets as $value) {
-                    $ticketSon[] = $value->id_ticket_son;
-                }
-                $ticketSon[] = $id;
-                Ticket::model()->updateAll(array('id_status'=>$_POST['idStatus']), 'id in('.implode(",", $ticketSon).')');
-            } else {
-                Ticket::model()->updateByPk($id, array('id_status' => $_POST['idStatus']));
+    /**
+     * Action para actualizar el status del ticket. Si el ticket padre está
+     * en la tabla "ticket_relation", se actualizaran sus tickets hijos al 
+     * status que sea seleccionado, si no se encuentra en dicha tabla, solo 
+     * se modificara en la tabla del ticket
+     */
+    public function actionUpdatestatus($id)
+    {
+        $idTickets = Ticketrelation::getTicketRelation($id, true);
+        
+        if ($idTickets != null) {
+            $ticketSon = array();
+            foreach ($idTickets as $value) {
+                $ticketSon[] = $value->id_ticket_son;
             }
+            $ticketSon[] = $id;
+            Ticket::model()->updateAll(array('id_status'=>$_POST['idStatus']), 'id in('.implode(",", $ticketSon).')');
+        } else {
+            Ticket::model()->updateByPk($id, array('id_status' => $_POST['idStatus']));
         }
+    }
         
-        /**
-         * Action para retornar los datos del ticket por su id
-         * @param int $id
-         */
-        public function actionGetdataticket($id)
-        {
-            $this->renderPartial('_dataticket', array('datos' => Ticket::ticketsByUsers(Yii::app()->user->id, $id, false)));
-        }
+    /**
+     * Action para retornar los datos del ticket por su id
+     * @param int $id
+     */
+    public function actionGetdataticket($id)
+    {
+        $this->renderPartial('_dataticket', array('datos' => Ticket::ticketsByUsers(Yii::app()->user->id, $id, false)));
+    }
         
-        
-        
-        /**
-         * Action para retornar los tickets relacionados codificados en json
-         * @param int $id
-         */
-        public function actionGetticketrelation($id)
-        {
-        	$array=null;
-        	foreach (Ticket::ticketsRelations($id) as $key => $value)
-        	{
-        		$array[$key]['id_ticket']=$value->id;
-        		$array[$key]['user']=CrugeUser2::getUserTicket($value->id);
-        		$array[$key]['carrier']=Carrier::getCarriers(true, $value->id);
-        		$array[$key]['ticket_number']=$value->ticket_number;
-        		$array[$key]['failure']=$value->idFailure->name;
-        		$array[$key]['status_ticket']=$value->idStatus->name;
-        		$array[$key]['origination_ip']=$value->origination_ip;
-        		$array[$key]['destination_ip']=$value->destination_ip;
-        		$array[$key]['date']=$value->date;
-        	}
-            echo json_encode($array);
-        }
-        
-        
+    /**
+     * Action para retornar los tickets relacionados codificados en json
+     * @param int $id
+     */
+    public function actionGetticketrelation($id)
+    {
+    	$array=null;
+    	foreach (Ticket::ticketsRelations($id) as $key => $value)
+    	{
+    		$array[$key]['id_ticket']=$value->id;
+    		$array[$key]['user']=CrugeUser2::getUserTicket($value->id);
+    		$array[$key]['carrier']=Carrier::getCarriers(true, $value->id);
+    		$array[$key]['ticket_number']=$value->ticket_number;
+    		$array[$key]['failure']=$value->idFailure->name;
+    		$array[$key]['status_ticket']=$value->idStatus->name;
+    		$array[$key]['origination_ip']=$value->origination_ip;
+    		$array[$key]['destination_ip']=$value->destination_ip;
+    		$array[$key]['date']=$value->date;
+    	}
+        echo json_encode($array);
+    }    
 }
