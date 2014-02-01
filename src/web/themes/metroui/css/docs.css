@@ -293,13 +293,16 @@ div.input-control.select.block strong {
 /***************Gridview*********************/
 
 /***Preview****/
-#content_preview {
-    width: 100% !important;
+#content_preview, #content_detail {
+    width: 508px !important;
     height: 420px !important;
     overflow: auto;
     width:152px;
     overflow-y:scroll;
     padding: 10px
+}
+#content_detail { 
+    max-width: 508px !important;
 }
 #preview_buttons {
     width: 100% !important;
@@ -531,10 +534,20 @@ select#CrugeStoredUser_id_carrier.select_carrier {
     display: none !important;
 }
 
+textarea {
+    resize: none !important;
+}
+
 /*AMDIN TICKET*/
 select#status {
     margin: 0 !important;
     padding: 0px 2px !important;
+}
+
+
+
+textarea#answer {
+    border-bottom: none;
 }
 
 div.answer-ticket {
@@ -589,4 +602,52 @@ div.font-small {
     width: 100%;
     text-align: left;
     margin-top: 1px;
+}
+
+div.input-control.select.medium {
+    
+    margin-bottom: -1px;
+}
+div.input-control.select.medium select {
+    border-bottom: none;
+}
+
+div.panel-down-textarea {
+    width: 100%;
+    min-height: 35px;
+    /*border-top: 1px #E4E4E4 solid;*/
+    border-bottom: 1px #d9d9d9 solid;
+    border-left: 1px #d9d9d9 solid;
+    border-right: 1px #d9d9d9 solid;
+    margin-top: -9px !important;
+    
+}
+div.option-panel {
+    padding: 0px 0px 0px 8px;
+    width: 120px;
+    height: 35px;
+    /*border: 1px solid red;*/
+}
+div.option-panel.left {
+    float: left;
+}
+
+div.option-panel.right {
+    padding: 0px 8px 0px 0px;
+    text-align: right;
+    float: right;
+}
+
+a.edit-status {
+    float: left !important;
+}
+
+span.text-span {
+    float: left !important;
+    margin-right: 2px !important;
+}
+
+div.page.width-page {
+    width: 90% !important;
+    min-width: 950px !important;
 }

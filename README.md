@@ -2,7 +2,8 @@ Etelix_ETTS
 ===========
 
 Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
-
+-Notificacion de respuestas via correo electronico
+-Respuestas de usuarios internos a los tickes
 -Soporte para modificar el status de los tickets hijos
 -Orden de tickets por status y asc y fecha desc
 -Cambio del color de los tickets por ajax
@@ -13,7 +14,20 @@ Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
 -Se muestra la respuesta del ticket
 
 22/01/2014
--Estilos tipo chat de facebook para la descripcion del ticket en el preview
+-Estilos tipo chat de facebook para la descripcion del ticket en el detalle
+
+23/01/2014
+-Se refresca el area de respuesta al mandar la misma
+-El scroll del area de respuesta queda abajo al abrir el detalle del ticket
+
+24/01/2014
+-Modificado el método ticketsByUser del model Ticket, con parámetro de solo traer
+ticket abiertos
+-Cambiada interfaz de respuesta del ticket
+
+27/01/2014
+-Agregado el envío del mail al dar respuesta en el ticket y al cambiar de status
+
 
 Realese 1.0.3:
 -Nueva Tabla para Tickets, Datatable

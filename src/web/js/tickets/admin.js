@@ -40,12 +40,12 @@ function fnFormatDetails ( data,id )
         
 }
 
-
+// Función con ajax para traer los tickets relacionados
 function getTicketsRelated(id, nTr, oTable)
 {
     $.ajax({
         type:"POST",
-        url:"Getticketrelation/"+id,
+        url:"/ticket/Getticketrelation/"+id,
         dataType:'json',
         success:function(data){
             oTable.fnOpen( nTr, fnFormatDetails(data, id) , 'details' );
@@ -53,13 +53,90 @@ function getTicketsRelated(id, nTr, oTable)
     });
 }
 
-$(document).ready(function() {
-        /*
-         * Append Speech
-         */
+//Función para agregar o quitar estilos al cambiar el statu
+function changeStatus(id, select, status, _class)
+{   
+    $.Dialog.close();
+    $.Dialog({
+        shadow: true,
+        overlay: false,
+        icon: '<span class="icon-rocket"></span>',
+        title: 'Change status',
+        width: 300,
+        padding: 10,
+        content: '<center><p>El status del ticket ha sido cambiado, se ha mandado un correo con el detalle del mismo</p></center>'
+    });
+    
+    $("td[id='"+id+"'], td[son='"+id+"']").children('span.span-status').children('span').text(status);
+    select.next('span.span-status').show()
+    $("td[id='"+id+"']").parent('tr').removeAttr('class')
+    $("td[id='"+id+"']").parent('tr').addClass(_class)
+    select.remove('select');
+    
+    
+}
+
+// Función para agregar archivos en el description
+function attachFile()
+{
+    var settings = {
+                url: "/file/uploadjquery",
+                dragDrop:false,
+                showDone: false,
+                fileName: "myfile",
+                allowedTypes:"jpg,png,gif,doc,docx,xls,xlsx,pdf,zip",	
+                returnType:"json",
+                     onSuccess:function(files,data,xhr)
+                {
+                   // alert((data));
+                },
+                showDelete:true,
+                deleteCallback: function(data,pd){
+                    for(var i=0;i<data.length;i++)
+                    {
+                        $.post("/file/deletejquery",{op:"delete",name:data[i]},
+                        function(resp, textStatus, jqXHR)
+                        {
+                            //Show Message  
+                            $("#status").html("");      
+                        });
+                     }      
+                    pd.statusbar.hide(); //You choice to hide/not.
+                }
+            }
+    var uploadObj = $("#mulitplefileuploader").uploadFile(settings); 
+}
+
+function getSpeech(idSpeech)
+{
+    $.ajax({
+       type:'POST',
+       url:'/speech/gettextspeech',
+       data: {
+         _idSpeech:idSpeech   
+       },
+       success:function(data) {
+          $('#answer').val(data);
+       }
+    });
+}
+
+$(document).on('ready', function() {
+        
+        // Los usuarios que no sean clientes contendran esta clase en el div page
+        $('div.page').addClass('width-page');
+        
+        //Tooltip del statu y el tiempo que lleva desde que se abrió
+        $( document ).tooltip({
+            track: true
+        });
+    
+        //Append Speech
         $(document).on('change', 'select#speech', function(){
-            if ($(this).val())
-                $('#answer').val($('#speech option:selected').text());
+            if ($(this).val()){
+               var idTitle=$('#speech option:selected').val();
+               getSpeech(idTitle)
+            }
         });
         
        // Boton para aparecer las opciones del status del ticket
@@ -73,8 +150,9 @@ $(document).ready(function() {
                 var idTicket = $(this).attr('rel');
                 $.ajax({
                     type:"POST",
-                    url:"getdataticket/" + idTicket,
+                    url:"/ticket/getdataticket/" + idTicket,
                     success:function(data){
+                       
                         $.Dialog({
                             shadow: true,
                             overlay: true,
@@ -83,57 +161,58 @@ $(document).ready(function() {
                             title: "Ticket Information",
                             width: 510,
                             height: 300,
-                            padding: 0,
+                            paddingBottom: 20,
                             draggable: true,
-                            content:"<div id=content_preview>"+data+"</div>"
+                            content:"<div id=content_detail>"+data+"</div>"
                         });
                         $('div.answer-ticket').scrollTop(100000);
                     }
                 });
+//                setTimeout('attachFile()', 1000);
         } );
         
         // Evento para cambiar el status
         $(document).on('change', 'table#example tbody tr td select#status', function(){
             var id = $(this).parent('td').attr('id'),
-            _select = $(this),
+            select = $(this),
             _status = $(this).val(),
             _date = $(this).parent('td').attr('time');
             
             $.ajax({
                 type:'POST',
-                url:'updatestatus/' + id,
+                url:'/ticket/updatestatus/' + id,
                 dataType:'html',
                 data:{
                       idStatus:_status
                 },
                 success:function(data){
-                    
-                    if (_status == 2) {
-                       $("td[id='"+id+"'], td[son='"+id+"']").children('span.span-status').children('span').text('close');
-                         _select.next('span.span-status').show()
-                         $("td[id='"+id+"']").parent('tr').removeAttr('class')
-                         $("td[id='"+id+"']").parent('tr').addClass('close even')
-                        _select.remove('select')
-                        
-                    } else {
-                        if(_date > 72000 ) {
-                            $("td[id='"+id+"'], td[son='"+id+"']").children('span.span-status').children('span').text('open');
-                            _select.next('span.span-status').show()
-                            $("td[id='"+id+"']").parent('tr').removeAttr('class')
-                             $("td[id='"+id+"']").parent('tr').addClass('late even')
-                            _select.remove('select')
+                    if (data == 'true') {
+                        if (_status == 2) {
+                              changeStatus(id, select, 'close', 'close even')
                         } else {
-                            $("td[id='"+id+"'], td[son='"+id+"']").children('span.span-status').children('span').text('open');
-                            _select.next('span.span-status').show()
-                            $("td[id='"+id+"']").parent('tr').removeAttr('class')
-                             $("td[id='"+id+"']").parent('tr').addClass('open even')
-                            _select.remove('select')
+                            // Si _date es mayor a 86400 segundos(24 horas)
+                            if(_date > 86400) {
+                                changeStatus(id, select, 'open', 'late even')
+                            } else {
+                                changeStatus(id, select, 'open', 'open even')
+                            }
                         }
+                    } else {
+                        $.Dialog({
+                                shadow: true,
+                                overlay: false,
+                                icon: '<span class="icon-rocket"></span>',
+                                title: 'Error',
+                                width: 500,
+                                padding: 10,
+                                content: '<center>'+data+'</center>'
+                          });
                     }
                 }
             });
         });
         
+        // Al perder el foco del select del cambio de statu
         $(document).on('blur', 'table#example tbody tr td select#status', function(){
             $(this).next('span.span-status').show();
             $(this).remove('select')
@@ -145,10 +224,11 @@ $(document).ready(function() {
         var oTable = $('#example').dataTable( {
                 "bJQueryUI": true,
                 "bDestroy": true,
+//                "bAutoWidth": false,
                 "sPaginationType": "full_numbers",
                 "aoColumnDefs": [
-                        { "aDataSort": false, "aTargets": [ 0,9 ] },
-                        { "bSortable": false, "aTargets": [ 0,9 ] }
+                        { "aDataSort": false, "aTargets": [ 0,10 ] },
+                        { "bSortable": false, "aTargets": [ 0,10 ] }
                 ]
                 
         });
@@ -173,5 +253,6 @@ $(document).ready(function() {
                         oTable.fnOpen( nTr, getTicketsRelated(id, nTr, oTable) , 'details' );
                 }
         } );
+        
         
 } );

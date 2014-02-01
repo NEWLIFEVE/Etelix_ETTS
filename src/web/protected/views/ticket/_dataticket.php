@@ -1,3 +1,4 @@
+
 <input type="hidden" id="id_ticket" value="<?php echo $datos->id; ?>">
 <div class="input-control select block">
 Response to
@@ -54,25 +55,30 @@ Description
 <div class="answer-ticket">
     <?php $this->renderPartial('_answer', array('datos'=>$datos)); ?>
 </div>
+
 <?php
 $tipoUsuario = CrugeAuthassignment::getRoleUser();
 if ($tipoUsuario !== 'C'):
 ?>
-<div class="input-control select">
-    Speech
+<div class="input-control select medium">
     <select id="speech">
-        <option value=""></option>
+        <option value="">Speech</option>
         <?php foreach (Speech::getSpeech() as $value): ?>
-            <option value="<?php echo $value->id; ?>"><?php echo $value->speech; ?></option>
+            <option value="<?php echo $value->id; ?>"><?php echo $value->title; ?></option>
         <?php endforeach; ?>
     </select>
 </div>
+
 <?php endif; ?>
 <div class="input-control textarea" data-role="input-control">
-    <label>
-        Message
-        <textarea name="answer" id="answer"></textarea>
-    </label>
+    <textarea name="answer" id="answer"></textarea>
 </div>
-<div></div>
-<input type="button" value="Send" class="primary large" id="sendmsg" onclick="saveMessage()">
+<div class="panel-down-textarea">
+    <div class="option-panel right">
+        <input type="button" value="Send message" class="primary" id="sendmsg" onclick="saveMessage()">
+    </div>
+    <div class="option-panel right" title="Not available yet">
+        <div id="mulitplefileuploader" >Add file</div>
+    </div>
+</div>
+<div id="status"></div>
