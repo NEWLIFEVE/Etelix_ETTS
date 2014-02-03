@@ -10,6 +10,7 @@ function saveMessage()
     for(var i=0; i<_length; i++)
         _files.push(fileName[i].innerHTML);
     
+   
     
     _idSpeech = null;
     if ($('select#speech').val()) {
@@ -26,12 +27,13 @@ function saveMessage()
                 files:_files
             },
             success:function(data){
-                $('#answer').val('')
-                if (data !== 'false') {
-                    $('div.answer-ticket').empty();
-                    $('div.answer-ticket').html(data);
-                    $('div.answer-ticket').scrollTop(100000);
-                }
+                alert(data)
+//                $('#answer').val('')
+//                if (data !== 'false') {
+//                    $('div.answer-ticket').empty();
+//                    $('div.answer-ticket').html(data);
+//                    $('div.answer-ticket').scrollTop(100000);
+//                }
             }
         });
     }
