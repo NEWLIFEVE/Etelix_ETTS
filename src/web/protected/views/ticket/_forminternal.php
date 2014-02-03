@@ -68,7 +68,7 @@
         
 <div class="input-control select">
         Status<small class="text-muted "><em> (required)</em></small>
-        <select id="statu">
+        <select id="statu" class="validate[required]">
             <option value=""></option>
             <?php foreach (Status::getStatus() as $value): ?>
                 <option value="<?php echo $value->id; ?>"><?php echo $value->name; ?></option>
