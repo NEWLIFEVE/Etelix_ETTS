@@ -177,20 +177,23 @@ class MailUserController extends Controller
 			Yii::app()->end();
 		}
 	}
-        
-        /* Métodos propios */
-        public function actionGetmailuser()
-        {
-            MailUser::getMails(Yii::app()->user->id, true);
-        }
-        
-        
-        public function actionDeletemail()
-        {   
-//            $this->loadModel($_POST['id'])->delete();
-            echo "im in";
-            MailUser::model()->updateByPk($_POST['id'], array("status"=>'0'));
-        }
-        
-        
+
+	/**
+	 * Métodos propios
+	 * @access public
+	 * @return void
+	 */
+	public function actionGetmailuser()
+	{
+		MailUser::getMails(Yii::app()->user->id, true);
+	}
+
+	/**
+	 * @access public
+	 * @return void
+	 */
+	public function actionDeletemail()
+	{
+		MailUser::model()->updateByPk($_POST['id'],array("status"=>'0'));
+	}        
 }

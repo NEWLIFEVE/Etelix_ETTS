@@ -17,9 +17,7 @@
             <?php endforeach; ?>
         </select>
 </div>
-
-  
-        
+      
 <div class="input-control select block">
     Response to <small class="text-muted "><em>(required)</em></small>&nbsp;&nbsp;
     <a href="javascript:void(0)" class="a-agregar_correo"><i class="icon-plus-2"></i></a>
@@ -75,12 +73,6 @@
         <?php echo $form->error($model,'prefix'); ?>
 </div>
 
-<div class="grid">
-    <div class="row" id="separador-prefijo"></div>
-</div>
-
-
-
 <div class="input-control select block">
         GMT <small class="text-muted "><em>(required)</em></small>
         <?php echo $form->dropDownList($model,'idGmt', CHtml::listData(Gmt::model()->findAll(array('order'=>'id')), 'id', 'name'),  array('empty' => '', 'class' => 'validate[required]')); ?>
@@ -99,20 +91,20 @@
         <div id="content_country">
             <div class="input-control select span2 margen-number">
                 <br>
-                <?php echo $form->dropDownList($model,'country[]', Country::getNames(),  array('empty'=>'Country')); ?>
+                <?php echo $form->dropDownList($model,'country[]', Country::getNames(),  array('empty'=>'Country', 'class' => 'validate[required]')); ?>
                 <?php echo $form->error($model,'country[]'); ?>
             </div>
         </div>
 
         <div class="input-control text span2 margen-number fecha_div">
             <br>
-            <?php echo $form->textField($model,'date_number[]',array('placeholder' => 'Date', 'class' => 'fecha', 'readonly' => 'readonly')); ?>
+            <?php echo $form->textField($model,'date_number[]',array('placeholder' => 'Date', 'class' => 'fecha validate[required]', 'readonly' => 'readonly')); ?>
             <?php echo $form->error($model,'date_number[]'); ?>
         </div>
 
         <div class="input-control text span1 margen-number hour_div">
             <br>
-            <?php echo $form->textField($model,'hour_number[]',array('placeholder' => 'Hour', 'class' => 'hour')); ?>
+            <?php echo $form->textField($model,'hour_number[]',array('placeholder' => 'Hour', 'class' => 'hour validate[required]')); ?>
             <?php echo $form->error($model,'hour_number[]'); ?>
         </div>
 

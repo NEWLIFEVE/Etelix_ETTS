@@ -5,7 +5,6 @@
  *
  * The followings are the available columns in table 'ticket':
  * @property integer $id
- * @property integer $id_ticket
  * @property integer $id_failure
  * @property integer $id_status
  * @property string $origination_ip
@@ -18,6 +17,8 @@
  * @property string $ticket_number
  *
  * The followings are the available model relations:
+ * @property TicketRelation[] $ticketRelations
+ * @property TicketRelation[] $ticketRelations1
  * @property TestedNumber[] $testedNumbers
  * @property File[] $files
  * @property MailTicket[] $mailTickets
@@ -35,8 +36,15 @@ class Ticket extends CActiveRecord
 	 * @param string $className active record class name.
 	 * @return Ticket the static model class
 	 */
-        public $maximo;
-        public $ids;
+    public $maximo;
+    public $id_manager;
+    public $description;
+    public $mail = array();
+    public $tested_numbers = array();
+    public $country = array();
+    public $date_number = array();
+    public $hour_number = array();
+    public $number_of_the_day;
         
 	public static function model($className=__CLASS__)
 	{
@@ -49,15 +57,7 @@ class Ticket extends CActiveRecord
 	public function tableName()
 	{
 		return 'ticket';
-	}
-        
-        public $description;
-        public $User;
-        public $mail = array();
-        public $tested_numbers = array();
-        public $country = array();
-        public $date_number = array();
-        public $hour_number = array();
+	}     
 
 	/**
 	 * @return array validation rules for model attributes.
@@ -67,14 +67,15 @@ class Ticket extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
+                        
 			array('id_failure, id_status, origination_ip, destination_ip, date, machine_ip', 'required'),
-			array('id_ticket, id_failure, id_status, id_gmt', 'numerical', 'integerOnly'=>true),
+			array('id_failure, id_status, id_gmt', 'numerical', 'integerOnly'=>true),
 			array('origination_ip, destination_ip, machine_ip', 'length', 'max'=>64),
 			array('ticket_number', 'length', 'max'=>50),
 			array('hour', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, id_ticket, id_failure, id_status, origination_ip, destination_ip, date, machine_ip, hour, prefix, id_gmt, ticket_number', 'safe', 'on'=>'search'),
+			array('id, id_failure, id_status, origination_ip, destination_ip, date, machine_ip, hour, prefix, id_gmt, ticket_number', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -86,15 +87,15 @@ class Ticket extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-                        'testedNumbers' => array(self::HAS_MANY, 'TestedNumber', 'id_ticket'),
+
+                        'ticketRelations' => array(self::HAS_MANY, 'TicketRelation', 'id_ticket_father'),
+			'ticketRelations1' => array(self::HAS_MANY, 'TicketRelation', 'id_ticket_son'),
+			'testedNumbers' => array(self::HAS_MANY, 'TestedNumber', 'id_ticket'),
 			'files' => array(self::HAS_MANY, 'File', 'id_ticket'),
 			'mailTickets' => array(self::HAS_MANY, 'MailTicket', 'id_ticket'),
-//			'descriptionTickets' => array(self::HAS_MANY, 'DescriptionTicket', 'id_ticket'),
-                        'descriptionTickets' => array(self::BELONGS_TO, 'DescriptionTicket', 'id'),
+			'descriptionTickets' => array(self::HAS_MANY, 'DescriptionTicket', 'id_ticket'),
 			'idFailure' => array(self::BELONGS_TO, 'Failure', 'id_failure'),
 			'idStatus' => array(self::BELONGS_TO, 'Status', 'id_status'),
-			'idTicket' => array(self::BELONGS_TO, 'Ticket', 'id_ticket'),
-			'tickets' => array(self::HAS_MANY, 'Ticket', 'id_ticket'),
 			'idGmt' => array(self::BELONGS_TO, 'Gmt', 'id_gmt'),
 		);
 	}
@@ -106,7 +107,6 @@ class Ticket extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'id_ticket' => 'Id Ticket',
 			'id_failure' => 'Id Failure',
 			'id_status' => 'Id Status',
 			'origination_ip' => 'Origination Ip',
@@ -131,13 +131,12 @@ class Ticket extends CActiveRecord
 
 		$criteria=new CDbCriteria;
                 
-                $tipoUsuario = CrugeAuthassignment::getRoleUser();
-                if ($tipoUsuario == "C") 
-                    $criteria->condition = "id in(".implode(",", self::getIdTicketsByuser()).")";
-                
-                $criteria->order = "id DESC";             
-                $criteria->compare('id',$this->id);
-		$criteria->compare('id_ticket',$this->id_ticket);
+        $tipoUsuario = CrugeAuthassignment::getRoleUser();
+        if ($tipoUsuario == "C") 
+            $criteria->condition = "id in(".implode(",", self::getIdTicketsByuser()).")";
+        
+        $criteria->order = "id DESC";             
+        $criteria->compare('id',$this->id);
 		$criteria->compare('id_failure',$this->id_failure);
 		$criteria->compare('id_status',$this->id_status);
 		$criteria->compare('origination_ip',$this->origination_ip,true);
@@ -153,51 +152,106 @@ class Ticket extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+
+    /**
+     *
+     */
+    public static function ticketsByUsers($idUser,$idTicket=false,$returnArray=true,$onlyOpen=false)
+    {
+        $tipoUsuario=CrugeAuthassignment::getRoleUser();
+        $conditionUser='';
+        $conditionTicket='';
+        $order='ASC';
         
-        public static function ticketsByUsers($idUser, $idTicket = false)
+        /**
+         * Si el tipo de usuario es cliente, se muestran sus tickets, de lo
+         * contrario la condicion queda en blanco, es decir, se muestran todos
+         * los tickets de todos los usuarios
+         */
+        if($tipoUsuario=="C") 
         {
-            
-            if (!$idTicket) {
-                return self::model()->findAllBySql(
-                                    "select *, t.id as ids 
-                                    from 
-                                    ticket t, description_ticket dt  
-                                    where 
-                                    t.id in(select distinct(id_ticket) from mail_ticket where id_mail_user in(select id from mail_user where id_user = $idUser)) and
-                                    t.id = dt.id_ticket
-                                    order by t.id desc");
-                
-            } else {
-                $tipoUsuario = CrugeAuthassignment::getRoleUser();
-                if ($tipoUsuario == "C")  {
-                    return self::model()->findBySql(
-                                        "select *, t.id as ids 
-                                        from 
-                                        ticket t, description_ticket dt  
-                                        where 
-                                        t.id in(select distinct(id_ticket) from mail_ticket where id_mail_user in(select id from mail_user where id_user = $idUser)) and
-                                        t.id = dt.id_ticket and t.id = $idTicket
-                                        order by t.id desc");
-                } else {
-                    return self::model()->findBySql(
-                                        "select *, t.id as ids 
-                                        from 
-                                        ticket t, description_ticket dt  
-                                        where 
-                                        t.id in(select distinct(id_ticket) from mail_ticket where id_mail_user in(select id from mail_user)) and
-                                        t.id = dt.id_ticket and t.id = $idTicket
-                                        order by t.id desc");
-                }
-            }
+            $conditionUser=' where id_user='.$idUser;
+            $order='DESC';
         }
         
+        /**
+         * Si no se envía el id de un ticket se muestran todos los tickets,
+         * De lo contrario se muestra solo el ticket seleccionado
+         */
+        if($idTicket) $conditionTicket='AND t.id='.$idTicket;
         
-        public static function getIdTicketsByuser()
+        if($onlyOpen)
         {
-            $ids = array();
-            foreach (self::ticketsByUsers(Yii::app()->user->id) as $value) {
-                $ids[] = $value->ids;
+            // Si $returnArray esta en true, retorna un array con los datos del ticket
+            if($returnArray)
+            {
+                return self::model()->findAllBySql("SELECT *, t.id AS id
+                                                    FROM ticket t
+                                                    WHERE t.id IN (SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user $conditionUser)) AND t.id_status=1 $conditionTicket
+                                                    ORDER BY t.id_status, t.id  $order");
+
+            // De lo contrario no retorna un array
             }
-            return $ids;
+            else
+            {
+                return self::model()->findBySql("SELECT *, t.id AS id
+                                                 FROM ticket t
+                                                 WHERE t.id IN (SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user $conditionUser)) AND t.id_status=1 $conditionTicket
+                                                 ORDER BY t.id_status, t.id $order");
+            }
         }
+        else
+        {
+            // Si $returnArray esta en true, retorna un array con los datos del ticket
+            if($returnArray)
+            {
+                return self::model()->findAllBySql("SELECT *, t.id AS id
+                                                    FROM ticket t
+                                                    WHERE t.id IN (SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user $conditionUser)) $conditionTicket
+                                                    ORDER BY t.id_status, t.id $order");
+            // De lo contrario no retorna un array
+            }
+            else
+            {
+                return self::model()->findBySql("SELECT *, t.id AS id
+                                                 FROM ticket t
+                                                 WHERE t.id IN (SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user $conditionUser)) $conditionTicket
+                                                 ORDER BY t.id_status, t.id $order");
+            }
+        }
+    }
+
+    /**
+     *
+     */
+    public static function getIdTicketsByuser()
+    {
+        $ids=array();
+        foreach(self::ticketsByUsers(Yii::app()->user->id) as $value)
+        {
+            $ids[]=$value->id;
+        }
+        return $ids;
+    }
+
+    /**
+     * Retorna los tickets relacionados a un ticket padre y a un usuario
+     * @param int $idTicket 
+     * @param int $idUser
+     * @return array
+     */
+    public static function ticketsRelations($idTicket,$idUser=false)
+    {
+        $conditionUser='';
+        if($idUser) $conditionUser='where id_user='.$idTicket;
+        return self::model()->findAllBySql("SELECT * 
+                                            FROM ticket 
+                                            WHERE id IN (SELECT tr.id_ticket_son
+                                                         FROM ticket t, ticket_relation tr
+                                                         WHERE t.id IN (SELECT DISTINCT(id_ticket) 
+                                                                        FROM mail_ticket 
+                                                                        WHERE id_mail_user IN (SELECT id 
+                                                                                               FROM mail_user $conditionUser)) AND t.id=tr.id_ticket_father AND t.id=$idTicket
+                                            ORDER BY t.id DESC)");
+    }
 }

@@ -9,9 +9,13 @@
  * @property string $description
  * @property string $date
  * @property string $hour
+ * @property integer $id_speech
+ * @property integer $id_user
  *
  * The followings are the available model relations:
  * @property Ticket $idTicket
+ * @property Speech $idSpeech
+ * @property CrugeUser $idUser
  */
 class DescriptionTicket extends CActiveRecord
 {
@@ -42,11 +46,11 @@ class DescriptionTicket extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('id_ticket, description, date', 'required'),
-			array('id_ticket', 'numerical', 'integerOnly'=>true),
+			array('id_ticket, id_speech, id_user', 'numerical', 'integerOnly'=>true),
 			array('hour', 'safe'),
 			// The following rule is used by search().
-			// Please remove those attributes that should not be searched.
-			array('id, id_ticket, description, date, hour', 'safe', 'on'=>'search'),
+			// @todo Please remove those attributes that should not be searched.
+			array('id, id_ticket, description, date, hour, id_speech, id_user', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -59,6 +63,8 @@ class DescriptionTicket extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'idTicket' => array(self::BELONGS_TO, 'Ticket', 'id_ticket'),
+			'idSpeech' => array(self::BELONGS_TO, 'Speech', 'id_speech'),
+			'idUser' => array(self::BELONGS_TO, 'CrugeUser2', 'id_user'),
 		);
 	}
 
@@ -97,4 +103,13 @@ class DescriptionTicket extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+        
+        /**
+         * 
+         * @param int $idTicket
+         */
+        public static function getDescription($idTicket)
+        {
+            return self::model()->findAll("id_ticket = $idTicket");
+        }
 }

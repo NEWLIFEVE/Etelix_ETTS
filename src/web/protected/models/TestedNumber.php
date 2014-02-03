@@ -102,13 +102,25 @@ class TestedNumber extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
-        
-        public static function getTestednumber($idTicket = false)
+
+        public static function getNumbers($idTicket = false)
         {
             if ($idTicket) {
                 return self::model()->findAll("id_ticket = $idTicket");
             } else {
                 return self::model()->findAll();
             }
+        }
+        
+        public static function getTestedNumberArray($idTicket)
+        {
+            $array = array();
+            foreach (self::getNumbers($idTicket) as $key => $value){
+                $array['number'][] = $value->numero;
+                $array['country'][] = $value->idCountry->name;
+                $array['date'][] = $value->date;
+                $array['hour'][] = $value->hour;
+            } 
+            return  $array;
         }
 }

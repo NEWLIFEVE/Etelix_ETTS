@@ -150,8 +150,4 @@ class CrugeUser extends CBaseUserIdentity implements IUserIdentity
     {
         return CrugeTranslator::t($this->_lastErrorDescr);
     }
- public static function getIdCarrier()
-        {
-            return self::model()->findAll("id_carrier is not null");
-        }
 }

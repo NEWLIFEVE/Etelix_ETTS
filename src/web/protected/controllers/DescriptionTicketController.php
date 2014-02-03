@@ -175,4 +175,83 @@ class DescriptionTicketController extends Controller
 			Yii::app()->end();
 		}
 	}
+        
+    /**
+     * Action para salvar la descripción o respeusta que se de en el preview
+     * del ticket
+     */
+    public function actionSavedescription()
+    {   
+        $mailer = new EnviarEmail;
+        $speech = null;
+        if (isset($_POST['idSpeech'])) $speech = $_POST['idSpeech'];
+        
+        $model = new DescriptionTicket; 
+        $model->id_ticket = $_POST['idTicket'];
+        $model->description = $_POST['message'];
+        $model->date = date('Y-m-d');
+        $model->hour = date('H:m:s');
+        $model->id_speech = $speech;
+        $model->id_user = Yii::app()->user->id;
+        if ($model->save()) {
+            $ticketNumber=Ticket::model()->findByPk($model->id_ticket)->ticket_number;
+            $this->renderPartial('_answer', array('datos' => Ticket::ticketsByUsers(Yii::app()->user->id, $model->id_ticket, false)));
+            $mailsAll=Mail::getNameMails($model->id_ticket);
+            $mailsAll[]='noc@etelix.com';
+            $mailer->enviar(TicketController::getBodyMails($model->id_ticket, Mail::getNameMails($model->id_ticket), 'answer'), $mailsAll, '', 'New answer '.$ticketNumber);
+        } else {
+            echo 'false';
+        }
+    }
+
+    /**
+     * 
+     * @param int $idTicket
+     * @param array $datos
+     * @return string
+     */  
+    public static function getDescription($idTicket, $datos)
+    {
+        $user=CrugeUser2::getUserTicket($idTicket, true)->iduser;
+        $areaAnswer = '<div style="margin: 10px auto !important; 
+                                   border-top:1px #d9d9d9 solid;
+                                   border-bottom:1px #d9d9d9 solid;
+                                   border-left:1px #d9d9d9 solid;
+                                   min-height:60px!important;
+                                   max-height:210px!important;
+                                   overflow:auto;
+                                   overflow-y:scroll;
+                                   padding:10px;
+                                   width:95%;
+                                   margin:5px 0 10px 0;
+                                   font-size:12px!important">';
+        foreach ($datos->descriptionTickets as $value) {
+            if($value->idUser !==null){
+                if ($value->idUser->iduser === $user) {
+                    $float = 'float: left; color: #3e454c; background: rgba(209, 205, 218, 0.5);';
+                } else {
+                    $float = 'float: right; color: #fff; background: #6badf6;';
+                }
+                $areaAnswer .= '<div style="border: 1px solid #dfdfdf;
+                                    border: 1px solid rgba(0, 0, 0, .18);
+                                    border-bottom-color: rgba(0, 0, 0, .29);
+                                    -webkit-box-shadow: 0 1px 0 #dce0e6;
+                                    line-height: 1.28;
+                                    margin: 5px 5px 8px 0;
+                                    min-height: 14px;
+                                    padding: 4px 5px 3px 6px;
+                                    position: relative;
+                                    text-align: left;
+                                    white-space: pre-wrap;
+                                    word-wrap: break-word;
+                                    min-width: 20%;
+                                    max-width: 100%;
+                                    clear: both; '.$float.'">' . 
+                        $value->description . '   <br><strong>Date: </strong>' . $value->date . ' || <strong>Hour: </strong>' . $value->hour . ' || <strong>User: </strong>' . $value->idUser->username .  
+                     '</div>';   
+            } 
+        }
+        $areaAnswer .= '</div>';
+        return $areaAnswer;
+    }  
 }

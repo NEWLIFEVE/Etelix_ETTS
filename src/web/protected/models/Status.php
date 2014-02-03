@@ -87,4 +87,16 @@ class Status extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+        
+        public static function getStatus($notArray = false, $idStatu = false, $params = false)
+        {
+            if ($notArray) {
+                if ($idStatu)
+                    return self::model()->findByPk($idStatu);
+                else 
+                    return self::model()->find($params);
+            } else {
+                return self::model()->findAll(array("order" => "name ASC"));
+            }
+        }
 }

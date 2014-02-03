@@ -18,11 +18,14 @@ class SpeechController extends Controller
 //			'postOnly + delete', // we only allow deletion via POST request
 //		);
 //	}
-        
-        public function filters()
-        {
-            return array(array('CrugeAccessControlFilter'));
-        }
+    
+    /**
+     *
+     */
+    public function filters()
+    {
+        return array(array('CrugeAccessControlFilter'));
+    }
 
 	/**
 	 * Specifies the access control rules.
@@ -175,4 +178,14 @@ class SpeechController extends Controller
 			Yii::app()->end();
 		}
 	}
+        
+        /**
+         * Método para traer el texto de la tabla speech
+         */
+        public function actionGettextspeech()
+        {
+            $model=new Speech;
+            $idSpeech=$_POST['_idSpeech'];
+            if ($idSpeech != null) echo $model::model()->find("id = '$idSpeech'")->speech;
+        }
 }

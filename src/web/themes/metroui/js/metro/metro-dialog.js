@@ -1,11 +1,13 @@
 (function($) {
-    var _dialog = false;
+    if (METRO_DIALOG == undefined) {
+        var METRO_DIALOG = false;
+    }
 
     $.Dialog = function(params) {
         if(!$.Dialog.opened) {
             $.Dialog.opened = true;
         } else {
-            return _dialog;
+            return METRO_DIALOG;
         }
 
         $.Dialog.settings = params;
@@ -25,7 +27,10 @@
             sysButtons: {
                 btnClose: true
             },
-            onShow: function(_dialog){}
+            onShow: function(_dialog){},
+            sysBtnCloseClick: function(event){},
+            sysBtnMinClick: function(event){},
+            sysBtnMaxClick: function(event){}
         }, params);
 
         var _overlay, _window, _caption, _content;
@@ -56,18 +61,21 @@
                     e.preventDefault();
                     e.stopPropagation();
                     $.Dialog.close();
+                    params.sysBtnCloseClick(e);
                 }).appendTo(_caption);
             }
             if (params.sysButtons.btnMax) {
                 $("<button/>").addClass("btn-max").on('click', function(e){
                     e.preventDefault();
                     e.stopPropagation();
+                    params.sysBtnMaxClick(e);
                 }).appendTo(_caption);
             }
             if (params.sysButtons.btnMin) {
                 $("<button/>").addClass("btn-min").on('click', function(e){
                     e.preventDefault();
                     e.stopPropagation();
+                    params.sysBtnMinClick(e);
                 }).appendTo(_caption);
             }
         }
@@ -82,20 +90,18 @@
         _window.appendTo(_overlay);
 
         if (params.width != 'auto') _window.css('min-width', params.width);
-        if (params.height != 'auto') _window.css('min-height', params.width);
+        if (params.height != 'auto') _window.css('min-height', params.height);
 
         _overlay.hide().appendTo('body').fadeIn('fast');
 
-        _dialog = _window;
-
+        METRO_DIALOG = _window;
 
         _window
             .css("position", "fixed")
-            .css("top", ($(window).height() - _dialog.outerHeight()) / 2 )
-            .css("left", ($(window).width() - _window.outerWidth()) / 2);
-
-
-        console.log( $(window).height());
+            .css("z-index", parseInt(_overlay.css('z-index'))+1)
+            .css("top", ($(window).height() - METRO_DIALOG.outerHeight()) / 2 )
+            .css("left", ($(window).width() - _window.outerWidth()) / 2)
+        ;
 
         addTouchEvents(_window[0]);
 
@@ -122,12 +128,6 @@
                             _window.offset({left: l});
                         }
                     }
-
-                    _window.on("mouseup", function() {
-                        $(this).removeClass('draggable').css('z-index', z_idx);
-                        $.Dialog.drag = false;
-                        _caption.css('cursor', 'default');
-                    });
                 });
                 e.preventDefault();
             }).on("mouseup", function() {
@@ -138,7 +138,6 @@
         }
 
         _window.on('click', function(e){
-            e.preventDefault();
             e.stopPropagation();
         });
 
@@ -149,65 +148,74 @@
             });
         }
 
-        params.onShow(_dialog);
+        params.onShow(METRO_DIALOG);
 
         $.Dialog.autoResize();
 
-        return _dialog;
+        return METRO_DIALOG;
     }
 
     $.Dialog.content = function(newContent) {
-        if(!$.Dialog.opened) {
+        if(!$.Dialog.opened || METRO_DIALOG == undefined) {
             return false;
         }
 
         if(newContent) {
-            _dialog.children(".content").html(newContent);
+            METRO_DIALOG.children(".content").html(newContent);
             $.Dialog.autoResize();
+            return true;
         } else {
-            return _dialog.children(".content").html();
+            return METRO_DIALOG.children(".content").html();
         }
     }
 
     $.Dialog.title = function(newTitle) {
-        if(!$.Dialog.opened) {
+        if(!$.Dialog.opened || METRO_DIALOG == undefined) {
             return false;
         }
 
+        var _title = METRO_DIALOG.children('.caption').children('.title');
+
         if(newTitle) {
-            _dialog.children(".caption > .title").html(newTitle);
+            _title.html(newTitle);
         } else {
-            _dialog.children(".caption > .title").html();
+            _title.html();
         }
+
+        return true;
     }
 
     $.Dialog.autoResize = function(){
-        if(!$.Dialog.opened) {
+        if(!$.Dialog.opened || METRO_DIALOG == undefined) {
             return false;
         }
 
-        var _content = _dialog.children(".content");
-        var top = ($(window).height() - _dialog.outerHeight()) / 2;
-        var left = ($(window).width() - _dialog.outerWidth()) / 2;
+        var _content = METRO_DIALOG.children(".content");
 
-        _dialog.css({
-            width: _content.width(),
-            height: _content.height()+36
-        })
-        .css("top",  top)
-        .css("left", left);
+        var top = ($(window).height() - METRO_DIALOG.outerHeight()) / 2;
+        var left = ($(window).width() - METRO_DIALOG.outerWidth()) / 2;
 
+        METRO_DIALOG.css({
+            width: _content.outerWidth(),
+            height: _content.outerHeight(),
+            top: top,
+            left: left
+        });
+
+        return true;
     }
 
     $.Dialog.close = function() {
-        if(!$.Dialog.opened || _dialog == undefined) {
+        if(!$.Dialog.opened || METRO_DIALOG == undefined) {
             return false;
         }
 
         $.Dialog.opened = false;
-        var _overlay = _dialog.parent(".window-overlay");
+        var _overlay = METRO_DIALOG.parent(".window-overlay");
         _overlay.fadeOut(function(){
             $(this).remove();
         });
+
+        return false;
     }
 })(jQuery);

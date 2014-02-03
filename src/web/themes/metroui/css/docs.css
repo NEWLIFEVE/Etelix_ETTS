@@ -124,9 +124,14 @@ text-shadow: none;
 span.margen_22px{margin: 0 44px;}
 span.margen_17px{margin: 0 34px;}
 
-div.input-control.select.span2.margen-number, div.input-control.text.span2.margen-number, div.input-control.text.span1.margen-number {margin-left: 10px !important;}
+/*div.input-control.text, div.input-control.select, div.input-control.textarea{ border: 1px solid !important;}*/
+
+div.input-control.select.span2.margen-number, 
+div.input-control.text.span2.margen-number, 
+div.input-control.text.span1.margen-number {margin-left: 10px !important;}
+
 div.input-control.text.span2.margen-number.fecha_div{width: 100px !important}
-div.input-control.text.span1.margen-number.hour_div{width: 80px !important}
+div.input-control.text.span1.margen-number.hour_div{width: 80px !important; height: 34px !important;}
 
 .margen-number {
     margin-left: 5px;
@@ -137,10 +142,6 @@ div.input-control.text.span1.margen-number.hour_div{width: 80px !important}
     padding: 0 !important; 
     margin: 0 !important;
 }
-
-/*#pp {
-    margin-bottom: 30px;
-}*/
 
 .separador-vertical {
     clear: left;
@@ -293,13 +294,16 @@ div.input-control.select.block strong {
 /***************Gridview*********************/
 
 /***Preview****/
-#content_preview {
-    width: 100% !important;
+#content_preview, #content_detail {
+    width: 508px !important;
     height: 420px !important;
     overflow: auto;
     width:152px;
     overflow-y:scroll;
     padding: 10px
+}
+#content_detail { 
+    max-width: 508px !important;
 }
 #preview_buttons {
     width: 100% !important;
@@ -365,36 +369,43 @@ table#tabla_preview td:first-child, table#tabla_preview th:first-child {
     border-left: none;
 }
 
-/*table#tabla_preview th:first-child {
-    -moz-border-radius: 6px 0 0 0;
-    -webkit-border-radius: 6px 0 0 0;
-    border-radius: 6px 0 0 0;
+
+/********Detalle del ticket*********/
+table.tablas {
+    border-collapse: collapse; /* IE7 and lower */
+    border-spacing: 0;
+    width: 100%;   
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
-table#tabla_preview th:last-child {
-    -moz-border-radius: 0 6px 0 0;
-    -webkit-border-radius: 0 6px 0 0;
-    border-radius: 0 6px 0 0;
+table.tablas {
+    width: 100% !important;
+}
+   
+table.tablas td, table.tablas th {
+    border-left: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    padding:3px 10px !important;
+    text-align: left;    
 }
 
-table#tabla_preview th:only-child{
-    -moz-border-radius: 6px 6px 0 0;
-    -webkit-border-radius: 6px 6px 0 0;
-    border-radius: 6px 6px 0 0;
+table.tablas th {
+    background-color: #16499a !important;
+    -webkit-box-shadow: 0 1px 0 rgba(255,255,255,.8) inset; 
+    -moz-box-shadow:0 1px 0 rgba(255,255,255,.8) inset;  
+    box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;        
+    border-top: none;
+    color: #ffffff !important;
+    font-family: 'Segoe UI Light_', 'Open Sans Light', Verdana, Arial, Helvetica, sans-serif !important;
+    font-size: 14px;
+    font-weight: normal;
 }
 
-table#tabla_preview tr:last-child td:first-child {
-    -moz-border-radius: 0 0 0 6px;
-    -webkit-border-radius: 0 0 0 6px;
-    border-radius: 0 0 0 6px;
+table.tablas td:first-child, table.tablas th:first-child {
+    border-left: none;
 }
-
-table#tabla_preview tr:last-child td:last-child {
-    -moz-border-radius: 0 0 6px 0;
-    -webkit-border-radius: 0 0 6px 0;
-    border-radius: 0 0 6px 0;
-}*/
-
+/* ./detalle del ticket */
 
 
 a#imprimir {
@@ -414,17 +425,32 @@ footer {
     text-align: center;
     margin: 20px 0;
     padding: 10px 0;
-    
-    
-/*    background:#333333;
-    bottom:0px;*/
     color: #8B8B8B;
     font-size: 0.8em;
-/*    height:30px;
-    left:0px;
-    position:fixed;
+}
+
+div.errorMessage {
+	color: red;
+	font-size: 0.9em;
+}
+
+/* Confirm del borrar los correos */
+#content_mensaje, #content_botones {
+    width: 100%;
     text-align: center;
-    width:100%;*/
+}
+#content_botones {
+    margin-top: 50px;
+}
+#ok_confirm, #cancel_confirm {
+    width: 140px;
+}
+#cancel_confirm {
+    margin-left: 10px;
+}
+
+#preview_tested_number {
+    margin-top: -12px !important;
 }
 
 /******** PAGER *************/
@@ -493,3 +519,134 @@ ul.yiiPager .last
 {
 	display:none !important;
 }
+
+/******** cruge (registration - update)***********/
+#content_password {
+    margin-top: -5px !important;
+}
+
+select#CrugeStoredUser_id_carrier.select_carrier {
+    width:390px !important;
+}
+
+
+.hidden{
+    display: none !important;
+}
+
+textarea {
+    resize: none !important;
+}
+
+/*AMDIN TICKET*/
+select#status {
+    margin: 0 !important;
+    padding: 0px 2px !important;
+}
+
+textarea#answer {
+    border-bottom: none;
+}
+
+div.answer-ticket {
+    border-top:1px #d9d9d9 solid;
+    border-bottom:1px #d9d9d9 solid;
+    border-left:1px #d9d9d9 solid;
+    min-height: 60px !important;
+    max-height: 210px !important;
+    overflow: auto;
+    overflow-y:scroll;
+    padding: 10px;
+    width: 100%;
+    margin: 5px 0 10px 0;
+    font-size: 12px !important;
+}
+
+div.answer-ticket div.msg-ticket {
+    border: 1px solid #dfdfdf;
+    border: 1px solid rgba(0, 0, 0, .18);
+    border-bottom-color: rgba(0, 0, 0, .29);
+    -webkit-box-shadow: 0 1px 0 #dce0e6;
+    line-height: 1.28;
+    margin: 5px 5px 8px 0;
+    min-height: 14px;
+    padding: 4px 5px 3px 6px;
+    position: relative;
+    text-align: left;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    min-width: 20%;
+    max-width: 100%;
+    clear: both;
+}
+
+div.answer-ticket div.msg-ticket.left {
+    float: left;
+    color: #3e454c;
+    background: rgba(209, 205, 218, 0.5);
+}
+
+div.answer-ticket div.msg-ticket.right {
+    float: right;
+    color: #fff;
+    background: #6badf6;
+}
+
+div.font-small {
+    font-size: 12px !important;
+    line-height: 1 !important;
+    font-weight: normal !important;
+    clear: both;
+    width: 100%;
+    text-align: left;
+    margin-top: 1px;
+}
+
+div.input-control.select.medium {
+    
+    margin-bottom: -1px;
+}
+div.input-control.select.medium select {
+    border-bottom: none;
+}
+
+div.panel-down-textarea {
+    width: 100%;
+    min-height: 35px;
+    /*border-top: 1px #E4E4E4 solid;*/
+    border-bottom: 1px #d9d9d9 solid;
+    border-left: 1px #d9d9d9 solid;
+    border-right: 1px #d9d9d9 solid;
+    margin-top: -9px !important;
+    
+}
+div.option-panel {
+    padding: 0px 0px 0px 8px;
+    width: 120px;
+    height: 35px;
+    /*border: 1px solid red;*/
+}
+div.option-panel.left {
+    float: left;
+}
+
+div.option-panel.right {
+    padding: 0px 8px 0px 0px;
+    text-align: right;
+    float: right;
+}
+
+a.edit-status {
+    float: left !important;
+}
+
+span.text-span {
+    float: left !important;
+    margin-right: 2px !important;
+}
+
+div.page.width-page {
+    width: 90% !important;
+    min-width: 950px !important;
+}
+
