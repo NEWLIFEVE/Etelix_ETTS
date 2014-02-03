@@ -89,7 +89,7 @@ function attachFile()
                 showFileCounter:false,
                      onSuccess:function(files,data,xhr)
                 {
-                   // alert((data));
+//                    console.dir(files);
                 },
                 showDelete:true,
                 deleteCallback: function(data,pd){

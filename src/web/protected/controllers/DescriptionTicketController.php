@@ -187,32 +187,28 @@ class DescriptionTicketController extends Controller
         $speech = null;
         if (isset($_POST['idSpeech'])) $speech = $_POST['idSpeech'];
         
-        
         $model = new DescriptionTicket; 
         $model->id_ticket = $_POST['idTicket'];
         $model->description = $_POST['message'];
         $model->date = date('Y-m-d');
-        $model->hour = date('H:m:s');
+        $model->hour = date('H:i:s');
         $model->id_speech = $speech;
         $model->id_user = Yii::app()->user->id;
-//        if ($model->save()) {
+        if ($model->save()) {
             
             //Guardar Description
             $ticketNumber=Ticket::model()->findByPk($model->id_ticket)->ticket_number;
             //Renderizar para mostrar la repsuesta
-//            $this->renderPartial('_answer', array('datos' => Ticket::ticketsByUsers(Yii::app()->user->id, $model->id_ticket, false)));
+            $this->renderPartial('_answer', array('datos' => Ticket::ticketsByUsers(Yii::app()->user->id, $model->id_ticket, false)));
             /**
             * Se verifica si se envia por post
             * Guardando Attach File
             */
-            if(isset($_POST['files']) && count($_POST['files']))
+            if(isset($_POST['files']) && count($_POST['files']) && !empty($_POST['files']))
             {
-                    
-                    $modelAttachFile=new File;
-                    $file=count($_POST['files']);
-                    
                     foreach ($_POST['files'] as $value)
                     {
+                        $modelAttachFile=new File;
                         $modelAttachFile->id_ticket=$model->id_ticket;
                         $modelAttachFile->saved_name=$value;
                         $modelAttachFile->real_name=$value;
@@ -220,25 +216,15 @@ class DescriptionTicketController extends Controller
                         $modelAttachFile->rute='uploads/'.$value;
                         $modelAttachFile->save();
                     }
-                    
-//                    for($i=0; $i<$file; $i++)
-//                    {
-//                            $modelAttachFile->id_ticket=$model->id_ticket;
-//                            $modelAttachFile->saved_name=$_POST['files'][$i];
-//                            $modelAttachFile->real_name=$_POST['files'][$i];
-//                            $modelAttachFile->size=0.0;
-//                            $modelAttachFile->rute='uploads/'.$_POST['files'][$i];
-//                            $modelAttachFile->save();
-//                    }
             }
             
-//            $mailsAll=Mail::getNameMails($model->id_ticket);
+            $mailsAll=Mail::getNameMails($model->id_ticket);
 //            $mailsAll[]='noc@etelix.com';
-//            $mailsAll[]='tsu.nelsonmarcano@gmail.com';
-//            $mailer->enviar(TicketController::getBodyMails($model->id_ticket, Mail::getNameMails($model->id_ticket), 'answer'), $mailsAll, '', 'New answer '.$ticketNumber);
-//        } else {
-//            echo 'false';
-//        }
+            $mailsAll[]='tsu.nelsonmarcano@gmail.com';
+            $mailer->enviar(TicketController::getBodyMails($model->id_ticket, Mail::getNameMails($model->id_ticket), 'answer'), $mailsAll, '', 'New answer '.$ticketNumber);
+        } else {
+            echo 'false';
+        }
     }
 
     /**

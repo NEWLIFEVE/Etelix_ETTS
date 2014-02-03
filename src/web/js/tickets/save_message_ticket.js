@@ -10,8 +10,6 @@ function saveMessage()
     for(var i=0; i<_length; i++)
         _files.push(fileName[i].innerHTML);
     
-   
-    
     _idSpeech = null;
     if ($('select#speech').val()) {
         _idSpeech = $('select#speech option:selected').val();
@@ -27,13 +25,14 @@ function saveMessage()
                 files:_files
             },
             success:function(data){
-                alert(data)
-//                $('#answer').val('')
-//                if (data !== 'false') {
-//                    $('div.answer-ticket').empty();
-//                    $('div.answer-ticket').html(data);
-//                    $('div.answer-ticket').scrollTop(100000);
-//                }
+                $('#answer').val('')
+                $('div#area-add-file').empty();
+                $('[name="myFile[]"]').val('')
+                if (data !== 'false') {
+                    $('div.answer-ticket').empty();
+                    $('div.answer-ticket').html(data);
+                    $('div.answer-ticket').scrollTop(100000);
+                }
             }
         });
     }
