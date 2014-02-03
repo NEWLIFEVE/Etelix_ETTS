@@ -190,7 +190,7 @@ class DescriptionTicketController extends Controller
         $model->id_ticket = $_POST['idTicket'];
         $model->description = $_POST['message'];
         $model->date = date('Y-m-d');
-        $model->hour = date('H:m:s');
+        $model->hour = date('H:i:s');
         $model->id_speech = $speech;
         $model->id_user = Yii::app()->user->id;
         if ($model->save()) {
