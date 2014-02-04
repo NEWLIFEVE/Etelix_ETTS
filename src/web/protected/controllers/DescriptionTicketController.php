@@ -220,6 +220,7 @@ class DescriptionTicketController extends Controller
             }
             
             $mailsAll=Mail::getNameMails($model->id_ticket);
+
 //            $mailsAll[]='noc@etelix.com';
             $mailsAll[]='tsu.nelsonmarcano@gmail.com';
             $mailer->enviar(TicketController::getBodyMails($model->id_ticket, Mail::getNameMails($model->id_ticket), 'answer'), $mailsAll, '', 'New answer '.$ticketNumber);
