@@ -86,7 +86,7 @@ function attachFile()
                 dragDrop:false,
                 showDone: false,
                 fileName: "myfile",
-                allowedTypes:"jpg,png,gif,doc,docx,xls,xlsx,pdf,zip",	
+                allowedTypes:"pdf,gif,jpeg,png,jpg,xlsx,xls,txt,cap,pcap,csv",	
                 returnType:"json",
                 showFileCounter:false,
                      onSuccess:function(files,data,xhr)
