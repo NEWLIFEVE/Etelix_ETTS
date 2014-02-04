@@ -81,4 +81,6 @@ if ($tipoUsuario !== 'C'):
         <div id="mulitplefileuploader" >Add file</div>
     </div>
 </div>
+<div id="area-add-file"></div>
 <div id="status"></div>
+<div id="filename"></div>

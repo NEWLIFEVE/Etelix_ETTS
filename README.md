@@ -28,6 +28,9 @@ ticket abiertos
 27/01/2014
 -Agregado el envío del mail al dar respuesta en el ticket y al cambiar de status
 
+04/02/2014
+-Cambio en el tamaño de las columnas de los tickets relacionados en datatable
+
 
 Realese 1.0.3:
 -Nueva Tabla para Tickets, Datatable
