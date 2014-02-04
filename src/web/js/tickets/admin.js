@@ -19,19 +19,20 @@ function fnFormatDetails ( data,id )
         {
              sOut += '<tr style="background:#C0C0C0">';
              sOut += '<td style="width:'+(widthThPlus+11)+'px !important; ">&nbsp;&nbsp;</td>';
-             sOut += '<td style="width:'+(widthUser+4)+'px !important; ">'+aData[i].user +'</td>';
-             sOut += '<td style="width:'+(widthCarrier+11)+'px !important; ">'+aData[i].carrier+'</td>';
-             sOut += '<td style="width:'+(widthTicket+7)+'px !important; ">'+aData[i].ticket_number+'</td>';
-             sOut += '<td style="width:'+(widthFailure+5)+'px !important; ">'+aData[i].failure+'</td>';
-             sOut += '<td father="'+id+'" son="'+aData[i].id_ticket+'" style="width:'+(widthStatus+15)+'px !important; " >';
+             sOut += '<td style="width:'+(widthUser+7)+'px !important; ">'+aData[i].user +'</td>';
+             sOut += '<td style="width:'+(widthCarrier+9)+'px !important; ">'+aData[i].carrier+'</td>';
+             sOut += '<td style="width:'+(widthTicket+12)+'px !important; ">'+aData[i].ticket_number+'</td>';
+             sOut += '<td style="width:'+(widthFailure+12)+'px !important; ">'+aData[i].failure+'</td>';
+             sOut += '<td father="'+id+'" son="'+aData[i].id_ticket+'" style="width:'+(widthStatus+14)+'px !important; " >';
              sOut += '<span class="span-status">';
              sOut += '<span>'+aData[i].status_ticket+'</span>';
              sOut += '</span>';
              sOut += '</td>';
-             sOut += '<td style="width:'+(widthOip+17 )+'px !important; ">'+aData[i].origination_ip + '</td>';
-             sOut += '<td style="width:'+(widthDip+9)+'px !important; ">' +aData[i].destination_ip + '</td>';
-             sOut += '<td style="width:'+(widthDate+16)+'px !important; ">' + aData[i].date + '</td>';
-             sOut += '<td style="width:'+(widthPreview+14)+'px !important; "><a href="javascript:void(0)" class="preview" rel="'+aData[i].id_ticket+'"><img width="12" height="12" src="/images/view.gif"></a></td>';
+             sOut += '<td style="width:'+(widthOip+15)+'px !important; ">'+aData[i].origination_ip + '</td>';
+             sOut += '<td style="width:'+(widthDip+10)+'px !important; ">' +aData[i].destination_ip + '</td>';
+             sOut += '<td style="width:'+(widthDate+8)+'px !important; ">' + aData[i].date + '</td>';
+             sOut += '<td>&nbsp;</td>';
+             sOut += '<td style="width:'+(widthPreview+12)+'px !important; "><a href="javascript:void(0)" class="preview" rel="'+aData[i].id_ticket+'"><img width="12" height="12" src="/images/view.gif"></a></td>';
              sOut += '</tr>';
         }
 
