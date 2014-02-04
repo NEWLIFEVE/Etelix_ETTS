@@ -201,6 +201,7 @@
             return result;
         }
 
+
         function serializeAndUploadFiles(s, obj, files) {
             for (var i = 0; i < files.length; i++) {
                 if (!isFileTypeAllowed(obj, s, files[i].name)) {
@@ -232,8 +233,10 @@
             		fileNameStr = obj.fileCounter + s.fileCounterStyle + files[i].name
             	else
             		fileNameStr = files[i].name;
-            		
+              
                 pd.filename.html(fileNameStr);
+
+                
                 var form = $("<form style='display:block; position:absolute;left: 150px;' class='" + obj.formGroup + "' method='" + s.method + "' action='" + s.url + "' enctype='" + s.enctype + "'></form>");
                 form.appendTo('body');
                 var fileArray = [];

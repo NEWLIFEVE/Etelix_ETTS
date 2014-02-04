@@ -80,6 +80,7 @@ function changeStatus(id, select, status, _class)
 // Función para agregar archivos en el description
 function attachFile()
 {
+    
     var settings = {
                 url: "/file/uploadjquery",
                 dragDrop:false,
@@ -90,7 +91,7 @@ function attachFile()
                 showFileCounter:false,
                      onSuccess:function(files,data,xhr)
                 {
-//                    console.dir(files);
+                     $('div.ajax-file-upload-filename:last').attr('name', data[0]); 
                 },
                 showDelete:true,
                 deleteCallback: function(data,pd){
@@ -103,11 +104,12 @@ function attachFile()
                             $("#status").html("");      
                         });
                      }      
-                    pd.statusbar.hide(); //You choice to hide/not.
+                    pd.statusbar.remove(); //You choice to hide/not.
                 }
             }
     var uploadObj = $("#mulitplefileuploader").uploadFile(settings); 
 }
+
 
 function getSpeech(idSpeech)
 {

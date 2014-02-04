@@ -206,14 +206,15 @@ class DescriptionTicketController extends Controller
             */
             if(isset($_POST['files']) && count($_POST['files']) && !empty($_POST['files']))
             {
-                    foreach ($_POST['files'] as $value)
+                    $count=count($_POST['files']);
+                    for($i=0; $i<$count; $i++)
                     {
                         $modelAttachFile=new File;
                         $modelAttachFile->id_ticket=$model->id_ticket;
-                        $modelAttachFile->saved_name=$value;
-                        $modelAttachFile->real_name=$value;
+                        $modelAttachFile->saved_name=$_POST['fileServer'][$i];
+                        $modelAttachFile->real_name=$_POST['files'][$i];
                         $modelAttachFile->size=0.0;
-                        $modelAttachFile->rute='uploads/'.$value;
+                        $modelAttachFile->rute='uploads/'.$_POST['fileServer'][$i];
                         $modelAttachFile->save();
                     }
             }
