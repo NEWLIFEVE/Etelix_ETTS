@@ -148,6 +148,10 @@ class SiteController extends Controller
 					'label'=>'Open ticket',
 					'url'=>array('/ticket/create')
 					),
+                                array(
+					'label'=>'Open ticket to provider',
+					'url'=>array('/ticket/createinternal')
+					),
 				);
 		}
 		// SUBADMIN
@@ -161,6 +165,10 @@ class SiteController extends Controller
 				array(
 					'label'=>'Open ticket',
 					'url'=>array('/ticket/create')
+					),
+                                array(
+					'label'=>'Open ticket to provider',
+					'url'=>array('/ticket/createinternal')
 					),
 				);
 		}
