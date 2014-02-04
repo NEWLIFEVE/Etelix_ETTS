@@ -30,7 +30,7 @@ ticket abiertos
 
 04/02/2014
 -Cambio en el tamaño de las columnas de los tickets relacionados en datatable
-
+-Agregado el add file completamente funcional al answer ticket
 
 Realese 1.0.3:
 -Nueva Tabla para Tickets, Datatable
