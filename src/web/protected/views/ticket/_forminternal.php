@@ -11,7 +11,12 @@
 
 <div class="input-control select block">
         Class<small class="text-muted "><em> (required)</em></small>
-        <select id="class"></select>
+        <select id="class">
+            <option value=""></option>
+            <option value="customer">Customer</option>            
+            <option value="supplier">supplier</option>
+            <option value="internal">Internal</option>
+        </select>
 </div>
     
 <div class="input-control select block">
