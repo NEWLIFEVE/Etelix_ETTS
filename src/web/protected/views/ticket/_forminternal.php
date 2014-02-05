@@ -8,10 +8,29 @@
     <legend>Use this form to submit a ticket.</legend>
 <?php echo $form->errorSummary($model); ?>
     
+
+<div class="input-control select block">
+        Class<small class="text-muted "><em> (required)</em></small>
+        <select id="class"></select>
+</div>
     
-<div class="input-control text block" >
+<div class="input-control select block">
+        User<small class="text-muted "><em> (required)</em></small>
+        <select id="user"></select>
+</div>
+    
+<!--<div class="input-control text block" >
     To
     <input type="text" id="to">
+</div>-->
+
+<div class="input-control select block">
+    To
+    <?php echo $form->ListBox(
+                $model,'mail[]', 
+                array(),  
+                array('multiple' => 'multiple', 'class' => 'validate[required]')) ?>
+    <?php echo $form->error($model,'mail[]'); ?>
 </div>
     
 <div class="input-control text block" >
@@ -23,24 +42,17 @@
     BBC
     <input type="text" id="bbc">
 </div>
-    
-
 
 <div class="input-control select block">
         Failure<small class="text-muted "><em> (required)</em></small>
         <?php echo $form->dropDownList($model,'id_failure', CHtml::listData(Failure::model()->findAll(), 'id', 'name'),  array('empty' => '' ,'class' => 'validate[required]')); ?>
         <?php echo $form->error($model,'id_failure'); ?>
 </div>
-    
-<div class="input-control select block">
-        Class<small class="text-muted "><em> (required)</em></small>
-        <select id="class"></select>
-</div>
-    
-<div class="input-control select block">
+ 
+<!--<div class="input-control select block">
         Asociate to TT
         <select id="tt_asociado"></select>
-</div>
+</div>-->
 
         <div class="_label">Origination IP<input type="text" id="originationIp" class="validate[required,custom[ipv4]]"><small class="text-muted "><em>(Customer IP)(required)</em></small><span class="margen_17px"></span>Destination IP<input type="text" id="destinationIp" class="validate[required,custom[ipv4]]"><small class="text-muted "><em>(Etelix IP)(required)</em></small></div>
 <div class="input-control text block" data-role="input-control">
