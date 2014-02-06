@@ -66,9 +66,14 @@
 </div>
 
         
-<div class="input-control select block">
+<div class="input-control select">
         Status<small class="text-muted "><em> (required)</em></small>
-        <select id="status"></select>
+        <select id="statu" class="validate[required]">
+            <option value=""></option>
+            <?php foreach (Status::getStatus() as $value): ?>
+                <option value="<?php echo $value->id; ?>"><?php echo $value->name; ?></option>
+            <?php endforeach; ?>
+        </select>
 </div>
         
 <div class="input-control select block">
@@ -79,7 +84,12 @@
         
 <div class="input-control select block">
         SPEECHS
-        <select id="speechs"></select>
+        <select id="speech">
+            <option value=""></option>
+            <?php foreach (Speech::getSpeech() as $value): ?>
+                <option value="<?php echo $value->id; ?>"><?php echo $value->title; ?></option>
+            <?php endforeach; ?>
+        </select>
 </div>
 
 <div class="input-control textarea" data-role="input-control">
