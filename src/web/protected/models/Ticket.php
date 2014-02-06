@@ -162,6 +162,7 @@ class Ticket extends CActiveRecord
         $conditionUser='';
         $conditionTicket='';
         $order='ASC';
+        $sql='';
         
         /**
          * Si el tipo de usuario es cliente, se muestran sus tickets, de lo
@@ -182,41 +183,39 @@ class Ticket extends CActiveRecord
         
         if($onlyOpen)
         {
+            $sql="SELECT *, t.id AS id
+                  FROM ticket t
+                  WHERE t.id IN (SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user $conditionUser)) AND t.id_status=1 $conditionTicket
+                  ORDER BY t.id_status, t.id  $order";
+            
             // Si $returnArray esta en true, retorna un array con los datos del ticket
             if($returnArray)
             {
-                return self::model()->findAllBySql("SELECT *, t.id AS id
-                                                    FROM ticket t
-                                                    WHERE t.id IN (SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user $conditionUser)) AND t.id_status=1 $conditionTicket
-                                                    ORDER BY t.id_status, t.id  $order");
+                return self::model()->findAllBySql($sql);
 
             // De lo contrario no retorna un array
             }
             else
             {
-                return self::model()->findBySql("SELECT *, t.id AS id
-                                                 FROM ticket t
-                                                 WHERE t.id IN (SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user $conditionUser)) AND t.id_status=1 $conditionTicket
-                                                 ORDER BY t.id_status, t.id $order");
+                return self::model()->findBySql($sql);
             }
         }
         else
         {
+            $sql="SELECT *, t.id AS id
+                 FROM ticket t
+                 WHERE t.id IN (SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user $conditionUser)) $conditionTicket
+                 ORDER BY t.id_status, t.id $order";
+            
             // Si $returnArray esta en true, retorna un array con los datos del ticket
             if($returnArray)
             {
-                return self::model()->findAllBySql("SELECT *, t.id AS id
-                                                    FROM ticket t
-                                                    WHERE t.id IN (SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user $conditionUser)) $conditionTicket
-                                                    ORDER BY t.id_status, t.id $order");
+                return self::model()->findAllBySql($sql);
             // De lo contrario no retorna un array
             }
             else
             {
-                return self::model()->findBySql("SELECT *, t.id AS id
-                                                 FROM ticket t
-                                                 WHERE t.id IN (SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user $conditionUser)) $conditionTicket
-                                                 ORDER BY t.id_status, t.id $order");
+                return self::model()->findBySql($sql);
             }
         }
     }
