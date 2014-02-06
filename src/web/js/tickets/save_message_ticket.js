@@ -13,7 +13,15 @@ function saveMessage()
         _fileServer.push(fileName[i].getAttribute('name'));
     }
     
-    _idSpeech = null;
+    _idSvar fileName=$('div.ajax-file-upload-filename'),
+    _length=fileName.length,
+    _fileServer=[],
+    _files=[];
+    
+    for(var i=0; i<_length; i++) {
+        _files.push(fileName[i].innerHTML);
+        _fileServer.push(fileName[i].getAttribute('name'));
+    }peech = null;
     if ($('select#speech').val()) {
         _idSpeech = $('select#speech option:selected').val();
     }
