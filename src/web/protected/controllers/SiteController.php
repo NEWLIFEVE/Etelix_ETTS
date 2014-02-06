@@ -149,7 +149,7 @@ class SiteController extends Controller
 					'url'=>array('/ticket/create')
 					),
                                 array(
-					'label'=>'Open ticket to provider',
+					'label'=>'Open ticket to supplier',
 					'url'=>array('/ticket/createinternal')
 					),
 				);
@@ -167,7 +167,7 @@ class SiteController extends Controller
 					'url'=>array('/ticket/create')
 					),
                                 array(
-					'label'=>'Open ticket to provider',
+					'label'=>'Open ticket to supplier',
 					'url'=>array('/ticket/createinternal')
 					),
 				);

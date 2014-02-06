@@ -576,7 +576,7 @@ div.answer-ticket div.msg-ticket {
     white-space: pre-wrap;
     word-wrap: break-word;
     min-width: 20%;
-    max-width: 100%;
+    max-width: 95%;
     clear: both;
 }
 

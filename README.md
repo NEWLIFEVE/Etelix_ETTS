@@ -3,6 +3,13 @@ Etelix_ETTS
 
 Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
 
+Release 1.1.2
+- Cambio de numero por defecto de filas en plugin de datatable
+- Reducido el alto de las filas en los admin tickets
+Release 1.1.1
+-Correccion de hora en guardada de descripciones
+-Bloqueada interfaz de uso de tickets a proveedores
+
 Release 1.1
 -Notificacion de respuestas via correo electronico
 -Respuestas de usuarios internos a los tickes
@@ -33,6 +40,9 @@ ticket abiertos
 27/01/2014
 -Agregado el envío del mail al dar respuesta en el ticket y al cambiar de status
 
+04/02/2014
+-Cambio en el tamaño de las columnas de los tickets relacionados en datatable
+-Agregado el add file completamente funcional al answer ticket
 
 Realese 1.0.3:
 -Nueva Tabla para Tickets, Datatable

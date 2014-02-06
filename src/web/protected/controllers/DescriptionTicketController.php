@@ -182,6 +182,7 @@ class DescriptionTicketController extends Controller
      */
     public function actionSavedescription()
     {   
+        
         $mailer = new EnviarEmail;
         $speech = null;
         if (isset($_POST['idSpeech'])) $speech = $_POST['idSpeech'];
@@ -194,8 +195,30 @@ class DescriptionTicketController extends Controller
         $model->id_speech = $speech;
         $model->id_user = Yii::app()->user->id;
         if ($model->save()) {
+            
+            //Guardar Description
             $ticketNumber=Ticket::model()->findByPk($model->id_ticket)->ticket_number;
+            //Renderizar para mostrar la repsuesta
             $this->renderPartial('_answer', array('datos' => Ticket::ticketsByUsers(Yii::app()->user->id, $model->id_ticket, false)));
+            /**
+            * Se verifica si se envia por post
+            * Guardando Attach File
+            */
+            if(isset($_POST['files']) && count($_POST['files']) && !empty($_POST['files']))
+            {
+                    $count=count($_POST['files']);
+                    for($i=0; $i<$count; $i++)
+                    {
+                        $modelAttachFile=new File;
+                        $modelAttachFile->id_ticket=$model->id_ticket;
+                        $modelAttachFile->saved_name=$_POST['fileServer'][$i];
+                        $modelAttachFile->real_name=$_POST['files'][$i];
+                        $modelAttachFile->size=0.0;
+                        $modelAttachFile->rute='uploads/'.$_POST['fileServer'][$i];
+                        $modelAttachFile->save();
+                    }
+            }
+            
             $mailsAll=Mail::getNameMails($model->id_ticket);
             $mailsAll[]='noc@etelix.com';
             $mailer->enviar(TicketController::getBodyMails($model->id_ticket, Mail::getNameMails($model->id_ticket), 'answer'), $mailsAll, '', 'New answer '.$ticketNumber);
