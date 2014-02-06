@@ -645,5 +645,11 @@ class TicketController extends Controller
     		$array[$key]['date']=$value->date;
     	}
         echo json_encode($array);
-    }    
+    }
+    
+    public function actionCarriersbyclass()
+    {
+        header("Content-type: application/json");
+        echo CJSON::encode(CrugeUser2::getCarriersSupplierOrCustomer($_POST['_type']));
+    }
 }

@@ -651,3 +651,8 @@ div.page.width-page {
     width: 90% !important;
     min-width: 950px !important;
 }
+
+/**Ticket internal**/
+span.toggle:hover {
+    text-decoration: underline;
+}

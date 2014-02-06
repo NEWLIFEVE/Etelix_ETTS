@@ -7,7 +7,8 @@
 <fieldset>
     <legend>Use this form to submit a ticket.</legend>
 <?php echo $form->errorSummary($model); ?>
-    
+
+
 
 <div class="input-control select block">
         Class<small class="text-muted "><em> (required)</em></small>
@@ -24,28 +25,40 @@
         <select id="user"></select>
 </div>
     
-<!--<div class="input-control text block" >
-    To
-    <input type="text" id="to">
-</div>-->
+<div id="recipients-emails">
+    <div class="input-control select block">
+        Select the recipients emails that will received the ticket confirmation
+
+        <small class="text-muted "><em> (maximum 5 emails)</em></small>
+        <select id="mails" multiple></select>
+    </div>
+</div>
 
 <div class="input-control select block">
-    To
+    <span class="toggle">To</span>&nbsp;
+    <a href="javascript:void(0)" class="a-bajar-correo"><i class="icon-arrow-down"></i></a>&nbsp;&nbsp;
+    <span class="toggle cc" title="Add CC">CC</span>&nbsp;&nbsp;&nbsp;<span class="toggle bbc" title="Add BBC">BBC</span>&nbsp;
     <?php echo $form->ListBox(
                 $model,'mail[]', 
                 array(),  
                 array('multiple' => 'multiple', 'class' => 'validate[required]')) ?>
     <?php echo $form->error($model,'mail[]'); ?>
 </div>
-    
-<div class="input-control text block" >
-    CC
-    <input type="text" id="cc">
+
+<div id="div-cc"> 
+    <div class="input-control select block" >
+        CC&nbsp;
+        <a href="javascript:void(0)" class="a-bajar-correo"><i class="icon-arrow-down"></i></a>
+        <select id="cc" multiple></select>
+    </div>
 </div>
-    
-<div class="input-control text block" >
-    BBC
-    <input type="text" id="bbc">
+
+<div id="div-bbc"> 
+    <div  class="input-control select block" >
+        BBC&nbsp;
+        <a href="javascript:void(0)" class="a-bajar-correo"><i class="icon-arrow-down"></i></a>
+        <select id="bbc" multiple></select>
+    </div>
 </div>
 
 <div class="input-control select block">

@@ -168,7 +168,9 @@ $(document).on('ready', function(){
             }
         }
     });
-    
+//    $('a-bajar-correo').on('click',function(){
+//    $(this).parent().children('select').append()
+//    })
     
     
     /***************************************************************************

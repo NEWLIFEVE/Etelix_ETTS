@@ -105,9 +105,12 @@ class MailUser extends CActiveRecord
                                                 from mail m, mail_user mu
                                                 where mu.id_user = $user and mu.id_mail = m.id AND mu.status = 1");
             } else {
-                echo CJSON::encode(Mail::model()->findAllBySql("select mu.id as id, m.mail as mail " .
+                if ($user != null) 
+                {
+                    echo CJSON::encode(Mail::model()->findAllBySql("select mu.id as id, m.mail as mail " .
                                                 "from mail m, mail_user mu " .
                                                 "where mu.id_user = $user and mu.id_mail = m.id AND mu.status = 1"));
+                }
             }
         }
         

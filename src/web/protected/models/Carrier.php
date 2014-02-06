@@ -166,7 +166,43 @@ class Carrier extends CActiveRecord
             }
             
         }
-        
        
+        /**
+         * Método que retorna los id de los carriers dependiendo si es cliente o
+         * proveedor. Se esta llamando la vista carrier_proveedor o carrier_cliente
+         * dependiendo el caso.
+         * 
+         * @param string $type
+         * @return int
+         */
+        public static function getCarriersByClass($type)
+        {
+            $id=array();
+            $consulta=null;
+            
+            if ($type=='supplier') 
+            {
+                $consulta=self::model()->findAllBySql("SELECT * FROM carrier_proveedor");
+                foreach($consulta as $value)
+                {
+                    $id[]=$value->id;
+                }
+                 
+            }
+            else if ($type=='customer')
+            {
+                $consulta=self::model()->findAllBySql("SELECT * FROM carrier_cliente");
+                foreach($consulta as $value)
+                {
+                    $id[]=$value->id;
+                }
+            }
+            else
+            {
+                $id=null;
+            }
+            
+            return $id;
+        }
         
 }

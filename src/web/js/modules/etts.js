@@ -24,6 +24,15 @@ $ETTS.UI=(function(){
                         '<button class="primary large" id="'+cancelar+'" type="button">Cancel</button>' +
                     '</div>'
             });
+        },
+        moveMails:function(boton, element){
+            $(document).on('click', boton, function(){
+                if ($(element).val()) 
+                {
+                    $(this).parent().children('select').append('<option value="'+$(element).val()+'">'+$(element+' option:selected').html()+'</option>');
+                    $(element+' option:selected').attr('selected',false);
+                }
+            });
         }
     }
     
