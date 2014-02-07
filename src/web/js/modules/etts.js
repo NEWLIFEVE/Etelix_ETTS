@@ -5,10 +5,127 @@ var $ETTS={};
  * Sub módulo de interfaz
  */
 $ETTS.UI=(function(){
+   
     
+   
+    function _ticketCompleto(clase,user,to,cc,bbc,falla,originationIp,destinationIp,prefijo,status,accountManager,speech,descripcion){
+       
+            var i= 0, 
+            arrayTo=[], 
+            arrayCc=[], 
+            arrayBbc=[],
+            lengthTo=to.length, 
+            lengthCc=cc.length, 
+            lengthBbc=bbc.length,
+            oip=originationIp.split('.'),
+            dip=destinationIp.split('.'),
+            toCompleto='',
+            ccCompleto='',
+            bbcCompleto='';
+            
+            for (i=0 ; i<lengthTo; i++) arrayTo.push(to[i].text);
+            
+            for (i=0; i<lengthCc; i++) arrayCc.push(cc[i].text);
+            
+            for (i=0; i<lengthBbc; i++) arrayBbc.push(bbc[i].text);
+            
+            if (to.length > 0) 
+            {
+                toCompleto='<div class="input-control textarea" data-role="input-control"" >'+
+                                'To'+
+                                '<textarea disabled class="textarea-corto">'+arrayTo.join('\n')+'</textarea>' +
+                           '</div>';
+            }
+            
+            if (cc.length > 0) 
+            {
+                ccCompleto='<div class="input-control textarea" data-role="input-control"" >'+
+                                'CC'+
+                                '<textarea disabled class="textarea-corto">'+arrayCc.join('\n')+'</textarea>' +
+                           '</div>';
+            }
+            
+            if (bbc.length > 0) 
+            {
+                bbcCompleto='<div class="input-control textarea" data-role="input-control"" >'+
+                                'BBC'+
+                                '<textarea disabled class="textarea-corto">'+arrayBbc.join('\n')+'</textarea>' +
+                            '</div>';
+            }
+                
+            return '<div id="content_preview">' + 
+                        '<div class="input-control text block" >'+
+                            'Class'+
+                            '<input type="text" value="'+clase+'" disabled>' +
+                        '</div>'+
+                        
+                        '<div class="input-control text block" >'+
+                            'User'+
+                            '<input type="text" value="'+user+'" disabled>' +
+                        '</div>'+
+                        
+                        toCompleto+
+                        
+                        ccCompleto+
+                        
+                        bbcCompleto+
+                        
+                        '<div class="input-control text block" >'+
+                            'Failure'+
+                            '<input type="text" value="'+falla+'" disabled>' +
+                        '</div>'+
+                        
+                        '<div class="_label">Origination IP <small class="text-muted "><em>(Customer IP)</em></small><span class="margen_17px"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DestinationIP  <small class="text-muted "><em>(Etelix IP)</em></small></div>'+
+                        '<div class="input-control text block" data-role="input-control">'+
+                            '<input type="text" value="'+oip[0]+'" disabled class="_ip" disabled>' +
+                            '<input type="text" value="'+oip[1]+'" disabled class="_ip" disabled>' +
+                            '<input type="text" value="'+oip[2]+'" disabled class="_ip" disabled>'+
+                            '<input type="text" value="'+oip[3]+'" disabled class="_ip" disabled>'+
+
+                            '<span class="margen_22px"></span>'+
+
+                            '<input type="text" value="'+dip[0]+'" disabled class="_ip" disabled>' +
+                            '<input type="text" value="'+dip[1]+'" disabled class="_ip" disabled>' +
+                            '<input type="text" value="'+dip[2]+'" disabled class="_ip" disabled>' +
+                            '<input type="text" value="'+dip[3]+'" disabled class="_ip" disabled>' +
+                        '</div>'+
+                        
+                        '<div class="input-control text block" >'+
+                            'Prefix'+
+                            '<input type="text" value="'+prefijo+'" disabled>' +
+                        '</div>'+
+                        
+                        '<div class="input-control text block" >'+
+                            'Status'+
+                            '<input type="text" value="'+status+'" disabled>' +
+                        '</div>'+
+                        
+                        '<div class="input-control text block" >'+
+                            'Account Manager'+
+                            '<input type="text" value="'+accountManager+'" disabled>' +
+                        '</div>'+
+                        
+                        '<div class="input-control text block" >'+
+                            'Speech'+
+                            '<input type="text" value="'+speech+'" disabled>' +
+                        '</div>'+
+                        
+                        '<div>Description<br>' +descripcion + '</div>' +
+                   '</div>' +
+                   '<div id="preview_buttons">' +
+                        '<button  class="primary large" id="save_ticket">Send Ticket Information</button> <a  href="#" id="imprimir"><i class="icon-printer on-right"></i></a>' +
+                   '</div>';
+    }
     
     return {
-        // Método para mostrar un confirm personalizado
+        
+        
+        /**
+         * Método para mostrar un confirm personalizado
+         * @param string mensaje
+         * @param obj aceptar
+         * @param obj cancelar
+         */
         confirmar:function(mensaje, aceptar, cancelar) {
             $.Dialog({
                 shadow: true,
@@ -25,6 +142,12 @@ $ETTS.UI=(function(){
                     '</div>'
             });
         },
+        /**
+         * Método para pasar los mails de un select hasta otro select
+         * 
+         * @param obj boton
+         * @param obj element
+         */
         moveMails:function(boton, element){
             $(document).on('click', boton, function(){
                 if ($(element).val()) 
@@ -32,6 +155,34 @@ $ETTS.UI=(function(){
                     $(this).parent().children('select').append('<option value="'+$(element).val()+'">'+$(element+' option:selected').html()+'</option>');
                     $(element+' option:selected').attr('selected',false);
                 }
+            });
+        },
+        /**
+         * Método para mostrar un tooltip
+         * 
+         * @param obj element
+         * @param boolean statusTrack
+         */
+        tooltip:function(element, statusTrack){
+            $(element).tooltip({
+                track: statusTrack
+            });
+        },
+        
+        /**
+         * 
+         */
+        previewTicket:function(clase,user,to,cc,bbc,falla,originationIp,destinationIp,prefijo,status,accountManager,speech,descripcion){
+            $.Dialog({
+                shadow: true,
+                overlay: true,
+                flat:true,
+                icon: '<span class="icon-eye-2"></span>',
+                title: 'Preview Ticket',
+                width: 510,
+                padding: 0,
+                draggable: true,
+                content:_ticketCompleto(clase,user,to,cc,bbc,falla,originationIp,destinationIp,prefijo,status,accountManager,speech,descripcion)
             });
         }
     }

@@ -99,7 +99,13 @@ class MailUser extends CActiveRecord
 		));
 	}
         
-        static public function getMails($user, $json = false)
+        /**
+         * 
+         * @param int $user
+         * @param boolean $json
+         * @return array
+         */
+        public static function getMails($user, $json = false)
         {   if ($json == false) {        
                 return self::model()->findAllBySql("select mu.id as id, m.mail as mail
                                                 from mail m, mail_user mu
@@ -114,12 +120,21 @@ class MailUser extends CActiveRecord
             }
         }
         
+        /**
+         * 
+         * @param int $idTicket
+         * @return array
+         */
         public static function getMailsByTicket($idTicket)
         {
             return self::model()->findAll("id in(select id_mail_user from mail_ticket where id_ticket = $idTicket)");
         }
         
-
+        /**
+         * 
+         * @param int $user
+         * @return boolean
+         */
         public static function getCountMail($user)
         {
                 $count =self::model()->findBySql("SELECT COUNT(id_user) AS mailcount FROM mail_user WHERE id_user = $user AND status = 1");

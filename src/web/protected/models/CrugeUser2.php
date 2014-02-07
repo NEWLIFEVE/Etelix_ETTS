@@ -168,6 +168,12 @@ class CrugeUser2 extends CActiveRecord
         }
     }
     
+    /**
+     * Método para obtener el id y el username dependiendo si es supplier o customer 
+     * 
+     * @param string $type
+     * @return array
+     */
     public static function getCarriersSupplierOrCustomer($type)
     {
         $carriers=Carrier::getCarriersByClass($type);

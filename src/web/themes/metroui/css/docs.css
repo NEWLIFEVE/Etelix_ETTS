@@ -122,6 +122,7 @@ text-shadow: none;
 
 span.margen_22px{margin: 0 44px;}
 span.margen_17px{margin: 0 34px;}
+span.margen_31px{margin: 0 62px;}
 
 /*div.input-control.text, div.input-control.select, div.input-control.textarea{ border: 1px solid !important;}*/
 
@@ -411,12 +412,12 @@ a#imprimir {
     font-size: 22px;
 }
 
-#originationIp, #destinationIp {
-    width: 0px;
-    padding: 0;
-    margin: 0;
-    height: 0;
-    visibility: hidden;
+#originationIp, #destinationIp, #areaDescription {
+    width: 0px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    height: 0 !important;
+    visibility: hidden !important;
 }
 
 footer {
@@ -655,4 +656,8 @@ div.page.width-page {
 /**Ticket internal**/
 span.toggle:hover {
     text-decoration: underline;
+}
+
+div.nicEdit-main {
+    height: 200px !important;
 }

@@ -32,6 +32,9 @@ ticket abiertos
 -Cambio en el tamaño de las columnas de los tickets relacionados en datatable
 -Agregado el add file completamente funcional al answer ticket
 
+06/02/2014
+-Action en TicketController actionCarriersbyclass
+
 Realese 1.0.3:
 -Nueva Tabla para Tickets, Datatable
 -Se pueden visualizar tickets asociados

@@ -1,1 +1,0 @@
-bkLib.onDomLoaded(function() { new nicEditor({fullPanel : true}).panelInstance('pp',{hasPanel : true}); });
