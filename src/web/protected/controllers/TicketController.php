@@ -293,7 +293,7 @@ class TicketController extends Controller
                     
                 }
                 
-                // Guardando los mails
+                // Guardando los mails (to)
                 if (isset($_POST['responseTo']) && $_POST['responseTo'] != null)
                 {
                     $responseTo=count($_POST['responseTo']);
@@ -312,7 +312,7 @@ class TicketController extends Controller
                             }
                     }
                 }
-                // Guardando los mails
+                // Guardando los mails (cc)
                 if (isset($_POST['cc']) && $_POST['cc'] != null)
                 {
                     $cc=count($_POST['cc']);
@@ -328,7 +328,7 @@ class TicketController extends Controller
                             }
                     }
                 }
-                // Guardando los mails
+                // Guardando los mails (bbc)
                 if (isset($_POST['bbc']) && $_POST['bbc'] != null)
                 {
                     $bbc=count($_POST['bbc']);
@@ -352,22 +352,22 @@ class TicketController extends Controller
                          * Se verifica si se envia por post
                          * Guardando Attach File
                          */
-//                        $file=count($_POST['_attachFile']);
-//                        for($i=0; $i<$file; $i++)
-//                        {
-//                                $modelAttachFile=new File;
-//                                $modelAttachFile->id_ticket=$modelTicket->id;
-//                                $modelAttachFile->saved_name=$_POST['_attachFileSave'][$i];
-//                                $modelAttachFile->real_name=$_POST['_attachFile'][$i];
-//                                $modelAttachFile->size=$_POST['_attachFileSize'][$i];
-//                                $modelAttachFile->rute='uploads/'.$_POST['_attachFileSave'][$i];
-//                                $rutaAttachFile[]=$modelAttachFile->rute;
-//
-//                                if (!$modelAttachFile->save())
-//                                {
-//                                    echo 'Error al guardar archivos';
-//                                }
-//                        }
+                        $file=count($_POST['_attachFile']);
+                        for($i=0; $i<$file; $i++)
+                        {
+                                $modelAttachFile=new File;
+                                $modelAttachFile->id_ticket=$modelTicket->id;
+                                $modelAttachFile->saved_name=$_POST['_attachFileSave'][$i];
+                                $modelAttachFile->real_name=$_POST['_attachFile'][$i];
+                                $modelAttachFile->size=$_POST['_attachFileSize'][$i];
+                                $modelAttachFile->rute='uploads/'.$_POST['_attachFileSave'][$i];
+                                $rutaAttachFile[]=$modelAttachFile->rute;
+
+                                if (!$modelAttachFile->save())
+                                {
+                                    echo 'Error al guardar archivos';
+                                }
+                        }
                 }
 
                 // Guardando descripcion
@@ -569,9 +569,16 @@ class TicketController extends Controller
     
     
     /**
-     *
+     * Método para retornar el cuerpo del mail al cambiar el status del ticket o
+     * al dar una respuesta
+     * 
+     * @param type $idTicket
+     * @param type $email
+     * @param type $typeOperation
+     * @param type $status
+     * @return string
      */
-    public static function getBodyMails($idTicket,$email,$typeOperation,$status=false,$ticketInternal=false)
+    public static function getBodyMails($idTicket,$email,$typeOperation,$status=false)
     {
     	$datos=Ticket::ticketsByUsers(CrugeUser2::getUserTicket($idTicket,true)->iduser,$idTicket,false);
     	$user=CrugeUser2::getUserTicket($idTicket);
@@ -585,49 +592,7 @@ class TicketController extends Controller
             
         switch($typeOperation)
         {
-        	// Al abrir el ticket por primera vez
-        	case 'open':
-                        
-                        if ($ticketInternal)
-                        {
-                            $info='<div>
-        				<h2>Hello "'.$user.'"</h2>
-        				<p style="text-align:justify">
-		    				<div>Dear supplier:</div>
-		    				<br/>
-		    				<div>
-		    					Thanks for using our online tool "Etelix Trouble Ticket System" (etts.etelix.com).<br/>
-		    					Your issue has been opened with the TT Number (please see below).<br/>
-		    					Your TT will be answered by an Etelix Analyst soon.
-		    				</div>
-		    				<br/>
-		    				Etelix NOC Team.
-		    			</p>
-		    		   </div>
-		    		   <hr>
-                            </div>';
-                            
-                        }
-                        else
-                        {
-                            $info='<div>
-                                            <h2>Hello "'.$user.'"</h2>
-                                            <p style="text-align:justify">
-                                                    <div>Dear Customer:</div>
-                                                    <br/>
-                                                    <div>
-                                                            Thanks for using our online tool "Etelix Trouble Ticket System" (etts.etelix.com).<br/>
-                                                            Your issue has been opened with the TT Number (please see below).<br/>
-                                                            Your TT will be answered by an Etelix Analyst soon.
-                                                    </div>
-                                                    <br/>
-                                                    Etelix NOC Team.
-                                            </p>
-                                       </div>
-                                       <hr>
-                            </div>';
-                        }
-                break;
+        	
             // Al cambiar de status
             case 'status':
             	$info='<div>

@@ -1,3 +1,4 @@
+
 // Objeto Global
 var $ETTS={};
 
@@ -6,9 +7,39 @@ var $ETTS={};
  */
 $ETTS.UI=(function(){
    
-    
+    var _tables=[{
+            // Table Ticket
+            ticket:{
+                id:'',
+                id_failure:'',
+                id_status:'',
+                origination_ip:'',
+                destination_ip:'',
+                date:'',
+                machine_ip:'',
+                hour:'',
+                id_gmt:'',
+                ticket_number:'',
+                // Relations 
+                id_mail_ticket:[],
+                id_ticket:[],
+                id_mail_user:[],
+                id_type_mailing:[]
+            },
+            
+            // Table mail_ticket
+            mail_ticket:{
+                id:[],
+                id_ticket:[],
+                id_mail_user:[],
+                id_type_mailing:[]
+            }
+    }];
    
     function _ticketCompleto(clase,user,to,cc,bbc,falla,originationIp,destinationIp,prefijo,status,accountManager,speech,descripcion){
+       
+       
+            
        
             var i= 0, 
             arrayTo=[], 
@@ -119,6 +150,9 @@ $ETTS.UI=(function(){
     
     return {
         
+        tables:function(){
+            return _tables[0];
+        },
         
         /**
          * Método para mostrar un confirm personalizado

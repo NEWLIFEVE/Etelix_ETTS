@@ -106,14 +106,33 @@ $ETTS.ajax=(function(){
                 $(selectMail).html('');
             }
         },
-        saveTicket:function(_user,_responseTo,_cc,_bbc,_failure,_originationIp,_destinationIp,_prefix,_status,_accountManager,_speech,_description,attachFile){
+        saveTicket:function(
+                        _user,
+                        _responseTo,
+                        _cc,
+                        _bbc,
+                        _failure,
+                        _originationIp,
+                        _destinationIp,
+                        _prefix,
+                        _status,
+                        _accountManager,
+                        _speech,
+                        _description,
+                        attachFile,
+                        attachFileSave,
+                        attachFileSize){
             
             var responseToArray=[],
             ccArray=[],
             bbcArray=[],
+            attachfileArray=[],
+            attachFileSaveArray=[],
+            attachFileSizeArray=[],
             lengtTo=_responseTo.length,
             lengthCc=_cc.length,
             lengthBbc=_bbc.length,
+            lengthAttachFile=attachFile.length,
             _isInternal=1;
             
             for (var i = 0; i < lengtTo; i++) responseToArray.push(_responseTo[i].value);
@@ -121,6 +140,13 @@ $ETTS.ajax=(function(){
             for (var i = 0; i < lengthCc; i++) ccArray.push(_cc[i].value);
             
             for (var i = 0; i < lengthBbc; i++) bbcArray.push(_bbc[i].value);
+            
+            for (var i = 0; i < lengthAttachFile; i++) 
+            {
+                attachfileArray.push(attachFile[i].value);
+                attachFileSaveArray.push(attachFileSave[i].value);
+                attachFileSizeArray.push(attachFileSize[i].value);
+            }
 
             $.ajax({
                 type:'POST',
@@ -138,7 +164,9 @@ $ETTS.ajax=(function(){
                     accountManager:_accountManager,
                     speech:_speech,
                     description:_description,
-                    _attachFile:attachFile,
+                    _attachFile:attachfileArray,
+                    _attachFileSave:attachFileSaveArray,
+                    _attachFileSize:attachFileSizeArray,
                     isInternal:_isInternal
                     
                 },

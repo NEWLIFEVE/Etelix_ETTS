@@ -125,7 +125,7 @@
 
 
 <div class="input-control textarea" data-role="input-control">
-    Description<input type="text" id="areaDescription" class="validate[required]">
+    Description<!--<input type="text" id="areaDescription" class="validate[required]">-->
     <label>
         <?php echo $form->textArea($model,'description',array('placeholder' => 'Description (required)', 'class' => 'validate[required]')); ?>
         <?php echo $form->error($model,'description'); ?>

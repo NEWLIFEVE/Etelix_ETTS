@@ -88,13 +88,13 @@ $(document).on('ready', function(){
                     $('select#statu option:selected').text(),
                     $('select#Ticket_id_manager option:selected').text(),
                     $('select#speech option:selected').text(),
-                    $('div.nicEdit-main').html()
+                    $('#Ticket_description').val()
                 );
 
                 // Save Ticket
                 $('#save_ticket').on('click', function(){
                     $ETTS.ajax.saveTicket(
-                        null,                                                   // USER
+                        $('#user').val(),                                       // USER
                         $('[name="Ticket[mail][]"] option'),                    // TO
                         $('#cc option'),                                        // CC
                         $('#bbc option'),                                       // BBC
@@ -103,10 +103,12 @@ $(document).on('ready', function(){
                         destinationIP,                                          // Destination IP
                         $('#Ticket_prefix').val(),                              // PREFIX
                         $('#statu').val(),                                      // STATUS
-                        null,                                                   // Account Manager
-                        null,                                                   // SPEECH
-                        $('div.nicEdit-main').text(),                           // DESCRIPTION
-                        null                                                    // FILES
+                        $('#Ticket_id_manager').val(),                          // Account Manager
+                        $('#speech').val(),                                     // SPEECH
+                        $('#div.nicEdit-main').html(),                          // DESCRIPTION $('div.nicEdit-main').text()
+                        $('[name="attachFile[]"]'),                             // FILE REAL NAME
+                        $('[name="attachFileSave[]"]'),                         // FILE SAVE NAME
+                        $('[name="attachFileSize[]"]')                          // FILE SIZE
                     );
                 });
             }
@@ -116,4 +118,4 @@ $(document).on('ready', function(){
  
 });
 
-//     alert($ETTS.ajax.init('hola')._clase)
+//     alert($ETTS.ajax.init('hola')._clase),
