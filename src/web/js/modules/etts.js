@@ -38,9 +38,6 @@ $ETTS.UI=(function(){
    
     function _ticketCompleto(clase,user,to,cc,bbc,falla,originationIp,destinationIp,prefijo,status,accountManager,speech,descripcion){
        
-       
-            
-       
             var i= 0, 
             arrayTo=[], 
             arrayCc=[], 
@@ -219,6 +216,8 @@ $ETTS.UI=(function(){
                 content:_ticketCompleto(clase,user,to,cc,bbc,falla,originationIp,destinationIp,prefijo,status,accountManager,speech,descripcion)
             });
         }
+        
+       
     }
     
 })();

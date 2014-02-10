@@ -8,6 +8,7 @@
  * @property integer $id_user
  * @property integer $id_mail
  * @property integer $status
+ * @property integer $assign_by
  * 
  * The followings are the available model relations:
  * @property Mail $idMail

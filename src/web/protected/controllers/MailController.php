@@ -155,6 +155,8 @@ class MailController extends Controller
 	{
 		$model=new Mail;
 		$modelMailUser=new MailUser;
+                $tipoUsuario = CrugeAuthassignment::getRoleUser();
+                
 		if($modelMailUser::getCountMail(Yii::app()->user->id))
 		{
 			$existeMail=$model->find("mail=:mail",array(":mail"=>$_POST['mail']));
@@ -175,9 +177,16 @@ class MailController extends Controller
 					}
 					else
 					{
+                                            
 						$modelMailUser->id_mail=$existeMail->id;
 						$modelMailUser->id_user=Yii::app()->user->id;
 						$modelMailUser->status=1;
+                                                
+                                                if ($tipoUsuario !== "C") 
+                                                    $modelMailUser->assign_by=1;
+                                                else
+                                                    $modelMailUser->assign_by=0;
+                                                
 						if($modelMailUser->save())
 							echo 'ok';
 						else
@@ -193,6 +202,12 @@ class MailController extends Controller
 					$modelMailUser->id_mail=$model->id;
 					$modelMailUser->id_user=Yii::app()->user->id;
 					$modelMailUser->status=1;
+                                        
+                                        if ($tipoUsuario !== "C") 
+                                            $modelMailUser->assign_by = 1;
+                                        else
+                                            $modelMailUser->assign_by = 0;
+                                        
 					if($modelMailUser->save())
 						echo 'ok';
 					else

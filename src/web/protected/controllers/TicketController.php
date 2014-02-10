@@ -245,8 +245,8 @@ class TicketController extends Controller
                 
 		$modelTicket->date=date('Y-m-d');
 		$modelTicket->id_failure=$_POST['failure'];
-		$modelTicket->destination_ip=$_POST['destinationIp'];
-		$modelTicket->origination_ip=$_POST['originationIp'];
+		$modelTicket->destination_ip=$_POST['destinationIp'] == '' ? null: $_POST['destinationIp'];
+		$modelTicket->origination_ip=$_POST['originationIp'] == '' ? null: $_POST['originationIp'];
 		$modelTicket->prefix=$_POST['prefix'];
 		$modelTicket->machine_ip=Yii::app()->request->userHostAddress;
 		$modelTicket->hour=date('H:i:s');
@@ -262,7 +262,8 @@ class TicketController extends Controller
                     
                     if (!$modelTicket->save())
                     {
-                        echo 'Error al enviar el ticket';
+                        echo '<h2>Ticket</h2>';
+                        print_r($modelTicket->getErrors());
                     }
                 }
                 else
@@ -272,7 +273,8 @@ class TicketController extends Controller
                     
                     if (!$modelTicket->save())
                     {
-                        echo 'Error al enviar el ticket';
+                        echo '<h2>Ticket</h2>';
+                        print_r($modelTicket->getErrors());
                     }
                     
                     // Guardando number
@@ -287,7 +289,8 @@ class TicketController extends Controller
                             $modelTestedNumber->hour=$_POST['_hour'][$i];
                             if (!$modelTestedNumber->save())
                             {
-                                echo 'Error al guardar numbers';
+                                echo '<h2>Tested Number</h2>';
+                                print_r($modelTestedNumber->getErrors());
                             }
                     }
                     
@@ -308,7 +311,8 @@ class TicketController extends Controller
                                 $modelMailTicket->id_type_mailing=1;
                             if (!$modelMailTicket->save())
                             {
-                                echo 'Error al guardar mails';
+                                echo '<h2>Mail Ticket (to)</h2>';
+                                print_r($modelMailTicket->getErrors());
                             }
                     }
                 }
@@ -324,7 +328,8 @@ class TicketController extends Controller
                             $modelMailTicket->id_type_mailing=2;
                             if (!$modelMailTicket->save())
                             {
-                                echo 'Error al guardar mails';
+                                echo '<h2>Ticket (cc)</h2>';
+                                print_r($modelMailTicket->getErrors());
                             }
                     }
                 }
@@ -340,11 +345,11 @@ class TicketController extends Controller
                             $modelMailTicket->id_type_mailing=3;
                             if (!$modelMailTicket->save())
                             {
-                                echo 'Error al guardar mails';
+                                echo '<h2>Ticket (bcc)</h2>';
+                                print_r($modelMailTicket->getErrors());
                             }
                     }
                 }
-
 
                 if(isset($_POST['_attachFile']) && count($_POST['_attachFile']))
                 {
@@ -365,7 +370,8 @@ class TicketController extends Controller
 
                                 if (!$modelAttachFile->save())
                                 {
-                                    echo 'Error al guardar archivos';
+                                    echo '<h2>Attach File</h2>';
+                                    print_r($rutaAttachFile->getErrors());
                                 }
                         }
                 }
@@ -375,132 +381,103 @@ class TicketController extends Controller
                 $modelDescriptionTicket->id_ticket=$modelTicket->id;
                 $modelDescriptionTicket->description=$_POST['description'];
                 $modelDescriptionTicket->date=date('Y-m-d');
-                $modelDescriptionTicket->hour=date('H:m:s');
+                $modelDescriptionTicket->hour=date('H:i:s');
                 $modelDescriptionTicket->id_user=Yii::app()->user->id;
                 if (!$modelDescriptionTicket->save())
                 {
-                    echo 'Error al guardar descripcion';
+                    echo '<h2>Description</h2>';
+                    print_r($modelDescriptionTicket->getErrors());
                 }
                 
+                // Variables para enviar al cuerpo del correo
+                $cuerpo='';
+                $cuerpo_tt='';
+                // to, cc y bbc si es enviado por el supplier
+                $to=array();
+                $bbc=null;
+                $cc=null;
                 
-                if (!isset($_POST['isInternal']))
+                $cuerpoMail=new CuerpoCorreo();
+                
+                // Si es interntal
+                if (isset($_POST['isInternal']) && $_POST['isInternal'] == '1')
                 {
-                    $mailer=new EnviarEmail; 
-
-                    $header='<div style="width:100%">
-                            <img src="http://deve.sacet.com.ve/images/logo.jpg" height="100"/>
-                            <hr>
-                            <div style="text-align:right">Ticket Confirmation<br>Ticket #: '.$ticketNumber.'</div>';
-                    $info='<div>
-                                    <h2>Hello "'. Yii::app()->user->name .'"</h2>
-                                    <p style="text-align:justify">
-                                            <div>Dear Customer:</div>
-                                            <br/>
-                                            <div>
-                                                    Thanks for using our online tool "Etelix Trouble Ticket System" (etts.etelix.com).<br/>
-                                                    Your issue has been opened with the TT Number (please see below).<br/>
-                                                    Your TT will be answered by an Etelix Analyst soon.
-                                            </div>
-                                            <br/>
-                                            Etelix NOC Team.
-                                    </p>
-                                </div>
-                                <hr>
-                            </div>';
-                    $info_tt='<div>
-                                    <h2>Hello</h2>
-                                    <p style="text-align:justify">
-                                            You have a new ticket from <h2>"'. Yii::app()->user->name .'"</h2>
-                                    </p>
-                                    </div>
-                                    <hr>
-                             </div>';
-                    $detail='<h2>Ticket Details</h2>
-                                 <table style="border-spacing: 0; width:100%; border: solid #ccc 1px;">
-                            <tr>
-                                    <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc; padding: 5px 10px; text-align: left;">Response to</th>
-                            </tr>
-                            <tr>
-                                    <td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'. implode('<br>', $_POST['emails']) .'</td>
-                            </tr>
-                            <tr>
-                                    <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Failure</th>
-                            </tr>
-                            <tr>
-                                    <td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$_POST['failureText'].'</td>
-                            </tr>
-                            <tr>
-                                    <th colspan="1" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Origination IP</th>
-                                    <th colspan="3" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Destination IP</th>
-                            </tr>
-                            <tr>
-                                    <td colspan="1" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$_POST['originationIp'].'</td>
-                                    <td colspan="3" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$_POST['destinationIp'].'</td>
-                            </tr>
-                            <tr>
-                                    <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Prefix</th>
-                            </tr>
-                            <tr>
-                                    <td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$_POST['prefix'].'</td>
-                            </tr>
-                            <tr>
-                                    <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">GMT</th>
-                            </tr>
-                            <tr>
-                                    <td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$_POST['gmtText'].'</td>
-                            </tr>
-                            <tr>
-                                    <th style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Tested number</th>
-                                    <th style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Country</th>
-                                    <th style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Date</th>
-                                    <th style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Hour</th>
-                            </tr>
-                            <tr>
-                                    <td style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'. implode('<br>', $_POST['testedNumber']) .'</td>
-                                    <td style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'. implode('<br>', $_POST['_countryText']) .'</td>
-                                    <td style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'. implode('<br>', $_POST['_date']) .'</td>
-                                            <td style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'. implode('<br>', $_POST['_hour']) .'</td>
-                                    </tr>
-                                    <tr>
-                                            <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Description</th>
-                                    </tr>
-                                    <tr>
-                                            <td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$_POST['description'].'</td>
-                                    </tr>
-                             </table>';
-                    $footer='<div style="width:100%">
-                                        <p style="text-align:justify">
-                                                <br/>
-                                                <div style="font-style:italic;">Please do not reply to this email. Replies to this message are routed to an unmonitored mailbox.</div>
-                                        </p>
-                                </div>';
-                    $footer_tt='<div style="width:100%">
-                                                <p style="text-align:justify">
-                                                        <br/>
-                                                        <div style="font-style:italic;">Please do not reply to this email. Replies to this message are routed to an unmonitored mailbox.</div>
-                                                </p>
-                                </div>';
-                    $cuerpo=$header.$info.$detail.$footer;
-                    $cuerpo_tt=$header.$info_tt.$detail.$footer_tt;
-
-                    $envioMail=$mailer->enviar($cuerpo, $_POST['emails'],'',$ticketNumber,$rutaAttachFile);
-                    $emailsTT[]='mmzmm3z@gmail.com';
-                    $envioMail2=$mailer->enviar($cuerpo_tt,$emailsTT,$_POST['emails'],$ticketNumber,$rutaAttachFile);
-                    if($envioMail===true)
+                    
+                    if (isset($_POST['emails']) && $_POST['emails'] != null) $to = $_POST['emails'];
+                    if (isset($_POST['direccionCC']) && $_POST['direccionCC'] != null) $cc = $_POST['direccionCC'];
+                    if (isset($_POST['direccionBBC']) && $_POST['direccionBBC'] != null) $bbc = $_POST['direccionBBC'];
+                    
+                    $cuerpoMail->init(
+                                $ticketNumber,
+                                Yii::app()->user->name,
+                                $_POST['emails'],
+                                $_POST['failureText'],
+                                $_POST['originationIp'],
+                                $_POST['destinationIp'],
+                                $_POST['prefix'],
+                                null,
+                                array(),
+                                array(),
+                                array(),
+                                array(),
+                                $_POST['description'],
+                                $_POST['accountManager'],
+                                $_POST['statusText'],
+                                $cc,
+                                $bbc,
+                                $_POST['speech']
+                            );
+                    $cuerpo=$cuerpoMail->getBodySupplier();
+                }
+                // Si es cliente
+                else
+                {
+                    $cuerpoMail->init(
+                                $ticketNumber,
+                                Yii::app()->user->name,
+                                $_POST['emails'],
+                                $_POST['failureText'],
+                                $_POST['originationIp'],
+                                $_POST['destinationIp'],
+                                $_POST['prefix'],
+                                $_POST['gmtText'],
+                                $_POST['testedNumber'],
+                                $_POST['_countryText'],
+                                $_POST['_date'],
+                                $_POST['_hour'],
+                                $_POST['description']
+                            );
+                    
+                    $cuerpo=$cuerpoMail->getBodyCustumer();
+                    $cuerpo_tt=$cuerpoMail->getBodyTT();
+                    
+                    $to=$_POST['emails']; 
+                }
+                
+                $mailer=new EnviarEmail; 
+                $envioMail=$mailer->enviar($cuerpo, $to,'',$ticketNumber,$rutaAttachFile,$cc);
+                //$emailsTT[]='mmzmm3z@gmail.com';
+                $emailsTT[]='tsu.nelsonmarcano@gmail.com';
+                $envioMail2=false;
+                
+                if (isset($_POST['isInternal']) && $_POST['isInternal'] == 0)
+                {
+                    $envioMail2=$mailer->enviar($cuerpo_tt,$emailsTT,$to,$ticketNumber,$rutaAttachFile);
+                }
+                if($envioMail===true)
+                {
+                    if(isset($envioMail2) && $envioMail2===true)
                     {
-                        if($envioMail2===true)
-                        {
-                                echo 'success';
-                        }
-                        else
-                        {
-                                echo 'success';
-                        }
+                            echo 'success';
                     }
                     else
                     {
-                        echo 'Error al enviar el correo: '.$envioMail;
+                            echo 'success';
                     }
+                }
+                else
+                {
+                    echo 'Error al enviar el correo: '.$envioMail;
                 }
                 
     }

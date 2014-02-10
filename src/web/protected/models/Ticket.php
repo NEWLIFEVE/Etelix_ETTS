@@ -69,7 +69,7 @@ class Ticket extends CActiveRecord
 		// will receive user inputs.
 		return array(
                         
-			array('id_failure, id_status, origination_ip, destination_ip, date, machine_ip', 'required'),
+			array('id_failure, id_status, date, machine_ip', 'required'),
 			array('id_failure, id_status, id_gmt', 'numerical', 'integerOnly'=>true),
 			array('origination_ip, destination_ip, machine_ip', 'length', 'max'=>64),
 			array('ticket_number', 'length', 'max'=>50),

@@ -454,15 +454,15 @@ $(document).on('ready', function(){
                    data:{
                        responseTo: responseToArray,
                        failure:$('#Ticket_id_failure').val(),
-                       failureText:$('#Ticket_id_failure option:selected').text(),
+                       failureText:$('#Ticket_id_failure option:selected').text(), //
                        originationIp: _originationIp,
                        destinationIp: _destinationIp,
                        prefix: $('#Ticket_prefix').val(),
                        gmt: $('#Ticket_idGmt').val(),
-                       gmtText: $('#Ticket_idGmt option:selected').text(),
+                       gmtText: $('#Ticket_idGmt option:selected').text(),       //
                        testedNumber: testedNumbersArray,
                        _country: countryArray,
-                       _countryText: countryTextArray,
+                       _countryText: countryTextArray,                          //
                        _date: dateArray,
                        _hour: hourArray,
                        description: $('#Ticket_description').val(),
@@ -470,7 +470,7 @@ $(document).on('ready', function(){
                        _attachFile: attachFileArray,
                        _attachFileSave: attachFileSaveArray,
                        _attachFileSize: attachFileSizeArray,
-                       _ticketComplete: ticketComplete
+                       isInternal: '0'
                    },
                    success:function(data){
                        if (data == 'success') {
