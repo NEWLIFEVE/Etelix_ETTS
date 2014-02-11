@@ -80,34 +80,35 @@ function changeStatus(id, select, status, _class)
 // Función para agregar archivos en el description
 function attachFile()
 {
-    
-//    var settings = {
-//                url: "/file/uploadjquery",
-//                dragDrop:false,
-//                showDone: false,
-//                fileName: "myfile",
-//                allowedTypes:"pdf,gif,jpeg,png,jpg,xlsx,xls,txt,cap,pcap,csv",	
-//                returnType:"json",
-//                showFileCounter:false,
-//                     onSuccess:function(files,data,xhr)
-//                {
-//                     $('div.ajax-file-upload-filename:last').attr('name', data[0]); 
-//                },
-//                showDelete:true,
-//                deleteCallback: function(data,pd){
-//                    for(var i=0;i<data.length;i++)
-//                    {
-//                        $.post("/file/deletejquery",{op:"delete",name:data[i]},
-//                        function(resp, textStatus, jqXHR)
-//                        {
-//                            //Show Message  
-//                            $("#status").html("");      
-//                        });
-//                     }      
-//                    pd.statusbar.remove(); //You choice to hide/not.
-//                }
-//            }
-//    var uploadObj = $("#mulitplefileuploader").uploadFile(settings); 
+
+   
+    var settings = {
+                url: "/file/uploadjquery",
+                dragDrop:false,
+                showDone: false,
+                fileName: "myfile",
+                allowedTypes:"pdf,gif,jpeg,png,jpg,xlsx,xls,txt,cap,pcap,csv",	
+                returnType:"json",
+                showFileCounter:false,
+                     onSuccess:function(files,data,xhr)
+                {
+                     $('div.ajax-file-upload-filename:last').attr('name', data[0]); 
+                },
+                showDelete:true,
+                deleteCallback: function(data,pd){
+                    for(var i=0;i<data.length;i++)
+                    {
+                        $.post("/file/deletejquery",{op:"delete",name:data[i]},
+                        function(resp, textStatus, jqXHR)
+                        {
+                            //Show Message  
+                            $("#status").html("");      
+                        });
+                     }      
+                    pd.statusbar.remove(); //You choice to hide/not.
+                }
+            }
+    var uploadObj = $("#mulitplefileuploader").uploadFile(settings); 
 }
 
 

@@ -13,7 +13,7 @@ function saveMessage()
         _fileServer.push(fileName[i].getAttribute('name'));
     }
     
-    _idSpeech = null;
+    _idpeech = null;
     if ($('select#speech').val()) {
         _idSpeech = $('select#speech option:selected').val();
     }

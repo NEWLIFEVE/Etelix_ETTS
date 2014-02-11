@@ -2,6 +2,8 @@ Etelix_ETTS
 ===========
 
 Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
+- Cambio de numero por defecto de filas en plugin de datatable
+- Reducido el alto de las filas en los admin tickets
 -Notificacion de respuestas via correo electronico
 -Respuestas de usuarios internos a los tickes
 -Soporte para modificar el status de los tickets hijos
