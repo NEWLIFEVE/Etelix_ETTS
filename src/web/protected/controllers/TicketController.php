@@ -462,8 +462,9 @@ class TicketController extends Controller
         {
         	$ticketModel::model()->updateByPk($id,array('id_status'=>$_POST['idStatus']));
         }
-
-        $envioMail=$mailer->enviar($body,$mailModel::getNameMails($id),'','Status changed '.$ticketNumber,null);
+        
+        $nameCarrier=Carrier::getCarriers(true, $id);
+        $envioMail=$mailer->enviar($body,$mailModel::getNameMails($id),'','Etelix TT System, New Status, '.$ticketNumber.' '.$nameCarrier.' ',null);
         if($envioMail===true)
         	echo 'true';
         else
