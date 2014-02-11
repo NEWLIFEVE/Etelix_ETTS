@@ -45,7 +45,7 @@
                             <?php else: ?>
                                 <td>&nbsp;</td>
                             <?php endif; ?>
-                            <td><?php echo CrugeUser2::getUserTicket($ticket->id); ?></td>
+                                <td><?php if (isset($ticket->idUser->username)) echo $ticket->idUser->username; ?></td>
                             <td><?php  echo Carrier::getCarriers(true, $ticket->id) != null ?  Carrier::getCarriers(true, $ticket->id): ''; ?></td>
                         <?php endif; ?>
                         <td><?php echo $ticket->ticket_number; ?></td>
@@ -87,5 +87,3 @@
     <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/admin.js',CClientScript::POS_END); ?>
 <?php endif; ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/save_message_ticket.js',CClientScript::POS_END); ?>
-<?php // Yii::app()->clientScript->registerScriptFile('http://js.nicedit.com/nicEdit-latest.js',CClientScript::POS_HEAD); ?>
-<?php // Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/textarea_enriquecido.js',CClientScript::POS_HEAD); ?>

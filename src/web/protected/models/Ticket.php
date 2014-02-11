@@ -15,6 +15,7 @@
  * @property integer $prefix
  * @property integer $id_gmt
  * @property string $ticket_number
+ * @property integer $id_user
  *
  * The followings are the available model relations:
  * @property TicketRelation[] $ticketRelations
@@ -69,7 +70,7 @@ class Ticket extends CActiveRecord
 		// will receive user inputs.
 		return array(
                         
-			array('id_failure, id_status, origination_ip, destination_ip, date, machine_ip', 'required'),
+			array('id_failure, id_status, date, machine_ip', 'required'),
 			array('id_failure, id_status, id_gmt', 'numerical', 'integerOnly'=>true),
 			array('origination_ip, destination_ip, machine_ip', 'length', 'max'=>64),
 			array('ticket_number', 'length', 'max'=>50),
@@ -97,6 +98,7 @@ class Ticket extends CActiveRecord
 			'idFailure' => array(self::BELONGS_TO, 'Failure', 'id_failure'),
 			'idStatus' => array(self::BELONGS_TO, 'Status', 'id_status'),
 			'idGmt' => array(self::BELONGS_TO, 'Gmt', 'id_gmt'),
+                        'idUser' => array(self::BELONGS_TO, 'CrugeUser2', 'id_user'),
 		);
 	}
 

@@ -166,5 +166,17 @@ class CrugeUser2 extends CActiveRecord
         									 FROM ticket t, mail_ticket mt, mail_user mu, cruge_user u
         									 WHERE t.id=mt.id_ticket AND mt.id_mail_user=mu.id AND mu.id_user=u.iduser AND t.id=$id_ticket")->username;
         }
-    } 
+    }
+    
+    /**
+     * Método para obtener el id y el username dependiendo si es supplier o customer 
+     * 
+     * @param string $type
+     * @return array
+     */
+    public static function getCarriersSupplierOrCustomer($type)
+    {
+        $carriers=Carrier::getCarriersByClass($type);
+        if ($carriers != null) return self::model()->findAllBySql("SELECT iduser, username FROM cruge_user WHERE id_carrier IN (".implode(",",$carriers).")");
+    }
 }

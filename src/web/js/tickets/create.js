@@ -168,7 +168,9 @@ $(document).on('ready', function(){
             }
         }
     });
-    
+//    $('a-bajar-correo').on('click',function(){
+//    $(this).parent().children('select').append()
+//    })
     
     
     /***************************************************************************
@@ -182,36 +184,15 @@ $(document).on('ready', function(){
         
         if ($('#cargar_mails').val()) { 
             
-            miConfirm('Delete Mail?')
-            
+            $ETTS.UI.confirmar('Delete Mail?', 'ok_confirm', 'cancel_confirm'); 
+      
             $('#ok_confirm').on('click', function(){
-                $.ajax({
-                   type: 'POST',
-                   url: '/mailUser/deletemail',
-                   data:"id="+mailSeleccionado,
-                   success:function(data){
-                       $('#cargar_mails option[value='+mailSeleccionado+']').remove();
-                   }
-                });
-                $('#Ticket_mail option[value='+mailSeleccionado+']').remove();
-                $.Dialog.close();
+                $ETTS.ajax.deleteMailByConfirm('cargar_mails', 'Ticket_mail', mailSeleccionado)
             });
             
             $('#cancel_confirm').on('click', function(){
                 $.Dialog.close();
             });
-            
-//            if (confirm('Delete mail?')) {
-//                $.ajax({
-//                   type: 'POST',
-//                   url: '/mailUser/deletemail',
-//                   data:"id="+mailSeleccionado,
-//                   success:function(data){
-//                       $('#cargar_mails option[value='+mailSeleccionado+']').remove();
-//                   }
-//                });
-//                $('#Ticket_mail option[value='+mailSeleccionado+']').remove();
-//            }
         }
         
         if ($('#Ticket_mail').val()) { 
@@ -473,15 +454,15 @@ $(document).on('ready', function(){
                    data:{
                        responseTo: responseToArray,
                        failure:$('#Ticket_id_failure').val(),
-                       failureText:$('#Ticket_id_failure option:selected').text(),
+                       failureText:$('#Ticket_id_failure option:selected').text(), //
                        originationIp: _originationIp,
                        destinationIp: _destinationIp,
                        prefix: $('#Ticket_prefix').val(),
                        gmt: $('#Ticket_idGmt').val(),
-                       gmtText: $('#Ticket_idGmt option:selected').text(),
+                       gmtText: $('#Ticket_idGmt option:selected').text(),       //
                        testedNumber: testedNumbersArray,
                        _country: countryArray,
-                       _countryText: countryTextArray,
+                       _countryText: countryTextArray,                          //
                        _date: dateArray,
                        _hour: hourArray,
                        description: $('#Ticket_description').val(),
@@ -489,7 +470,7 @@ $(document).on('ready', function(){
                        _attachFile: attachFileArray,
                        _attachFileSave: attachFileSaveArray,
                        _attachFileSize: attachFileSizeArray,
-                       _ticketComplete: ticketComplete
+                       isInternal: '0'
                    },
                    success:function(data){
                        if (data == 'success') {

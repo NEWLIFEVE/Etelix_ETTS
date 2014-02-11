@@ -42,29 +42,6 @@ function saveMessage()
     }
 }
 
-function funcionEnter(evento) 
-{ 
-    //para IE 
-    if (window.event) 
-    { 
-        if (window.event.keyCode==13) 
-        { 
-            saveMessage()
-        } 
-    } 
-    else 
-    { 
-        //Firefox y otros navegadores 
-        if (evento) 
-        { 
-            if(evento.which==13) 
-            { 
-                saveMessage()
-            } 
-        } 
-    } 
-}
-
 $(document).on('ready', function(){
    $(document).on('focus', 'textarea#answer', function(){
        $('div.panel-down-textarea').css('border-bottom', '1px solid grey')

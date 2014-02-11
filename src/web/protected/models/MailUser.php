@@ -8,6 +8,7 @@
  * @property integer $id_user
  * @property integer $id_mail
  * @property integer $status
+ * @property integer $assign_by
  * 
  * The followings are the available model relations:
  * @property Mail $idMail
@@ -99,24 +100,42 @@ class MailUser extends CActiveRecord
 		));
 	}
         
-        static public function getMails($user, $json = false)
+        /**
+         * 
+         * @param int $user
+         * @param boolean $json
+         * @return array
+         */
+        public static function getMails($user, $json = false)
         {   if ($json == false) {        
                 return self::model()->findAllBySql("select mu.id as id, m.mail as mail
                                                 from mail m, mail_user mu
                                                 where mu.id_user = $user and mu.id_mail = m.id AND mu.status = 1");
             } else {
-                echo CJSON::encode(Mail::model()->findAllBySql("select mu.id as id, m.mail as mail " .
+                if ($user != null) 
+                {
+                    echo CJSON::encode(Mail::model()->findAllBySql("select mu.id as id, m.mail as mail " .
                                                 "from mail m, mail_user mu " .
                                                 "where mu.id_user = $user and mu.id_mail = m.id AND mu.status = 1"));
+                }
             }
         }
         
+        /**
+         * 
+         * @param int $idTicket
+         * @return array
+         */
         public static function getMailsByTicket($idTicket)
         {
             return self::model()->findAll("id in(select id_mail_user from mail_ticket where id_ticket = $idTicket)");
         }
         
-
+        /**
+         * 
+         * @param int $user
+         * @return boolean
+         */
         public static function getCountMail($user)
         {
                 $count =self::model()->findBySql("SELECT COUNT(id_user) AS mailcount FROM mail_user WHERE id_user = $user AND status = 1");
