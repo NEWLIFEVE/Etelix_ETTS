@@ -45,7 +45,7 @@
                             <?php else: ?>
                                 <td>&nbsp;</td>
                             <?php endif; ?>
-                            <td><?php echo CrugeUser2::getUserTicket($ticket->id); ?></td>
+                                <td><?php if (isset($ticket->idUser->username)) echo $ticket->idUser->username; ?></td>
                             <td><?php  echo Carrier::getCarriers(true, $ticket->id) != null ?  Carrier::getCarriers(true, $ticket->id): ''; ?></td>
                         <?php endif; ?>
                         <td><?php echo $ticket->ticket_number; ?></td>

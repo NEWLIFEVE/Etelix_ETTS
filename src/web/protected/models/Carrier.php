@@ -182,7 +182,14 @@ class Carrier extends CActiveRecord
             
             if ($type=='supplier') 
             {
-                $consulta=self::model()->findAllBySql("SELECT * FROM carrier_proveedor");
+                $consulta=self::model()->findAllBySql("SELECT c.id
+                                                      FROM carrier c,
+                                                      contrato x,
+                                                      contrato_termino_pago_supplier ctps
+                                                      WHERE c.id = x.id_carrier AND 
+                                                      ctps.id_contrato = x.id AND 
+                                                      ctps.end_date IS NULL AND 
+                                                      ctps.id_termino_pago_supplier <> 11");
                 foreach($consulta as $value)
                 {
                     $id[]=$value->id;
@@ -191,7 +198,14 @@ class Carrier extends CActiveRecord
             }
             else if ($type=='customer')
             {
-                $consulta=self::model()->findAllBySql("SELECT * FROM carrier_cliente");
+                $consulta=self::model()->findAllBySql("SELECT c.id
+                                                      FROM carrier c,
+                                                      contrato x,
+                                                      contrato_termino_pago ctp
+                                                      WHERE c.id = x.id_carrier AND 
+                                                      ctp.id_contrato = x.id AND 
+                                                      ctp.end_date IS NULL AND 
+                                                      ctp.id_termino_pago <> 11");
                 foreach($consulta as $value)
                 {
                     $id[]=$value->id;

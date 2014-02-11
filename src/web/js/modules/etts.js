@@ -145,6 +145,13 @@ $ETTS.UI=(function(){
                    '</div>';
     }
     
+    function _quitarValidacion(select){
+            if (select.find('option').length > 0)
+                select.removeClass('validate[required]');
+            else
+                select.addClass('validate[required]');
+    }
+    
     return {
         
         tables:function(){
@@ -183,8 +190,10 @@ $ETTS.UI=(function(){
             $(document).on('click', boton, function(){
                 if ($(element).val()) 
                 {
+                    var select = $(this).parent().children('select');
                     $(this).parent().children('select').append('<option value="'+$(element).val()+'">'+$(element+' option:selected').html()+'</option>');
                     $(element+' option:selected').attr('selected',false);
+                    _quitarValidacion(select);
                 }
             });
         },
@@ -215,9 +224,66 @@ $ETTS.UI=(function(){
                 draggable: true,
                 content:_ticketCompleto(clase,user,to,cc,bbc,falla,originationIp,destinationIp,prefijo,status,accountManager,speech,descripcion)
             });
+        },
+        direccionesIp:function(element, e){
+          
+            var valor = element.val();
+            // Para IE
+            if (window.event)
+            {
+                if (window.event.keyCode == 190 || window.event.keyCode == 110) 
+                {
+                    element.val(valor.replace('.', ''));
+                    element.next('input').focus();
+                }
+            }
+            else
+            {
+                // Para Chrome, Firefox, etc.
+                if(e)
+                {
+                    if (e.which == 190 || e.which == 110)
+                    {
+                        element.val(valor.replace('.', ''));
+                        element.next('input').focus();
+                    }
+                }
+            }
+            
+            if (element.val().length === 3) 
+            {
+                if (element.val() > 255) 
+                {
+                    element.val('255');
+                }
+                element.next('input').focus();
+            }
+        },
+        borrarOptionSelect:function(select){
+              var element = select.parent().children('select');
+              if(element.val()) 
+              {
+                  element.find('option:selected').remove();
+                  _quitarValidacion(element);
+              }
+        },
+        appendOptions:function(boton, select){
+            
+            var select2 = boton.parent().children('select');
+            
+            if(select.val()) 
+            {
+                var option = select.find('option:selected'),
+                longitud=option.length;
+                
+                for (var i=0; i < longitud; i++)
+                {
+                    select2.append('<option value="'+option[i].value+'">'+option[i].text+'</option>');
+                }
+                _quitarValidacion(select2);
+            }
         }
         
-       
     }
     
 })();

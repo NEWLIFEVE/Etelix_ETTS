@@ -43,13 +43,31 @@ $(document).on('ready', function(){
         $('#areaDescription').val(description);
     });
     
+    // Remove mails
+    $(document).on('click', 'a.a-borrar-correo', function(){
+        $ETTS.UI.borrarOptionSelect($(this))
+    });
+    
+    /*************************************************************************
+     * 
+     *                      EVENT(keyup)
+     * 
+     ************************************************************************/
+    // Event keyup para direccioenes ip
+    $(document).on('keyup', 'input._ip', function(e){
+        $ETTS.UI.direccionesIp($(this), e);
+    });
+    
     /*************************************************************************
      * 
      *                      Just call the module
      * 
      ************************************************************************/
     // Bajar los correos
-    $ETTS.UI.moveMails('a.a-bajar-correo', '#mails');
+    //$ETTS.UI.moveMails('a.a-bajar-correo', '#mails');
+    $(document).on('click', 'a.a-bajar-correo', function(){
+        $ETTS.UI.appendOptions($(this), $('#mails'));
+    });    
     
     // Tooltips para bbc y cc
     $ETTS.UI.tooltip('span.toggle', true);
@@ -111,9 +129,9 @@ $(document).on('ready', function(){
                         originationIP,                                          // Origination IP            
                         destinationIP,                                          // Destination IP
                         $('#Ticket_prefix').val(),                              // PREFIX
-                        $('#statu option:selected'),                                      // STATUS
+                        $('#statu option:selected'),                            // STATUS
                         $('#Ticket_id_manager option:selected').text(),         // Account Manager
-                        $('#speech option:selected').text(),                                     // SPEECH
+                        $('#speech option:selected').text(),                    // SPEECH
                         $('div.nicEdit-main').html(),                           // DESCRIPTION $('div.nicEdit-main').text()
                         $('[name="attachFile[]"]'),                             // FILE REAL NAME
                         $('[name="attachFileSave[]"]'),                         // FILE SAVE NAME

@@ -33,14 +33,14 @@
 </div>
 
 <div class="input-control select block">
-    <span class="toggle">To</span>&nbsp;
+    <span class="toggle">To</span>&nbsp;<small class="text-muted "><em>(required)</em></small>&nbsp;
     <a href="javascript:void(0)" class="a-bajar-correo"><i class="icon-arrow-down"></i></a>&nbsp;
     <a href="javascript:void(0)" class="a-borrar-correo" ><i class="icon-cancel-2 fg-red "></i></a>&nbsp;&nbsp;
     <span class="toggle cc" title="Click to add a copy">CC</span>&nbsp;&nbsp;&nbsp;<span class="toggle bbc" title="Click to add a Bcc">BBC</span>&nbsp;
     <?php echo $form->ListBox(
                 $model,'mail[]', 
                 array(),  
-                array('multiple' => 'multiple')) ?>
+                array('multiple' => 'multiple', 'class'=>'validate[required]')) ?>
     <?php echo $form->error($model,'mail[]'); ?>
 </div>
 

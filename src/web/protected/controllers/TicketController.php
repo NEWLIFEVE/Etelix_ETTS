@@ -254,6 +254,7 @@ class TicketController extends Controller
 		$maximo->number_of_the_day+=1;
 		$ticketNumber=date('Ymd').'-'.str_pad($maximo->number_of_the_day, 3, "0", STR_PAD_LEFT).'-'.CrugeAuthassignment::getRoleUser().$modelTicket->id_failure;
 		$modelTicket->ticket_number=$ticketNumber;
+                $modelTicket->id_user=Yii::app()->user->id;
                 
                 if (isset($_POST['isInternal']) && $_POST['isInternal'] == '1')
                 {
@@ -402,7 +403,6 @@ class TicketController extends Controller
                 // Si es interntal
                 if (isset($_POST['isInternal']) && $_POST['isInternal'] == '1')
                 {
-                    
                     if (isset($_POST['emails']) && $_POST['emails'] != null) $to = $_POST['emails'];
                     if (isset($_POST['direccionCC']) && $_POST['direccionCC'] != null) $cc = $_POST['direccionCC'];
                     if (isset($_POST['direccionBBC']) && $_POST['direccionBBC'] != null) $bbc = $_POST['direccionBBC'];

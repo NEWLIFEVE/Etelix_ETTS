@@ -252,7 +252,7 @@ $ETTS.ajax=(function(){
                                 title: 'Error',
                                 width: 500,
                                 padding: 10,
-                                content: '<center>'+data+'</center>'
+                                content: '<pre>'+data+'</pre>'
                           });
                       }
                 }
