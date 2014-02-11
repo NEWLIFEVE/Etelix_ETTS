@@ -38,6 +38,9 @@ $ETTS.UI=(function(){
    
     function _ticketCompleto(clase,user,to,cc,bbc,falla,originationIp,destinationIp,prefijo,status,accountManager,speech,descripcion){
        
+            if (originationIp == '') originationIp='...';
+            if (destinationIp == '') destinationIp='...';
+       
             var i= 0, 
             arrayTo=[], 
             arrayCc=[], 
@@ -80,6 +83,8 @@ $ETTS.UI=(function(){
                                 '<textarea disabled class="textarea-corto">'+arrayBbc.join('\n')+'</textarea>' +
                             '</div>';
             }
+            
+            
                 
             return '<div id="content_preview">' + 
                         '<div class="input-control text block" >'+
@@ -280,6 +285,7 @@ $ETTS.UI=(function(){
                 {
                     select2.append('<option value="'+option[i].value+'">'+option[i].text+'</option>');
                 }
+                select.find('option:selected').attr('selected',false);
                 _quitarValidacion(select2);
             }
         }
