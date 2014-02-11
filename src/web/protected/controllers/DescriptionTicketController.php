@@ -221,7 +221,8 @@ class DescriptionTicketController extends Controller
             
             $mailsAll=Mail::getNameMails($model->id_ticket);
             $mailsAll[]='noc@etelix.com';
-            $mailer->enviar(TicketController::getBodyMails($model->id_ticket, Mail::getNameMails($model->id_ticket), 'answer'), $mailsAll, '', 'New answer '.$ticketNumber);
+            $nameCarrier=Carrier::getCarriers(true, $model->id_ticket);
+            $mailer->enviar(TicketController::getBodyMails($model->id_ticket, Mail::getNameMails($model->id_ticket), 'answer'), $mailsAll, '', 'Etelix TT System, New Answer, '.$ticketNumber.' '.$nameCarrier.' ');
         } else {
             echo 'false';
         }
