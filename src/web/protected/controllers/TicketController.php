@@ -404,8 +404,10 @@ class TicketController extends Controller
                         </div>';
             $cuerpo=$header.$info.$detail.$footer;
             $cuerpo_tt=$header.$info_tt.$detail.$footer_tt;
-
-            $envioMail=$mailer->enviar($cuerpo, $_POST['emails'],'',$ticketNumber,$rutaAttachFile);
+            
+            $nameCarrier=Carrier::getCarriers(true, $modelTicket->id);
+            
+            $envioMail=$mailer->enviar($cuerpo, $_POST['emails'],'','Etelix TT System, New TT, '.$ticketNumber.' '.$nameCarrier.' ',$rutaAttachFile);
             $emailsTT[]='mmzmm3z@gmail.com';
             $envioMail2=$mailer->enviar($cuerpo_tt,$emailsTT,$_POST['emails'],$ticketNumber,$rutaAttachFile);
             if($envioMail===true)
