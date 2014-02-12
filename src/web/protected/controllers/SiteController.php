@@ -194,8 +194,12 @@ class SiteController extends Controller
 					'label'=>'My tickets',
 					'url'=>array('/ticket/admin')
 					),
+                                array(
+					'label'=>'Open client ticket',
+					'url'=>array('/ticket/createtoclient')
+					),
 				array(
-					'label'=>'Open ticket',
+					'label'=>'Open ticket to supplier',
 					'url'=>array('/ticket/createinternal')
 					),
 				);
