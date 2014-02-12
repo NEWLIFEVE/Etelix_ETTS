@@ -25,7 +25,7 @@ $ETTS.ajax=(function(){
     }
     
     function _getMailUser(mails, user){
-        $.post('/MailUser/Getmailuser', 'iduser='+user, function(data){
+        $.post('/mailuser/getmailuser', 'iduser='+user, function(data){
             mails.html('');
             for (var i = 0; i < data.length; i++) 
             {
@@ -111,7 +111,7 @@ $ETTS.ajax=(function(){
             {
                 $.ajax({
                        type: 'POST',
-                       url: '/mailUser/getmailuser',
+                       url: '/mailuser/getmailuser',
                        data:{
                            iduser:id
                        },
