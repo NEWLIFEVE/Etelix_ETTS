@@ -256,12 +256,10 @@ class TicketController extends Controller
 		$modelTicket->ticket_number=$ticketNumber;
 
                 $modelTicket->id_user=Yii::app()->user->id;
-                
+                $modelTicket->id_status=1;
                 if (isset($_POST['isInternal']) && $_POST['isInternal'] == '1')
                 {
-                    $modelTicket->id_status=$_POST['status'];
                     $modelTicket->id_gmt=null;
-                    
                     if (!$modelTicket->save())
                     {
                         echo '<h2>Ticket</h2>';
@@ -270,9 +268,7 @@ class TicketController extends Controller
                 }
                 else
                 {
-                    $modelTicket->id_status=1;
                     $modelTicket->id_gmt=$_POST['gmt'];
-                    
                     if (!$modelTicket->save())
                     {
                         echo '<h2>Ticket</h2>';
@@ -307,10 +303,7 @@ class TicketController extends Controller
                             $modelMailTicket=new MailTicket;
                             $modelMailTicket->id_mail_user=$_POST['responseTo'][$i];
                             $modelMailTicket->id_ticket=$modelTicket->id;
-                            if (isset($_POST['isInternal']) && $_POST['isInternal'] == '1')
-                                $modelMailTicket->id_type_mailing=1;
-                            else 
-                                $modelMailTicket->id_type_mailing=1;
+                            $modelMailTicket->id_type_mailing=1;
                             if (!$modelMailTicket->save())
                             {
                                 echo '<h2>Mail Ticket (to)</h2>';
@@ -422,8 +415,6 @@ class TicketController extends Controller
                                 array(),
                                 array(),
                                 $_POST['description'],
-                                $_POST['accountManager'],
-                                $_POST['statusText'],
                                 $cc,
                                 $bbc,
                                 $_POST['speech']
