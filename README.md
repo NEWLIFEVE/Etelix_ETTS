@@ -2,6 +2,13 @@ Etelix_ETTS
 ===========
 
 Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
+Release 1.1.3
+- Aumento de ancho de las columnas para el admin de tickets
+- Cambio de asunto en correos electronicos:
+Formatos de subject
+* Etelix TT System, New TT, 0000000000 nombre_del_carrier
+* Etelix TT System, New Answer, 000000000 nombre_del_carrier
+* Etelix TT System , New Status, 000000000 nombre_del_carrier
 
 Release 1.1.2
 - Cambio de numero por defecto de filas en plugin de datatable

@@ -408,6 +408,7 @@ class TicketController extends Controller
             
             $nameCarrier=Carrier::getCarriers(true, $modelTicket->id);
             
+
             $tipoUsuario = CrugeAuthassignment::getRoleUser();
             $subject='';
             if ($tipoUsuario == 'C')
