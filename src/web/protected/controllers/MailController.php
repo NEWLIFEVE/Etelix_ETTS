@@ -157,70 +157,133 @@ class MailController extends Controller
 		$modelMailUser=new MailUser;
                 $tipoUsuario = CrugeAuthassignment::getRoleUser();
                 
-		if($modelMailUser::getCountMail(Yii::app()->user->id))
-		{
-			$existeMail=$model->find("mail=:mail",array(":mail"=>$_POST['mail']));
-			if($existeMail!=null)
-			{
-				$existeMailUser=$modelMailUser->findBySql("SELECT * FROM mail_user WHERE id_user=".Yii::app()->user->id." AND id_mail=".$existeMail->id." AND status=0");
-				if($existeMailUser!=null)
-				{
-					$modelMailUser::model()->updateByPk($existeMailUser->id,array("status"=>'1'));
-					echo 'ok';
-				}
-				else
-				{
-					$existeMailUser2=$modelMailUser->findBySql("SELECT * FROM mail_user WHERE id_user=".Yii::app()->user->id." AND id_mail=".$existeMail->id." AND status=1");
-					if($existeMailUser2!=null)
-					{
-						echo 'existe correo';
-					}
-					else
-					{
-                                            
-						$modelMailUser->id_mail=$existeMail->id;
-						$modelMailUser->id_user=Yii::app()->user->id;
-						$modelMailUser->status=1;
-                                                
-                                                if ($tipoUsuario !== "C") 
-                                                    $modelMailUser->assign_by=1;
-                                                else
-                                                    $modelMailUser->assign_by=0;
-                                                
-						if($modelMailUser->save())
-							echo 'ok';
-						else
-							echo 'no';
-					}
-				}
-			}
-			else
-			{
-				$model->mail=$_POST['mail'];
-				if($model->save())
-				{
-					$modelMailUser->id_mail=$model->id;
-					$modelMailUser->id_user=Yii::app()->user->id;
-					$modelMailUser->status=1;
-                                        
-                                        if ($tipoUsuario !== "C") 
-                                            $modelMailUser->assign_by = 1;
-                                        else
-                                            $modelMailUser->assign_by = 0;
-                                        
-					if($modelMailUser->save())
-						echo 'ok';
-					else
-						echo 'no';
-				}
-			}
-		}
-		else
-		{
-			echo "tope_alcanzado";
-		}
-	}
+                if ($tipoUsuario == 'C')
+                {
+                    if($modelMailUser::getCountMail(Yii::app()->user->id))
+                    {
+                            $existeMail=$model->find("mail=:mail",array(":mail"=>$_POST['mail']));
+                            if($existeMail!=null)
+                            {
+                                    $existeMailUser=$modelMailUser->findBySql("SELECT * FROM mail_user WHERE id_user=".Yii::app()->user->id." AND id_mail=".$existeMail->id." AND status=0");
+                                    if($existeMailUser!=null)
+                                    {
+                                            $modelMailUser::model()->updateByPk($existeMailUser->id,array("status"=>'1'));
+                                            echo 'true';
+                                    }
+                                    else
+                                    {
+                                            $existeMailUser2=$modelMailUser->findBySql("SELECT * FROM mail_user WHERE id_user=".Yii::app()->user->id." AND id_mail=".$existeMail->id." AND status=1");
+                                            if($existeMailUser2!=null)
+                                            {
+                                                    echo 'existe correo';
+                                            }
+                                            else
+                                            {
 
+                                                    $modelMailUser->id_mail=$existeMail->id;
+                                                    $modelMailUser->id_user=Yii::app()->user->id;
+                                                    $modelMailUser->status=1;
+                                                    $modelMailUser->assign_by=1;
+                                                    if($modelMailUser->save())
+                                                            echo 'true';
+                                                    else
+                                                            echo 'false';
+                                            }
+                                    }
+                            }
+                            else
+                            {
+                                    $model->mail=$_POST['mail'];
+                                    if($model->save())
+                                    {
+                                            $modelMailUser->id_mail=$model->id;
+                                            $modelMailUser->id_user=Yii::app()->user->id;
+                                            $modelMailUser->status=1;
+                                            $modelMailUser->assign_by=1;
+
+                                            if($modelMailUser->save())
+                                                    echo 'true';
+                                            else
+                                                    echo 'false';
+                                    }
+                            }
+                    }
+                    else
+                    {
+                            echo "tope alcanzado";
+                    }
+                }
+                else
+                {
+                    $existeMail=$model->find("mail=:mail",array(":mail"=>$_POST['mail']));
+                    if($existeMail!=null)
+                    {
+                        $existeMailUser=$modelMailUser->findBySql("SELECT * FROM mail_user WHERE id_user=".$_POST['user']." AND id_mail=".$existeMail->id." AND status=0");
+                        if($existeMailUser!=null)
+                        {
+                            $modelMailUser::model()->updateByPk($existeMailUser->id,array("status"=>'1'));
+                            echo 'true';
+                        }
+                        else
+                        {
+                            $existeMailUser2=$modelMailUser->findBySql("SELECT * FROM mail_user WHERE id_user=".$_POST['user']." AND id_mail=".$existeMail->id." AND status=1");
+                            if($existeMailUser2!=null)
+                            {
+                                echo 'existe correo';
+                            }
+                            else
+                            {
+                                $modelMailUser->id_mail=$existeMail->id;
+                                $modelMailUser->id_user=$_POST['user'];
+                                $modelMailUser->status=1;
+                                $modelMailUser->assign_by=$this->_typeUserSaveMail($_POST['typeUser']);
+                                if($modelMailUser->save())
+                                    echo 'true';
+                                else
+                                    echo 'false';
+                            }
+                        }
+                    }
+                    else
+                    {
+                        $model->mail=$_POST['mail'];
+                        if($model->save())
+                        {
+                            $modelMailUser->id_mail=$model->id;
+                            $modelMailUser->id_user=$_POST['user'];
+                            $modelMailUser->status=1;
+                            $modelMailUser->assign_by=$this->_typeUserSaveMail($_POST['typeUser']);;
+
+                            if($modelMailUser->save())
+                                echo 'true';
+                            else
+                                echo 'false';
+                        }
+                    }
+                }
+	}
+        /**
+         * 
+         * @param string $typeUser
+         * @param string $noCustomer
+         * @return int
+         */
+        private function _typeUserSaveMail($typeUser)
+        {
+            $assignBy=1;
+
+            if ($typeUser == 'customer') // Si es cliente
+            {
+                $assignBy=1;
+            }
+            else                         // Si es proveedor
+            {
+                $assignBy=0;
+            }
+            
+            return $assignBy;
+        }
+        
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.

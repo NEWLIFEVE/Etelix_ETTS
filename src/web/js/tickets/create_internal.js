@@ -30,6 +30,10 @@ $(document).on('ready', function(){
         $('div#div-bbc').toggle('fast')
     });
     
+    $(document).on('click', '.a-agregar-correo', function(){
+        $('.div-agregar-correo').toggle('fast')
+    });
+    
     $(document).on('click', 'input[name="preview"]', function(){
         var originationIP = $('#oip1').val() + '.' + $('#oip2').val() + '.' + $('#oip3').val() + '.' + $('#oip4').val(),
         destinationIP = $('#dip1').val() + '.' + $('#dip2').val() + '.' + $('#dip3').val() + '.' + $('#dip4').val(),
@@ -48,6 +52,16 @@ $(document).on('ready', function(){
         $ETTS.UI.borrarOptionSelect($(this))
     });
     
+    // Append options
+    $(document).on('click', 'a.a-bajar-correo', function(){
+        $ETTS.UI.appendOptions($(this), $('#mails'));
+    });   
+    
+    // Add mails
+    $(document).on('click', '.btn-agregar-correo', function(){
+        $ETTS.ajax.saveMail($('#new_mail'),$('#class'),$('#user'),$('#mails'),$('#Ticket_mail'));
+    });
+    
     /*************************************************************************
      * 
      *                      EVENT(keyup)
@@ -63,12 +77,6 @@ $(document).on('ready', function(){
      *                      Just call the module
      * 
      ************************************************************************/
-    // Bajar los correos
-    //$ETTS.UI.moveMails('a.a-bajar-correo', '#mails');
-    $(document).on('click', 'a.a-bajar-correo', function(){
-        $ETTS.UI.appendOptions($(this), $('#mails'));
-    });    
-    
     // Tooltips para bbc y cc
     $ETTS.UI.tooltip('span.toggle', true);
     
@@ -78,7 +86,7 @@ $(document).on('ready', function(){
      * 
      ************************************************************************/
     // CC y BBC
-    $('div#div-cc, div#div-bbc').hide();
+    $('div#div-cc, div#div-bbc, .div-agregar-correo').hide();
     
     /*************************************************************************
      * 
@@ -106,8 +114,6 @@ $(document).on('ready', function(){
                     originationIP,
                     destinationIP,
                     $('#Ticket_prefix').val(),
-                    $('select#statu option:selected').text(),
-                    $('select#Ticket_id_manager option:selected').text(),
                     $('select#speech option:selected').text(),
                     $('div.nicEdit-main').html()
                 );
@@ -129,8 +135,6 @@ $(document).on('ready', function(){
                         originationIP,                                          // Origination IP            
                         destinationIP,                                          // Destination IP
                         $('#Ticket_prefix').val(),                              // PREFIX
-                        $('#statu option:selected'),                            // STATUS
-                        $('#Ticket_id_manager option:selected').text(),         // Account Manager
                         $('#speech option:selected').text(),                    // SPEECH
                         $('div.nicEdit-main').html(),                           // DESCRIPTION $('div.nicEdit-main').text()
                         $('[name="attachFile[]"]'),                             // FILE REAL NAME

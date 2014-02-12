@@ -3,7 +3,7 @@
  */
 $ETTS.ajax=(function(){
    
-   function _limpiarForm(miForm, toCcBcc, textAreaEnriquecido) {
+   function _limpiarForm(miForm) {
         // recorremos todos los campos que tiene el formulario
         $(':input', miForm).each(function() {
             var type = this.type;
@@ -20,8 +20,18 @@ $ETTS.ajax=(function(){
                 this.selectedIndex = -1;
         });
         
-        $('div.nicEdit-main').empty();
-        $('select#mails, select#Ticket_mail, select#cc, select#bbc').empty();
+        $('select#mails, select#Ticket_mail, select#cc, select#bbc, div.nicEdit-main, #content_attached_file').empty();
+        $('#uploadFile').find('ul').empty();
+    }
+    
+    function _getMailUser(mails, user){
+        $.post('/mailuser/getmailuser', 'iduser='+user, function(data){
+            mails.html('');
+            for (var i = 0; i < data.length; i++) 
+            {
+                mails.append('<option value="'+ data[i].id +'">'+ data[i].mail +'</option>');
+            }
+        }, 'json');
     }
    
     return {
@@ -101,7 +111,7 @@ $ETTS.ajax=(function(){
             {
                 $.ajax({
                        type: 'POST',
-                       url: '/mailUser/getmailuser',
+                       url: '/mailuser/getmailuser',
                        data:{
                            iduser:id
                        },
@@ -127,6 +137,9 @@ $ETTS.ajax=(function(){
                 $(selectMail).html('');
             }
         },
+        /**
+         * 
+         */
         saveTicket:function(
                         _gmt,
                         _testedNumber,
@@ -142,8 +155,6 @@ $ETTS.ajax=(function(){
                         _originationIp,
                         _destinationIp,
                         _prefix,
-                        _status,
-                        _accountManager,
                         _speech,
                         _description,
                         attachFile,
@@ -215,9 +226,6 @@ $ETTS.ajax=(function(){
                     originationIp:_originationIp,
                     destinationIp:_destinationIp,
                     prefix:_prefix,
-                    status:_status.val(),
-                    statusText:_status.text(),
-                    accountManager:_accountManager,
                     speech:_speech,
                     description:_description,
                     _attachFile:attachfileArray,
@@ -257,6 +265,69 @@ $ETTS.ajax=(function(){
                       }
                 }
              });
+        },
+        
+        saveMail:function(_newMail,_typeUser, _user, contentMail, to){
+            if (_typeUser.val() && _user.val())
+            {
+                $.ajax({
+                   type:'POST',
+                   url:'/Mail/SetMail',
+                   data:{
+                       mail: _newMail.val(),
+                       typeUser:_typeUser.val(),
+                       user:_user.val()
+                   },
+                   success:function(data){
+                       if (data == 'true') 
+                       {    
+                           _newMail.val('');
+                           _getMailUser(contentMail, _user.val());
+                           setTimeout(function(){
+                               var option = contentMail.find('option:last-child');
+                               to.append('<option value="'+option.val()+'" >'+option.text()+'</option>');
+                           },500);
+                       } 
+                       else if(data == 'tope alcanzado') 
+                       {
+                            $.Dialog({
+                                shadow: true,
+                                overlay: false,
+                                icon: '<span class="icon-rocket"></span>',
+                                title: 'Error',
+                                width: 500,
+                                padding: 10,
+                                content: '<center><h2>Only five emails allowed<h2></center>'
+                          });
+
+                       } 
+                       else if (data == 'existe correo') 
+                       {
+                            $.Dialog({
+                                    shadow: true,
+                                    overlay: false,
+                                    icon: '<span class="icon-rocket"></span>',
+                                    title: 'Error',
+                                    width: 500,
+                                    padding: 10,
+                                    content: '<center><h2>Error, email already exists, try another direction<h2></center>'
+                              });
+                       } 
+                       else if (data == 'false') 
+                       {
+                            $.Dialog({
+                                shadow: true,
+                                overlay: false,
+                                icon: '<span class="icon-rocket"></span>',
+                                title: 'Error',
+                                width: 500,
+                                padding: 10,
+                                content: '<center><h2>Error<h2></center>'
+                            });
+                       }
+                   }
+                });
+            }
         }
     }
 })();

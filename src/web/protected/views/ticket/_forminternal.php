@@ -16,7 +16,6 @@
             <option value=""></option>
             <option value="customer">Customer</option>            
             <option value="supplier">supplier</option>
-            <option value="internal">Internal</option>
         </select>
 </div>
     
@@ -34,9 +33,19 @@
 
 <div class="input-control select block">
     <span class="toggle">To</span>&nbsp;<small class="text-muted "><em>(required)</em></small>&nbsp;
+    <a href="javascript:void(0)" class="a-agregar-correo"><i class="icon-plus-2"></i></a>
     <a href="javascript:void(0)" class="a-bajar-correo"><i class="icon-arrow-down"></i></a>&nbsp;
     <a href="javascript:void(0)" class="a-borrar-correo" ><i class="icon-cancel-2 fg-red "></i></a>&nbsp;&nbsp;
     <span class="toggle cc" title="Click to add a copy">CC</span>&nbsp;&nbsp;&nbsp;<span class="toggle bbc" title="Click to add a Bcc">BBC</span>&nbsp;
+    <div class="div-agregar-correo">
+        <div class="input-control text span3"  data-role="input-control">
+            <input type="text" id="new_mail" class="validate[custom[email]]" name="new_mail" placeholder="example@example.com" />
+        </div>
+        
+        <div class="input-control text span2">
+            <button class="btn-agregar-correo primary" type="button"><i class="icon-floppy on-left"></i>Save</button>
+        </div>
+    </div>
     <?php echo $form->ListBox(
                 $model,'mail[]', 
                 array(),  
@@ -96,22 +105,22 @@
         <?php echo $form->error($model,'prefix'); ?>
 </div>
 
-        
+<!--        
 <div class="input-control select">
         Status<small class="text-muted "><em> (required)</em></small>
         <select id="statu" class="validate[required]">
             <option value=""></option>
-            <?php foreach (Status::getStatus() as $value): ?>
-                <option value="<?php echo $value->id; ?>"><?php echo $value->name; ?></option>
-            <?php endforeach; ?>
+            <?php // foreach (Status::getStatus() as $value): ?>
+                <option value="<?php // echo $value->id; ?>"><?php // echo $value->name; ?></option>
+            <?php // endforeach; ?>
         </select>
 </div>
         
 <div class="input-control select block">
         Account Manager<small class="text-muted "><em> (required)</em></small>
-        <?php echo $form->dropDownList($model,'id_manager', Managers::getListManagers(),  array('empty' => '' ,'class' => 'validate[required]')); ?>
-        <?php echo $form->error($model,'id_manager'); ?>
-</div>
+        <?php // echo $form->dropDownList($model,'id_manager', Managers::getListManagers(),  array('empty' => '' ,'class' => 'validate[required]')); ?>
+        <?php // echo $form->error($model,'id_manager'); ?>
+</div>-->
         
 <div class="input-control select block">
         SPEECHS
