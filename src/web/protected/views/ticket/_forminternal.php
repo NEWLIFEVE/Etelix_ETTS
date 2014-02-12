@@ -15,7 +15,7 @@
         <select id="class" class="validate[required]">
             <option value=""></option>
             <option value="customer">Customer</option>            
-            <option value="supplier">supplier</option>
+            <option value="supplier">Supplier</option>
         </select>
 </div>
     
