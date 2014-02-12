@@ -221,7 +221,8 @@ class DescriptionTicketController extends Controller
             
             $mailsAll=Mail::getNameMails($model->id_ticket);
 
-            $mailsAll[]='noc@etelix.com';
+            //$mailsAll[]='noc@etelix.com';
+            $mailsAll[]='manuelm3z@hotmail.com';
             $nameCarrier=Carrier::getCarriers(true, $model->id_ticket);
             $tipoUsuario = CrugeAuthassignment::getRoleUser();
             $subject='';

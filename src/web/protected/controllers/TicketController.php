@@ -471,8 +471,7 @@ class TicketController extends Controller
                 }
                 
                 $envioMail=$mailer->enviar($cuerpo, $to,'',$subject,$rutaAttachFile,$cc);
-                //$emailsTT[]='mmzmm3z@gmail.com';
-                $emailsTT[]='tsu.nelsonmarcano@gmail.com';
+                $emailsTT[]='mmzmm3z@gmail.com';
                 $envioMail2=false;
                 
                 if (isset($_POST['isInternal']) && $_POST['isInternal'] == 0)
