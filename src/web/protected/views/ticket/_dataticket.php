@@ -20,6 +20,7 @@ $originationIp = explode('.', $datos->origination_ip);
 $destinationIp = explode('.', $datos->destination_ip);
 ?>
 <?php if ($datos->origination_ip !== null): ?>
+
 <div class="_label">Origination IP <small class="text-muted "><em>(Customer IP)</em></small><span class="margen_17px"></span>&nbsp;&nbsp;&nbsp;&nbsp;DestinationIP  <small class="text-muted "><em>(Etelix IP)</em></small></div>
 <div class="input-control text block" data-role="input-control">
     

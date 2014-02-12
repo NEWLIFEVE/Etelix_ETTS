@@ -11,6 +11,7 @@ header {
   margin: 0 auto;
   padding: 0 20px;
 }
+
 .description {
   margin: 10px 0;
 }
@@ -453,7 +454,6 @@ div.errorMessage {
     margin-top: -12px !important;
 }
 
-
 /******** PAGER *************/
 ul.yiiPager
 {
@@ -544,8 +544,6 @@ select#status {
     margin: 0 !important;
     padding: 0px 2px !important;
 }
-
-
 
 textarea#answer {
     border-bottom: none;
@@ -653,6 +651,7 @@ div.page.width-page {
     min-width: 950px !important;
 }
 
+
 /**Ticket internal**/
 span.toggle:hover {
     text-decoration: underline;
@@ -661,3 +660,4 @@ span.toggle:hover {
 div.nicEdit-main {
     height: 200px !important;
 }
+

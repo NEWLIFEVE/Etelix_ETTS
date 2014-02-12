@@ -58,8 +58,7 @@ class Ticket extends CActiveRecord
 	public function tableName()
 	{
 		return 'ticket';
-	}
-        
+	}     
 
 	/**
 	 * @return array validation rules for model attributes.
@@ -89,6 +88,7 @@ class Ticket extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+
                         'ticketRelations' => array(self::HAS_MANY, 'TicketRelation', 'id_ticket_father'),
 			'ticketRelations1' => array(self::HAS_MANY, 'TicketRelation', 'id_ticket_son'),
 			'testedNumbers' => array(self::HAS_MANY, 'TestedNumber', 'id_ticket'),
@@ -185,10 +185,12 @@ class Ticket extends CActiveRecord
         
         if($onlyOpen)
         {
+
             $sql="SELECT *
                   FROM ticket
                   WHERE id IN (SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user $conditionUser)) AND id_status=1 $conditionTicket
                   ORDER BY id_status, id  $order";
+
             
             // Si $returnArray esta en true, retorna un array con los datos del ticket
             if($returnArray)
@@ -204,6 +206,7 @@ class Ticket extends CActiveRecord
         }
         else
         {
+
 //            $sql="SELECT *, t.id AS id
 //                 FROM ticket t
 //                 WHERE t.id IN (SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user $conditionUser)) $conditionTicket
@@ -217,6 +220,7 @@ class Ticket extends CActiveRecord
                 id IN (SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user $conditionUser)) $conditionTicket
                 AND date>=CURRENT_DATE - interval '1 day') t
                 ORDER BY date, id_status $order";
+
             
             // Si $returnArray esta en true, retorna un array con los datos del ticket
             if($returnArray)

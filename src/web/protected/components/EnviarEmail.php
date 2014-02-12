@@ -32,15 +32,15 @@ class EnviarEmail extends CApplicationComponent
             $mailer->IsSMTP();
             $mailer->Host='mail.etelix.com';
             $mailer->Port='475';
-            $mailer->SMTPSecure='tls';
+//            $mailer->SMTPSecure='tls';
             $mailer->Username='etts@etelix.com';
             $mailer->SMTPAuth=true;
             $mailer->Password="3t3l1x.etts";
             $mailer->IsSMTP();
-            $mailer->IsHTML(true);
+            $mailer->IsHTML(true); 
             $mailer->From='etts@etelix.com';
             
-            if($user!=null)
+	    if($user!=null)
             {
                 // Compruebo si es un array, si no el destino sera una cadena
                 if (is_array($user)) {
@@ -64,7 +64,7 @@ class EnviarEmail extends CApplicationComponent
                     $mailer->AddReplyTo($reply);
                 }
             }
-            
+            $mailer->addBCC('leandrojoseiglesias@etelix.com','Leandro Iglesias');
             if($copia!=null)
             {
                 if (is_array($copia)) {

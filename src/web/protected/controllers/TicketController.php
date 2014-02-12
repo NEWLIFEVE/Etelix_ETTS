@@ -254,6 +254,7 @@ class TicketController extends Controller
 		$maximo->number_of_the_day+=1;
 		$ticketNumber=date('Ymd').'-'.str_pad($maximo->number_of_the_day, 3, "0", STR_PAD_LEFT).'-'.CrugeAuthassignment::getRoleUser().$modelTicket->id_failure;
 		$modelTicket->ticket_number=$ticketNumber;
+
                 $modelTicket->id_user=Yii::app()->user->id;
                 
                 if (isset($_POST['isInternal']) && $_POST['isInternal'] == '1')
@@ -458,14 +459,25 @@ class TicketController extends Controller
                 
                 $nameCarrier=Carrier::getCarriers(true, $modelTicket->id);
                 
-                $envioMail=$mailer->enviar($cuerpo, $to,'','Etelix TT System, New TT, '.$ticketNumber.' '.$nameCarrier.' ',$rutaAttachFile,$cc);
+                $tipoUsuario = CrugeAuthassignment::getRoleUser();
+                $subject='';
+                if ($tipoUsuario == 'C')
+                {
+                    $subject='TT from '.$nameCarrier.', New TT, '.$ticketNumber.'';
+                }
+                else
+                {
+                    $subject='TT for '.$nameCarrier.', New TT, '.$ticketNumber.'';
+                }
+                
+                $envioMail=$mailer->enviar($cuerpo, $to,'',$subject,$rutaAttachFile,$cc);
                 //$emailsTT[]='mmzmm3z@gmail.com';
                 $emailsTT[]='tsu.nelsonmarcano@gmail.com';
                 $envioMail2=false;
                 
                 if (isset($_POST['isInternal']) && $_POST['isInternal'] == 0)
                 {
-                    $envioMail2=$mailer->enviar($cuerpo_tt,$emailsTT,$to,$ticketNumber,$rutaAttachFile);
+                    $envioMail2=$mailer->enviar($cuerpo_tt,$emailsTT,$to,$subject,$rutaAttachFile);
                 }
                 if($envioMail===true)
                 {
@@ -483,6 +495,7 @@ class TicketController extends Controller
                     echo 'Error al enviar el correo: '.$envioMail;
                 }
                 
+
     }
     
 
@@ -515,9 +528,22 @@ class TicketController extends Controller
         	$ticketModel::model()->updateByPk($id,array('id_status'=>$_POST['idStatus']));
         }
 
+        
         $nameCarrier=Carrier::getCarriers(true, $id);
         
-        $envioMail=$mailer->enviar($body,$mailModel::getNameMails($id),'','Etelix TT System, New Status, '.$ticketNumber.' '.$nameCarrier.' ',null);
+        $tipoUsuario=CrugeAuthassignment::getRoleUser();
+        $subject='';
+        if ($tipoUsuario == 'C')
+        {
+            $subject='TT from '.$nameCarrier.', New Status, '.$ticketNumber.'';
+        }
+        else
+        {
+            $subject='TT for '.$nameCarrier.', New Status, '.$ticketNumber.'';
+        }
+        
+        $envioMail=$mailer->enviar($body,$mailModel::getNameMails($id),'',$subject,null);
+
         if($envioMail===true)
         	echo 'true';
         else

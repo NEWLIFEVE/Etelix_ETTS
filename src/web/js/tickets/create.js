@@ -473,7 +473,7 @@ $(document).on('ready', function(){
                        isInternal: '0'
                    },
                    success:function(data){
-                       if (data == 'success') {
+                        if (data == 'success') {
                            $.Dialog.close();
                            $.Dialog({
                                 shadow: true,

@@ -221,10 +221,20 @@ class DescriptionTicketController extends Controller
             
             $mailsAll=Mail::getNameMails($model->id_ticket);
 
-//            $mailsAll[]='noc@etelix.com';
-            $mailsAll[]='tsu.nelsonmarcano@gmail.com';
+            $mailsAll[]='noc@etelix.com';
             $nameCarrier=Carrier::getCarriers(true, $model->id_ticket);
-            $mailer->enviar(TicketController::getBodyMails($model->id_ticket, Mail::getNameMails($model->id_ticket), 'answer'), $mailsAll, '', 'Etelix TT System, New Status, '.$ticketNumber.' '.$nameCarrier.' ');
+            $tipoUsuario = CrugeAuthassignment::getRoleUser();
+            $subject='';
+            if ($tipoUsuario == 'C')
+            {
+                $subject='TT from '.$nameCarrier.', New Answer, '.$ticketNumber.'';
+            }
+            else
+            {
+                $subject='TT for '.$nameCarrier.', New Answer, '.$ticketNumber.'';
+            }
+            $mailer->enviar(TicketController::getBodyMails($model->id_ticket, Mail::getNameMails($model->id_ticket), 'answer'), $mailsAll, '', $subject);
+
         } else {
             echo 'false';
         }
