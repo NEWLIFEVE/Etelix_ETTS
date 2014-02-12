@@ -189,7 +189,7 @@ class Carrier extends CActiveRecord
                                                       WHERE c.id = x.id_carrier AND 
                                                       ctps.id_contrato = x.id AND 
                                                       ctps.end_date IS NULL AND 
-                                                      ctps.id_termino_pago_supplier <> 11");
+                                                      ctps.id_termino_pago_supplier <> (SELECT id FROM termino_pago WHERE name='Sin estatus')");
                 foreach($consulta as $value)
                 {
                     $id[]=$value->id;
@@ -205,7 +205,7 @@ class Carrier extends CActiveRecord
                                                       WHERE c.id = x.id_carrier AND 
                                                       ctp.id_contrato = x.id AND 
                                                       ctp.end_date IS NULL AND 
-                                                      ctp.id_termino_pago <> 11");
+                                                      ctp.id_termino_pago <> (SELECT id FROM termino_pago WHERE name='Sin estatus')");
                 foreach($consulta as $value)
                 {
                     $id[]=$value->id;

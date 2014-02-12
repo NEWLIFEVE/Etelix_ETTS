@@ -71,14 +71,16 @@ $(document).on('ready', function(){
        $.ajax({
           url:  '/Mail/SetMail',
           type: 'post',
-          data:{mail: $('#new_mail').val()},
+          data:{
+              mail: $('#new_mail').val()
+          },
           success: function(data){
-              if (data == 'ok') {
+              if (data == 'true') {
                   $('#new_mail').val('');
                   getMailUser();
                   setTimeout('setResponseTo()', 1000);
                   $('#Ticket_mail').removeClass('validate[required]');
-              } else if(data == 'tope_alcanzado') {
+              } else if(data == 'tope alcanzado') {
                   $.Dialog({
                              shadow: true,
                              overlay: false,
@@ -99,7 +101,7 @@ $(document).on('ready', function(){
                              padding: 10,
                              content: '<center><h2>Error, email already exists, try another direction<h2></center>'
                        });
-              } else if (data == 'no') {
+              } else if (data == 'false') {
                   $.Dialog({
                              shadow: true,
                              overlay: false,

@@ -31,13 +31,11 @@ class CuerpoCorreo
     private $_date;
     private $_hour;
     private $_description;
-    private $_accountManager;
-    private $_status;
     private $_cc;
     private $_bcc;
     private $_speech;
 
-    public function init($ticketNumber,$username,$emails,$failure,$originationIp,$destinationIp,$prefix,$gmt,$testedNumber,$country,$date,$hour,$description,$accountManager=false,$status=false,$cc=false,$bcc=false,$speech=false)
+    public function init($ticketNumber,$username,$emails,$failure,$originationIp,$destinationIp,$prefix,$gmt,$testedNumber,$country,$date,$hour,$description,$cc=false,$bcc=false,$speech=false)
     {
         $this->_emails = array();
         $this->_cc = array();
@@ -60,8 +58,6 @@ class CuerpoCorreo
         $this->_date = $date;
         $this->_hour = $hour;
         $this->_description = $description;
-        $this->_accountManager = $accountManager;
-        $this->_status = $status;
         $this->_cc = $cc;
         $this->_bcc = $bcc;
         $this->_speech = $speech;
@@ -220,20 +216,6 @@ class CuerpoCorreo
                             </tr>
                             <tr>
                                     <td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$this->_prefix.'</td>
-                            </tr>
-                            
-                            <tr>
-                                    <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Status</th>
-                            </tr>
-                            <tr>
-                                    <td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'. $this->_status.'</td>
-                            </tr>
-                            
-                            <tr>
-                                    <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Account Manager</th>
-                            </tr>
-                            <tr>
-                                    <td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$this->_accountManager.'</td>
                             </tr>
                             
                             <tr>

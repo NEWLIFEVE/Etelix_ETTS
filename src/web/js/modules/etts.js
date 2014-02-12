@@ -36,7 +36,7 @@ $ETTS.UI=(function(){
             }
     }];
    
-    function _ticketCompleto(clase,user,to,cc,bbc,falla,originationIp,destinationIp,prefijo,status,accountManager,speech,descripcion){
+    function _ticketCompleto(clase,user,to,cc,bbc,falla,originationIp,destinationIp,prefijo,speech,descripcion){
        
             if (originationIp == '') originationIp='...';
             if (destinationIp == '') destinationIp='...';
@@ -129,16 +129,6 @@ $ETTS.UI=(function(){
                         '</div>'+
                         
                         '<div class="input-control text block" >'+
-                            'Status'+
-                            '<input type="text" value="'+status+'" disabled>' +
-                        '</div>'+
-                        
-                        '<div class="input-control text block" >'+
-                            'Account Manager'+
-                            '<input type="text" value="'+accountManager+'" disabled>' +
-                        '</div>'+
-                        
-                        '<div class="input-control text block" >'+
                             'Speech'+
                             '<input type="text" value="'+speech+'" disabled>' +
                         '</div>'+
@@ -217,7 +207,7 @@ $ETTS.UI=(function(){
         /**
          * 
          */
-        previewTicket:function(clase,user,to,cc,bbc,falla,originationIp,destinationIp,prefijo,status,accountManager,speech,descripcion){
+        previewTicket:function(clase,user,to,cc,bbc,falla,originationIp,destinationIp,prefijo,speech,descripcion){
             $.Dialog({
                 shadow: true,
                 overlay: true,
@@ -227,7 +217,7 @@ $ETTS.UI=(function(){
                 width: 510,
                 padding: 0,
                 draggable: true,
-                content:_ticketCompleto(clase,user,to,cc,bbc,falla,originationIp,destinationIp,prefijo,status,accountManager,speech,descripcion)
+                content:_ticketCompleto(clase,user,to,cc,bbc,falla,originationIp,destinationIp,prefijo,speech,descripcion)
             });
         },
         direccionesIp:function(element, e){
