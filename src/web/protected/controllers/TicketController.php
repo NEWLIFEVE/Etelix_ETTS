@@ -408,10 +408,21 @@ class TicketController extends Controller
             
             $nameCarrier=Carrier::getCarriers(true, $modelTicket->id);
             
-            $envioMail=$mailer->enviar($cuerpo, $_POST['emails'],'','Etelix TT System, New TT, '.$ticketNumber.' '.$nameCarrier.' ',$rutaAttachFile);
+            $tipoUsuario = CrugeAuthassignment::getRoleUser();
+            $subject='';
+            if ($tipoUsuario == 'C')
+            {
+                $subject='TT from '.$nameCarrier.', New TT, '.$ticketNumber.'';
+            }
+            else
+            {
+                $subject='TT for '.$nameCarrier.', New TT, '.$ticketNumber.'';
+            }
+            
+            $envioMail=$mailer->enviar($cuerpo, $_POST['emails'],'',$subject,$rutaAttachFile);
             $emailsTT[]='mmzmm3z@gmail.com';
 
-            $envioMail2=$mailer->enviar($cuerpo_tt,$emailsTT,$_POST['emails'],$ticketNumber,$rutaAttachFile);
+            $envioMail2=$mailer->enviar($cuerpo_tt,$emailsTT,$_POST['emails'],$subject,$rutaAttachFile);
             if($envioMail===true)
             {
             	if($envioMail2===true)
@@ -464,7 +475,19 @@ class TicketController extends Controller
         }
         
         $nameCarrier=Carrier::getCarriers(true, $id);
-        $envioMail=$mailer->enviar($body,$mailModel::getNameMails($id),'','Etelix TT System, New Status, '.$ticketNumber.' '.$nameCarrier.' ',null);
+        
+        $tipoUsuario=CrugeAuthassignment::getRoleUser();
+        $subject='';
+        if ($tipoUsuario == 'C')
+        {
+            $subject='TT from '.$nameCarrier.', New Status, '.$ticketNumber.'';
+        }
+        else
+        {
+            $subject='TT for '.$nameCarrier.', New Status, '.$ticketNumber.'';
+        }
+        
+        $envioMail=$mailer->enviar($body,$mailModel::getNameMails($id),'',$subject,null);
         if($envioMail===true)
         	echo 'true';
         else
