@@ -159,7 +159,10 @@ div.input-control.select.block strong {
       
 }
 
-.btn-agregar-correo.primary {
+.btn-agregar-correo.primary,
+.btn-agregar-correo-cliente.primary,
+.btn-agregar-correo-interno-proveedor.primary,
+.btn-agregar-correo-interno-cliente.primary{
     padding: 7px 7px; 
     margin-left: 4px;
 }
