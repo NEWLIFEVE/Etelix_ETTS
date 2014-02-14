@@ -6,11 +6,12 @@ function attachFile()
                 dragDrop:false,
                 showDone: false,
                 fileName: "myfile",
-                allowedTypes:"jpg,png,gif,doc,docx,xls,xlsx,pdf,zip",	
+                allowedTypes:"pdf,gif,jpeg,png,jpg,xlsx,xls,txt,cap,pcap,csv",	
                 returnType:"json",
+                showFileCounter:false,
                      onSuccess:function(files,data,xhr)
                 {
-                   // alert((data));
+                     $('div.ajax-file-upload-filename:last').attr('name', data[0]); 
                 },
                 showDelete:true,
                 deleteCallback: function(data,pd){
@@ -23,7 +24,7 @@ function attachFile()
                             $("#status").html("");      
                         });
                      }      
-                    pd.statusbar.hide(); //You choice to hide/not.
+                    pd.statusbar.remove(); //You choice to hide/not.
                 }
             }
     var uploadObj = $("#mulitplefileuploader").uploadFile(settings); 
@@ -58,7 +59,7 @@ $(document).ready(function() {
                         $('div.answer-ticket').scrollTop(100000);
                     }
                 });
-//                setTimeout('attachFile()', 1000);
+                setTimeout('attachFile()', 1000);
         } );
         
         /*

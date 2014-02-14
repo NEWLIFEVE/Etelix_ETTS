@@ -143,9 +143,9 @@ $ETTS.ajax=(function(){
         saveTicket:function(
                         _gmt,
                         _testedNumber,
-                        _country,
-                        _date,
-                        _hour,
+                        _testedCountry,
+                        _testedDate,
+                        _testedHour,
                         _user,
                         _responseTo,
                         _cc,
@@ -160,7 +160,8 @@ $ETTS.ajax=(function(){
                         attachFile,
                         attachFileSave,
                         attachFileSize,
-                        _isInternal, formulario){
+                        _isInternal, 
+                        formulario){
                             
             var responseToArray=[],
             responseToText=[],
@@ -171,10 +172,16 @@ $ETTS.ajax=(function(){
             attachfileArray=[],
             attachFileSaveArray=[],
             attachFileSizeArray=[],
+            testedNumbersArray=[],
+            countryArray=[],
+            countryTextArray=[],
+            dateArray=[],
+            hourArray=[],
             lengtTo=_responseTo.length,
             lengthCc=_cc.length,
             lengthBbc=_bbc.length,
-            lengthAttachFile=attachFile.length;
+            lengthAttachFile=attachFile.length,
+            lengthTestedNumber=_testedNumber.length;
             
             for (var i = 0; i < lengtTo; i++) 
             {
@@ -200,7 +207,31 @@ $ETTS.ajax=(function(){
                 attachFileSaveArray.push(attachFileSave[i].value);
                 attachFileSizeArray.push(attachFileSize[i].value);
             }
-
+            
+            for (i = 0; i < lengthTestedNumber; i++)
+            {
+                testedNumbersArray.push(_testedNumber[i].value);
+                countryArray.push(_testedCountry[i].value);
+                countryTextArray.push(_testedCountry[i].options[_testedCountry[i].selectedIndex].text);
+                dateArray.push(_testedDate[i].value);
+                hourArray.push(_testedHour[i].value);
+            }
+            
+            var idGmt=null,
+            textoGmt=null,
+            _idUser=null,
+            _textoUser=null;
+            
+            if (_gmt){
+                idGmt=_gmt.val();
+                textoGmt=_gmt.text();
+            }
+            
+            if (_user){
+                _idUser=_user.val();
+                _textoUser=_user.text();
+            }
+            
             $.ajax({
                 type:'POST',
                 url:'/ticket/saveticket',
@@ -217,7 +248,7 @@ $ETTS.ajax=(function(){
                        });
                 },
                 data: {
-                    user:_user,
+                    user:_textoUser,
                     responseTo:responseToArray,
                     cc:ccArray,
                     bbc:bbcArray,
@@ -234,7 +265,15 @@ $ETTS.ajax=(function(){
                     isInternal:_isInternal,
                     emails:responseToText,
                     direccionCC:ccText,
-                    direccionBBC:bbcText
+                    direccionBBC:bbcText,
+                    idUser:_idUser,
+                    gmt:idGmt,
+                    gmtText:textoGmt,       
+                    testedNumber:testedNumbersArray,
+                    _country:countryArray,
+                    _countryText:countryTextArray,                          
+                    _date: dateArray,
+                    _hour: hourArray
                 },
                 success:function(data) {
                     if (data == 'success') {
@@ -267,16 +306,25 @@ $ETTS.ajax=(function(){
              });
         },
         
-        saveMail:function(_newMail,_typeUser, _user, contentMail, to){
-            if (_typeUser.val() && _user.val())
+        saveMail:function(_newMail,_typeUser, _user, contentMail, to, _option){
+            if (_user.val())
             {
+                
+                if (_typeUser=='customer')
+                    _typeUser=1;
+                else if (_typeUser=='supplier')
+                    _typeUser=0;
+                else
+                    _typeUser=_typeUser;
+                
                 $.ajax({
                    type:'POST',
                    url:'/Mail/SetMail',
                    data:{
                        mail: _newMail.val(),
-                       typeUser:_typeUser.val(),
-                       user:_user.val()
+                       typeUser:_typeUser,
+                       user:_user.val(),
+                       option:_option
                    },
                    success:function(data){
                        if (data == 'true') 

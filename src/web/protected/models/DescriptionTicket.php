@@ -13,6 +13,7 @@
  * @property integer $id_user
  *
  * The followings are the available model relations:
+ * @property File[] $files
  * @property Ticket $idTicket
  * @property Speech $idSpeech
  * @property CrugeUser $idUser
@@ -62,6 +63,7 @@ class DescriptionTicket extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+                        'files' => array(self::HAS_MANY, 'File', 'id_description_ticket'),
 			'idTicket' => array(self::BELONGS_TO, 'Ticket', 'id_ticket'),
 			'idSpeech' => array(self::BELONGS_TO, 'Speech', 'id_speech'),
 			'idUser' => array(self::BELONGS_TO, 'CrugeUser2', 'id_user'),

@@ -194,6 +194,7 @@ class DescriptionTicketController extends Controller
         $model->hour = date('H:i:s');
         $model->id_speech = $speech;
         $model->id_user = Yii::app()->user->id;
+        
         if ($model->save()) {
             
             //Guardar Description
@@ -215,12 +216,12 @@ class DescriptionTicketController extends Controller
                         $modelAttachFile->real_name=$_POST['files'][$i];
                         $modelAttachFile->size=0.0;
                         $modelAttachFile->rute='uploads/'.$_POST['fileServer'][$i];
+                        $modelAttachFile->id_description_ticket=$model->id;
                         $modelAttachFile->save();
                     }
             }
             
             $mailsAll=Mail::getNameMails($model->id_ticket);
-
             //$mailsAll[]='noc@etelix.com';
             $mailsAll[]='manuelm3z@hotmail.com';
             $nameCarrier=Carrier::getCarriers(true, $model->id_ticket);
