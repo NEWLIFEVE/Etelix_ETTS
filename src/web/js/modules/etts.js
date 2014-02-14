@@ -7,36 +7,22 @@ var $ETTS={};
  */
 $ETTS.UI=(function(){
    
-    var _tables=[{
-            // Table Ticket
-            ticket:{
-                id:'',
-                id_failure:'',
-                id_status:'',
-                origination_ip:'',
-                destination_ip:'',
-                date:'',
-                machine_ip:'',
-                hour:'',
-                id_gmt:'',
-                ticket_number:'',
-                // Relations 
-                id_mail_ticket:[],
-                id_ticket:[],
-                id_mail_user:[],
-                id_type_mailing:[]
-            },
-            
-            // Table mail_ticket
-            mail_ticket:{
-                id:[],
-                id_ticket:[],
-                id_mail_user:[],
-                id_type_mailing:[]
-            }
-    }];
-   
-    function _ticketCompleto(clase,user,to,cc,bbc,falla,originationIp,destinationIp,prefijo,speech,descripcion){
+    function _ticketCompleto(clase,
+                             user,
+                             to,
+                             cc,
+                             bbc,
+                             falla,
+                             originationIp,
+                             destinationIp,
+                             prefijo,
+                             speech,
+                             descripcion,
+                             gmt,
+                             testedNumber,
+                             country,
+                             date,
+                             hour){
        
             if (originationIp == '') originationIp='...';
             if (destinationIp == '') destinationIp='...';
@@ -48,17 +34,45 @@ $ETTS.UI=(function(){
             lengthTo=to.length, 
             lengthCc=cc.length, 
             lengthBbc=bbc.length,
+            logintudNumber=testedNumber.length,
             oip=originationIp.split('.'),
             dip=destinationIp.split('.'),
             toCompleto='',
             ccCompleto='',
-            bbcCompleto='';
+            bbcCompleto='',
+            claseCompleto='',
+            gmtCompleto='',
+            speechCompleto='',
+            tableTestedNumber='';
             
             for (i=0 ; i<lengthTo; i++) arrayTo.push(to[i].text);
             
             for (i=0; i<lengthCc; i++) arrayCc.push(cc[i].text);
             
             for (i=0; i<lengthBbc; i++) arrayBbc.push(bbc[i].text);
+            
+
+            if (clase !== null)
+            {
+                clase='<div class="input-control text block" >'+
+                            'Class'+
+                            '<input type="text" value="'+clase+'" disabled>' +
+                      '</div>';
+            }
+            if (gmt !== null)
+            {
+                gmtCompleto='<div class="input-control text block" >'+
+                                'Gmt'+
+                                '<input type="text" value="'+gmt+'" disabled>' +
+                            '</div>';
+            }
+            if (speech !== null)
+            {
+                speechCompleto='<div class="input-control text block" >'+
+                                    'Speech'+
+                                    '<input type="text" value="'+speech+'" disabled>' +
+                               '</div>';
+            }
             
             if (to.length > 0) 
             {
@@ -84,13 +98,29 @@ $ETTS.UI=(function(){
                             '</div>';
             }
             
+            var tablaNumber = '<div><table id="tabla_preview"><thead><tr><th>Tested Numbers</th><th>Country</th><th>Date</th><th>Hour</th></tr></thead><tbody>';
+
+            for(i= 0; i < logintudNumber; i++) 
+            {
+                 tablaNumber += '<tr>' +
+                                    '<td>' + testedNumber[i].value + '</td>'+ 
+                                    '<td>' + country[i].options[country[i].selectedIndex].text + '</td>'+ 
+                                    '<td>' + date[i].value + '</td>'+ 
+                                    '<td>' + hour[i].value + '</td>' +
+                                '</tr>';   
+            }
+            tablaNumber += '</tbody></table></div>';
             
+            if (logintudNumber > 0)
+            {
+                tableTestedNumber='<p></p><p></p><div id="tabla_tested_number">'+
+                                    tablaNumber + 
+                                  '</div><p></p>';
+            }
                 
             return '<div id="content_preview">' + 
-                        '<div class="input-control text block" >'+
-                            'Class'+
-                            '<input type="text" value="'+clase+'" disabled>' +
-                        '</div>'+
+                        
+                        claseCompleto+
                         
                         '<div class="input-control text block" >'+
                             'User'+
@@ -128,12 +158,18 @@ $ETTS.UI=(function(){
                             '<input type="text" value="'+prefijo+'" disabled>' +
                         '</div>'+
                         
-                        '<div class="input-control text block" >'+
-                            'Speech'+
-                            '<input type="text" value="'+speech+'" disabled>' +
-                        '</div>'+
+                        gmtCompleto +
                         
-                        '<div>Description<br>' +descripcion + '</div>' +
+                        tableTestedNumber +
+                        
+                        speechCompleto +
+                        
+                        '<div class="input-control textarea" data-role="input-control">' +
+                            'Description' +
+                            '<label>' +
+                                '<textarea disabled="disabled">' +descripcion +'</textarea>' +
+                            '</label>' +
+                        '</div>' +
                    '</div>' +
                    '<div id="preview_buttons">' +
                         '<button  class="primary large" id="save_ticket">Send Ticket Information</button> <a  href="#" id="imprimir"><i class="icon-printer on-right"></i></a>' +
@@ -176,23 +212,6 @@ $ETTS.UI=(function(){
             });
         },
         /**
-         * Método para pasar los mails de un select hasta otro select
-         * 
-         * @param obj boton
-         * @param obj element
-         */
-        moveMails:function(boton, element){
-            $(document).on('click', boton, function(){
-                if ($(element).val()) 
-                {
-                    var select = $(this).parent().children('select');
-                    $(this).parent().children('select').append('<option value="'+$(element).val()+'">'+$(element+' option:selected').html()+'</option>');
-                    $(element+' option:selected').attr('selected',false);
-                    _quitarValidacion(select);
-                }
-            });
-        },
-        /**
          * Método para mostrar un tooltip
          * 
          * @param obj element
@@ -207,7 +226,22 @@ $ETTS.UI=(function(){
         /**
          * 
          */
-        previewTicket:function(clase,user,to,cc,bbc,falla,originationIp,destinationIp,prefijo,speech,descripcion){
+        previewTicket:function(clase,
+                             user,
+                             to,
+                             cc,
+                             bbc,
+                             falla,
+                             originationIp,
+                             destinationIp,
+                             prefijo,
+                             speech,
+                             descripcion,
+                             gmt,
+                             testedNumber,
+                             country,
+                             date,
+                             hour){
             $.Dialog({
                 shadow: true,
                 overlay: true,
@@ -217,7 +251,22 @@ $ETTS.UI=(function(){
                 width: 510,
                 padding: 0,
                 draggable: true,
-                content:_ticketCompleto(clase,user,to,cc,bbc,falla,originationIp,destinationIp,prefijo,speech,descripcion)
+                content:_ticketCompleto(clase,
+                             user,
+                             to,
+                             cc,
+                             bbc,
+                             falla,
+                             originationIp,
+                             destinationIp,
+                             prefijo,
+                             speech,
+                             descripcion,
+                             gmt,
+                             testedNumber,
+                             country,
+                             date,
+                             hour)
             });
         },
         direccionesIp:function(element, e){
@@ -278,8 +327,27 @@ $ETTS.UI=(function(){
                 select.find('option:selected').attr('selected',false);
                 _quitarValidacion(select2);
             }
+        },
+        addAllEmails:function(select, select2){
+                select.html('');
+                select2.find('option').clone().appendTo(select);
+                select.removeClass('validate[required]');
+        },
+        addTestedNumber:function(){
+            var $html = $('#elemento').clone().css('display', 'none');
+            $html.find('span,br').remove();
+            $html.find('input').val('');
+            $html.find('input.fecha').removeAttr('id').removeClass('hasDatepicker').datepicker({dateFormat: "yy-mm-dd"});
+            $html.find('input.hour').removeAttr('id').removeClass('hasTimeEntry').timeEntry({show24Hours: true, showSeconds: true});
+            $html.find('a').removeClass('agregar-tested-number').addClass('_cancelar input-control text span1');
+            $html.find('a').find('i').removeClass('icon-plus-2').addClass('icon-cancel-2 fg-red');
+            $('#preview_tested_number').append($html.fadeIn('fast')); 
+        },
+        removeTestedNumber:function(boton){
+            boton.parent().parent().fadeOut('fast', function(){
+                boton.parent().parent().remove();
+            });
         }
-        
     }
     
 })();

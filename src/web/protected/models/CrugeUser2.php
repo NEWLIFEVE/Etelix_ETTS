@@ -138,7 +138,7 @@ class CrugeUser2 extends CActiveRecord
      */  
     public static function getUsuerByIdCarrier()
     {
-        return self::model()->findAll("id_carrier is not null");
+        return self::model()->findAll(array("condition"=>"id_carrier is not null",  "order" => "username ASC"));
     }
     
     /**

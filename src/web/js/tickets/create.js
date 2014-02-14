@@ -72,7 +72,9 @@ $(document).on('ready', function(){
           url:  '/Mail/SetMail',
           type: 'post',
           data:{
-              mail: $('#new_mail').val()
+              mail: $('#new_mail').val(),
+              option:'0',
+              typeUser:'1'
           },
           success: function(data){
               if (data == 'true') {

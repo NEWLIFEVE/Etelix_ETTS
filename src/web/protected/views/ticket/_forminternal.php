@@ -43,7 +43,7 @@
         </div>
         
         <div class="input-control text span2">
-            <button class="btn-agregar-correo primary" type="button"><i class="icon-floppy on-left"></i>Save</button>
+            <button class="btn-agregar-correo-interno-proveedor primary" type="button"><i class="icon-floppy on-left"></i>Save</button>
         </div>
     </div>
     <?php echo $form->ListBox(
@@ -134,7 +134,6 @@
 
 
 <div class="input-control textarea" data-role="input-control">
-    Description<!--<input type="text" id="areaDescription" class="validate[required]">-->
     <label>
         <?php echo $form->textArea($model,'description',array('placeholder' => 'Description (required)', 'class' => 'validate[required]')); ?>
         <?php echo $form->error($model,'description'); ?>

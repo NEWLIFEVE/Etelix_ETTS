@@ -191,6 +191,7 @@ class TicketController extends Controller
 		
                 $modelTicket=new Ticket;
 		$rutaAttachFile=array();
+                $idUser=null;
                 
 		$modelTicket->date=date('Y-m-d');
 		$modelTicket->id_failure=$_POST['failure'];
@@ -294,7 +295,20 @@ class TicketController extends Controller
                             }
                     }
                 }
-
+                
+                // Guardando descripcion
+                $modelDescriptionTicket=new DescriptionTicket();
+                $modelDescriptionTicket->id_ticket=$modelTicket->id;
+                $modelDescriptionTicket->description=$_POST['description'];
+                $modelDescriptionTicket->date=date('Y-m-d');
+                $modelDescriptionTicket->hour=date('H:i:s');
+                $modelDescriptionTicket->id_user=Yii::app()->user->id;
+                if (!$modelDescriptionTicket->save())
+                {
+                    echo '<h2>Description</h2>';
+                    print_r($modelDescriptionTicket->getErrors());
+                }
+                
                 if(isset($_POST['_attachFile']) && count($_POST['_attachFile']))
                 {
                         /**
@@ -310,8 +324,8 @@ class TicketController extends Controller
                                 $modelAttachFile->real_name=$_POST['_attachFile'][$i];
                                 $modelAttachFile->size=$_POST['_attachFileSize'][$i];
                                 $modelAttachFile->rute='uploads/'.$_POST['_attachFileSave'][$i];
+                                $modelAttachFile->id_description_ticket=$modelDescriptionTicket->id;
                                 $rutaAttachFile[]=$modelAttachFile->rute;
-
                                 if (!$modelAttachFile->save())
                                 {
                                     echo '<h2>Attach File</h2>';
@@ -320,19 +334,6 @@ class TicketController extends Controller
                         }
                 }
 
-                // Guardando descripcion
-                $modelDescriptionTicket=new DescriptionTicket();
-                $modelDescriptionTicket->id_ticket=$modelTicket->id;
-                $modelDescriptionTicket->description=$_POST['description'];
-                $modelDescriptionTicket->date=date('Y-m-d');
-                $modelDescriptionTicket->hour=date('H:i:s');
-                $modelDescriptionTicket->id_user=Yii::app()->user->id;
-                if (!$modelDescriptionTicket->save())
-                {
-                    echo '<h2>Description</h2>';
-                    print_r($modelDescriptionTicket->getErrors());
-                }
-                
                 // Variables para enviar al cuerpo del correo
                 $cuerpo='';
                 $cuerpo_tt='';
@@ -373,9 +374,16 @@ class TicketController extends Controller
                 // Si es cliente
                 else
                 {
+                    $user=Yii::app()->user->name;
+                    if (isset($_POST['user']) && isset($_POST['idUser']) && $_POST['user'] != null && $_POST['idUser'] != null)
+                    {
+                        $user=$_POST['user'];
+                        $idUser=$_POST['idUser'];
+                    }
+                    
                     $cuerpoMail->init(
                                 $ticketNumber,
-                                Yii::app()->user->name,
+                                $user,
                                 $_POST['emails'],
                                 $_POST['failureText'],
                                 $_POST['originationIp'],
@@ -398,8 +406,16 @@ class TicketController extends Controller
                 $mailer=new EnviarEmail; 
                 
                 $nameCarrier=Carrier::getCarriers(true, $modelTicket->id);
+                $tipoUsuario='';
+                if ($idUser === null)
+                {
+                    $tipoUsuario = CrugeAuthassignment::getRoleUser();
+                }
+                else
+                {
+                    $tipoUsuario = CrugeAuthassignment::getRoleUser(false, $idUser);
+                }
                 
-                $tipoUsuario = CrugeAuthassignment::getRoleUser();
                 $subject='';
                 if ($tipoUsuario == 'C')
                 {
@@ -434,7 +450,6 @@ class TicketController extends Controller
                 {
                     echo 'Error al enviar el correo: '.$envioMail;
                 }
-                
 
     }
     

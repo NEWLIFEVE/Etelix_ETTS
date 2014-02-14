@@ -6,7 +6,7 @@ $(document).on('ready', function(){
      ************************************************************************/
      // Append speech
     $(document).on('change', '#speech', function(){
-       $ETTS.ajax.getSpeech($(this).val(), $('div.nicEdit-main')); 
+       $ETTS.ajax.getSpeech($(this).val(), $('#Ticket_description')); 
     });
     
     // Get Carrier by Class
@@ -36,15 +36,15 @@ $(document).on('ready', function(){
     
     $(document).on('click', 'input[name="preview"]', function(){
         var originationIP = $('#oip1').val() + '.' + $('#oip2').val() + '.' + $('#oip3').val() + '.' + $('#oip4').val(),
-        destinationIP = $('#dip1').val() + '.' + $('#dip2').val() + '.' + $('#dip3').val() + '.' + $('#dip4').val(),
-        description = $('div.nicEdit-main').text();
+        destinationIP = $('#dip1').val() + '.' + $('#dip2').val() + '.' + $('#dip3').val() + '.' + $('#dip4').val();
+//        description = $('div.nicEdit-main').text();
         
         if (originationIP === '...') originationIP = '';
         if (destinationIP === '...') destinationIP = '';
         
         $('#originationIp').val(originationIP); 
         $('#destinationIp').val(destinationIP);
-        $('#areaDescription').val(description);
+//        $('#areaDescription').val(description);
     });
     
     // Remove mails
@@ -57,9 +57,38 @@ $(document).on('ready', function(){
         $ETTS.UI.appendOptions($(this), $('#mails'));
     });   
     
-    // Add mails
-    $(document).on('click', '.btn-agregar-correo', function(){
-        $ETTS.ajax.saveMail($('#new_mail'),$('#class'),$('#user'),$('#mails'),$('#Ticket_mail'));
+    /**
+     *   Add mails
+     *   
+     *   último parámetro:
+     *   0 cuando un cliente abre un ticket
+     *   1 cuando un interno le abre un ticket a un cliente
+     *   2 cuando un interno le abre un ticket a un proveedor   
+     */
+    $(document).on('click', '.btn-agregar-correo-cliente', function(){
+        $ETTS.ajax.saveMail($('#new_mail'),'1',$('#user'),$('#mails'),$('#Ticket_mail'), '0');
+    });
+    $(document).on('click', '.btn-agregar-correo-interno-cliente', function(){
+        $ETTS.ajax.saveMail($('#new_mail'),'1',$('#user'),$('#mails'),$('#Ticket_mail'), '1');
+    });
+    $(document).on('click', '.btn-agregar-correo-interno-proveedor', function(){
+        $ETTS.ajax.saveMail($('#new_mail'),$('#class').val(),$('#user'),$('#mails'),$('#Ticket_mail'), '2');
+    });
+    
+    // Add all emails
+    $(document).on('click', '.add-all-email', function(){
+        $ETTS.UI.addAllEmails($('#Ticket_mail'),$('#mails'))
+    });
+    
+    // Add tested numbers
+    $(document).on('click', '.agregar-tested-number', function(){
+        $ETTS.UI.addTestedNumber();
+        
+    });
+    
+    // Remove tested numbers
+    $(document).on('click', '._cancelar', function(){
+        $ETTS.UI.removeTestedNumber($(this));
     });
     
     /*************************************************************************
@@ -88,14 +117,24 @@ $(document).on('ready', function(){
     // CC y BBC
     $('div#div-cc, div#div-bbc, .div-agregar-correo').hide();
     
+    
     /*************************************************************************
      * 
-     *                      Validate and preview ticket
+     *                      Datepicker and timeEntry
+     * 
+     ************************************************************************/
+    $('.fecha').datepicker({dateFormat: "yy-mm-dd"}); 
+    $('.hour').timeEntry({show24Hours: true, showSeconds: true});
+    
+    /*************************************************************************
+     * 
+     *                      Validate and preview ticket(usuario interno)
      * 
      ************************************************************************/
      $("#ticket-form").validationEngine('attach',{
         autoHidePrompt:true,
         onValidationComplete:function(form, status){
+            
             if (status==true)
             {
                 var originationIP = $('#oip1').val() + '.' + $('#oip2').val() + '.' + $('#oip3').val() + '.' + $('#oip4').val(),
@@ -115,18 +154,15 @@ $(document).on('ready', function(){
                     destinationIP,
                     $('#Ticket_prefix').val(),
                     $('select#speech option:selected').text(),
-                    $('div.nicEdit-main').html()
+                    $('#Ticket_description').val(),
+                    null,[],[],[],[]
                 );
 
                 // Save Ticket
                 $('#save_ticket').on('click', function(){
                     $ETTS.ajax.saveTicket(
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        $('#user option:selected').text(),                      // USER
+                        null,[],[],[],[],
+                        $('#user option:selected'),                             // USER
                         $('[name="Ticket[mail][]"] option'),                    // TO
                         $('#cc option'),                                        // CC
                         $('#bbc option'),                                       // BBC
@@ -136,12 +172,78 @@ $(document).on('ready', function(){
                         destinationIP,                                          // Destination IP
                         $('#Ticket_prefix').val(),                              // PREFIX
                         $('#speech option:selected').text(),                    // SPEECH
-                        $('div.nicEdit-main').html(),                           // DESCRIPTION $('div.nicEdit-main').text()
+                        $('#Ticket_description').val(),                         // DESCRIPTION $('div.nicEdit-main').text()
                         $('[name="attachFile[]"]'),                             // FILE REAL NAME
                         $('[name="attachFileSave[]"]'),                         // FILE SAVE NAME
                         $('[name="attachFileSize[]"]'),                         // FILE SIZE
                         '1',                                                    // Si es cliente = 0 de lo contrario = 1
                         $("#ticket-form")                                       // Limpiar Formulario
+                     );
+                });
+            }
+        }
+     });
+     
+     /*************************************************************************
+     * 
+     *                      Validate and preview ticket(usuario interno a cliente)
+     * 
+     ************************************************************************/
+     $("#ticket-form-to-client").validationEngine('attach',{
+        autoHidePrompt:true,
+        onValidationComplete:function(form, status){
+            
+            if (status==true)
+            {
+                var originationIP = $('#oip1').val() + '.' + $('#oip2').val() + '.' + $('#oip3').val() + '.' + $('#oip4').val(),
+                destinationIP = $('#dip1').val() + '.' + $('#dip2').val() + '.' + $('#dip3').val() + '.' + $('#dip4').val();
+                
+                if (originationIP == '...') originationIP = '';
+                if (destinationIP == '...') destinationIP = '';
+                
+                $ETTS.UI.previewTicket(
+                    null,
+                    $('select#user option:selected').text(),
+                    $('select#Ticket_mail option'),
+                    [],
+                    [],
+                    $('select#Ticket_id_failure option:selected').text(),
+                    originationIP,
+                    destinationIP,
+                    $('#Ticket_prefix').val(),
+                    null,
+                    $('#Ticket_description').val(),
+                    $('select#Ticket_idGmt option:selected').text(),
+                    $('[name="Ticket[tested_numbers][]"]'),
+                    $('[name="Ticket[country][]"]'),
+                    $('[name="Ticket[date_number][]"]'),
+                    $('[name="Ticket[hour_number][]"]')
+                );
+
+                // Save Ticket(interno a cliente)
+                $('#save_ticket').on('click', function(){
+                    $ETTS.ajax.saveTicket(
+                        $('#Ticket_idGmt option:selected'),
+                        $('[name="Ticket[tested_numbers][]"]'),
+                        $('[name="Ticket[country][]"]'),
+                        $('[name="Ticket[date_number][]"]'),
+                        $('[name="Ticket[hour_number][]"]'),
+                        $('#user option:selected'),                             // USER
+                        $('[name="Ticket[mail][]"] option'),                    // TO
+                        [],                                                     // CC
+                        [],                                                     // BBC
+                        $('#Ticket_id_failure').val(),                          // FAILURE
+                        $('#Ticket_id_failure option:selected').text(),         // Texto de la falla para enviar por correo
+                        originationIP,                                          // Origination IP            
+                        destinationIP,                                          // Destination IP
+                        $('#Ticket_prefix').val(),                              // PREFIX
+                        null,                                                   // SPEECH
+                        $('#Ticket_description').val(),                         // DESCRIPTION $('div.nicEdit-main').text()
+                        $('[name="attachFile[]"]'),                             // FILE REAL NAME
+                        $('[name="attachFileSave[]"]'),                         // FILE SAVE NAME
+                        $('[name="attachFileSize[]"]'),                         // FILE SIZE
+                        '0',                                                    // Si es cliente = 0 de lo contrario = 1
+                        $("#ticket-form-to-client")                             // Limpiar Formulario
                      );
                 });
             }
