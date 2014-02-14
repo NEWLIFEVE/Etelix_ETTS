@@ -427,6 +427,7 @@ class TicketController extends Controller
                 }
                 
                 $envioMail=$mailer->enviar($cuerpo, $to,'',$subject,$rutaAttachFile,$cc);
+
                 //$emailsTT[]='mmzmm3z@gmail.com';
 //                $emailsTT[]='tsu.nelsonmarcano@gmail.com';
 //                $envioMail2=false;
@@ -435,6 +436,7 @@ class TicketController extends Controller
 //                {
 //                    $envioMail2=$mailer->enviar($cuerpo_tt,$emailsTT,$to,$subject,$rutaAttachFile);
 //                }
+
                 if($envioMail===true)
                 {
 //                    if(isset($envioMail2) && $envioMail2===true)

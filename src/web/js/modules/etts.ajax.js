@@ -111,7 +111,7 @@ $ETTS.ajax=(function(){
             {
                 $.ajax({
                        type: 'POST',
-                       url: '/mailuser/getmailuser',
+                       url: '/mailUser/getmailuser',
                        data:{
                            iduser:id
                        },
