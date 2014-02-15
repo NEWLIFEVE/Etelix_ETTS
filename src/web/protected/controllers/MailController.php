@@ -227,27 +227,28 @@ class MailController extends Controller
                         break;
                 }
 	}
-        /**
-         * 
-         * @param string $typeUser
-         * @param string $noCustomer
-         * @return int
-         */
-        private function _typeUserSaveMail($typeUser)
+	
+    /**
+     * 
+     * @param string $typeUser
+     * @param string $noCustomer
+     * @return int
+     */
+    private function _typeUserSaveMail($typeUser)
+    {
+        $assignBy=1;
+
+        if ($typeUser == 'customer') // Si es cliente
         {
             $assignBy=1;
-
-            if ($typeUser == 'customer') // Si es cliente
-            {
-                $assignBy=1;
-            }
-            else                         // Si es proveedor
-            {
-                $assignBy=0;
-            }
-            
-            return $assignBy;
         }
+        else                         // Si es proveedor
+        {
+            $assignBy=0;
+        }
+        
+        return $assignBy;
+    }
         
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.
