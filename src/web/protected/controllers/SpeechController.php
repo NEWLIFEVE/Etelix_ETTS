@@ -179,13 +179,13 @@ class SpeechController extends Controller
 		}
 	}
         
-        /**
-         * Método para traer el texto de la tabla speech
-         */
-        public function actionGettextspeech()
-        {
-            $model=new Speech;
-            $idSpeech=$_POST['_idSpeech'];
-            if ($idSpeech != null) echo $model::model()->find("id = '$idSpeech'")->speech;
-        }
+    /**
+     * Método para traer el texto de la tabla speech
+     */
+    public function actionGettextspeech()
+    {
+        $model=new Speech;
+        $idSpeech=$_POST['_idSpeech'];
+        if ($idSpeech != null) echo $model::model()->find("id = '$idSpeech'")->speech;
+    }
 }
