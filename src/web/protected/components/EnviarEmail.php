@@ -39,6 +39,7 @@ class EnviarEmail extends CApplicationComponent
             $mailer->IsSMTP();
             $mailer->IsHTML(true); 
             $mailer->From='etts@etelix.com';
+            $mailer->FromName = 'ETELIX TT System (ETTS)';
             
             if($user!=null)
             {
@@ -70,7 +71,9 @@ class EnviarEmail extends CApplicationComponent
                     $mailer->AddReplyTo($reply);
                 }
             }
-            $mailer->addBCC('leandrojoseiglesias@etelix.com','Leandro Iglesias');
+            //$mailer->addBCC('leandrojoseiglesias@etelix.com','Leandro Iglesias');
+            //$mailer->addCC('noc@etelix.com','NOC');
+            $mailer->addCC('mmzmm3z@gmail.com','Manuel Zambrano');
             if($copia!=null)
             {
                 if(is_array($copia))
