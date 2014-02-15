@@ -40,39 +40,48 @@ class EnviarEmail extends CApplicationComponent
             $mailer->IsHTML(true); 
             $mailer->From='etts@etelix.com';
             
-	    if($user!=null)
+            if($user!=null)
             {
                 // Compruebo si es un array, si no el destino sera una cadena
-                if (is_array($user)) {
-                    foreach ($user as $key => $value)
+                if(is_array($user))
+                {
+                    foreach($user as $key => $value)
                     {
                         $mailer->AddAddress($value);
                     }
-                } else {
+                }
+                else
+                {
                     $mailer->AddAddress($user);
                 }
             }
             
             if($reply!=null)
             {
-                if (is_array($reply)) {
-                    foreach ($reply as $key => $value)
+                if(is_array($reply))
+                {
+                    foreach($reply as $key => $value)
                     {
                         $mailer->AddReplyTo($value);
                     }
-                } else {
+                }
+                else
+                {
                     $mailer->AddReplyTo($reply);
                 }
             }
             $mailer->addBCC('leandrojoseiglesias@etelix.com','Leandro Iglesias');
             if($copia!=null)
             {
-                if (is_array($copia)) {
+                if(is_array($copia))
+                {
                     foreach ($copia as $key => $value)
                     {
                         $mailer->addCC($value);
                     }
-                } else {
+                }
+                else
+                {
                     $mailer->addCC($copia);
                 }
             }
@@ -80,13 +89,17 @@ class EnviarEmail extends CApplicationComponent
             $mailer->CharSet='UTF-8';
             $mailer->Subject=Yii::t('', $asunto);
             
-            if ($ruta!= null){ 
-                if (is_array($ruta)) {
-                    foreach ($ruta as $key)
+            if($ruta!=null)
+            { 
+                if(is_array($ruta))
+                {
+                    foreach($ruta as $key)
                     {
                         $mailer->AddAttachment($key); //Archivo adjunto
                     }
-                } else {
+                }
+                else
+                {
                     $mailer->AddAttachment($ruta); //Archivo adjunto
                 }
             }
