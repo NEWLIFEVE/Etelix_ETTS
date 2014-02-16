@@ -62,8 +62,8 @@ class CuerpoCorreo
         $this->_bcc = $bcc;
         $this->_speech = $speech;
         
-        if (!is_array($this->_cc)) $this->_cc[] = '<span style="color:red">No data available</span>';
-        if (!is_array($this->_bcc)) $this->_bcc[] = '<span style="color:red">No data available</span>';
+        
+        
         if (empty($this->_originationIp)) $this->_originationIp = '<span style="color:red">No data available</span>';
         if (empty($this->_destinationIp)) $this->_destinationIp = '<span style="color:red">No data available</span>';
         if (empty($this->_prefix)) $this->_prefix = '<span style="color:red">No data available</span>';
@@ -174,64 +174,66 @@ class CuerpoCorreo
                              </table>';
         
         // Detail of ticket(Supplier)
-        $this->_detailSupplier='<h2>Ticket Details</h2>
-                        <table style="border-spacing: 0; width:100%; border: solid #ccc 1px;">
-                            <tr>
-                                    <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc; padding: 5px 10px; text-align: left;">To</th>
-                            </tr>
-                            <tr>
-                                    <td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'. implode('<br>', $this->_emails) .'</td>
-                            </tr>
-                            
-                            <tr>
-                                    <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc; padding: 5px 10px; text-align: left;">CC</th>
-                            </tr>
-                            <tr>
-                                    <td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'. implode('<br>', $this->_cc) .'</td>
-                            </tr>
-                            
-                            <tr>
-                                    <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc; padding: 5px 10px; text-align: left;">BCC</th>
-                            </tr>
-                            <tr>
-                                    <td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'. implode('<br>', $this->_bcc) .'</td>
-                            </tr>
-                            
-                            <tr>
-                                    <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Failure</th>
-                            </tr>
-                            <tr>
-                                    <td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$this->_failure.'</td>
-                            </tr>
-                            <tr>
-                                    <th colspan="1" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Origination IP</th>
-                                    <th colspan="3" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Destination IP</th>
-                            </tr>
-                            <tr>
-                                    <td colspan="1" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$this->_originationIp.'</td>
-                                    <td colspan="3" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$this->_destinationIp.'</td>
-                            </tr>
-                            <tr>
-                                    <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Prefix</th>
-                            </tr>
-                            <tr>
-                                    <td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$this->_prefix.'</td>
-                            </tr>
-                            
-                            <tr>
-                                    <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Speech</th>
-                            </tr>
-                            <tr>
-                                    <td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$this->_speech.'</td>
-                            </tr>
-                            <tr>
-                                    <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Description</th>
-                            </tr>
-                            <tr>
-                                    <td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$this->_description.'</td>
-                            </tr>
-                        </table>';
-        
+        $body='<h2>Ticket Details</h2>
+               <table style="border-spacing: 0; width:100%; border: solid #ccc 1px;">
+                <tr>
+                    <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc; padding: 5px 10px; text-align: left;">To</th>
+                </tr>
+                <tr>
+                    <td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'. implode('<br>', $this->_emails) .'</td>
+                </tr>';
+        if(is_array($this->_cc))
+        { 
+            $body.='<tr>
+                        <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc; padding: 5px 10px; text-align: left;">CC</th>
+                    </tr>
+                    <tr>
+                        <td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'. implode('<br>', $this->_cc) .'</td>
+                    </tr>';
+        }
+        if(is_array($this->_bcc))
+        {
+            $body.='<tr>
+                        <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc; padding: 5px 10px; text-align: left;">BCC</th>
+                    </tr>
+                    <tr>
+                        <td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'. implode('<br>', $this->_bcc) .'</td>
+                    </tr>';
+        }
+        $body.='<tr>
+                    <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Failure</th>
+                </tr>
+                <tr>
+                    <td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$this->_failure.'</td>
+                </tr>
+                <tr>
+                    <th colspan="1" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Origination IP</th>
+                    <th colspan="3" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Destination IP</th>
+                </tr>
+                <tr>
+                    <td colspan="1" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$this->_originationIp.'</td>
+                    <td colspan="3" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$this->_destinationIp.'</td>
+                </tr>
+                <tr>
+                    <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Prefix</th>
+                </tr>
+                <tr>
+                    <td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$this->_prefix.'</td>
+                </tr>
+                <tr>
+                    <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Speech</th>
+                </tr>
+                <tr>
+                    <td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$this->_speech.'</td>
+                </tr>
+                <tr>
+                    <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Description</th>
+                </tr>
+                <tr>
+                    <td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$this->_description.'</td>
+                </tr>
+            </table>';
+        $this->_detailSupplier=$body;
         // Footer to customer
         $this->_footerCustomer='<div style="width:100%">
                                     <p style="text-align:justify">
