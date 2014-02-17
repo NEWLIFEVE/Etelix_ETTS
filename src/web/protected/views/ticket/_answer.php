@@ -14,7 +14,7 @@ foreach ($datos->descriptionTickets as $value) {
         {
             foreach ($value->files as $file) 
             {
-                $upload.= '<br>'.CHtml::link($file->real_name,'/'.$file->rute, array('target' => '_blank'))  .'<br>';
+                $upload.= '<br>'.CHtml::link($file->real_name,'/'.$file->rute, array('target' => '_blank', 'class' => 'link'))  .'<br>';
             }
         }
         

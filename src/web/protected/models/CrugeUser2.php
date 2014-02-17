@@ -177,6 +177,6 @@ class CrugeUser2 extends CActiveRecord
     public static function getCarriersSupplierOrCustomer($type)
     {
         $carriers=Carrier::getCarriersByClass($type);
-        if ($carriers != null) return self::model()->findAllBySql("SELECT iduser, username FROM cruge_user WHERE id_carrier IN (".implode(",",$carriers).")");
+        if ($carriers != null) return self::model()->findAllBySql("SELECT iduser, username FROM cruge_user WHERE id_carrier IN (".implode(",",$carriers).") ORDER BY username ASC");
     }
 }

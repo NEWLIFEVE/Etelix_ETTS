@@ -61,7 +61,7 @@ $ETTS.ajax=(function(){
         deleteMailByConfirm:function(selectTop, selectDown, mailSeleccionado){
             $.ajax({
                    type: 'POST',
-                   url: '/mailUser/deletemail',
+                   url: '/mailuser/deletemail',
                    data:"id="+mailSeleccionado,
                    success:function(data){
                        $('#'+selectTop+' option[value='+mailSeleccionado+']').remove();
@@ -111,7 +111,7 @@ $ETTS.ajax=(function(){
             {
                 $.ajax({
                        type: 'POST',
-                       url: '/mailUser/getmailuser',
+                       url: '/mailuser/getmailuser',
                        data:{
                            iduser:id
                        },
@@ -220,7 +220,8 @@ $ETTS.ajax=(function(){
             var idGmt=null,
             textoGmt=null,
             _idUser=null,
-            _textoUser=null;
+            _textoUser=null,
+            _typeUser=null;
             
             if (_gmt){
                 idGmt=_gmt.val();
@@ -230,6 +231,10 @@ $ETTS.ajax=(function(){
             if (_user){
                 _idUser=_user.val();
                 _textoUser=_user.text();
+            }
+            // Si es la interfaz de abrirle ticket a proveedor
+            if ($('#class')) {
+                _typeUser=$('#class').val()
             }
             
             $.ajax({
@@ -273,7 +278,8 @@ $ETTS.ajax=(function(){
                     _country:countryArray,
                     _countryText:countryTextArray,                          
                     _date: dateArray,
-                    _hour: hourArray
+                    _hour: hourArray,
+                    typeUser:_typeUser
                 },
                 success:function(data) {
                     if (data == 'success') {

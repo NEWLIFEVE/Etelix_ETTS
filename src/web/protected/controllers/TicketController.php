@@ -187,11 +187,16 @@ class TicketController extends Controller
 	 */
 	public function actionSaveticket()
 	{
-        date_default_timezone_set('America/Caracas');
-		
-        $modelTicket=new Ticket;
-		$rutaAttachFile=array();
-        $idUser=null;
+            date_default_timezone_set('America/Caracas');
+
+            $modelTicket=new Ticket;
+                    $rutaAttachFile=array();
+            $idUser=null;
+            
+            $typeUser='C';
+            
+                if (isset($_POST['typeUser'])) 
+                    $typeUser=$this->_getTypeUser($_POST['typeUser']);
                 
 		$modelTicket->date=date('Y-m-d');
 		$modelTicket->id_failure=$_POST['failure'];
@@ -202,7 +207,7 @@ class TicketController extends Controller
 		$modelTicket->hour=date('H:i:s');
 		$maximo=$modelTicket::model()->findBySql("SELECT COUNT(id) AS number_of_the_day FROM ticket WHERE date= '".date('Y-m-d')."'");
 		$maximo->number_of_the_day+=1;
-		$ticketNumber=date('Ymd').'-'.str_pad($maximo->number_of_the_day, 3, "0", STR_PAD_LEFT).'-'.CrugeAuthassignment::getRoleUser().$modelTicket->id_failure;
+		$ticketNumber=date('Ymd').'-'.str_pad($maximo->number_of_the_day, 3, "0", STR_PAD_LEFT).'-'.$typeUser.$modelTicket->id_failure;
 		$modelTicket->ticket_number=$ticketNumber;
 
         $modelTicket->id_user=Yii::app()->user->id;
@@ -304,6 +309,7 @@ class TicketController extends Controller
         $modelDescriptionTicket->date=date('Y-m-d');
         $modelDescriptionTicket->hour=date('H:i:s');
         $modelDescriptionTicket->id_user=Yii::app()->user->id;
+        $modelDescriptionTicket->read=0;
         if (!$modelDescriptionTicket->save())
         {
             echo '<h2>Description</h2>';
@@ -428,26 +434,9 @@ class TicketController extends Controller
         }
                 
         $envioMail=$mailer->enviar($cuerpo, $to,'',$subject,$rutaAttachFile,$cc);
-
-        //$emailsTT[]='mmzmm3z@gmail.com';
-//      $emailsTT[]='tsu.nelsonmarcano@gmail.com';
-//      $envioMail2=false;
-//                
-//      if(isset($_POST['isInternal']) && $_POST['isInternal'] == 0)
-//      {
-//          $envioMail2=$mailer->enviar($cuerpo_tt,$emailsTT,$to,$subject,$rutaAttachFile);
-//      }
-
+        
         if($envioMail===true)
         {
-//          if(isset($envioMail2) && $envioMail2===true)
-//          {
-//              echo 'success';
-//          }
-//          else
-//          {
-//              echo 'success';
-//          }
             echo 'success';
         }
         else
@@ -456,8 +445,28 @@ class TicketController extends Controller
         }
     }
     
-
     /**
+     * Método para retornar la letra que llevará el número del ticket dependiendo
+     * de lo que seleccione en el select de la interfaz. Si la interfaz es de un
+     * cliente se retornará 'C' por defecto
+     *  
+     * @param string $key
+     * @return string|null
+     */
+    private function _getTypeUser($key)
+    {   
+        if ($key != null)
+        {
+            if ($key == 'customer') 
+                return 'C';
+            else
+                return 'P';
+        }
+        return 'C';
+    }
+
+
+     /**
      * Action para actualizar el status del ticket. Si el ticket padre está
      * en la tabla "ticket_relation", se actualizaran sus tickets hijos al 
      * status que sea seleccionado, si no se encuentra en dicha tabla, solo 
