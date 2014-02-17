@@ -123,7 +123,7 @@
                 </div>
             </div>
             <footer>
-                Copyright &copy; <?php echo date('Y'); ?> ETELIX All Rights Reserved. Version 1.1.3
+                Copyright &copy; <?php echo date('Y'); ?> ETELIX All Rights Reserved. Version 1.1.4.1
             </footer>
         </div>
         <script>
