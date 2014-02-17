@@ -3,6 +3,7 @@ Etelix_ETTS
 
 Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
 Release 1.1.4.1
+- Cambio de from correos a ETELIX Trouble Ticket System (ETTS)
 - Renombrado de los controladores para que queden todos en minusculas
 Release 1.1.4
 - Interfaz de creacion de tickets como clientes por usuarios internos
