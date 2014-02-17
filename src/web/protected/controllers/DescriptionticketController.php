@@ -283,4 +283,13 @@ class DescriptionticketController extends Controller
         $areaAnswer .= '</div>';
         return $areaAnswer;
     }  
+    
+    public function actionRead()
+    {
+        $model=new DescriptionTicket;
+        if (isset($_POST['idTicket']) && !empty($_POST['idTicket']))
+        {
+            $model->updateAll(array("read"=>"1"), "id_ticket = ".$_POST['idTicket']);
+        }
+    }
 }

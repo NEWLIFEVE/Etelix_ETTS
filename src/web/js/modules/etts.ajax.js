@@ -387,7 +387,9 @@ $ETTS.ajax=(function(){
             $.ajax({
                type:'POST',
                url:'/descriptionticket/read',
-               data:{idTicket:_idTicket}
+               data:{
+                   idTicket:_idTicket
+               }
             });
         }
     }

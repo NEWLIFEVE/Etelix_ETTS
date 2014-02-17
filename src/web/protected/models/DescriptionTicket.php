@@ -139,14 +139,4 @@ class DescriptionTicket extends CActiveRecord
         else
             return null;
     }
-    
-    public function actionRead()
-    {
-        $model=new DescriptionTicket;
-        if (isset($_POST['idTicket']) && !empty($_POST['idTicket']))
-        {
-            $idDescription=$model::lastDescription($_POST['idTicket'], true);
-            return $model::model()->updateByPk($idDescription, array('read'=>'1'));
-        }
-    }
 }
