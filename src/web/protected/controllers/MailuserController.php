@@ -1,6 +1,6 @@
 <?php
 
-class AnswerTicketController extends Controller
+class MailuserController extends Controller
 {
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -37,7 +37,7 @@ class AnswerTicketController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('create','update','GetMailUser','deletemail'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -67,14 +67,14 @@ class AnswerTicketController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new AnswerTicket;
+		$model=new MailUser;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['AnswerTicket']))
+		if(isset($_POST['MailUser']))
 		{
-			$model->attributes=$_POST['AnswerTicket'];
+			$model->attributes=$_POST['MailUser'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -96,9 +96,9 @@ class AnswerTicketController extends Controller
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['AnswerTicket']))
+		if(isset($_POST['MailUser']))
 		{
-			$model->attributes=$_POST['AnswerTicket'];
+			$model->attributes=$_POST['MailUser'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -127,7 +127,7 @@ class AnswerTicketController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('AnswerTicket');
+		$dataProvider=new CActiveDataProvider('MailUser');
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));
@@ -138,26 +138,26 @@ class AnswerTicketController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new AnswerTicket('search');
+		$model=new MailUser('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['AnswerTicket']))
-			$model->attributes=$_GET['AnswerTicket'];
+		if(isset($_GET['MailUser']))
+			$model->attributes=$_GET['MailUser'];
 
 		$this->render('admin',array(
 			'model'=>$model,
 		));
 	}
-
+        
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer $id the ID of the model to be loaded
-	 * @return AnswerTicket the loaded model
+	 * @return MailUser the loaded model
 	 * @throws CHttpException
 	 */
 	public function loadModel($id)
 	{
-		$model=AnswerTicket::model()->findByPk($id);
+		$model=MailUser::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
@@ -165,14 +165,45 @@ class AnswerTicketController extends Controller
 
 	/**
 	 * Performs the AJAX validation.
-	 * @param AnswerTicket $model the model to be validated
+	 * @param MailUser $model the model to be validated
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='answer-ticket-form')
+		if(isset($_POST['ajax']) && $_POST['ajax']==='mail-user-form')
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}
 	}
+
+	/**
+	 * Métodos propios
+	 * @access public
+	 * @return void
+	 */
+	public function actionGetmailuser()
+	{
+        $user=null;
+        if (isset($_POST['iduser']) && $_POST['iduser'] != null)
+        {
+            $user=$_POST['iduser'];
+        }
+        else
+        {
+            $user=Yii::app()->user->id;
+        }
+        
+        if ($user!=null) 
+            MailUser::getMails($user, true); 
+                 
+	}
+
+	/**
+	 * @access public
+	 * @return void
+	 */
+	public function actionDeletemail()
+	{
+		MailUser::model()->updateByPk($_POST['id'],array("status"=>'0'));
+	}        
 }

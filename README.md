@@ -2,10 +2,15 @@ Etelix_ETTS
 ===========
 
 Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
+- Interfaz de creacion de tickets como clientes por usuarios internos
+- Interfaz de cracion de tickets a carriers proveedores
+- Cambio de asunto de correos al crear/nueva respuesta/cerrar tickets
+- Adjuntado de archivos en respuestas de tickets
 
 Release 1.1.2
 - Cambio de numero por defecto de filas en plugin de datatable
 - Reducido el alto de las filas en los admin tickets
+
 Release 1.1.1
 -Correccion de hora en guardada de descripciones
 -Bloqueada interfaz de uso de tickets a proveedores
