@@ -11,11 +11,13 @@
  * @property string $hour
  * @property integer $id_speech
  * @property integer $id_user
+ * @property integer $read
  *
  * The followings are the available model relations:
- * @property Ticket $idTicket
- * @property Speech $idSpeech
+ * @property File[] $files
  * @property CrugeUser $idUser
+ * @property Speech $idSpeech
+ * @property Ticket $idTicket
  */
 class DescriptionTicket extends CActiveRecord
 {
@@ -46,7 +48,7 @@ class DescriptionTicket extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('id_ticket, description, date', 'required'),
-			array('id_ticket, id_speech, id_user', 'numerical', 'integerOnly'=>true),
+			array('id_ticket, id_speech, id_user, read','numerical', 'integerOnly'=>true),
 			array('hour', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
@@ -62,6 +64,7 @@ class DescriptionTicket extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+                        'files' => array(self::HAS_MANY, 'File', 'id_description_ticket'),
 			'idTicket' => array(self::BELONGS_TO, 'Ticket', 'id_ticket'),
 			'idSpeech' => array(self::BELONGS_TO, 'Speech', 'id_speech'),
 			'idUser' => array(self::BELONGS_TO, 'CrugeUser2', 'id_user'),
@@ -79,6 +82,9 @@ class DescriptionTicket extends CActiveRecord
 			'description' => 'Description',
 			'date' => 'Date',
 			'hour' => 'Hour',
+			'id_speech' => 'Id Speech',
+            'id_user' => 'Id User',
+            'read' => 'Read',
 		);
 	}
 
@@ -98,18 +104,21 @@ class DescriptionTicket extends CActiveRecord
 		$criteria->compare('description',$this->description,true);
 		$criteria->compare('date',$this->date,true);
 		$criteria->compare('hour',$this->hour,true);
+		$criteria->compare('id_speech',$this->id_speech);
+        $criteria->compare('id_user',$this->id_user);
+        $criteria->compare('read',$this->read);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
 	}
         
-        /**
-         * 
-         * @param int $idTicket
-         */
-        public static function getDescription($idTicket)
-        {
-            return self::model()->findAll("id_ticket = $idTicket");
-        }
+    /**
+     * 
+     * @param int $idTicket
+     */
+    public static function getDescription($idTicket)
+    {
+        return self::model()->findAll("id_ticket = $idTicket");
+    }
 }

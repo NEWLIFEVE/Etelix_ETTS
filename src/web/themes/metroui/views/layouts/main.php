@@ -25,6 +25,7 @@
         <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/metro/metro-dropdown.js"></script>
                 
         <!-- Local JavaScript -->
+        <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/modules/etts.js"></script>
         <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/docs.js"></script>
         <!--<script src="<?php // echo Yii::app()->theme->baseUrl; ?>/js/github.info.js"></script>-->
         

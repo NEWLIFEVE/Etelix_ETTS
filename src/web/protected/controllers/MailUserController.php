@@ -148,8 +148,6 @@ class MailUserController extends Controller
 		));
 	}
         
-        
-
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
@@ -185,7 +183,19 @@ class MailUserController extends Controller
 	 */
 	public function actionGetmailuser()
 	{
-		MailUser::getMails(Yii::app()->user->id, true);
+        $user=null;
+        if (isset($_POST['iduser']) && $_POST['iduser'] != null)
+        {
+            $user=$_POST['iduser'];
+        }
+        else
+        {
+            $user=Yii::app()->user->id;
+        }
+        
+        if ($user!=null) 
+            MailUser::getMails($user, true); 
+                 
 	}
 
 	/**

@@ -15,6 +15,7 @@
  * @property integer $prefix
  * @property integer $id_gmt
  * @property string $ticket_number
+ * @property integer $id_user
  *
  * The followings are the available model relations:
  * @property TicketRelation[] $ticketRelations
@@ -68,7 +69,7 @@ class Ticket extends CActiveRecord
 		// will receive user inputs.
 		return array(
                         
-			array('id_failure, id_status, origination_ip, destination_ip, date, machine_ip', 'required'),
+			array('id_failure, id_status, date, machine_ip', 'required'),
 			array('id_failure, id_status, id_gmt', 'numerical', 'integerOnly'=>true),
 			array('origination_ip, destination_ip, machine_ip', 'length', 'max'=>64),
 			array('ticket_number', 'length', 'max'=>50),
@@ -97,6 +98,7 @@ class Ticket extends CActiveRecord
 			'idFailure' => array(self::BELONGS_TO, 'Failure', 'id_failure'),
 			'idStatus' => array(self::BELONGS_TO, 'Status', 'id_status'),
 			'idGmt' => array(self::BELONGS_TO, 'Gmt', 'id_gmt'),
+                        'idUser' => array(self::BELONGS_TO, 'CrugeUser2', 'id_user'),
 		);
 	}
 
@@ -179,14 +181,16 @@ class Ticket extends CActiveRecord
          * Si no se envía el id de un ticket se muestran todos los tickets,
          * De lo contrario se muestra solo el ticket seleccionado
          */
-        if($idTicket) $conditionTicket='AND t.id='.$idTicket;
+        if($idTicket) $conditionTicket='AND id='.$idTicket;
         
         if($onlyOpen)
         {
-            $sql="SELECT *, t.id AS id
-                  FROM ticket t
-                  WHERE t.id IN (SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user $conditionUser)) AND t.id_status=1 $conditionTicket
-                  ORDER BY t.id_status, t.id  $order";
+
+            $sql="SELECT *
+                  FROM ticket
+                  WHERE id IN (SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user $conditionUser)) AND id_status=1 $conditionTicket
+                  ORDER BY id_status, id  $order";
+
             
             // Si $returnArray esta en true, retorna un array con los datos del ticket
             if($returnArray)
@@ -202,10 +206,21 @@ class Ticket extends CActiveRecord
         }
         else
         {
-            $sql="SELECT *, t.id AS id
-                 FROM ticket t
-                 WHERE t.id IN (SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user $conditionUser)) $conditionTicket
-                 ORDER BY t.id_status, t.id $order";
+
+//            $sql="SELECT *, t.id AS id
+//                 FROM ticket t
+//                 WHERE t.id IN (SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user $conditionUser)) $conditionTicket
+//                 ORDER BY t.id_status, t.id $order";
+            
+            $sql="SELECT t.*, t.id AS id
+                FROM(SELECT * FROM ticket WHERE id_status=(SELECT id FROM status WHERE name='open') AND 
+                id IN (SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user $conditionUser)) $conditionTicket
+                UNION
+                SELECT * FROM ticket WHERE id_status=(SELECT id FROM status WHERE name='close') AND
+                id IN (SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user $conditionUser)) $conditionTicket
+                AND date>=CURRENT_DATE - interval '1 day') t
+                ORDER BY date, id_status $order";
+
             
             // Si $returnArray esta en true, retorna un array con los datos del ticket
             if($returnArray)

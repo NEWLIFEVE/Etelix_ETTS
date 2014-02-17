@@ -80,7 +80,8 @@ function changeStatus(id, select, status, _class)
 // Función para agregar archivos en el description
 function attachFile()
 {
-   /* 
+
+   
     var settings = {
                 url: "/file/uploadjquery",
                 dragDrop:false,
@@ -107,7 +108,7 @@ function attachFile()
                     pd.statusbar.remove(); //You choice to hide/not.
                 }
             }
-    var uploadObj = $("#mulitplefileuploader").uploadFile(settings); */
+    var uploadObj = $("#mulitplefileuploader").uploadFile(settings); 
 }
 
 

@@ -3,7 +3,7 @@
 */
 function saveMessage()
 {
-    /*var fileName=$('div.ajax-file-upload-filename'),
+    var fileName=$('div.ajax-file-upload-filename'),
     _length=fileName.length,
     _fileServer=[],
     _files=[];
@@ -11,7 +11,8 @@ function saveMessage()
     for(var i=0; i<_length; i++) {
         _files.push(fileName[i].innerHTML);
         _fileServer.push(fileName[i].getAttribute('name'));
-    }*/
+
+    }
     _idSpeech = null;
     if ($('select#speech').val()) {
         _idSpeech = $('select#speech option:selected').val();
@@ -23,14 +24,14 @@ function saveMessage()
             data: {
                 idSpeech: $('select#speech option:selected').val(),
                 message:  $('#answer').val(),
-                idTicket: $('#id_ticket').val()/*,
+                idTicket: $('#id_ticket').val(),
                 files:_files,
-                fileServer:_fileServer*/
+                fileServer:_fileServer
             },
             success:function(data){
                 $('#answer').val('')
-                /*$('div#area-add-file').empty();
-                $('[name="myFile[]"]').val('')*/
+                $('div#area-add-file').empty();
+                $('[name="myFile[]"]').val('')
                 if (data !== 'false') {
                     $('div.answer-ticket').empty();
                     $('div.answer-ticket').html(data);
@@ -39,29 +40,6 @@ function saveMessage()
             }
         });
     }
-}
-
-function funcionEnter(evento) 
-{ 
-    //para IE 
-    if (window.event) 
-    { 
-        if (window.event.keyCode==13) 
-        { 
-            saveMessage()
-        } 
-    } 
-    else 
-    { 
-        //Firefox y otros navegadores 
-        if (evento) 
-        { 
-            if(evento.which==13) 
-            { 
-                saveMessage()
-            } 
-        } 
-    } 
 }
 
 $(document).on('ready', function(){

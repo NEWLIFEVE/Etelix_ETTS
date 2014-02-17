@@ -10,6 +10,7 @@
  * @property string $real_name
  * @property double $size
  * @property string $rute
+ * @property integer $id_description_ticket 
  *
  * The followings are the available model relations:
  * @property Ticket $idTicket
@@ -62,6 +63,7 @@ class File extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'idTicket' => array(self::BELONGS_TO, 'Ticket', 'id_ticket'),
+                        'idDescriptionTicket' => array(self::BELONGS_TO, 'DescriptionTicket', 'id_description_ticket'),
 		);
 	}
 
