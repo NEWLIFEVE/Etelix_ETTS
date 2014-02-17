@@ -304,6 +304,7 @@ class TicketController extends Controller
         $modelDescriptionTicket->date=date('Y-m-d');
         $modelDescriptionTicket->hour=date('H:i:s');
         $modelDescriptionTicket->id_user=Yii::app()->user->id;
+        $modelDescriptionTicket->read=0;
         if (!$modelDescriptionTicket->save())
         {
             echo '<h2>Description</h2>';
