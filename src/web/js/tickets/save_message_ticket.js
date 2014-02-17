@@ -36,6 +36,9 @@ function saveMessage()
                 files:_files,
                 fileServer:_fileServer
             },
+            beforeSend:function(){
+                $('div.answer-ticket').html('<center><img src="/images/loader.GIF"></center>');
+            },
             success:function(data){
                 if (data !== 'false') {
                     $('div.answer-ticket').empty();

@@ -1,7 +1,8 @@
 <?php 
 
 $user=CrugeUser2::getUserTicket($datos->id, true)->iduser;
-foreach ($datos->descriptionTickets as $value) {
+$description=DescriptionTicket::getDescription($datos->id);
+foreach ($description as $value) {
     
     if($value->idUser !==null){
         if ($value->idUser->iduser === $user)
