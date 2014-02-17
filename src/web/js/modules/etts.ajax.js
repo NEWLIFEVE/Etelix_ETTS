@@ -325,7 +325,7 @@ $ETTS.ajax=(function(){
                 
                 $.ajax({
                    type:'POST',
-                   url:'/Mail/SetMail',
+                   url:'/mail/setmail',
                    data:{
                        mail: _newMail.val(),
                        typeUser:_typeUser,

@@ -49,6 +49,18 @@ $(document).on('ready', function(){
     
     // Remove mails
     $(document).on('click', 'a.a-borrar-correo', function(){
+        
+        var mailSeleccionado = $('#mails option:selected').val();
+        
+        if ($('#mails').val()) { 
+            $ETTS.UI.confirmar('Delete Mail?', 'ok_confirm', 'cancel_confirm'); 
+            $('#ok_confirm').on('click', function(){
+                $ETTS.ajax.deleteMailByConfirm('mails', 'Ticket_mail', mailSeleccionado)
+            });
+            $('#cancel_confirm').on('click', function(){
+                $.Dialog.close();
+            });
+        }
         $ETTS.UI.borrarOptionSelect($(this))
     });
     

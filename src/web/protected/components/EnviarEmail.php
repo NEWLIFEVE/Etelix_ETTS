@@ -88,7 +88,6 @@ class EnviarEmail extends CApplicationComponent
                     $mailer->addCC($copia);
                 }
             }
-            $mailer->FromName='ETTS';
             $mailer->CharSet='UTF-8';
             $mailer->Subject=Yii::t('', $asunto);
             
