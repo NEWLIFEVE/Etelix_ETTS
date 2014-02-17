@@ -182,6 +182,27 @@ table.display td {
         font-size: 90% !important;
 }
 
+@-webkit-keyframes myfirst {
+    from {text-shadow: 0px 0px 10px rgba(16, 43, 236, 0.8);}
+    to {text-shadow : none;}
+}
+
+@-moz-keyframes myfirst {
+    from {text-shadow: 0px 0px 10px rgba(16, 43, 236, 0.8);}
+    to {text-shadow : none;}
+}
+@keyframes myfirst {
+    from {text-shadow: 0px 0px 10px rgba(16, 43, 236, 0.8);}
+    to {text-shadow : none;}
+}
+
+table.display tr.blink {
+    text-shadow: 3px 3px 5px rgba(16, 43, 236, 0.8);
+    -webkit-animation: myfirst 0.5s linear infinite;
+    -moz-animation: myfirst 0.5s linear infinite;
+    animation: myfirst 0.5s linear infinite;
+}
+
 
 table.display td.center {
 	text-align: center;

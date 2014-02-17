@@ -27,15 +27,20 @@
                 <?php foreach (Ticket::ticketsByUsers(Yii::app()->user->id, false) as $ticket): ?>
                     <tr <?php
                             $timeTicket = Utility::getTime($ticket->date, $ticket->hour);
+                            if (DescriptionTicket::lastDescription($ticket->id)==null) 
+                                $read='';
+                            else
+                                $read='blink';
+
                             switch ($ticket->idStatus->id) {
                                 case '1':
                                     if($timeTicket > 86400 )
-                                        echo 'class="late"';
+                                        echo 'class="late '.$read.'"';
                                     else
-                                        echo 'class="open"'; 
+                                        echo 'class="open '.$read.'"'; 
                                     break;
                                 case '2':
-                                    echo 'class="close"';
+                                    echo 'class="close '.$read.'"';
                                     break;
                                 }
                                 ?>>

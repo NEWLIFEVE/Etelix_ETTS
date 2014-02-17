@@ -121,4 +121,21 @@ class DescriptionTicket extends CActiveRecord
     {
         return self::model()->findAll("id_ticket = $idTicket");
     }
+    
+    /**
+     * 
+     * @param int $idTicket
+     * @return null | array
+     */
+    public static function lastDescription($idTicket)
+    {
+        $data=self::model()->findAllBySql(
+              "SELECT *
+              FROM description_ticket 
+              WHERE id_user <> ".Yii::app()->user->id." AND read=0 AND id_ticket=$idTicket");
+        if ($data != null)
+            return $data;
+        else
+            return null;
+    }
 }
