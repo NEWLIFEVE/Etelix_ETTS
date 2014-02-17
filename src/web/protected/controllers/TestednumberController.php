@@ -1,6 +1,6 @@
 <?php
 
-class MailTicketController extends Controller
+class TestednumberController extends Controller
 {
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -18,11 +18,14 @@ class MailTicketController extends Controller
 //			'postOnly + delete', // we only allow deletion via POST request
 //		);
 //	}
-        
-        public function filters()
-        {
-            return array(array('CrugeAccessControlFilter'));
-        }
+
+	/**
+	 *
+	 */
+    public function filters()
+    {
+        return array(array('CrugeAccessControlFilter'));
+    }
 
 	/**
 	 * Specifies the access control rules.
@@ -67,14 +70,14 @@ class MailTicketController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new MailTicket;
+		$model=new TestedNumber;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['MailTicket']))
+		if(isset($_POST['TestedNumber']))
 		{
-			$model->attributes=$_POST['MailTicket'];
+			$model->attributes=$_POST['TestedNumber'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -96,9 +99,9 @@ class MailTicketController extends Controller
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['MailTicket']))
+		if(isset($_POST['TestedNumber']))
 		{
-			$model->attributes=$_POST['MailTicket'];
+			$model->attributes=$_POST['TestedNumber'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -127,7 +130,7 @@ class MailTicketController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('MailTicket');
+		$dataProvider=new CActiveDataProvider('TestedNumber');
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));
@@ -138,10 +141,10 @@ class MailTicketController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new MailTicket('search');
+		$model=new TestedNumber('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['MailTicket']))
-			$model->attributes=$_GET['MailTicket'];
+		if(isset($_GET['TestedNumber']))
+			$model->attributes=$_GET['TestedNumber'];
 
 		$this->render('admin',array(
 			'model'=>$model,
@@ -152,12 +155,12 @@ class MailTicketController extends Controller
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer $id the ID of the model to be loaded
-	 * @return MailTicket the loaded model
+	 * @return TestedNumber the loaded model
 	 * @throws CHttpException
 	 */
 	public function loadModel($id)
 	{
-		$model=MailTicket::model()->findByPk($id);
+		$model=TestedNumber::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
@@ -165,11 +168,11 @@ class MailTicketController extends Controller
 
 	/**
 	 * Performs the AJAX validation.
-	 * @param MailTicket $model the model to be validated
+	 * @param TestedNumber $model the model to be validated
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='mail-ticket-form')
+		if(isset($_POST['ajax']) && $_POST['ajax']==='tested-number-form')
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
