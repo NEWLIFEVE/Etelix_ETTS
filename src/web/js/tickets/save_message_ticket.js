@@ -20,7 +20,7 @@ function saveMessage()
     if ($('#answer').val() !== '') {
         $.ajax({
             type:"POST",
-            url:"/descriptionTicket/savedescription",
+            url:"/descriptionticket/savedescription",
             data: {
                 idSpeech: $('select#speech option:selected').val(),
                 message:  $('#answer').val(),
