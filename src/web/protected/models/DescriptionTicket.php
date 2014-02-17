@@ -132,10 +132,21 @@ class DescriptionTicket extends CActiveRecord
         $data=self::model()->findAllBySql(
               "SELECT *
               FROM description_ticket 
-              WHERE id_user <> ".Yii::app()->user->id." AND read=0 AND id_ticket=$idTicket");
+              WHERE id_user <> ".Yii::app()->user->id." AND read=0 AND id_ticket=$idTicket 
+              ORDER BY date DESC, hour DESC LIMIT 1 ");
         if ($data != null)
             return $data;
         else
             return null;
+    }
+    
+    public function actionRead()
+    {
+        $model=new DescriptionTicket;
+        if (isset($_POST['idTicket']) && !empty($_POST['idTicket']))
+        {
+            $idDescription=$model::lastDescription($_POST['idTicket'], true);
+            return $model::model()->updateByPk($idDescription, array('read'=>'1'));
+        }
     }
 }

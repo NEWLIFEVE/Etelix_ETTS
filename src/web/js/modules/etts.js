@@ -375,6 +375,9 @@ $ETTS.UI=(function(){
                      _confirmar('Message');
                 }    
             }
+        },
+        removeBlink:function(boton){
+            boton.parent().parent().removeClass('blink');
         }
     }
     

@@ -382,6 +382,13 @@ $ETTS.ajax=(function(){
                    }
                 });
             }
+        },
+        removeBlink:function(_idTicket){
+            $.ajax({
+               type:'POST',
+               url:'/descriptionticket/read',
+               data:{idTicket:_idTicket}
+            });
         }
     }
 })();
