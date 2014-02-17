@@ -177,36 +177,37 @@ class DescriptionTicketController extends Controller
 	}
         
     /**
-     * Action para salvar la descripción o respeusta que se de en el preview
+     * Action para salvar la descripción o respuesta que se de en el preview
      * del ticket
      */
     public function actionSavedescription()
-    {   
-        
-        $mailer = new EnviarEmail;
-        $speech = null;
-        if (isset($_POST['idSpeech'])) $speech = $_POST['idSpeech'];
-        
-        $model = new DescriptionTicket; 
-        $model->id_ticket = $_POST['idTicket'];
-        $model->description = $_POST['message'];
-        $model->date = date('Y-m-d');
-        $model->hour = date('H:i:s');
-        $model->id_speech = $speech;
-        $model->id_user = Yii::app()->user->id;
-        
-        if ($model->save()) {
-            
-            //Guardar Description
-            $ticketNumber=Ticket::model()->findByPk($model->id_ticket)->ticket_number;
-            //Renderizar para mostrar la repsuesta
-            $this->renderPartial('_answer', array('datos' => Ticket::ticketsByUsers(Yii::app()->user->id, $model->id_ticket, false)));
-            /**
-            * Se verifica si se envia por post
-            * Guardando Attach File
-            */
-            if(isset($_POST['files']) && count($_POST['files']) && !empty($_POST['files']))
-            {
+    {
+    	if(isset($_POST['idTicket']))
+    	{
+    		$mailer=new EnviarEmail;
+    		$speech=null;
+    		if(isset($_POST['idSpeech'])) $speech=$_POST['idSpeech'];
+
+    		$model=new DescriptionTicket;
+    		$model->id_ticket=$_POST['idTicket'];
+    		$model->description=$_POST['message'];
+    		$model->date=date('Y-m-d');
+    		$model->hour=date('H:i:s');
+    		$model->id_speech=$speech;
+    		$model->id_user=Yii::app()->user->id;
+    		$model->read=0;
+    		if($model->save())
+    		{
+    			//Guardar Description
+    			$ticketNumber=Ticket::model()->findByPk($model->id_ticket)->ticket_number;
+    			//Renderizar para mostrar la repsuesta
+    			$this->renderPartial('_answer', array('datos' => Ticket::ticketsByUsers(Yii::app()->user->id, $model->id_ticket, false)));
+	            /**
+	            * Se verifica si se envia por post
+	            * Guardando Attach File
+	            */
+	            if(isset($_POST['files']) && count($_POST['files']) && !empty($_POST['files']))
+	            {
                     $count=count($_POST['files']);
                     for($i=0; $i<$count; $i++)
                     {
@@ -219,26 +220,26 @@ class DescriptionTicketController extends Controller
                         $modelAttachFile->id_description_ticket=$model->id;
                         $modelAttachFile->save();
                     }
-            }
-            
-            $mailsAll=Mail::getNameMails($model->id_ticket);
-            //$mailsAll[]='noc@etelix.com';
-            $mailsAll[]='manuelm3z@hotmail.com';
-            $nameCarrier=Carrier::getCarriers(true, $model->id_ticket);
-            $tipoUsuario = CrugeAuthassignment::getRoleUser();
-            $subject='';
-            if ($tipoUsuario == 'C')
-            {
-                $subject='TT from '.$nameCarrier.', New Answer, '.$ticketNumber.'';
-            }
-            else
-            {
-                $subject='TT for '.$nameCarrier.', New Answer, '.$ticketNumber.'';
-            }
-            $mailer->enviar(TicketController::getBodyMails($model->id_ticket, Mail::getNameMails($model->id_ticket), 'answer'), $mailsAll, '', $subject);
+                }
 
-        } else {
-            echo 'false';
+                $mailsAll=Mail::getNameMails($model->id_ticket);
+            	$nameCarrier=Carrier::getCarriers(true, $model->id_ticket);
+            	$tipoUsuario = CrugeAuthassignment::getRoleUser();
+            	$subject='';
+            	if($tipoUsuario=='C')
+            	{
+            		$subject='TT from '.$nameCarrier.', New Answer, '.$ticketNumber.'';
+            	}
+            	else
+            	{
+                	$subject='TT for '.$nameCarrier.', New Answer, '.$ticketNumber.'';
+            	}
+            	$mailer->enviar(TicketController::getBodyMails($model->id_ticket, Mail::getNameMails($model->id_ticket), 'answer'), $mailsAll, '', $subject);
+        	}
+	    	else
+            {
+        		echo 'false';
+            }
         }
     }
 
