@@ -46,7 +46,7 @@ function getTicketsRelated(id, nTr, oTable)
 {
     $.ajax({
         type:"POST",
-        url:"/ticket/Getticketrelation/"+id,
+        url:"/ticket/getticketrelation/"+id,
         dataType:'json',
         success:function(data){
             oTable.fnOpen( nTr, fnFormatDetails(data, id) , 'details' );

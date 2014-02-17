@@ -61,7 +61,7 @@ $ETTS.ajax=(function(){
         deleteMailByConfirm:function(selectTop, selectDown, mailSeleccionado){
             $.ajax({
                    type: 'POST',
-                   url: '/mailUser/deletemail',
+                   url: '/mailuser/deletemail',
                    data:"id="+mailSeleccionado,
                    success:function(data){
                        $('#'+selectTop+' option[value='+mailSeleccionado+']').remove();
@@ -111,7 +111,7 @@ $ETTS.ajax=(function(){
             {
                 $.ajax({
                        type: 'POST',
-                       url: '/mailUser/getmailuser',
+                       url: '/mailuser/getmailuser',
                        data:{
                            iduser:id
                        },
@@ -319,7 +319,7 @@ $ETTS.ajax=(function(){
                 
                 $.ajax({
                    type:'POST',
-                   url:'/Mail/SetMail',
+                   url:'/mail/setmail',
                    data:{
                        mail: _newMail.val(),
                        typeUser:_typeUser,
