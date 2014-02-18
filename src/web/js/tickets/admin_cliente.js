@@ -60,6 +60,12 @@ $(document).ready(function() {
                     }
                 });
                 setTimeout('attachFile()', 1000);
+                
+                if (clase.toLowerCase().indexOf("blink") >= 0)
+                {
+                    $ETTS.UI.removeBlink($(this));
+                    $ETTS.ajax.removeBlink(idTicket);
+                }
         } );
         
         /*
