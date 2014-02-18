@@ -2,6 +2,8 @@ Etelix_ETTS
 ===========
 
 Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
+Release 1.1.4.2
+- Correccion de orden de mensajes en los tickets, estaban apareciendo todos de un solo lado.
 Release 1.1.4.1
 - Cambio de from correos a ETELIX Trouble Ticket System (ETTS)
 - Renombrado de los controladores para que queden todos en minusculas
