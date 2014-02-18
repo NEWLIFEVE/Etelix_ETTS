@@ -25,3 +25,4 @@ foreach ($description as $value) {
     } 
 }
 ?>
+<div class="pre-loader"></div>

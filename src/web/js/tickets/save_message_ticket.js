@@ -37,11 +37,15 @@ function saveMessage()
                 fileServer:_fileServer
             },
             beforeSend:function(){
-                $('div.answer-ticket').html('<center><img src="/images/loader.GIF"></center>');
+                $('div.pre-loader').html(
+                    '<div style="width:100% !important; text-align:center !important;">' +
+                        '<div style="margin:auto;"><img src="/images/preloader.GIF"></div>' +
+                    '</div>'
+                );
             },
             success:function(data){
                 if (data !== 'false') {
-                    $('div.answer-ticket').empty();
+                    $('div.answer-ticket, div.pre-loader').empty();
                     $('div.answer-ticket').html(data);
                     $('div.answer-ticket').scrollTop(100000);
                 }

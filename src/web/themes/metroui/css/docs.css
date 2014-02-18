@@ -663,3 +663,11 @@ span.toggle:hover {
 div.nicEdit-main {
     height: 200px !important;
 }
+
+div.pre-loader {
+    width: 100% !important;
+    float: left;
+    height: 24px;
+    margin-top: -5px;
+    margin-bottom: -5px;
+}
