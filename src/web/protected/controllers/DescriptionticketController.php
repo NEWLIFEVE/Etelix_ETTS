@@ -185,7 +185,9 @@ class DescriptionticketController extends Controller
     		$model->hour=date('H:i:s');
     		$model->id_speech=$speech;
     		$model->id_user=Yii::app()->user->id;
-    		$model->read=0;
+                $optionRead=self::getUserNewDescription();
+    		$model->read_carrier=$optionRead['read_carrier'];
+                $model->read_internal=$optionRead['read_internal'];
     		if($model->save())
     		{
 	            /**
@@ -283,4 +285,71 @@ class DescriptionticketController extends Controller
         $areaAnswer .= '</div>';
         return $areaAnswer;
     }  
+    
+    public function actionRead()
+    {
+        $model=new DescriptionTicket;
+        if (isset($_POST['idTicket']) && !empty($_POST['idTicket']))
+        {
+            $userLogIn=CrugeAuthassignment::getRoleUser();
+            if ($userLogIn=='C')
+                $model->updateAll(array('read_carrier'=>'1'), "id_ticket = ".$_POST['idTicket']);
+            else
+                $model->updateAll(array('read_internal'=>'1'), "id_ticket = ".$_POST['idTicket']);
+        }
+    }
+    
+    /**
+     * @param boolean $etelixAsCustomer
+     * @param int $idTicket
+     * @return array
+     */
+    public static function getUserNewDescription($etelixAsCustomer=false, $idTicket=false)
+    {
+        $userLogIn=CrugeAuthassignment::getRoleUser(false, $idTicket);
+        if ($etelixAsCustomer) 
+        {
+            return array('read_carrier'=>'0','read_internal'=>'0');
+        } 
+        else 
+        {
+            if($userLogIn === 'C')
+            {
+                return array('read_carrier'=>'1','read_internal'=>'0');
+            } 
+            else 
+            {
+                return array('read_carrier'=>'0','read_internal'=>'1');
+            }
+        }
+    }
+    
+    /**
+     * 
+     * @param int $idTicket
+     * @return string
+     */
+    public static function blinkTr($idTicket)
+    {
+        $userLogin=CrugeAuthassignment::getRoleUser();
+        $lastDescription=DescriptionTicket::lastDescription($idTicket);
+        
+        if ($lastDescription!=null)
+        {
+            if ($userLogin=='C')
+            {
+                if ($lastDescription->read_carrier == '0') {
+                    return 'blink';
+                }
+                return '';
+            }
+            else
+            {
+                if ($lastDescription->read_internal == '0') {
+                    return 'blink';
+                }
+                return '';
+            }
+        }
+    }
 }

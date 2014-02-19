@@ -74,8 +74,8 @@ $(document).on('ready', function(){
      *   
      *   último parámetro:
      *   0 cuando un cliente abre un ticket
-     *   1 cuando un interno le abre un ticket a un cliente
-     *   2 cuando un interno le abre un ticket a un proveedor   
+     *   1 cuando un interno le abre un ticket a un (carrier)cliente
+     *   2 cuando un interno le abre un ticket a un (carrier)proveedor   
      */
     $(document).on('click', '.btn-agregar-correo-cliente', function(){
         $ETTS.ajax.saveMail($('#new_mail'),'1',$('#user'),$('#mails'),$('#Ticket_mail'), '0');
@@ -255,7 +255,8 @@ $(document).on('ready', function(){
                         $('[name="attachFileSave[]"]'),                         // FILE SAVE NAME
                         $('[name="attachFileSize[]"]'),                         // FILE SIZE
                         '0',                                                    // Si es cliente = 0 de lo contrario = 1
-                        $("#ticket-form-to-client")                             // Limpiar Formulario
+                        $("#ticket-form-to-client"),                            // Limpiar Formulario
+                        $('#etelix-as-customer').val()
                      );
                 });
             }
