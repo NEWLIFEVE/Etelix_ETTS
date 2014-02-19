@@ -26,32 +26,6 @@ Release 1.0.4
 -Se corrigió el description ticket al mostrar el preview del mismo
 -Corregido boton tickets asociados, solo aparece cuando existen tickets relacionados.
 
-21/01/2014
--Se agregó el campo id_user a la tabla answer_ticket
--Se muestra la respuesta del ticket
-
-22/01/2014
--Estilos tipo chat de facebook para la descripcion del ticket en el detalle
-
-23/01/2014
--Se refresca el area de respuesta al mandar la misma
--El scroll del area de respuesta queda abajo al abrir el detalle del ticket
-
-24/01/2014
--Modificado el método ticketsByUser del model Ticket, con parámetro de solo traer
-ticket abiertos
--Cambiada interfaz de respuesta del ticket
-
-27/01/2014
--Agregado el envío del mail al dar respuesta en el ticket y al cambiar de status
-
-04/02/2014
--Cambio en el tamaño de las columnas de los tickets relacionados en datatable
--Agregado el add file completamente funcional al answer ticket
-
-06/02/2014
--Action en TicketController actionCarriersbyclass
-
 Realese 1.0.3:
 -Nueva Tabla para Tickets, Datatable
 -Se pueden visualizar tickets asociados
@@ -78,3 +52,37 @@ Release 1.0:
 -Modulo de Usuario
 -Carrier de Sori asociado a usuario tipo cliente
 -Formulario abrir ticket para clientes
+
+21/01/2014
+-Se agregó el campo id_user a la tabla answer_ticket
+-Se muestra la respuesta del ticket
+
+22/01/2014
+-Estilos tipo chat de facebook para la descripcion del ticket en el detalle
+
+23/01/2014
+-Se refresca el area de respuesta al mandar la misma
+-El scroll del area de respuesta queda abajo al abrir el detalle del ticket
+
+24/01/2014
+-Modificado el método ticketsByUser del model Ticket, con parámetro de solo traer
+ticket abiertos
+-Cambiada interfaz de respuesta del ticket
+
+27/01/2014
+-Agregado el envío del mail al dar respuesta en el ticket y al cambiar de status
+
+04/02/2014
+-Cambio en el tamaño de las columnas de los tickets relacionados en datatable
+-Agregado el add file completamente funcional al answer ticket
+
+06/02/2014
+-Action en TicketController actionCarriersbyclass
+
+19/02/2014
+-Clase animada a los tickets que tengan respuesta nueva
+-Loader al mandar una respuesta
+-Mejora del tiempo a cambiar de status(Casi inmediato),
+-confirm al querer cerrar ticket,
+-Una vez cerrarado no se pueder reabrir el ticket
+-Borrar correos en la interfaz de abrir tickets logueado como interno
