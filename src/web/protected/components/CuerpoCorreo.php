@@ -37,7 +37,6 @@ class CuerpoCorreo
 
     public function init($key)
     {
-        //$ticketNumber,$username,$emails,$failure,$originationIp,$destinationIp,$prefix,$gmt,$testedNumber,$country,$date,$hour,$description,$cc=false,$bcc=false,$speech=false
         $this->_ticketNumber = $key['ticketNumber'];
         $this->_username = $key['username'];
         $this->_emails = $key['emails'];
@@ -54,7 +53,6 @@ class CuerpoCorreo
         $this->_cc = $key['cc'];
         $this->_bcc = $key['bcc'];
         $this->_speech = $key['speech'];
-        
         
         if (empty($this->_originationIp)) $this->_originationIp = '<span style="color:red">No data available</span>';
         if (empty($this->_destinationIp)) $this->_destinationIp = '<span style="color:red">No data available</span>';
