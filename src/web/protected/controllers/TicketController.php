@@ -352,32 +352,33 @@ class TicketController extends Controller
             $cc=null;
 
             $cuerpoMail=new CuerpoCorreo();
-
+            
             // Si es interntal
             if (isset($_POST['isInternal']) && $_POST['isInternal'] == '1')
             {
                 if (isset($_POST['emails']) && $_POST['emails'] != null) $to = $_POST['emails'];
                 if (isset($_POST['direccionCC']) && $_POST['direccionCC'] != null) $cc = $_POST['direccionCC'];
                 if (isset($_POST['direccionBBC']) && $_POST['direccionBBC'] != null) $bbc = $_POST['direccionBBC'];
-
-                $cuerpoMail->init(
-                            $ticketNumber,
-                            Yii::app()->user->name,
-                            $_POST['emails'],
-                            $_POST['failureText'],
-                            $_POST['originationIp'],
-                            $_POST['destinationIp'],
-                            $_POST['prefix'],
-                            null,
-                            array(),
-                            array(),
-                            array(),
-                            array(),
-                            $_POST['description'],
-                            $cc,
-                            $bbc,
-                            $_POST['speech']
-                        );
+                
+                $data=array(
+                    'ticketNumber'=>$ticketNumber,
+                    'username'=>Yii::app()->user->name,
+                    'emails'=>$_POST['emails'],
+                    'failure'=>$_POST['failureText'],
+                    'originationIp'=>$_POST['originationIp'],
+                    'destinationIp'=>$_POST['destinationIp'],
+                    'prefix'=>$_POST['prefix'],
+                    'gmt'=>null,
+                    'testedNumber'=>array(),
+                    'country'=>array(),
+                    'date'=>array(),
+                    'hour'=>array(),
+                    'description'=>$_POST['description'],
+                    'cc'=>$cc,
+                    'bcc'=>$bbc,
+                    'speech'=>$_POST['speech']
+                );
+                $cuerpoMail->init($data);
                 $cuerpo=$cuerpoMail->getBodySupplier();
             }
             // Si es cliente
@@ -389,23 +390,25 @@ class TicketController extends Controller
                     $user=$_POST['user'];
                     $idUser=$_POST['idUser'];
                 }
-
-                $cuerpoMail->init(
-                            $ticketNumber,
-                            $user,
-                            $_POST['emails'],
-                            $_POST['failureText'],
-                            $_POST['originationIp'],
-                            $_POST['destinationIp'],
-                            $_POST['prefix'],
-                            $_POST['gmtText'],
-                            $_POST['testedNumber'],
-                            $_POST['_countryText'],
-                            $_POST['_date'],
-                            $_POST['_hour'],
-                            $_POST['description']
-                        );
-
+                $data=array(
+                    'ticketNumber'=>$ticketNumber,
+                    'username'=>$user,
+                    'emails'=>$_POST['emails'],
+                    'failure'=>$_POST['failureText'],
+                    'originationIp'=>$_POST['originationIp'],
+                    'destinationIp'=>$_POST['destinationIp'],
+                    'prefix'=>$_POST['prefix'],
+                    'gmt'=>$_POST['gmtText'],
+                    'testedNumber'=>$_POST['testedNumber'],
+                    'country'=>$_POST['_countryText'],
+                    'date'=>$_POST['_date'],
+                    'hour'=>$_POST['_hour'],
+                    'description'=>$_POST['description'],
+                    'cc'=>null,
+                    'bcc'=>null,
+                    'speech'=>null
+                );
+                $cuerpoMail->init($data);
                 $cuerpo=$cuerpoMail->getBodyCustumer();
                 $cuerpo_tt=$cuerpoMail->getBodyTT();
 
