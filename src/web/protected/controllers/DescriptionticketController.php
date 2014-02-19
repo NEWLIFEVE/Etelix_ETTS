@@ -201,7 +201,7 @@ class DescriptionticketController extends Controller
     			//Guardar Description
     			$ticketNumber=Ticket::model()->findByPk($model->id_ticket)->ticket_number;
     			//Renderizar para mostrar la repsuesta
-    			$this->renderPartial('_answer', array('datos' => Ticket::ticketsByUsers(Yii::app()->user->id, $model->id_ticket, false)));
+    			$this->renderPartial('/ticket/_answer', array('datos' => Ticket::ticketsByUsers(Yii::app()->user->id, $model->id_ticket, false)));
 	            /**
 	            * Se verifica si se envia por post
 	            * Guardando Attach File
