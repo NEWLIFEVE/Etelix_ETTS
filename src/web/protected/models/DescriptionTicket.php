@@ -11,7 +11,8 @@
  * @property string $hour
  * @property integer $id_speech
  * @property integer $id_user
- * @property integer $read
+ * @property integer $read_carrier
+ * @property integer $read_internal
  *
  * The followings are the available model relations:
  * @property File[] $files
@@ -48,7 +49,7 @@ class DescriptionTicket extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('id_ticket, description, date', 'required'),
-			array('id_ticket, id_speech, id_user, read','numerical', 'integerOnly'=>true),
+			array('id_ticket, id_speech, id_user','numerical', 'integerOnly'=>true),
 			array('hour', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
@@ -83,8 +84,7 @@ class DescriptionTicket extends CActiveRecord
 			'date' => 'Date',
 			'hour' => 'Hour',
 			'id_speech' => 'Id Speech',
-            'id_user' => 'Id User',
-            'read' => 'Read',
+                        'id_user' => 'Id User'
 		);
 	}
 
@@ -105,8 +105,7 @@ class DescriptionTicket extends CActiveRecord
 		$criteria->compare('date',$this->date,true);
 		$criteria->compare('hour',$this->hour,true);
 		$criteria->compare('id_speech',$this->id_speech);
-        $criteria->compare('id_user',$this->id_user);
-        $criteria->compare('read',$this->read);
+                $criteria->compare('id_user',$this->id_user);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -129,14 +128,24 @@ class DescriptionTicket extends CActiveRecord
      */
     public static function lastDescription($idTicket)
     {
-        $data=self::model()->findAllBySql(
-              "SELECT *
-              FROM description_ticket 
-              WHERE id_user <> ".Yii::app()->user->id." AND read=0 AND id_ticket=$idTicket 
-              ORDER BY date DESC, hour DESC LIMIT 1 ");
+        $data=self::sqlLastDescription($idTicket);
         if ($data != null)
+        {
             return $data;
-        else
-            return null;
+        }
+        return null;
+    }
+    
+    /**
+     * @param integer $idTicket
+     * @return array
+     */
+    public static function sqlLastDescription($idTicket)
+    {
+        return self::model()->findBySql(
+                  "SELECT *
+                  FROM description_ticket 
+                  WHERE id_ticket=$idTicket 
+                  ORDER BY date DESC, hour DESC");
     }
 }

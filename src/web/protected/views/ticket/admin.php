@@ -27,11 +27,8 @@
                 <?php foreach (Ticket::ticketsByUsers(Yii::app()->user->id, false) as $ticket): ?>
                     <tr <?php
                             $timeTicket = Utility::getTime($ticket->date, $ticket->hour);
-                            if (DescriptionTicket::lastDescription($ticket->id)==null) 
-                                $read='';
-                            else
-                                $read='blink';
-
+                            $read=DescriptionticketController::blinkTr($ticket->id);
+                            
                             switch ($ticket->idStatus->id) {
                                 case '1':
                                     if($timeTicket > 86400 )
