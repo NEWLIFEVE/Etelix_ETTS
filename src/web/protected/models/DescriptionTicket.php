@@ -118,10 +118,7 @@ class DescriptionTicket extends CActiveRecord
      */
     public static function getDescription($idTicket)
     {
-<<<<<<< HEAD
         return self::model()->findAllBySql("SELECT * FROM description_ticket WHERE id_ticket=$idTicket ORDER BY id ASC");
-=======
-        return self::model()->findAllBySql("select * from description_ticket where id_ticket=$idTicket order by id ASC");
     }
     
     /**
@@ -150,6 +147,5 @@ class DescriptionTicket extends CActiveRecord
                   FROM description_ticket 
                   WHERE id_ticket=$idTicket 
                   ORDER BY date DESC, hour DESC");
->>>>>>> dev
     }
 }
