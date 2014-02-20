@@ -2,6 +2,8 @@ Etelix_ETTS
 ===========
 
 Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
+- Agregado mensaje de confirmacion antes de cerrar un ticket, ticket cerrado no puede volver a ser abierto.
+- Agregada clase de blink para tickets con respuestas no leidas
 - Interfaz de creacion de tickets como clientes por usuarios internos
 - Interfaz de cracion de tickets a carriers proveedores
 - Cambio de asunto de correos al crear/nueva respuesta/cerrar tickets

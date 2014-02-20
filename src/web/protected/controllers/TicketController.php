@@ -666,7 +666,7 @@ class TicketController extends Controller
 		                <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Description</th>
 		            </tr>
 		            <tr>
-		                    <td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.  DescriptionTicketController::getDescription($idTicket, $datos).'</td>
+		                    <td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.  DescriptionticketController::getDescription($idTicket, $datos).'</td>
 		            </tr>
 		            </table>';
         $footer = '<div style="width:100%">
