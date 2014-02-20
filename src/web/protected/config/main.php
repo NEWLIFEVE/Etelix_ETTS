@@ -39,7 +39,7 @@ return array(
 			'availableAuthMethods'=>array('default'),
 			'availableAuthModes'=>array('username','email'),
 			// url base para los links de activacion de cuenta de usuario
-			'baseUrl'=>'http://coco.com/',
+			'baseUrl'=>'http://etts.local/',
 			// NO OLVIDES PONER EN FALSE TRAS INSTALAR
 			'debug'=>false,
 			'rbacSetupEnabled'=>false,
@@ -150,7 +150,7 @@ return array(
         	),
         'crugemailer'=>array(
         	'class'=>'application.modules.cruge.components.CrugeMailer',
-        	'mailfrom'=>'email-desde-donde-quieres-enviar-los-mensajes@xxxx.com',
+        	'mailfrom'=>'etts@etelix.com',
         	'subjectprefix'=>'Tu Encabezado del asunto - ',
         	'debug'=>true,
         	),
