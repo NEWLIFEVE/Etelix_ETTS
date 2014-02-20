@@ -241,7 +241,7 @@ table.display td.center {
  * DataTables row classes
  */
  table.display tr{
-     color: white;
+     color: rgb(90, 90, 90);
  }
 table.display tr.odd.close{
 	background-color: #61CF61;
