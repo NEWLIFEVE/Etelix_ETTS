@@ -149,11 +149,11 @@ return array(
         	'class'=>'application.modules.cruge.components.CrugeAuthManager',
         	),
         'crugemailer'=>array(
-        	'class'=>'application.modules.cruge.components.CrugeMailer',
-        	'mailfrom'=>'etts@etelix.com',
-        	'subjectprefix'=>'Tu Encabezado del asunto - ',
-        	'debug'=>true,
-        	),
+            'class'=>'application.modules.cruge.components.CrugeMailer',
+            'mailfrom'=>'email-desde-donde-quieres-enviar-los-mensajes@xxxx.com',
+            'subjectprefix'=>'Tu Encabezado del asunto - ',
+            'debug'=>true,
+            ),
         'format'=>array(
         	'datetimeFormat'=>"d M, Y h:m:s a",
         	),
