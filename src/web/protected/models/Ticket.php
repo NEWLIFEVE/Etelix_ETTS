@@ -174,7 +174,7 @@ class Ticket extends CActiveRecord
         if($tipoUsuario=="C") 
         {
             $conditionUser=' where id_user='.$idUser;
-            $order='DESC';
+            $order='ASC';
         }
         
         /**
@@ -206,11 +206,6 @@ class Ticket extends CActiveRecord
         }
         else
         {
-
-//            $sql="SELECT *, t.id AS id
-//                 FROM ticket t
-//                 WHERE t.id IN (SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user $conditionUser)) $conditionTicket
-//                 ORDER BY t.id_status, t.id $order";
             
             $sql="SELECT t.*, t.id AS id
                 FROM(SELECT * FROM ticket WHERE id_status=(SELECT id FROM status WHERE name='open') AND 
@@ -219,7 +214,7 @@ class Ticket extends CActiveRecord
                 SELECT * FROM ticket WHERE id_status=(SELECT id FROM status WHERE name='close') AND
                 id IN (SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user $conditionUser)) $conditionTicket
                 AND date>=CURRENT_DATE - interval '1 day') t
-                ORDER BY date, id_status $order";
+                ORDER BY date $order, id_status $order";
 
             
             // Si $returnArray esta en true, retorna un array con los datos del ticket

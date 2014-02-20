@@ -80,9 +80,15 @@ ticket abiertos
 -Action en TicketController actionCarriersbyclass
 
 19/02/2014
+-Modificada la tabla description_ticket creando los campos: 
+ read_carrier integer DEFAULT 0 read_internal integer DEFAULT 0
 -Clase animada a los tickets que tengan respuesta nueva
 -Loader al mandar una respuesta
 -Mejora del tiempo a cambiar de status(Casi inmediato),
 -confirm al querer cerrar ticket,
 -Una vez cerrarado no se pueder reabrir el ticket
 -Borrar correos en la interfaz de abrir tickets logueado como interno
+
+20/02/2014
+-Se puede restablecer la contrasaña
+-Gmt en ingles
