@@ -176,8 +176,10 @@ class UiController extends Controller
                 $newPwd = CrugeUtil::passwordGenerator();
                 Yii::app()->user->um->changePassword($model->getModel(), $newPwd);
                 Yii::app()->crugemailer->sendPasswordTo($model->getModel(), $newPwd);
-                Yii::app()->user->um->save($model->getModel());
-
+                //Yii::app()->user->um->save($model->getModel());
+                $crugeUser=new CrugeUser2;
+                $crugeUser->updateByPk($model->getModel()->iduser, array('password'=>CrugeUtil::hash($newPwd)));
+                
                 Yii::app()->user->setFlash(
                     'pwdrecflash'
                     ,
