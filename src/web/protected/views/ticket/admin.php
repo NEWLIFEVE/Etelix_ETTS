@@ -27,15 +27,17 @@
                 <?php foreach (Ticket::ticketsByUsers(Yii::app()->user->id, false) as $ticket): ?>
                     <tr <?php
                             $timeTicket = Utility::getTime($ticket->date, $ticket->hour);
+                            $read=DescriptionticketController::blinkTr($ticket->id);
+                            
                             switch ($ticket->idStatus->id) {
                                 case '1':
                                     if($timeTicket > 86400 )
-                                        echo 'class="late"';
+                                        echo 'class="late '.$read.'"';
                                     else
-                                        echo 'class="open"'; 
+                                        echo 'class="open '.$read.'"'; 
                                     break;
                                 case '2':
-                                    echo 'class="close"';
+                                    echo 'class="close '.$read.'"';
                                     break;
                                 }
                                 ?>>
@@ -46,19 +48,25 @@
                                 <td>&nbsp;</td>
                             <?php endif; ?>
                                 <td><?php if (isset($ticket->idUser->username)) echo $ticket->idUser->username; ?></td>
-                            <td><?php  echo Carrier::getCarriers(true, $ticket->id) != null ?  Carrier::getCarriers(true, $ticket->id): ''; ?></td>
+                            <td title="<?php echo $carrier=Carrier::getCarriers(true, $ticket->id); ?>">
+                                <?php  echo  strlen($carrier) <= 9 ? $carrier : substr($carrier, 0, 9) .'...'; ?>
+                            </td>
                         <?php endif; ?>
                         <td><?php echo $ticket->ticket_number; ?></td>
                         <td><?php echo  $failure = strlen($ticket->idFailure->name) <= 15 ? $ticket->idFailure->name : substr($ticket->idFailure->name, 0, 15) .'...';  ?></td>
-                        <td title="Open about <?php echo Utility::restarHoras($ticket->hour, date('H:i:s'), floor($timeTicket/ (60 * 60 * 24))); ?>" name="id" id="<?php echo $ticket->id; ?>" time="<?php echo Utility::getTime($ticket->date, $ticket->hour); ?>">
-                            <span class="span-status">
-                                <span class="text-span"><?php echo $ticket->idStatus->name; ?></span>
-                                <?php if ($tipoUsuario !== "C"): ?>
-                                <a href="javascript:void(0)" class="edit-status" rel="<?php echo $ticket->id; ?>">
-                                    <img width="12" height="12" src="<?php echo Yii::app()->request->baseUrl.'/images/edit.png'; ?>">
-                                </a>
-                                <?php endif; ?>
-                            </span>
+                        <td name="id" id="<?php echo $ticket->id; ?>" time="<?php echo Utility::getTime($ticket->date, $ticket->hour); ?>">
+                            <?php if ($ticket->id_status == '2'): ?>
+                                close
+                            <?php else: ?>
+                                <span class="span-status">
+                                    <span class="text-span"><?php echo $ticket->idStatus->name; ?></span>
+                                    <?php if ($tipoUsuario !== "C"): ?>
+                                    <a href="javascript:void(0)" class="edit-status" rel="<?php echo $ticket->id; ?>">
+                                        <img width="12" height="12" src="<?php echo Yii::app()->request->baseUrl.'/images/edit.png'; ?>">
+                                    </a>
+                                    <?php endif; ?>
+                                </span>
+                            <?php endif; ?>
                         </td>
                         <td><?php echo $ticket->origination_ip; ?></td>
                         <td><?php echo $ticket->destination_ip; ?></td>
@@ -81,6 +89,7 @@
 <?php Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl . '/css/uploadfile.css'); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/plugins/jquery/jquery.dataTables.min.js',CClientScript::POS_END); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/plugins/jquery/jquery.uploadfile.js',CClientScript::POS_END); ?>
+<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/modules/etts.ajax.js',CClientScript::POS_END); ?>
 <?php if ($tipoUsuario === "C"): ?>
     <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/admin_cliente.js',CClientScript::POS_END); ?>
 <?php else: ?>

@@ -13,27 +13,39 @@ function saveMessage()
         _fileServer.push(fileName[i].getAttribute('name'));
 
     }
-    _idSpeech = null;
-    if ($('select#speech').val()) {
-        _idSpeech = $('select#speech option:selected').val();
-    }
+    
     if ($('#answer').val() !== '') {
+        
+        var _idSpeech = null;
+        if ($('select#speech').val())  _idSpeech = $('select#speech option:selected').val();
+        
+        var _message=$('#answer').val(),
+            _idTicket=$('#id_ticket').val();
+        
+        $('#answer').val('')
+        $('div#area-add-file').empty();
+        $('[name="myFile[]"]').val('')
+        
         $.ajax({
             type:"POST",
             url:"/descriptionticket/savedescription",
             data: {
-                idSpeech: $('select#speech option:selected').val(),
-                message:  $('#answer').val(),
-                idTicket: $('#id_ticket').val(),
+                idSpeech: _idSpeech,
+                message:  _message,
+                idTicket: _idTicket,
                 files:_files,
                 fileServer:_fileServer
             },
+            beforeSend:function(){
+                $('div.pre-loader').html(
+                    '<div style="width:100% !important; text-align:center !important;">' +
+                        '<div style="margin:auto;"><img src="/images/preloader.GIF"></div>' +
+                    '</div>'
+                );
+            },
             success:function(data){
-                $('#answer').val('')
-                $('div#area-add-file').empty();
-                $('[name="myFile[]"]').val('')
                 if (data !== 'false') {
-                    $('div.answer-ticket').empty();
+                    $('div.answer-ticket, div.pre-loader').empty();
                     $('div.answer-ticket').html(data);
                     $('div.answer-ticket').scrollTop(100000);
                 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * version 1.0
+ * version 1.01
  * 
  * @package components
  */
@@ -35,34 +35,24 @@ class CuerpoCorreo
     private $_bcc;
     private $_speech;
 
-    public function init($ticketNumber,$username,$emails,$failure,$originationIp,$destinationIp,$prefix,$gmt,$testedNumber,$country,$date,$hour,$description,$cc=false,$bcc=false,$speech=false)
+    public function init($key)
     {
-        $this->_emails = array();
-        $this->_cc = array();
-        $this->_bcc = array();
-        $this->_testedNumber = array();
-        $this->_country = array();
-        $this->_date = array();
-        $this->_hour = array();
-        
-        $this->_ticketNumber = $ticketNumber;
-        $this->_username = $username;
-        $this->_emails = $emails;
-        $this->_failure = $failure;
-        $this->_originationIp = $originationIp;
-        $this->_destinationIp = $destinationIp;
-        $this->_prefix = $prefix;
-        $this->_gmt = $gmt;
-        $this->_testedNumber = $testedNumber;
-        $this->_country = $country;
-        $this->_date = $date;
-        $this->_hour = $hour;
-        $this->_description = $description;
-        $this->_cc = $cc;
-        $this->_bcc = $bcc;
-        $this->_speech = $speech;
-        
-        
+        $this->_ticketNumber = $key['ticketNumber'];
+        $this->_username = $key['username'];
+        $this->_emails = $key['emails'];
+        $this->_failure = $key['failure'];
+        $this->_originationIp = $key['originationIp'];
+        $this->_destinationIp = $key['destinationIp'];
+        $this->_prefix = $key['prefix'];
+        $this->_gmt = $key['gmt'];
+        $this->_testedNumber = $key['testedNumber'];
+        $this->_country = $key['country'];
+        $this->_date = $key['date'];
+        $this->_hour = $key['hour'];
+        $this->_description = $key['description'];
+        $this->_cc = $key['cc'];
+        $this->_bcc = $key['bcc'];
+        $this->_speech = $key['speech'];
         
         if (empty($this->_originationIp)) $this->_originationIp = '<span style="color:red">No data available</span>';
         if (empty($this->_destinationIp)) $this->_destinationIp = '<span style="color:red">No data available</span>';

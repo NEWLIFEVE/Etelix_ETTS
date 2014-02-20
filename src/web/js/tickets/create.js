@@ -49,7 +49,7 @@ $(document).on('ready', function(){
     *          FUNCION AJAX PARA MOSTRAR LOS CORREOS QUE SE VAYAN INSERTANDO
     ******************************************************************************/
     var getMailUser = function(){
-        $.post('/mailUser/getmailuser', '', function(data){
+        $.post('/mailuser/getmailuser', '', function(data){
             $('#cargar_mails').html('');
             for (var i = 0; i < data.length; i++) {
                 $('#cargar_mails').append('<option value="'+ data[i].id +'">'+ data[i].mail +'</option>');

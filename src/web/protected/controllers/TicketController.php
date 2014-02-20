@@ -188,23 +188,27 @@ class TicketController extends Controller
 	public function actionSaveticket()
 	{
         date_default_timezone_set('America/Caracas');
-		
-        $modelTicket=new Ticket;
-		$rutaAttachFile=array();
-        $idUser=null;
-                
-		$modelTicket->date=date('Y-m-d');
-		$modelTicket->id_failure=$_POST['failure'];
-		$modelTicket->destination_ip=$_POST['destinationIp'] == '' ? null: $_POST['destinationIp'];
-		$modelTicket->origination_ip=$_POST['originationIp'] == '' ? null: $_POST['originationIp'];
-		$modelTicket->prefix=$_POST['prefix'];
-		$modelTicket->machine_ip=Yii::app()->request->userHostAddress;
-		$modelTicket->hour=date('H:i:s');
-		$maximo=$modelTicket::model()->findBySql("SELECT COUNT(id) AS number_of_the_day FROM ticket WHERE date= '".date('Y-m-d')."'");
-		$maximo->number_of_the_day+=1;
-		$ticketNumber=date('Ymd').'-'.str_pad($maximo->number_of_the_day, 3, "0", STR_PAD_LEFT).'-'.CrugeAuthassignment::getRoleUser().$modelTicket->id_failure;
-		$modelTicket->ticket_number=$ticketNumber;
 
+        $modelTicket=new Ticket;
+        $rutaAttachFile=array();
+        $idUser=null;
+        $etelixAsCustomer=false;
+        $typeUser='C';
+        
+        if (isset($_POST['typeUser'])) 
+            $typeUser=$this->_getTypeUser($_POST['typeUser']);
+            
+        $modelTicket->date=date('Y-m-d');
+        $modelTicket->id_failure=$_POST['failure'];
+        $modelTicket->destination_ip=$_POST['destinationIp'] == '' ? null: $_POST['destinationIp'];
+        $modelTicket->origination_ip=$_POST['originationIp'] == '' ? null: $_POST['originationIp'];
+        $modelTicket->prefix=$_POST['prefix'];
+        $modelTicket->machine_ip=Yii::app()->request->userHostAddress;
+        $modelTicket->hour=date('H:i:s');
+        $maximo=$modelTicket::model()->findBySql("SELECT COUNT(id) AS number_of_the_day FROM ticket WHERE date= '".date('Y-m-d')."'");
+        $maximo->number_of_the_day+=1;
+        $ticketNumber=date('Ymd').'-'.str_pad($maximo->number_of_the_day, 3, "0", STR_PAD_LEFT).'-'.$typeUser.$modelTicket->id_failure;
+        $modelTicket->ticket_number=$ticketNumber;
         $modelTicket->id_user=Yii::app()->user->id;
         $modelTicket->id_status=1;
         if(isset($_POST['isInternal']) && $_POST['isInternal'] == '1')
@@ -224,7 +228,7 @@ class TicketController extends Controller
                 echo '<h2>Ticket</h2>';
                 print_r($modelTicket->getErrors());
             }
-                    
+
             // Guardando number
             $number=count($_POST['testedNumber']);
             for($i=0; $i<$number; $i++)
@@ -242,7 +246,7 @@ class TicketController extends Controller
                 }
             }
         }
-                
+
         // Guardando los mails (to)
         if (isset($_POST['responseTo']) && $_POST['responseTo'] != null)
         {
@@ -296,7 +300,7 @@ class TicketController extends Controller
                 }
             }
         }
-                
+
         // Guardando descripcion
         $modelDescriptionTicket=new DescriptionTicket();
         $modelDescriptionTicket->id_ticket=$modelTicket->id;
@@ -304,13 +308,16 @@ class TicketController extends Controller
         $modelDescriptionTicket->date=date('Y-m-d');
         $modelDescriptionTicket->hour=date('H:i:s');
         $modelDescriptionTicket->id_user=Yii::app()->user->id;
-        $modelDescriptionTicket->read=0;
+        if (isset($_POST['etelixAsCustomer']) && $_POST['etelixAsCustomer'] == 'yes') $etelixAsCustomer=true;
+        $optionRead=DescriptionticketController::getUserNewDescription($etelixAsCustomer);
+        $modelDescriptionTicket->read_carrier=$optionRead['read_carrier'];
+        $modelDescriptionTicket->read_internal=$optionRead['read_internal'];
         if (!$modelDescriptionTicket->save())
         {
             echo '<h2>Description</h2>';
             print_r($modelDescriptionTicket->getErrors());
         }
-                
+
         if(isset($_POST['_attachFile']) && count($_POST['_attachFile']))
         {
             /**
@@ -343,9 +350,9 @@ class TicketController extends Controller
         $to=array();
         $bbc=null;
         $cc=null;
-        
+
         $cuerpoMail=new CuerpoCorreo();
-                
+        
         // Si es interntal
         if (isset($_POST['isInternal']) && $_POST['isInternal'] == '1')
         {
@@ -353,24 +360,25 @@ class TicketController extends Controller
             if (isset($_POST['direccionCC']) && $_POST['direccionCC'] != null) $cc = $_POST['direccionCC'];
             if (isset($_POST['direccionBBC']) && $_POST['direccionBBC'] != null) $bbc = $_POST['direccionBBC'];
             
-            $cuerpoMail->init(
-                        $ticketNumber,
-                        Yii::app()->user->name,
-                        $_POST['emails'],
-                        $_POST['failureText'],
-                        $_POST['originationIp'],
-                        $_POST['destinationIp'],
-                        $_POST['prefix'],
-                        null,
-                        array(),
-                        array(),
-                        array(),
-                        array(),
-                        $_POST['description'],
-                        $cc,
-                        $bbc,
-                        $_POST['speech']
-                    );
+            $data=array(
+                'ticketNumber'=>$ticketNumber,
+                'username'=>Yii::app()->user->name,
+                'emails'=>$_POST['emails'],
+                'failure'=>$_POST['failureText'],
+                'originationIp'=>$_POST['originationIp'],
+                'destinationIp'=>$_POST['destinationIp'],
+                'prefix'=>$_POST['prefix'],
+                'gmt'=>null,
+                'testedNumber'=>array(),
+                'country'=>array(),
+                'date'=>array(),
+                'hour'=>array(),
+                'description'=>$_POST['description'],
+                'cc'=>$cc,
+                'bcc'=>$bbc,
+                'speech'=>$_POST['speech']
+            );
+            $cuerpoMail->init($data);
             $cuerpo=$cuerpoMail->getBodySupplier();
         }
         // Si es cliente
@@ -382,31 +390,33 @@ class TicketController extends Controller
                 $user=$_POST['user'];
                 $idUser=$_POST['idUser'];
             }
-            
-            $cuerpoMail->init(
-                        $ticketNumber,
-                        $user,
-                        $_POST['emails'],
-                        $_POST['failureText'],
-                        $_POST['originationIp'],
-                        $_POST['destinationIp'],
-                        $_POST['prefix'],
-                        $_POST['gmtText'],
-                        $_POST['testedNumber'],
-                        $_POST['_countryText'],
-                        $_POST['_date'],
-                        $_POST['_hour'],
-                        $_POST['description']
-                    );
-            
+            $data=array(
+                'ticketNumber'=>$ticketNumber,
+                'username'=>$user,
+                'emails'=>$_POST['emails'],
+                'failure'=>$_POST['failureText'],
+                'originationIp'=>$_POST['originationIp'],
+                'destinationIp'=>$_POST['destinationIp'],
+                'prefix'=>$_POST['prefix'],
+                'gmt'=>$_POST['gmtText'],
+                'testedNumber'=>$_POST['testedNumber'],
+                'country'=>$_POST['_countryText'],
+                'date'=>$_POST['_date'],
+                'hour'=>$_POST['_hour'],
+                'description'=>$_POST['description'],
+                'cc'=>null,
+                'bcc'=>null,
+                'speech'=>null
+            );
+            $cuerpoMail->init($data);
             $cuerpo=$cuerpoMail->getBodyCustumer();
             $cuerpo_tt=$cuerpoMail->getBodyTT();
-            
+
             $to=$_POST['emails']; 
         }
-                
+
         $mailer=new EnviarEmail; 
-        
+
         $nameCarrier=Carrier::getCarriers(true, $modelTicket->id);
         $tipoUsuario='';
         if ($idUser === null)
@@ -417,7 +427,7 @@ class TicketController extends Controller
         {
             $tipoUsuario = CrugeAuthassignment::getRoleUser(false, $idUser);
         }
-        
+
         $subject='';
         if ($tipoUsuario == 'C')
         {
@@ -427,28 +437,11 @@ class TicketController extends Controller
         {
             $subject='TT for '.$nameCarrier.', New TT, '.$ticketNumber.'';
         }
-                
-        $envioMail=$mailer->enviar($cuerpo, $to,'',$subject,$rutaAttachFile,$cc);
 
-        //$emailsTT[]='mmzmm3z@gmail.com';
-//      $emailsTT[]='tsu.nelsonmarcano@gmail.com';
-//      $envioMail2=false;
-//                
-//      if(isset($_POST['isInternal']) && $_POST['isInternal'] == 0)
-//      {
-//          $envioMail2=$mailer->enviar($cuerpo_tt,$emailsTT,$to,$subject,$rutaAttachFile);
-//      }
+        $envioMail=$mailer->enviar($cuerpo, $to,'',$subject,$rutaAttachFile,$cc);
 
         if($envioMail===true)
         {
-//          if(isset($envioMail2) && $envioMail2===true)
-//          {
-//              echo 'success';
-//          }
-//          else
-//          {
-//              echo 'success';
-//          }
             echo 'success';
         }
         else
@@ -457,8 +450,28 @@ class TicketController extends Controller
         }
     }
     
-
     /**
+     * Método para retornar la letra que llevará el número del ticket dependiendo
+     * de lo que seleccione en el select de la interfaz. Si la interfaz es de un
+     * cliente se retornará 'C' por defecto
+     *  
+     * @param string $key
+     * @return string|null
+     */
+    private function _getTypeUser($key)
+    {   
+        if ($key != null)
+        {
+            if ($key == 'customer') 
+                return 'C';
+            else
+                return 'P';
+        }
+        return 'C';
+    }
+
+
+     /**
      * Action para actualizar el status del ticket. Si el ticket padre está
      * en la tabla "ticket_relation", se actualizaran sus tickets hijos al 
      * status que sea seleccionado, si no se encuentra en dicha tabla, solo 
@@ -687,6 +700,9 @@ class TicketController extends Controller
         echo json_encode($array);
     }
     
+    /**
+     *
+     */
     public function actionCarriersbyclass()
     {
         header("Content-type: application/json");

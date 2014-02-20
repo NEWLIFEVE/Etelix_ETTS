@@ -65,16 +65,23 @@ function changeStatus(id, select, status, _class)
         title: 'Change status',
         width: 300,
         padding: 10,
-        content: '<center><p>El status del ticket ha sido cambiado, se ha mandado un correo con el detalle del mismo</p></center>'
+        content: '<center><p>The status of the ticket has been changed, it has sent an email with details thereof</p></center>'
     });
-    
-    $("td[id='"+id+"'], td[son='"+id+"']").children('span.span-status').children('span').text(status);
-    select.next('span.span-status').show()
-    $("td[id='"+id+"']").parent('tr').removeAttr('class')
-    $("td[id='"+id+"']").parent('tr').addClass(_class)
-    select.remove('select');
-    
-    
+    if (status == 'close')
+    {
+        $("td[id='"+id+"']").html('close');
+        $("td[id='"+id+"']").parent('tr').removeAttr('class')
+        $("td[id='"+id+"']").parent('tr').addClass(_class)
+        
+    }
+    else
+    {
+        $("td[id='"+id+"'], td[son='"+id+"']").children('span.span-status').children('span').text(status);
+        select.next('span.span-status').show()
+        $("td[id='"+id+"']").parent('tr').removeAttr('class')
+        $("td[id='"+id+"']").parent('tr').addClass(_class)
+        select.remove('select');
+    }
 }
 
 // Función para agregar archivos en el description
@@ -152,12 +159,13 @@ $(document).on('ready', function() {
        
        // Boton para abrir el preview del ticket
        $(document).on('click', 'table#example tbody tr td a.preview', function () {
-                var idTicket = $(this).attr('rel');
+                var clase=$(this).parent().parent().attr('class'),
+                idTicket = $(this).attr('rel');
                 $.ajax({
                     type:"POST",
                     url:"/ticket/getdataticket/" + idTicket,
                     success:function(data){
-                       
+
                         $.Dialog({
                             shadow: true,
                             overlay: true,
@@ -174,6 +182,12 @@ $(document).on('ready', function() {
                     }
                 });
                 setTimeout('attachFile()', 1000);
+                
+                if (clase.toLowerCase().indexOf("blink") >= 0)
+                {
+                    $ETTS.UI.removeBlink($(this));
+                    $ETTS.ajax.removeBlink(idTicket);
+                }
         } );
         
         // Evento para cambiar el status
@@ -183,44 +197,60 @@ $(document).on('ready', function() {
             _status = $(this).val(),
             _date = $(this).parent('td').attr('time');
             
-            $.ajax({
+            // Se llama al confirm
+            $ETTS.UI.confirmCloseTicket(select);
+            
+            // Si le da clic a cancelar
+            $('#cancel_confirm').on('click', function(){$.Dialog.close()});
+            
+            // Si le da clic a ok
+            $('#ok_confirm').on('click', function(){
+                $.Dialog.close();
+                
+                if (_status == 2) 
+                {
+                    changeStatus(id, select, 'close', 'close even')
+                } 
+                else 
+                {
+                    // Si _date es mayor a 86400 segundos(24 horas)
+                    if(_date > 86400) {
+                        changeStatus(id, select, 'open', 'late even')
+                    } else {
+                        changeStatus(id, select, 'open', 'open even')
+                    }
+                }
+                
+                $.ajax({
                 type:'POST',
                 url:'/ticket/updatestatus/' + id,
                 dataType:'html',
-                data:{
-                      idStatus:_status
-                },
+                data:{idStatus:_status},
                 success:function(data){
-                    if (data == 'true') {
-                        if (_status == 2) {
-                              changeStatus(id, select, 'close', 'close even')
-                        } else {
-                            // Si _date es mayor a 86400 segundos(24 horas)
-                            if(_date > 86400) {
-                                changeStatus(id, select, 'open', 'late even')
-                            } else {
-                                changeStatus(id, select, 'open', 'open even')
-                            }
+                        if (data != 'true') 
+                        {
+                            $.Dialog({
+                                    shadow: true,
+                                    overlay: false,
+                                    icon: '<span class="icon-rocket"></span>',
+                                    title: 'Error',
+                                    width: 500,
+                                    padding: 10,
+                                    content: '<center>'+data+'</center>'
+                              });
                         }
-                    } else {
-                        $.Dialog({
-                                shadow: true,
-                                overlay: false,
-                                icon: '<span class="icon-rocket"></span>',
-                                title: 'Error',
-                                width: 500,
-                                padding: 10,
-                                content: '<center>'+data+'</center>'
-                          });
                     }
-                }
+                });
             });
         });
         
         // Al perder el foco del select del cambio de statu
         $(document).on('blur', 'table#example tbody tr td select#status', function(){
-            $(this).next('span.span-status').show();
-            $(this).remove('select')
+            var select=$(this)
+            setTimeout(function(){
+                select.next('span.span-status').show()
+                select.remove('select')
+            }, 1000)
         });
         
         /*

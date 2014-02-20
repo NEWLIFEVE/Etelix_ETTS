@@ -182,7 +182,22 @@ $ETTS.UI=(function(){
             else
                 select.addClass('validate[required]');
     }
-    
+    function _confirmar(mensaje, aceptar, cancelar) {
+            $.Dialog({
+                shadow: true,
+                overlay: false,
+                icon: '<span class="icon-rocket"></span>',
+                title: false,
+                width: 500,
+                padding: 10,
+                content: 
+                    '<div id="content_mensaje">' + mensaje + '</div>' + 
+                    '<div id="content_botones">' +
+                        '<button class="primary large" id="ok_confirm" type="button">Continue</button>' +
+                        '<button class="primary large" id="cancel_confirm" type="button">Cancel</button>' +
+                    '</div>'
+            });
+    }
     return {
         
         tables:function(){
@@ -347,6 +362,22 @@ $ETTS.UI=(function(){
             boton.parent().parent().fadeOut('fast', function(){
                 boton.parent().parent().remove();
             });
+        },
+        
+        confirmCloseTicket:function(select){
+            if (select.val())
+            {   if (select.val() == '2')
+                {
+                    _confirmar('You are about to close a ticket, this change is erreversible, if you are sure click continue')
+                }
+                else
+                {
+                     _confirmar('Message');
+                }    
+            }
+        },
+        removeBlink:function(boton){
+            boton.parent().parent().removeClass('blink');
         }
     }
     

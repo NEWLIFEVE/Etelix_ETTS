@@ -182,6 +182,30 @@ table.display td {
         font-size: 90% !important;
 }
 
+@-webkit-keyframes myfirst {
+    from {text-shadow: 0px 0px 10px rgba(16, 43, 236, 0.9);}
+    to {text-shadow : none;}
+}
+
+@-moz-keyframes myfirst {
+    from {text-shadow: 0px 0px 10px rgba(16, 43, 236, 0.9);}
+    to {text-shadow : none;}
+}
+@keyframes myfirst {
+    from {text-shadow: 0px 0px 10px rgba(16, 43, 236, 0.9);}
+    to {text-shadow : none;}
+}
+
+table.display tr.blink
+{
+	font-weight:bold;
+	color: black;
+    /*text-shadow: 3px 3px 5px rgba(16, 43, 236, 0.8);
+    -webkit-animation: myfirst 3.5s linear infinite;
+    -moz-animation: myfirst 3.5s linear infinite;
+    animation: myfirst 3.5s linear infinite;*/
+}
+
 
 table.display td.center {
 	text-align: center;
@@ -220,7 +244,7 @@ table.display td.center {
  * DataTables row classes
  */
  table.display tr{
-     color: white;
+     color: rgb(90, 90, 90);
  }
 table.display tr.odd.close{
 	background-color: #61CF61;

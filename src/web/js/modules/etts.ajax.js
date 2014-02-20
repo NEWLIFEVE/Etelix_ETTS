@@ -161,7 +161,7 @@ $ETTS.ajax=(function(){
                         attachFileSave,
                         attachFileSize,
                         _isInternal, 
-                        formulario){
+                        formulario, _etelixAsCustomer){
                             
             var responseToArray=[],
             responseToText=[],
@@ -182,6 +182,11 @@ $ETTS.ajax=(function(){
             lengthBbc=_bbc.length,
             lengthAttachFile=attachFile.length,
             lengthTestedNumber=_testedNumber.length;
+            
+            if (_etelixAsCustomer) 
+                _etelixAsCustomer=_etelixAsCustomer;
+            else
+                _etelixAsCustomer=false;
             
             for (var i = 0; i < lengtTo; i++) 
             {
@@ -220,7 +225,8 @@ $ETTS.ajax=(function(){
             var idGmt=null,
             textoGmt=null,
             _idUser=null,
-            _textoUser=null;
+            _textoUser=null,
+            _typeUser=null;
             
             if (_gmt){
                 idGmt=_gmt.val();
@@ -230,6 +236,10 @@ $ETTS.ajax=(function(){
             if (_user){
                 _idUser=_user.val();
                 _textoUser=_user.text();
+            }
+            // Si es la interfaz de abrirle ticket a proveedor
+            if ($('#class')) {
+                _typeUser=$('#class').val()
             }
             
             $.ajax({
@@ -273,7 +283,9 @@ $ETTS.ajax=(function(){
                     _country:countryArray,
                     _countryText:countryTextArray,                          
                     _date: dateArray,
-                    _hour: hourArray
+                    _hour: hourArray,
+                    typeUser:_typeUser,
+                    etelixAsCustomer:_etelixAsCustomer
                 },
                 success:function(data) {
                     if (data == 'success') {
@@ -376,6 +388,15 @@ $ETTS.ajax=(function(){
                    }
                 });
             }
+        },
+        removeBlink:function(_idTicket){
+            $.ajax({
+               type:'POST',
+               url:'/descriptionticket/read',
+               data:{
+                   idTicket:_idTicket
+               }
+            });
         }
     }
 })();

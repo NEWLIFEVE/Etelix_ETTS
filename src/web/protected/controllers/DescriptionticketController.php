@@ -8,16 +8,6 @@ class DescriptionticketController extends Controller
 	 */
 	public $layout='//layouts/column2';
 
-	/**
-	 * @return array action filters
-	 */
-//	public function filters()
-//	{
-//		return array(
-//			'accessControl', // perform access control for CRUD operations
-//			'postOnly + delete', // we only allow deletion via POST request
-//		);
-//	}
         
         public function filters()
         {
@@ -187,7 +177,7 @@ class DescriptionticketController extends Controller
     		$mailer=new EnviarEmail;
     		$speech=null;
     		if(isset($_POST['idSpeech'])) $speech=$_POST['idSpeech'];
-
+                //Guardar Description
     		$model=new DescriptionTicket;
     		$model->id_ticket=$_POST['idTicket'];
     		$model->description=$_POST['message'];
@@ -195,54 +185,56 @@ class DescriptionticketController extends Controller
     		$model->hour=date('H:i:s');
     		$model->id_speech=$speech;
     		$model->id_user=Yii::app()->user->id;
-    		$model->read=0;
+                $optionRead=self::getUserNewDescription();
+    		$model->read_carrier=$optionRead['read_carrier'];
+                $model->read_internal=$optionRead['read_internal'];
     		if($model->save())
     		{
-    			//Guardar Description
-    			$ticketNumber=Ticket::model()->findByPk($model->id_ticket)->ticket_number;
-    			//Renderizar para mostrar la repsuesta
-    			$this->renderPartial('_answer', array('datos' => Ticket::ticketsByUsers(Yii::app()->user->id, $model->id_ticket, false)));
 	            /**
 	            * Se verifica si se envia por post
 	            * Guardando Attach File
 	            */
 	            if(isset($_POST['files']) && count($_POST['files']) && !empty($_POST['files']))
 	            {
-                    $count=count($_POST['files']);
-                    for($i=0; $i<$count; $i++)
-                    {
-                        $modelAttachFile=new File;
-                        $modelAttachFile->id_ticket=$model->id_ticket;
-                        $modelAttachFile->saved_name=$_POST['fileServer'][$i];
-                        $modelAttachFile->real_name=$_POST['files'][$i];
-                        $modelAttachFile->size=0.0;
-                        $modelAttachFile->rute='uploads/'.$_POST['fileServer'][$i];
-                        $modelAttachFile->id_description_ticket=$model->id;
-                        $modelAttachFile->save();
+                        $count=count($_POST['files']);
+                        for($i=0; $i<$count; $i++)
+                        {
+                            $modelAttachFile=new File;
+                            $modelAttachFile->id_ticket=$model->id_ticket;
+                            $modelAttachFile->saved_name=$_POST['fileServer'][$i];
+                            $modelAttachFile->real_name=$_POST['files'][$i];
+                            $modelAttachFile->size=0.0;
+                            $modelAttachFile->rute='uploads/'.$_POST['fileServer'][$i];
+                            $modelAttachFile->id_description_ticket=$model->id;
+                            $modelAttachFile->save();
+                        }
                     }
-                }
+                    
+                    $ticketNumber=Ticket::model()->findByPk($model->id_ticket)->ticket_number;
+                    //Renderizar para mostrar la repsuesta
+                    $this->renderPartial('/ticket/_answer', array('datos' => Ticket::ticketsByUsers(Yii::app()->user->id, $model->id_ticket, false)));
 
-                $mailsAll=Mail::getNameMails($model->id_ticket);
-            	$nameCarrier=Carrier::getCarriers(true, $model->id_ticket);
-            	$tipoUsuario = CrugeAuthassignment::getRoleUser();
-            	$subject='';
-            	if($tipoUsuario=='C')
-            	{
-            		$subject='TT from '.$nameCarrier.', New Answer, '.$ticketNumber.'';
-            	}
-            	else
-            	{
-                	$subject='TT for '.$nameCarrier.', New Answer, '.$ticketNumber.'';
-            	}
-            	$mailer->enviar(TicketController::getBodyMails($model->id_ticket, Mail::getNameMails($model->id_ticket), 'answer'), $mailsAll, '', $subject);
+                    $mailsAll=Mail::getNameMails($model->id_ticket);
+                    $nameCarrier=Carrier::getCarriers(true, $model->id_ticket);
+                    $tipoUsuario = CrugeAuthassignment::getRoleUser();
+                    $subject='';
+                    if($tipoUsuario=='C')
+                    {
+                            $subject='TT from '.$nameCarrier.', New Answer, '.$ticketNumber.'';
+                    }
+                    else
+                    {
+                            $subject='TT for '.$nameCarrier.', New Answer, '.$ticketNumber.'';
+                    }
+                    $mailer->enviar(TicketController::getBodyMails($model->id_ticket, Mail::getNameMails($model->id_ticket), 'answer'), $mailsAll, '', $subject);
         	}
 	    	else
             {
-        		echo 'false';
+                echo 'false';
             }
         }
     }
-
+    
     /**
      * 
      * @param int $idTicket
@@ -293,4 +285,76 @@ class DescriptionticketController extends Controller
         $areaAnswer .= '</div>';
         return $areaAnswer;
     }  
+    
+    /**
+     *
+     */
+    public function actionRead()
+    {
+        $model=new DescriptionTicket;
+        if (isset($_POST['idTicket']) && !empty($_POST['idTicket']))
+        {
+            $userLogIn=CrugeAuthassignment::getRoleUser();
+            if ($userLogIn=='C')
+                $model->updateAll(array('read_carrier'=>'1'), "id_ticket = ".$_POST['idTicket']);
+            else
+                $model->updateAll(array('read_internal'=>'1'), "id_ticket = ".$_POST['idTicket']);
+        }
+    }
+    
+    /**
+     * @param boolean $etelixAsCustomer
+     * @param int $idTicket
+     * @return array
+     */
+    public static function getUserNewDescription($etelixAsCustomer=false, $idTicket=false)
+    {
+        $userLogIn=CrugeAuthassignment::getRoleUser(false, $idTicket);
+        if ($etelixAsCustomer) 
+        {
+            return array('read_carrier'=>'0','read_internal'=>'0');
+        } 
+        else 
+        {
+            if($userLogIn === 'C')
+            {
+                return array('read_carrier'=>'1','read_internal'=>'0');
+            } 
+            else 
+            {
+                return array('read_carrier'=>'0','read_internal'=>'1');
+            }
+        }
+    }
+    
+    /**
+     * 
+     * @param int $idTicket
+     * @return string
+     */
+    public static function blinkTr($idTicket)
+    {
+        $userLogin=CrugeAuthassignment::getRoleUser();
+        $lastDescription=DescriptionTicket::lastDescription($idTicket);
+        
+        if($lastDescription!=null)
+        {
+            if($userLogin=='C')
+            {
+                if($lastDescription->read_carrier == '0') 
+                {
+                    return 'blink';
+                }
+                return '';
+            }
+            else
+            {
+                if($lastDescription->read_internal == '0')
+                {
+                    return 'blink';
+                }
+                return '';
+            }
+        }
+    }
 }

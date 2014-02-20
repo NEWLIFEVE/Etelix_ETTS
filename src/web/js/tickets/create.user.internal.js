@@ -49,6 +49,18 @@ $(document).on('ready', function(){
     
     // Remove mails
     $(document).on('click', 'a.a-borrar-correo', function(){
+        
+        var mailSeleccionado = $('#mails option:selected').val();
+        
+        if ($('#mails').val()) { 
+            $ETTS.UI.confirmar('Delete Mail?', 'ok_confirm', 'cancel_confirm'); 
+            $('#ok_confirm').on('click', function(){
+                $ETTS.ajax.deleteMailByConfirm('mails', 'Ticket_mail', mailSeleccionado)
+            });
+            $('#cancel_confirm').on('click', function(){
+                $.Dialog.close();
+            });
+        }
         $ETTS.UI.borrarOptionSelect($(this))
     });
     
@@ -62,8 +74,8 @@ $(document).on('ready', function(){
      *   
      *   último parámetro:
      *   0 cuando un cliente abre un ticket
-     *   1 cuando un interno le abre un ticket a un cliente
-     *   2 cuando un interno le abre un ticket a un proveedor   
+     *   1 cuando un interno le abre un ticket a un (carrier)cliente
+     *   2 cuando un interno le abre un ticket a un (carrier)proveedor   
      */
     $(document).on('click', '.btn-agregar-correo-cliente', function(){
         $ETTS.ajax.saveMail($('#new_mail'),'1',$('#user'),$('#mails'),$('#Ticket_mail'), '0');
@@ -243,7 +255,8 @@ $(document).on('ready', function(){
                         $('[name="attachFileSave[]"]'),                         // FILE SAVE NAME
                         $('[name="attachFileSize[]"]'),                         // FILE SIZE
                         '0',                                                    // Si es cliente = 0 de lo contrario = 1
-                        $("#ticket-form-to-client")                             // Limpiar Formulario
+                        $("#ticket-form-to-client"),                            // Limpiar Formulario
+                        $('#etelix-as-customer').val()
                      );
                 });
             }
