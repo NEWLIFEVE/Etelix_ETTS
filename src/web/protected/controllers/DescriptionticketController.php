@@ -289,7 +289,6 @@ class DescriptionticketController extends Controller
         $areaAnswer .= '</div>';
         return $areaAnswer;
     }  
-<<<<<<< HEAD
     
     /**
      *
@@ -363,6 +362,3 @@ class DescriptionticketController extends Controller
         }
     }
 }
-=======
-}
->>>>>>> b29367922e24784d268d5202f6604be13fbbc0b7
