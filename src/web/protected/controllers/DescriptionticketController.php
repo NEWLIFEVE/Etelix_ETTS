@@ -190,6 +190,10 @@ class DescriptionticketController extends Controller
                 $model->read_internal=$optionRead['read_internal'];
     		if($model->save())
     		{
+    			//Guardar Description
+    			$ticketNumber=Ticket::model()->findByPk($model->id_ticket)->ticket_number;
+    			//Renderizar para mostrar la repsuesta
+    			$this->renderPartial('/ticket/_answer', array('datos' => Ticket::ticketsByUsers(Yii::app()->user->id, $model->id_ticket, false)));
 	            /**
 	            * Se verifica si se envia por post
 	            * Guardando Attach File
@@ -285,6 +289,7 @@ class DescriptionticketController extends Controller
         $areaAnswer .= '</div>';
         return $areaAnswer;
     }  
+<<<<<<< HEAD
     
     /**
      *
@@ -358,3 +363,6 @@ class DescriptionticketController extends Controller
         }
     }
 }
+=======
+}
+>>>>>>> b29367922e24784d268d5202f6604be13fbbc0b7
