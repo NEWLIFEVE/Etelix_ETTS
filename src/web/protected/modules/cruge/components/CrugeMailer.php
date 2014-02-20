@@ -116,16 +116,16 @@ class CrugeMailer extends CrugeMailerBase implements ICrugeMailer
         usando tu propia metodo, si quieres usar el metodo por defecto (mail) entonces
         simplemente llamas a parent::sendEmail.
     */
-    public function sendEmail($to, $subject, $body)
-    {
-        return parent::sendEmail($to, $subject, $body);
-    }
-      
 //    public function sendEmail($to, $subject, $body)
 //    {
-//        $mail=new EnviarEmail;
-//        return $mail->enviar($body, $to, '', $subject);
+//        return parent::sendEmail($to, $subject, $body);
 //    }
+      
+    public function sendEmail($to, $subject, $body)
+    {
+        $mail=new EnviarEmail;
+        return $mail->enviar($body, $to, '', $subject);
+    }
 }
 
 ?>

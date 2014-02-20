@@ -150,7 +150,7 @@ return array(
         	),
         'crugemailer'=>array(
             'class'=>'application.modules.cruge.components.CrugeMailer',
-            'mailfrom'=>'email-desde-donde-quieres-enviar-los-mensajes@xxxx.com',
+            'mailfrom'=>'etts@etelix.com',
             'subjectprefix'=>'Tu Encabezado del asunto - ',
             'debug'=>true,
             ),
