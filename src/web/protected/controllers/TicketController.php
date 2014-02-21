@@ -190,14 +190,18 @@ class TicketController extends Controller
             date_default_timezone_set('America/Caracas');
 
             $modelTicket=new Ticket;
+
             $rutaAttachFile=array();
             $idUser=null;
             $etelixAsCustomer=false;
             $typeUser='C';
-            
+
             if (isset($_POST['typeUser'])) 
                 $typeUser=$this->_getTypeUser($_POST['typeUser']);
-                
+
+            $isOk=true;
+            $transaction=Yii::app()->db->beginTransaction();
+
             $modelTicket->date=date('Y-m-d');
             $modelTicket->id_failure=$_POST['failure'];
             $modelTicket->destination_ip=$_POST['destinationIp'] == '' ? null: $_POST['destinationIp'];
@@ -214,20 +218,12 @@ class TicketController extends Controller
             if(isset($_POST['isInternal']) && $_POST['isInternal'] == '1')
             {
                 $modelTicket->id_gmt=null;
-                if(!$modelTicket->save())
-                {
-                    echo '<h2>Ticket</h2>';
-                    print_r($modelTicket->getErrors());
-                }
+                if (!$modelTicket->save()) $isOk=false;
             }
             else
             {
                 $modelTicket->id_gmt=$_POST['gmt'];
-                if(!$modelTicket->save())
-                {
-                    echo '<h2>Ticket</h2>';
-                    print_r($modelTicket->getErrors());
-                }
+                if (!$modelTicket->save()) $isOk=false;
 
                 // Guardando number
                 $number=count($_POST['testedNumber']);
@@ -239,11 +235,7 @@ class TicketController extends Controller
                     $modelTestedNumber->numero=$_POST['testedNumber'][$i];
                     $modelTestedNumber->date=$_POST['_date'][$i];
                     $modelTestedNumber->hour=$_POST['_hour'][$i];
-                    if(!$modelTestedNumber->save())
-                    {
-                        echo '<h2>Tested Number</h2>';
-                        print_r($modelTestedNumber->getErrors());
-                    }
+                    if (!$modelTestedNumber->save()) $isOk=false;
                 }
             }
 
@@ -257,11 +249,7 @@ class TicketController extends Controller
                     $modelMailTicket->id_mail_user=$_POST['responseTo'][$i];
                     $modelMailTicket->id_ticket=$modelTicket->id;
                     $modelMailTicket->id_type_mailing=1;
-                    if (!$modelMailTicket->save())
-                    {
-                        echo '<h2>Mail Ticket (to)</h2>';
-                        print_r($modelMailTicket->getErrors());
-                    }
+                    if (!$modelMailTicket->save()) $isOk=false;
                 }
             }
 
@@ -275,11 +263,7 @@ class TicketController extends Controller
                     $modelMailTicket->id_mail_user=$_POST['cc'][$i];
                     $modelMailTicket->id_ticket=$modelTicket->id;
                     $modelMailTicket->id_type_mailing=2;
-                    if (!$modelMailTicket->save())
-                    {
-                        echo '<h2>Ticket (cc)</h2>';
-                        print_r($modelMailTicket->getErrors());
-                    }
+                    if (!$modelMailTicket->save()) $isOk=false;
                 }
             }
 
@@ -293,11 +277,7 @@ class TicketController extends Controller
                     $modelMailTicket->id_mail_user=$_POST['bbc'][$i];
                     $modelMailTicket->id_ticket=$modelTicket->id;
                     $modelMailTicket->id_type_mailing=3;
-                    if (!$modelMailTicket->save())
-                    {
-                        echo '<h2>Ticket (bcc)</h2>';
-                        print_r($modelMailTicket->getErrors());
-                    }
+                    if (!$modelMailTicket->save()) $isOk=false;
                 }
             }
 
@@ -312,11 +292,7 @@ class TicketController extends Controller
             $optionRead=DescriptionticketController::getUserNewDescription($etelixAsCustomer);
             $modelDescriptionTicket->read_carrier=$optionRead['read_carrier'];
             $modelDescriptionTicket->read_internal=$optionRead['read_internal'];
-            if (!$modelDescriptionTicket->save())
-            {
-                echo '<h2>Description</h2>';
-                print_r($modelDescriptionTicket->getErrors());
-            }
+            if (!$modelDescriptionTicket->save()) $isOk=false;
 
             if(isset($_POST['_attachFile']) && count($_POST['_attachFile']))
             {
@@ -335,118 +311,125 @@ class TicketController extends Controller
                     $modelAttachFile->rute='uploads/'.$_POST['_attachFileSave'][$i];
                     $modelAttachFile->id_description_ticket=$modelDescriptionTicket->id;
                     $rutaAttachFile[]=$modelAttachFile->rute;
-                    if (!$modelAttachFile->save())
-                    {
-                        echo '<h2>Attach File</h2>';
-                        print_r($rutaAttachFile->getErrors());
-                    }
+                    if (!$modelAttachFile->save()) $isOk=false;
                 }
             }
 
-            // Variables para enviar al cuerpo del correo
-            $cuerpo='';
-            $cuerpo_tt='';
-            // to, cc y bbc si es enviado por el supplier
-            $to=array();
-            $bbc=null;
-            $cc=null;
+            if ($isOk == true)
+            {
+                $transaction->commit();
+                /* Enviar correo con los datos del tt */
 
-            $cuerpoMail=new CuerpoCorreo();
-            
-            // Si es interntal
-            if (isset($_POST['isInternal']) && $_POST['isInternal'] == '1')
-            {
-                if (isset($_POST['emails']) && $_POST['emails'] != null) $to = $_POST['emails'];
-                if (isset($_POST['direccionCC']) && $_POST['direccionCC'] != null) $cc = $_POST['direccionCC'];
-                if (isset($_POST['direccionBBC']) && $_POST['direccionBBC'] != null) $bbc = $_POST['direccionBBC'];
-                
-                $data=array(
-                    'ticketNumber'=>$ticketNumber,
-                    'username'=>Yii::app()->user->name,
-                    'emails'=>$_POST['emails'],
-                    'failure'=>$_POST['failureText'],
-                    'originationIp'=>$_POST['originationIp'],
-                    'destinationIp'=>$_POST['destinationIp'],
-                    'prefix'=>$_POST['prefix'],
-                    'gmt'=>null,
-                    'testedNumber'=>array(),
-                    'country'=>array(),
-                    'date'=>array(),
-                    'hour'=>array(),
-                    'description'=>$_POST['description'],
-                    'cc'=>$cc,
-                    'bcc'=>$bbc,
-                    'speech'=>$_POST['speech']
-                );
-                $cuerpoMail->init($data);
-                $cuerpo=$cuerpoMail->getBodySupplier();
-            }
-            // Si es cliente
-            else
-            {
-                $user=Yii::app()->user->name;
-                if (isset($_POST['user']) && isset($_POST['idUser']) && $_POST['user'] != null && $_POST['idUser'] != null)
+                // Variables para enviar al cuerpo del correo
+                $cuerpo='';
+                $cuerpo_tt='';
+                // to, cc y bbc si es enviado por el supplier
+                $to=array();
+                $bbc=null;
+                $cc=null;
+
+                $cuerpoMail=new CuerpoCorreo();
+
+                // Si es interntal
+                if (isset($_POST['isInternal']) && $_POST['isInternal'] == '1')
                 {
-                    $user=$_POST['user'];
-                    $idUser=$_POST['idUser'];
+                    if (isset($_POST['emails']) && $_POST['emails'] != null) $to = $_POST['emails'];
+                    if (isset($_POST['direccionCC']) && $_POST['direccionCC'] != null) $cc = $_POST['direccionCC'];
+                    if (isset($_POST['direccionBBC']) && $_POST['direccionBBC'] != null) $bbc = $_POST['direccionBBC'];
+
+                    $data=array(
+                        'ticketNumber'=>$ticketNumber,
+                        'username'=>Yii::app()->user->name,
+                        'emails'=>$_POST['emails'],
+                        'failure'=>$_POST['failureText'],
+                        'originationIp'=>$_POST['originationIp'],
+                        'destinationIp'=>$_POST['destinationIp'],
+                        'prefix'=>$_POST['prefix'],
+                        'gmt'=>null,
+                        'testedNumber'=>array(),
+                        'country'=>array(),
+                        'date'=>array(),
+                        'hour'=>array(),
+                        'description'=>$_POST['description'],
+                        'cc'=>$cc,
+                        'bcc'=>$bbc,
+                        'speech'=>$_POST['speech']
+                    );
+                    $cuerpoMail->init($data);
+                    $cuerpo=$cuerpoMail->getBodySupplier();
                 }
-                $data=array(
-                    'ticketNumber'=>$ticketNumber,
-                    'username'=>$user,
-                    'emails'=>$_POST['emails'],
-                    'failure'=>$_POST['failureText'],
-                    'originationIp'=>$_POST['originationIp'],
-                    'destinationIp'=>$_POST['destinationIp'],
-                    'prefix'=>$_POST['prefix'],
-                    'gmt'=>$_POST['gmtText'],
-                    'testedNumber'=>$_POST['testedNumber'],
-                    'country'=>$_POST['_countryText'],
-                    'date'=>$_POST['_date'],
-                    'hour'=>$_POST['_hour'],
-                    'description'=>$_POST['description'],
-                    'cc'=>null,
-                    'bcc'=>null,
-                    'speech'=>null
-                );
-                $cuerpoMail->init($data);
-                $cuerpo=$cuerpoMail->getBodyCustumer();
-                $cuerpo_tt=$cuerpoMail->getBodyTT();
+                // Si es cliente
+                else
+                {
+                    $user=Yii::app()->user->name;
+                    if (isset($_POST['user']) && isset($_POST['idUser']) && $_POST['user'] != null && $_POST['idUser'] != null)
+                    {
+                        $user=$_POST['user'];
+                        $idUser=$_POST['idUser'];
+                    }
+                    $data=array(
+                        'ticketNumber'=>$ticketNumber,
+                        'username'=>$user,
+                        'emails'=>$_POST['emails'],
+                        'failure'=>$_POST['failureText'],
+                        'originationIp'=>$_POST['originationIp'],
+                        'destinationIp'=>$_POST['destinationIp'],
+                        'prefix'=>$_POST['prefix'],
+                        'gmt'=>$_POST['gmtText'],
+                        'testedNumber'=>$_POST['testedNumber'],
+                        'country'=>$_POST['_countryText'],
+                        'date'=>$_POST['_date'],
+                        'hour'=>$_POST['_hour'],
+                        'description'=>$_POST['description'],
+                        'cc'=>null,
+                        'bcc'=>null,
+                        'speech'=>null
+                    );
+                    $cuerpoMail->init($data);
+                    $cuerpo=$cuerpoMail->getBodyCustumer();
+                    $cuerpo_tt=$cuerpoMail->getBodyTT();
 
-                $to=$_POST['emails']; 
-            }
+                    $to=$_POST['emails']; 
+                }
 
-            $mailer=new EnviarEmail; 
+                $mailer=new EnviarEmail; 
 
-            $nameCarrier=Carrier::getCarriers(true, $modelTicket->id);
-            $tipoUsuario='';
-            if ($idUser === null)
-            {
-                $tipoUsuario = CrugeAuthassignment::getRoleUser();
+                $nameCarrier=Carrier::getCarriers(true, $modelTicket->id);
+                $tipoUsuario='';
+                if ($idUser === null)
+                {
+                    $tipoUsuario = CrugeAuthassignment::getRoleUser();
+                }
+                else
+                {
+                    $tipoUsuario = CrugeAuthassignment::getRoleUser(false, $idUser);
+                }
+
+                $subject='';
+                if ($tipoUsuario == 'C')
+                {
+                    $subject='TT from '.$nameCarrier.', New TT, '.$ticketNumber.'';
+                }
+                else
+                {
+                    $subject='TT for '.$nameCarrier.', New TT, '.$ticketNumber.'';
+                }
+
+                $envioMail=$mailer->enviar($cuerpo, $to,'',$subject,$rutaAttachFile,$cc);
+
+                if($envioMail===true)
+                {
+                    echo 'success';
+                }
+                else
+                {
+                    echo 'Error al enviar el correo: '.$envioMail;
+                }
             }
             else
             {
-                $tipoUsuario = CrugeAuthassignment::getRoleUser(false, $idUser);
-            }
-
-            $subject='';
-            if ($tipoUsuario == 'C')
-            {
-                $subject='TT from '.$nameCarrier.', New TT, '.$ticketNumber.'';
-            }
-            else
-            {
-                $subject='TT for '.$nameCarrier.', New TT, '.$ticketNumber.'';
-            }
-
-            $envioMail=$mailer->enviar($cuerpo, $to,'',$subject,$rutaAttachFile,$cc);
-
-            if($envioMail===true)
-            {
-                echo 'success';
-            }
-            else
-            {
-                echo 'Error al enviar el correo: '.$envioMail;
+                $transaction->rollBack();
+                echo 'Error';
             }
         }
     
