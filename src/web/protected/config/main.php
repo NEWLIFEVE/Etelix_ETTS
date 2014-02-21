@@ -158,7 +158,7 @@ return array(
         	'datetimeFormat'=>"d M, Y h:m:s a",
         	),
         'session'=>array(
-        	'timeout'=>false,
+        	'timeout'=>'3600',
         	),
         ),
         // application-level parameters that can be accessed
