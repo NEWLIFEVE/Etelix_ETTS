@@ -244,18 +244,7 @@ class DescriptionticketController extends Controller
     public static function getDescription($idTicket, $datos)
     {
         $user=CrugeUser2::getUserTicket($idTicket, true)->iduser;
-        $areaAnswer = '<div style="margin: 10px auto !important; 
-                                   border-top:1px #d9d9d9 solid;
-                                   border-bottom:1px #d9d9d9 solid;
-                                   border-left:1px #d9d9d9 solid;
-                                   min-height:60px!important;
-                                   max-height:210px!important;
-                                   overflow:auto;
-                                   overflow-y:scroll;
-                                   padding:10px;
-                                   width:95%;
-                                   margin:5px 0 10px 0;
-                                   font-size:12px!important">';
+        $areaAnswer = '<div>';
         foreach ($datos->descriptionTickets as $value) {
             if($value->idUser !==null){
                 if ($value->idUser->iduser === $user) {
