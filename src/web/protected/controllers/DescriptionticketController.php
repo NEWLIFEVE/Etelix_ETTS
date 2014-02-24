@@ -188,6 +188,12 @@ class DescriptionticketController extends Controller
                 $optionRead=self::getUserNewDescription();
     		$model->read_carrier=$optionRead['read_carrier'];
                 $model->read_internal=$optionRead['read_internal'];
+                $user=Ticket::ticketsByUsers(Yii::app()->user->id, $model->id_ticket, false)->id_user;
+                if ($user == Yii::app()->user->id)
+                    $model->response_by=0;
+                else
+                    $model->response_by=Yii::app()->user->id;
+                
     		if($model->save())
     		{
 	            /**
@@ -243,15 +249,22 @@ class DescriptionticketController extends Controller
      */  
     public static function getDescription($idTicket, $datos)
     {
-        $user=CrugeUser2::getUserTicket($idTicket, true)->iduser;
         $areaAnswer = '<div>';
         foreach ($datos->descriptionTickets as $value) {
             if($value->idUser !==null){
-                if ($value->idUser->iduser === $user) {
-                    $float = 'float: left; color: #3e454c; background: rgba(209, 205, 218, 0.5);';
-                } else {
-                    $float = 'float: right; color: #fff; background: #6badf6;';
+                $usuario=CrugeAuthassignment::getRoleUser(false, $value->id_user);
+                if (($usuario == 'I' || $usuario == 'C' || $usuario == 'A' || $usuario == 'S') && $value->id_user != $value->response_by) {
+                    $style='float: left; color: #3e454c; background: rgba(196, 191, 191, 0.5);';
                 }
+
+                if ($usuario == 'C' && $value->id_user == $value->response_by) {
+                    $style='float: left; color: #3e454c; background: white;';
+                }
+
+                if ($usuario != 'C' && $value->id_user == $value->response_by) {
+                    $style='float: right; color: #fff; background: #6badf6;';
+                }
+                
                 $areaAnswer .= '<div style="border: 1px solid #dfdfdf;
                                     border: 1px solid rgba(0, 0, 0, .18);
                                     border-bottom-color: rgba(0, 0, 0, .29);
@@ -266,7 +279,7 @@ class DescriptionticketController extends Controller
                                     word-wrap: break-word;
                                     min-width: 20%;
                                     max-width: 100%;
-                                    clear: both; '.$float.'">' . 
+                                    clear: both; '.$style.'">' . 
                         $value->description . '   <br><strong>Date: </strong>' . $value->date . ' || <strong>Hour: </strong>' . $value->hour . ' || <strong>User: </strong>' . $value->idUser->username .  
                      '</div>';   
             } 
