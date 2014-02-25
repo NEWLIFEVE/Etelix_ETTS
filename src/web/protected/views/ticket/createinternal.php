@@ -12,6 +12,7 @@ $form=$this->beginWidget('CActiveForm',array(
 )); ?>
 
 <div class="span9">
+    <?php echo '<h1>'.$tipoCarrier=Carrier::getTypeCarrier(3).'</h1>'; ?>
     <h2>Ticket Information</h2>
     <div class="example">
         <?php $this->renderPartial('_forminternal',array('form'=>$form,'model'=>$model)); ?>

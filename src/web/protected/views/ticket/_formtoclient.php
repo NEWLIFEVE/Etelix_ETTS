@@ -10,6 +10,15 @@
 <?php echo $form->errorSummary($model); ?>   
         
 <div class="input-control select block">
+        Class<small class="text-muted "><em> (required)</em></small>
+        <select id="class" class="validate[required]">
+            <option value=""></option>
+            <option value="customer">Customer</option>            
+            <option value="supplier">Supplier</option>
+        </select>
+</div>
+        
+<div class="input-control select block">
         User<small class="text-muted "><em> (required)</em></small>
         <select id="user" class="validate[required]">
             <option value=""></option>

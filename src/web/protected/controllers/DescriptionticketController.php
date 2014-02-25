@@ -217,6 +217,8 @@ class DescriptionticketController extends Controller
                     }
                     
                     $ticketNumber=Ticket::model()->findByPk($model->id_ticket)->ticket_number;
+                    $hour=Ticket::model()->findByPk($model->id_ticket)->hour;
+                    $date=Ticket::model()->findByPk($model->id_ticket)->date;
                     //Renderizar para mostrar la repsuesta
                     $this->renderPartial('/ticket/_answer', array('datos' => Ticket::ticketsByUsers(Yii::app()->user->id, $model->id_ticket, false)));
 
@@ -224,13 +226,14 @@ class DescriptionticketController extends Controller
                     $nameCarrier=Carrier::getCarriers(true, $model->id_ticket);
                     $tipoUsuario = CrugeAuthassignment::getRoleUser();
                     $subject='';
+                    $timeTicket=Utility::restarHoras($hour, date('H:i:s'), floor(Utility::getTime($date, $hour)/ (60 * 60 * 24)));
                     if($tipoUsuario=='C')
                     {
-                            $subject='TT from '.$nameCarrier.', New Answer, '.$ticketNumber.'';
+                            $subject='TT from Customer '.$nameCarrier.', New Answer, '.$ticketNumber.' ('.$timeTicket.')';
                     }
                     else
                     {
-                            $subject='TT for '.$nameCarrier.', New Answer, '.$ticketNumber.'';
+                            $subject='TT for Customer '.$nameCarrier.', New Answer, '.$ticketNumber.' ('.$timeTicket.')';
                     }
                     $mailer->enviar(TicketController::getBodyMails($model->id_ticket, Mail::getNameMails($model->id_ticket), 'answer'), $mailsAll, '', $subject);
         	}

@@ -74,6 +74,7 @@ class TicketController extends Controller
 	public function actionCreateinternal()
 	{
 		$model=new Ticket;
+                
 		$this->render('createinternal',array(
 			'model'=>$model
 		));
@@ -399,23 +400,29 @@ class TicketController extends Controller
 
                 $nameCarrier=Carrier::getCarriers(true, $modelTicket->id);
                 $tipoUsuario='';
+                
+                
                 if ($idUser === null)
                 {
+                    $idUser=Yii::app()->user->id;
                     $tipoUsuario = CrugeAuthassignment::getRoleUser();
                 }
                 else
                 {
                     $tipoUsuario = CrugeAuthassignment::getRoleUser(false, $idUser);
                 }
-
+                
+                $tipoCarrier=Carrier::getTypeCarrier($idUser);
+                if (isset($_POST['typeUser']) && $_POST['typeUser'] != null) $tipoCarrier=$_POST['typeUser'];
+                
                 $subject='';
                 if ($tipoUsuario == 'C')
                 {
-                    $subject='TT from '.$nameCarrier.', New TT, '.$ticketNumber.'';
+                    $subject='TT from '.ucfirst($tipoCarrier).' '.$nameCarrier.', New TT, '.$ticketNumber.' (00:00)';
                 }
                 else
                 {
-                    $subject='TT for '.$nameCarrier.', New TT, '.$ticketNumber.'';
+                    $subject='TT for '.ucfirst($tipoCarrier).' '.$nameCarrier.', New TT, '.$ticketNumber.' (00:00)';
                 }
 
                 $envioMail=$mailer->enviar($cuerpo, $to,'',$subject,$rutaAttachFile,$cc);
@@ -451,7 +458,7 @@ class TicketController extends Controller
             if ($key == 'customer') 
                 return 'C';
             else
-                return 'P';
+                return 'S';
         }
         return 'C';
     }
@@ -469,6 +476,8 @@ class TicketController extends Controller
     	$idTickets=Ticketrelation::getTicketRelation($id,true);
     	$statuName=Status::getStatus(true,$_POST['idStatus'])->name;
     	$ticketNumber=Ticket::model()->findByPk($id)->ticket_number;
+        $hour=Ticket::model()->findByPk($id)->hour;
+        $date=Ticket::model()->findByPk($id)->date;
         $body=self::getBodyMails($id,Mail::getNameMails($id),'status',$statuName);
 
         $mailer=new EnviarEmail;
@@ -491,13 +500,15 @@ class TicketController extends Controller
         
         $tipoUsuario=CrugeAuthassignment::getRoleUser();
         $subject='';
+        
+        $timeTicket=Utility::restarHoras($hour, date('H:i:s'), floor(Utility::getTime($date, $hour)/ (60 * 60 * 24)));
         if ($tipoUsuario == 'C')
         {
-            $subject='TT from '.$nameCarrier.', New Status, '.$ticketNumber.'';
+            $subject='TT from Customer '.$nameCarrier.', Closed TT, '.$ticketNumber.' ('.$timeTicket.')';
         }
         else
         {
-            $subject='TT for '.$nameCarrier.', New Status, '.$ticketNumber.'';
+            $subject='TT for Customer '.$nameCarrier.', Closed TT, '.$ticketNumber.' ('.$timeTicket.')';
         }
         
         $envioMail=$mailer->enviar($body,$mailModel::getNameMails($id),'',$subject,null);
@@ -691,4 +702,5 @@ class TicketController extends Controller
         header("Content-type: application/json");
         echo CJSON::encode(CrugeUser2::getCarriersSupplierOrCustomer($_POST['_type']));
     }
+    
 }

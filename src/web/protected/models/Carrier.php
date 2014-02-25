@@ -182,30 +182,15 @@ class Carrier extends CActiveRecord
             
             if ($type=='supplier') 
             {
-                $consulta=self::model()->findAllBySql("SELECT c.id
-                                                      FROM carrier c,
-                                                      contrato x,
-                                                      contrato_termino_pago_supplier ctps
-                                                      WHERE c.id = x.id_carrier AND 
-                                                      ctps.id_contrato = x.id AND 
-                                                      ctps.end_date IS NULL AND 
-                                                      ctps.id_termino_pago_supplier <> (SELECT id FROM termino_pago WHERE name='Sin estatus')");
+                $consulta=self::getSupplier();
                 foreach($consulta as $value)
                 {
                     $id[]=$value->id;
                 }
-                 
             }
             else if ($type=='customer')
             {
-                $consulta=self::model()->findAllBySql("SELECT c.id
-                                                      FROM carrier c,
-                                                      contrato x,
-                                                      contrato_termino_pago ctp
-                                                      WHERE c.id = x.id_carrier AND 
-                                                      ctp.id_contrato = x.id AND 
-                                                      ctp.end_date IS NULL AND 
-                                                      ctp.id_termino_pago <> (SELECT id FROM termino_pago WHERE name='Sin estatus')");
+                $consulta=self::getCustomer();
                 foreach($consulta as $value)
                 {
                     $id[]=$value->id;
@@ -217,6 +202,71 @@ class Carrier extends CActiveRecord
             }
             
             return $id;
+        }
+        
+        public static function getCustomer($id = false)
+        {
+            if ($id) {
+                return self::model()->findAllBySql("SELECT c.id
+                                                    FROM carrier c,
+                                                    contrato x,
+                                                    contrato_termino_pago ctp
+                                                    WHERE c.id = x.id_carrier AND 
+                                                    ctp.id_contrato = x.id AND 
+                                                    ctp.end_date IS NULL AND
+                                                    c.id = $id AND
+                                                    ctp.id_termino_pago <> (SELECT id FROM termino_pago WHERE name='Sin estatus')");
+            } else {
+                return self::model()->findAllBySql("SELECT c.id
+                                                    FROM carrier c,
+                                                    contrato x,
+                                                    contrato_termino_pago ctp
+                                                    WHERE c.id = x.id_carrier AND 
+                                                    ctp.id_contrato = x.id AND 
+                                                    ctp.end_date IS NULL AND
+                                                    ctp.id_termino_pago <> (SELECT id FROM termino_pago WHERE name='Sin estatus')");
+            }
+        }
+        
+        public static function getSupplier($id = false)
+        {
+            if ($id) {
+                return self::model()->findAllBySql("SELECT c.id
+                                                    FROM carrier c,
+                                                    contrato x,
+                                                    contrato_termino_pago_supplier ctps
+                                                    WHERE c.id = x.id_carrier AND 
+                                                    ctps.id_contrato = x.id AND 
+                                                    ctps.end_date IS NULL AND 
+                                                    c.id = $id AND
+                                                    ctps.id_termino_pago_supplier <> (SELECT id FROM termino_pago WHERE name='Sin estatus')");
+            } else {
+                return self::model()->findAllBySql("SELECT c.id
+                                                    FROM carrier c,
+                                                    contrato x,
+                                                    contrato_termino_pago_supplier ctps
+                                                    WHERE c.id = x.id_carrier AND 
+                                                    ctps.id_contrato = x.id AND 
+                                                    ctps.end_date IS NULL AND 
+                                                    ctps.id_termino_pago_supplier <> (SELECT id FROM termino_pago WHERE name='Sin estatus')");
+            }
+        }
+        
+        public static function getTypeCarrier($idUser)
+        {
+            $idCarrier=CrugeUser2::getIdCarrier($idUser);
+            if ($idCarrier != null) 
+            {
+                if (self::getCustomer($idCarrier) != null) 
+                {
+                    return 'Customer';
+                }
+                else
+                {
+                    return 'Supplier';
+                }
+            }
+            return false;
         }
         
 }
