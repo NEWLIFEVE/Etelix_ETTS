@@ -188,8 +188,7 @@ class DescriptionticketController extends Controller
                 $optionRead=self::getUserNewDescription();
     		$model->read_carrier=$optionRead['read_carrier'];
                 $model->read_internal=$optionRead['read_internal'];
-                $user=Ticket::ticketsByUsers(Yii::app()->user->id, $model->id_ticket, false)->id_user;
-                if ($user == Yii::app()->user->id)
+                if (isset($_POST['internalAsCarrier']) && $_POST['internalAsCarrier'] == 1)
                     $model->response_by=0;
                 else
                     $model->response_by=Yii::app()->user->id;

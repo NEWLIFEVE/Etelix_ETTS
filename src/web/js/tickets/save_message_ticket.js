@@ -6,7 +6,13 @@ function saveMessage()
     var fileName=$('div.ajax-file-upload-filename'),
     _length=fileName.length,
     _fileServer=[],
-    _files=[];
+    _files=[],
+    _internalAsCarrier=null;
+    
+    if ($('#internalAsCarrier')) {
+        if ($('#internalAsCarrier').attr('checked') == 'checked')
+            _internalAsCarrier=$('#internalAsCarrier').val();
+    }
     
     for(var i=0; i<_length; i++) {
         _files.push(fileName[i].innerHTML);
@@ -34,7 +40,9 @@ function saveMessage()
                 message:  _message,
                 idTicket: _idTicket,
                 files:_files,
-                fileServer:_fileServer
+                fileServer:_fileServer,
+                internalAsCarrier:_internalAsCarrier
+
             },
             beforeSend:function(){
                 $('div.pre-loader').html(

@@ -631,6 +631,8 @@ div.option-panel {
     /*border: 1px solid red;*/
 }
 div.option-panel.left {
+    padding: 0px 8px 0px 0px;
+    text-align: left;
     float: left;
 }
 
@@ -638,6 +640,11 @@ div.option-panel.right {
     padding: 0px 8px 0px 0px;
     text-align: right;
     float: right;
+}
+
+div.option-panel.left.confirmation {
+    width: 185px;
+    padding: 0px 8px 0px 8px;
 }
 
 a.edit-status {

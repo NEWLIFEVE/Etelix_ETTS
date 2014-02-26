@@ -281,8 +281,6 @@ class TicketController extends Controller
                     if (!$modelMailTicket->save()) $isOk=false;
                 }
             }
-            $responseBy=Yii::app()->user->id;
-            if (isset($_POST['idUser']) && $_POST['idUser'] != null) $responseBy=0;
 
             // Guardando descripcion
             $modelDescriptionTicket=new DescriptionTicket();
@@ -295,7 +293,7 @@ class TicketController extends Controller
             $optionRead=DescriptionticketController::getUserNewDescription($etelixAsCustomer);
             $modelDescriptionTicket->read_carrier=$optionRead['read_carrier'];
             $modelDescriptionTicket->read_internal=$optionRead['read_internal'];
-            $modelDescriptionTicket->response_by=$responseBy;
+            $modelDescriptionTicket->response_by=Yii::app()->user->id;;
             if (!$modelDescriptionTicket->save()) $isOk=false;
 
             if(isset($_POST['_attachFile']) && count($_POST['_attachFile']))
