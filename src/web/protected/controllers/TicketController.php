@@ -397,12 +397,11 @@ class TicketController extends Controller
                 $mailer=new EnviarEmail; 
 
                 $nameCarrier=Carrier::getCarriers(true, $modelTicket->id);
+                $carrier=$cuerpoMail->formatTicketNumber($ticketNumber);
                 $tipoUsuario='';
-                
                 
                 if ($idUser === null)
                 {
-                    $idUser=Yii::app()->user->id;
                     $tipoUsuario = CrugeAuthassignment::getRoleUser();
                 }
                 else
@@ -410,17 +409,14 @@ class TicketController extends Controller
                     $tipoUsuario = CrugeAuthassignment::getRoleUser(false, $idUser);
                 }
                 
-                $tipoCarrier=Carrier::getTypeCarrier($idUser);
-                if (isset($_POST['typeUser']) && $_POST['typeUser'] != null) $tipoCarrier=$_POST['typeUser'];
-                
                 $subject='';
                 if ($tipoUsuario == 'C')
                 {
-                    $subject='TT from '.ucfirst($tipoCarrier).' '.$nameCarrier.', New TT, '.$ticketNumber.' (00:00)';
+                    $subject='TT from '.$carrier.' '.$nameCarrier.', New TT, '.$ticketNumber.' (00:00)';
                 }
                 else
                 {
-                    $subject='TT for '.ucfirst($tipoCarrier).' '.$nameCarrier.', New TT, '.$ticketNumber.' (00:00)';
+                    $subject='TT for '.$carrier.' '.$nameCarrier.', New TT, '.$ticketNumber.' (00:00)';
                 }
 
                 $envioMail=$mailer->enviar($cuerpo, $to,'',$subject,$rutaAttachFile,$cc);
@@ -500,13 +496,15 @@ class TicketController extends Controller
         $subject='';
         
         $timeTicket=Utility::restarHoras($hour, date('H:i:s'), floor(Utility::getTime($date, $hour)/ (60 * 60 * 24)));
+        $cuerpoCorreo=new CuerpoCorreo;
+        $carrier=$cuerpoCorreo->formatTicketNumber($ticketNumber);
         if ($tipoUsuario == 'C')
         {
-            $subject='TT from Customer '.$nameCarrier.', Closed TT, '.$ticketNumber.' ('.$timeTicket.')';
+            $subject='TT from '.$carrier.' '.$nameCarrier.', Closed TT, '.$ticketNumber.' ('.$timeTicket.')';
         }
         else
         {
-            $subject='TT for Customer '.$nameCarrier.', Closed TT, '.$ticketNumber.' ('.$timeTicket.')';
+            $subject='TT for '.$carrier.' '.$nameCarrier.', Closed TT, '.$ticketNumber.' ('.$timeTicket.')';
         }
         
         $envioMail=$mailer->enviar($body,$mailModel::getNameMails($id),'',$subject,null);

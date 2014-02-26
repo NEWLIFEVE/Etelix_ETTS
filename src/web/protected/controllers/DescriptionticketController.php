@@ -226,13 +226,15 @@ class DescriptionticketController extends Controller
                     $tipoUsuario = CrugeAuthassignment::getRoleUser();
                     $subject='';
                     $timeTicket=Utility::restarHoras($hour, date('H:i:s'), floor(Utility::getTime($date, $hour)/ (60 * 60 * 24)));
+                    $cuerpoCorreo=new CuerpoCorreo;
+                    $carrier=$cuerpoCorreo->formatTicketNumber($ticketNumber);
                     if($tipoUsuario=='C')
                     {
-                            $subject='TT from Customer '.$nameCarrier.', New Answer, '.$ticketNumber.' ('.$timeTicket.')';
+                            $subject='TT from '.$carrier.' '.$nameCarrier.', New Answer, '.$ticketNumber.' ('.$timeTicket.')';
                     }
                     else
                     {
-                            $subject='TT for Customer '.$nameCarrier.', New Answer, '.$ticketNumber.' ('.$timeTicket.')';
+                            $subject='TT for '.$carrier.' '.$nameCarrier.', New Answer, '.$ticketNumber.' ('.$timeTicket.')';
                     }
                     $mailer->enviar(TicketController::getBodyMails($model->id_ticket, Mail::getNameMails($model->id_ticket), 'answer'), $mailsAll, '', $subject);
         	}
