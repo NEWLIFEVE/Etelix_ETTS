@@ -228,13 +228,18 @@ class DescriptionticketController extends Controller
                     $timeTicket=Utility::restarHoras($hour, date('H:i:s'), floor(Utility::getTime($date, $hour)/ (60 * 60 * 24)));
                     $cuerpoCorreo=new CuerpoCorreo;
                     $carrier=$cuerpoCorreo->formatTicketNumber($ticketNumber);
+                    
+                    $nameCarrier2=$nameCarrier;
+                    if (isset($_POST['internalAsCarrier']) && $_POST['internalAsCarrier'] == 1)
+                        $nameCarrier2='Etelix';
+                    
                     if($tipoUsuario=='C')
                     {
-                            $subject='TT from '.$carrier.' '.$nameCarrier.', New Answer, '.$ticketNumber.' ('.$timeTicket.')';
+                            $subject='TT from '.$carrier.' '.$nameCarrier.', New '.$nameCarrier2.' Status (by Carrier on ETTS) '.$ticketNumber.' ('.$timeTicket.')';
                     }
                     else
                     {
-                            $subject='TT for '.$carrier.' '.$nameCarrier.', New Answer, '.$ticketNumber.' ('.$timeTicket.')';
+                            $subject='TT for '.$carrier.' '.$nameCarrier.', New Etelix Status (by Carrier on ETTS), '.$ticketNumber.' ('.$timeTicket.')';
                     }
                     $mailer->enviar(TicketController::getBodyMails($model->id_ticket, Mail::getNameMails($model->id_ticket), 'answer'), $mailsAll, '', $subject);
         	}

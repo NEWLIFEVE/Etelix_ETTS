@@ -400,6 +400,7 @@ class TicketController extends Controller
                 $carrier=$cuerpoMail->formatTicketNumber($ticketNumber);
                 $tipoUsuario='';
                 
+                
                 if ($idUser === null)
                 {
                     $tipoUsuario = CrugeAuthassignment::getRoleUser();
@@ -410,13 +411,17 @@ class TicketController extends Controller
                 }
                 
                 $subject='';
+                $nameCarrier2=$nameCarrier;
+                if (isset($_POST['etelixAsCustomer']) && $_POST['etelixAsCustomer'] == 'yes')
+                    $nameCarrier2='Etelix';
+                    
                 if ($tipoUsuario == 'C')
                 {
-                    $subject='TT from '.$carrier.' '.$nameCarrier.', New TT, '.$ticketNumber.' (00:00)';
+                    $subject='TT from '.$carrier.' '.$nameCarrier.', New TT (by '.$nameCarrier2.' on ETTS), '.$ticketNumber.' (00:00)';
                 }
                 else
                 {
-                    $subject='TT for '.$carrier.' '.$nameCarrier.', New TT, '.$ticketNumber.' (00:00)';
+                    $subject='TT for '.$carrier.' '.$nameCarrier.', New TT (by '.$nameCarrier2.' on ETTS), '.$ticketNumber.' (00:00)';
                 }
 
                 $envioMail=$mailer->enviar($cuerpo, $to,'',$subject,$rutaAttachFile,$cc);
