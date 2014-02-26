@@ -60,11 +60,9 @@
                             <?php else: ?>
                                 <span class="span-status">
                                     <span class="text-span"><?php echo $ticket->idStatus->name; ?></span>
-                                    <?php if ($tipoUsuario !== "C"): ?>
                                     <a href="javascript:void(0)" class="edit-status" rel="<?php echo $ticket->id; ?>">
                                         <img width="12" height="12" src="<?php echo Yii::app()->request->baseUrl.'/images/edit.png'; ?>">
                                     </a>
-                                    <?php endif; ?>
                                 </span>
                             <?php endif; ?>
                         </td>
@@ -95,4 +93,5 @@
 <?php else: ?>
     <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/admin.js',CClientScript::POS_END); ?>
 <?php endif; ?>
+<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/change.status.js',CClientScript::POS_END); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/save_message_ticket.js',CClientScript::POS_END); ?>

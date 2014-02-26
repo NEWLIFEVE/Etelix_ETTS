@@ -271,7 +271,7 @@ class CuerpoCorreo
         
         if (strpos($this->_ticketNumber, 'C'))
             return 'Customer';
-        if (strpos($this->_ticketNumber, 'S'))
+        if (strpos($this->_ticketNumber, 'S') || strpos($this->_ticketNumber, 'P'))
             return 'Supplier';
     }
 }
