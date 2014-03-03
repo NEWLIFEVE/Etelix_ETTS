@@ -244,9 +244,9 @@ class DescriptionticketController extends Controller
                     $mailer->enviar(TicketController::getBodyMails($model->id_ticket, Mail::getNameMails($model->id_ticket), 'answer'), $mailsAll, '', $subject);
         	}
 	    	else
-                {
-                    echo 'false';
-                }
+            {
+                echo 'false';
+            }
         }
     }
     
