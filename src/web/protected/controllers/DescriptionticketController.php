@@ -220,33 +220,18 @@ class DescriptionticketController extends Controller
                     $date=Ticket::model()->findByPk($model->id_ticket)->date;
                     //Renderizar para mostrar la repsuesta
                     $this->renderPartial('/ticket/_answer', array('datos' => Ticket::ticketsByUsers(Yii::app()->user->id, $model->id_ticket, false)));
-
                     $mailsAll=Mail::getNameMails($model->id_ticket);
-                    $nameCarrier=Carrier::getCarriers(true, $model->id_ticket);
-                    $tipoUsuario = CrugeAuthassignment::getRoleUser();
-                    $subject='';
-                    $timeTicket=Utility::restarHoras($hour, date('H:i:s'), floor(Utility::getTime($date, $hour)/ (60 * 60 * 24)));
-                    $cuerpoCorreo=new CuerpoCorreo;
-                    $carrier=$cuerpoCorreo->formatTicketNumber($ticketNumber);
                     
-                    $nameCarrier2=$nameCarrier;
-                    if (isset($_POST['internalAsCarrier']) && $_POST['internalAsCarrier'] == 1)
-                        $nameCarrier2='Etelix';
+                    if (isset($_POST['internalAsCarrier'])) $internalAsCarrier='Etelix';
                     
-                    if($tipoUsuario=='C')
-                    {
-                            $subject='TT from '.$carrier.' '.$nameCarrier.', New '.$nameCarrier2.' Status (by Carrier on ETTS) '.$ticketNumber.' ('.$timeTicket.')';
-                    }
-                    else
-                    {
-                            $subject='TT for '.$carrier.' '.$nameCarrier.', New Etelix Status (by Carrier on ETTS), '.$ticketNumber.' ('.$timeTicket.')';
-                    }
+                    $asunto=new Subject;
+                    $subject=$asunto->subjectNewAnswer($ticketNumber, Carrier::getCarriers(true, $model->id_ticket), Utility::restarHoras($hour, date('H:i:s'), floor(Utility::getTime($date, $hour)/ (60 * 60 * 24))), $internalAsCarrier);
                     $mailer->enviar(TicketController::getBodyMails($model->id_ticket, Mail::getNameMails($model->id_ticket), 'answer'), $mailsAll, '', $subject);
         	}
 	    	else
-            {
-                echo 'false';
-            }
+                {
+                    echo 'false';
+                }
         }
     }
     

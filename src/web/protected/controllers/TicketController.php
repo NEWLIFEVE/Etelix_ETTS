@@ -395,35 +395,10 @@ class TicketController extends Controller
                 }
 
                 $mailer=new EnviarEmail; 
-
-                $nameCarrier=Carrier::getCarriers(true, $modelTicket->id);
-                $carrier=$cuerpoMail->formatTicketNumber($ticketNumber);
-                $tipoUsuario='';
-                
-                
-                if ($idUser === null)
-                {
-                    $tipoUsuario = CrugeAuthassignment::getRoleUser();
-                }
-                else
-                {
-                    $tipoUsuario = CrugeAuthassignment::getRoleUser(false, $idUser);
-                }
-                
-                $subject='';
-                $nameCarrier2=$nameCarrier;
-                if (isset($_POST['etelixAsCustomer']) && $_POST['etelixAsCustomer'] == 'yes')
-                    $nameCarrier2='Etelix';
-                    
-                if ($tipoUsuario == 'C')
-                {
-                    $subject='TT from '.$carrier.' '.$nameCarrier.', New TT (by '.$nameCarrier2.' on ETTS), '.$ticketNumber.' (00:00)';
-                }
-                else
-                {
-                    $subject='TT for '.$carrier.' '.$nameCarrier.', New TT (by '.$nameCarrier2.' on ETTS), '.$ticketNumber.' (00:00)';
-                }
-
+                $asunto=new Subject;
+                $etelixAsCustomer='';
+                if (isset($_POST['etelixAsCustomer'])) $etelixAsCustomer=$_POST['etelixAsCustomer'];
+                $subject=$asunto->subjectOpenTicket($ticketNumber, Carrier::getCarriers(true, $modelTicket->id), $etelixAsCustomer);
                 $envioMail=$mailer->enviar($cuerpo, $to,'',$subject,$rutaAttachFile,$cc);
 
                 if($envioMail===true)
@@ -493,25 +468,9 @@ class TicketController extends Controller
         {
         	$ticketModel::model()->updateByPk($id,array('id_status'=>$_POST['idStatus']));
         }
-
         
-        $nameCarrier=Carrier::getCarriers(true, $id);
-        
-        $tipoUsuario=CrugeAuthassignment::getRoleUser();
-        $subject='';
-        
-        $timeTicket=Utility::restarHoras($hour, date('H:i:s'), floor(Utility::getTime($date, $hour)/ (60 * 60 * 24)));
-        $cuerpoCorreo=new CuerpoCorreo;
-        $carrier=$cuerpoCorreo->formatTicketNumber($ticketNumber);
-        if ($tipoUsuario == 'C')
-        {
-            $subject='TT from '.$carrier.' '.$nameCarrier.', Closed TT, '.$ticketNumber.' ('.$timeTicket.')';
-        }
-        else
-        {
-            $subject='TT for '.$carrier.' '.$nameCarrier.', Closed TT, '.$ticketNumber.' ('.$timeTicket.')';
-        }
-        
+        $asunto=new Subject;
+        $subject=$asunto->subjectCloseTicket($ticketNumber, Carrier::getCarriers(true, $id), Utility::restarHoras($hour, date('H:i:s'), floor(Utility::getTime($date, $hour)/ (60 * 60 * 24))));
         $envioMail=$mailer->enviar($body,$mailModel::getNameMails($id),'',$subject,null);
 
         if($envioMail===true)
