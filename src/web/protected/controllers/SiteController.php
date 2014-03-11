@@ -145,7 +145,7 @@ class SiteController extends Controller
                                         'url'=>array('/ticket/adminclose')
 					),
 				array(
-					'label'=>'Open client ticket',
+					'label'=>'Open up TT as a carrier',
 					'url'=>array('/ticket/createtoclient')
 					),
                                 array(
@@ -167,7 +167,7 @@ class SiteController extends Controller
                                         'url'=>array('/ticket/adminclose')
 					),
 				array(
-					'label'=>'Open client ticket',
+					'label'=>'Open up TT as a carrier',
 					'url'=>array('/ticket/createtoclient')
 					),
                                 array(
@@ -203,7 +203,7 @@ class SiteController extends Controller
 					'url'=>array('/ticket/adminclose')
 					),
                                 array(
-					'label'=>'Open client ticket',
+					'label'=>'Open up TT as a carrier',
 					'url'=>array('/ticket/createtoclient')
 					),
 				array(
