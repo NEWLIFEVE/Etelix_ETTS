@@ -124,7 +124,7 @@ class CrugeMailer extends CrugeMailerBase implements ICrugeMailer
     public function sendEmail($to, $subject, $body)
     {
         $mail=new EnviarEmail;
-        return $mail->enviar($body, $to, '', $subject);
+        return $mail->enviar($body, $to, '', 'User information (ETTS)');
     }
 }
 

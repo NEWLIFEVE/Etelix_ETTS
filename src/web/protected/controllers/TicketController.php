@@ -541,7 +541,7 @@ class TicketController extends Controller
      */
     public function actionGetdataticket($id)
     {
-        $this->renderPartial('_dataticket', array('datos' => Ticket::ticketsByUsers(Yii::app()->user->id, $id, false)));
+        $this->renderPartial('_dataticket', array('datos' => Ticket::ticketsByUsers(Yii::app()->user->id, $id, false, true, true)));
     }
         
     
@@ -702,6 +702,11 @@ class TicketController extends Controller
     {
         header("Content-type: application/json");
         echo CJSON::encode(CrugeUser2::getCarriersSupplierOrCustomer($_POST['_type']));
+    }
+    
+    public function actionAdminclose()
+    {
+        $this->render('adminclose');
     }
     
 }

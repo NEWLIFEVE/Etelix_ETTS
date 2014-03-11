@@ -1,4 +1,3 @@
-
 <input type="hidden" id="id_ticket" value="<?php echo $datos->id; ?>">
 <div class="input-control select block">
 Response to
@@ -101,7 +100,7 @@ if ($tipoUsuario !== 'C'):
         <div class="input-control checkbox" data-role="input-control">
             <label>
                 <input type="checkbox" id="internalAsCarrier" value="1">
-                <span class="check"></span>  Response as Carrier
+                <span class="check"></span>  Respond as Carrier
             </label>
 	</div>
     </div>

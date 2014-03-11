@@ -140,9 +140,9 @@ class SiteController extends Controller
 		if($tipoUsuario=="A")
 		{
 			return array(
-				array(
-					'label'=>'My tickets',
-					'url'=>array('/ticket/admin')
+                                array(
+                                        'label'=>'Closed',
+                                        'url'=>array('/ticket/adminclose')
 					),
 				array(
 					'label'=>'Open client ticket',
@@ -161,6 +161,10 @@ class SiteController extends Controller
 				array(
 					'label'=>'My tickets',
 					'url'=>array('/ticket/admin')
+					),
+                                array(
+                                        'label'=>'Tickets closed',
+                                        'url'=>array('/ticket/adminclose')
 					),
 				array(
 					'label'=>'Open client ticket',
@@ -193,6 +197,10 @@ class SiteController extends Controller
 				array(
 					'label'=>'My tickets',
 					'url'=>array('/ticket/admin')
+					),
+                                array(
+					'label'=>'Tickets closed',
+					'url'=>array('/ticket/adminclose')
 					),
                                 array(
 					'label'=>'Open client ticket',

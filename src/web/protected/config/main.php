@@ -16,7 +16,7 @@ return array(
 	// autoloading model and component classes
 	'import'=>array(
 		'application.models.*',
-        'application.controllers.*',
+                'application.controllers.*',
 		'application.components.*',
 		'application.modules.cruge.components.*',
 		'application.modules.cruge.extensions.crugemailer.*',
@@ -108,6 +108,7 @@ return array(
 			'connectionString'=>'pgsql:host=172.16.17.190;port=5432;dbname=etts',
 			'emulatePrepare'=>true,
 			'username'=>'postgres',
+//			'password'=>'Nsusfd8263',
 			'password'=>'123',
 			'charset' => 'utf8',
 		),

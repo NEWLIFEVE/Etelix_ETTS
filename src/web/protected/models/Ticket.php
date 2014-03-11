@@ -158,7 +158,7 @@ class Ticket extends CActiveRecord
     /**
      *
      */
-    public static function ticketsByUsers($idUser,$idTicket=false,$returnArray=true,$onlyOpen=false)
+    public static function ticketsByUsers($idUser,$idTicket=false,$returnArray=true,$allTickets=false)
     {
         $tipoUsuario=CrugeAuthassignment::getRoleUser();
         $conditionUser='';
@@ -183,12 +183,12 @@ class Ticket extends CActiveRecord
          */
         if($idTicket) $conditionTicket='AND id='.$idTicket;
         
-        if($onlyOpen)
+        if($allTickets)
         {
 
             $sql="SELECT *
                   FROM ticket
-                  WHERE id IN (SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user $conditionUser)) AND id_status=1 $conditionTicket
+                  WHERE id IN (SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user $conditionUser)) $conditionTicket
                   ORDER BY id_status, id  $order";
 
             
@@ -228,6 +228,14 @@ class Ticket extends CActiveRecord
                 return self::model()->findBySql($sql);
             }
         }
+    }
+    
+    public static function ticketsClosed()
+    {
+        return self::model()->findAllBySql("SELECT *
+                  FROM ticket
+                  WHERE id IN (SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user)) AND id_status=2
+                  ORDER BY id_status, id  ASC");
     }
 
     /**
