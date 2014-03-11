@@ -105,7 +105,7 @@ return array(
 			),
 			// uncomment the following to use a MySQL database
 		'db'=>array(
-			'connectionString'=>'pgsql:host=localhost;port=5432;dbname=etts',
+			'connectionString'=>'pgsql:host=172.16.17.190;port=5432;dbname=etts',
 			'emulatePrepare'=>true,
 			'username'=>'postgres',
 //			'password'=>'Nsusfd8263',
@@ -114,7 +114,7 @@ return array(
 		),
 		'soriDB'=>array(
 			'class'=>'CDbConnection',
-			'connectionString'=>'pgsql:host=localhost;port=5432;dbname=sori',
+			'connectionString'=>'pgsql:host=172.16.17.190;port=5432;dbname=sori',
 			'username'=>'postgres',
 			'password'=>'123',
 			'charset'=>'utf8',
@@ -161,6 +161,12 @@ return array(
         'session'=>array(
         	'timeout'=>'3600',
         	),
+        'clientScript'=>array(
+                  'scriptMap'=>array(
+                      'jquery.js' => '/js/plugins/jquery/jquery.min.js',
+                      'jquery.yii.js' => '/js/plugins/jquery/jquery.min.js',
+                  ),
+            ),
         ),
         // application-level parameters that can be accessed
         // using Yii::app()->params['paramName']
