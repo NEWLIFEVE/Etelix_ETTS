@@ -145,11 +145,11 @@ class SiteController extends Controller
                                         'url'=>array('/ticket/adminclose')
 					),
 				array(
-					'label'=>'Open up TT as a carrier',
+					'label'=>'Open TT <strong>from</strong> customer/supplier by Etelix',
 					'url'=>array('/ticket/createtoclient')
 					),
                                 array(
-					'label'=>'Open ticket to supplier',
+					'label'=>'Open TT <strong>to</strong> customer/supplier by Etelix',
 					'url'=>array('/ticket/createinternal')
 					),
 				);
@@ -158,20 +158,16 @@ class SiteController extends Controller
 		if($tipoUsuario=="S")
 		{
 			return array(
-				array(
-					'label'=>'My tickets',
-					'url'=>array('/ticket/admin')
-					),
                                 array(
-                                        'label'=>'Tickets closed',
+                                        'label'=>'Closed',
                                         'url'=>array('/ticket/adminclose')
 					),
 				array(
-					'label'=>'Open up TT as a carrier',
+					'label'=>'Open TT from customer/supplier by Etelix',
 					'url'=>array('/ticket/createtoclient')
 					),
                                 array(
-					'label'=>'Open ticket to supplier',
+					'label'=>'Open TT to customer/supplier by Etelix',
 					'url'=>array('/ticket/createinternal')
 					),
 				);
@@ -194,20 +190,16 @@ class SiteController extends Controller
 		if($tipoUsuario=="I")
 		{
 			return array(
-				array(
-					'label'=>'My tickets',
-					'url'=>array('/ticket/admin')
-					),
                                 array(
-					'label'=>'Tickets closed',
+					'label'=>'Closed',
 					'url'=>array('/ticket/adminclose')
 					),
                                 array(
-					'label'=>'Open up TT as a carrier',
+					'label'=>'Open TT from customer/supplier by Etelix',
 					'url'=>array('/ticket/createtoclient')
 					),
-				array(
-					'label'=>'Open ticket to supplier',
+                                array(
+					'label'=>'Open TT to customer/supplier by Etelix',
 					'url'=>array('/ticket/createinternal')
 					),
 				);
