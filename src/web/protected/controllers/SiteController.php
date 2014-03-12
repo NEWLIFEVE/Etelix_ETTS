@@ -145,11 +145,11 @@ class SiteController extends Controller
                                         'url'=>array('/ticket/adminclose')
 					),
 				array(
-					'label'=>'Open TT <strong>from</strong> customer/supplier by Etelix',
+					'label'=>'Open TT from customer/supplier by Etelix',
 					'url'=>array('/ticket/createtoclient')
 					),
                                 array(
-					'label'=>'Open TT <strong>to</strong> customer/supplier by Etelix',
+					'label'=>'Open TT to customer/supplier by Etelix',
 					'url'=>array('/ticket/createinternal')
 					),
 				);
