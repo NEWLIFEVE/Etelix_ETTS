@@ -10,7 +10,7 @@ function saveMessage()
     _internalAsCarrier=null;
     
     if ($('#internalAsCarrier')) {
-        if ($('#internalAsCarrier').attr('checked') == 'checked')
+        if ($('#internalAsCarrier').is(':checked'))
             _internalAsCarrier=$('#internalAsCarrier').val();
     }
     
