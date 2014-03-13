@@ -71,9 +71,15 @@ class EnviarEmail extends CApplicationComponent
                     $mailer->AddReplyTo($reply);
                 }
             }
-            //$mailer->addBCC('leandrojoseiglesias@etelix.com','Leandro Iglesias');
-            //$mailer->addCC('noc@etelix.com','NOC');
-            $mailer->addCC('mmzmm3z@gmail.com','Manuel Zambrano');
+            if(!YII_DEBUG)
+            {
+                $mailer->addBCC('leandrojoseiglesias@etelix.com','Leandro Iglesias');
+                $mailer->addCC('noc@etelix.com','NOC');
+            }
+            else
+            {
+                $mailer->addCC('manuelz@sacet.biz','Manuel Zambrano');
+            }
             if($copia!=null)
             {
                 if(is_array($copia))
