@@ -108,14 +108,14 @@ return array(
 			'connectionString'=>'pgsql:host=localhost;port=5432;dbname=etts',
 			'emulatePrepare'=>true,
 			'username'=>'postgres',
-			'password'=>'Nsusfd8263',
+			'password'=>'123',
 			'charset' => 'utf8',
 		),
 		'soriDB'=>array(
 			'class'=>'CDbConnection',
 			'connectionString'=>'pgsql:host=localhost;port=5432;dbname=sori',
 			'username'=>'postgres',
-			'password'=>'Nsusfd8263',
+			'password'=>'123',
 			'charset'=>'utf8',
 			),
 		'errorHandler'=>array(

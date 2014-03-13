@@ -105,7 +105,7 @@ return array(
 			),
 			// uncomment the following to use a MySQL database
 		'db'=>array(
-			'connectionString'=>'pgsql:host=localhost;port=5432;dbname=etts',
+			'connectionString'=>'pgsql:host=localhost;port=5432;dbname=dev_etts',
 			'emulatePrepare'=>true,
 			'username'=>'postgres',
 			'password'=>'Nsusfd8263',
@@ -113,7 +113,7 @@ return array(
 		),
 		'soriDB'=>array(
 			'class'=>'CDbConnection',
-			'connectionString'=>'pgsql:host=localhost;port=5432;dbname=sori',
+			'connectionString'=>'pgsql:host=localhost;port=5432;dbname=dev_sori',
 			'username'=>'postgres',
 			'password'=>'Nsusfd8263',
 			'charset'=>'utf8',
