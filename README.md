@@ -2,6 +2,11 @@ Etelix_ETTS
 ===========
 
 Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
+- Modificacion de asunto de nueva respuesta, TT from/for Customer/Supplier Carrier, New Etelix/Carrier Status (By Etelix on ETTS), ticket_number (tiempo)
+- Usuarios Internos, pueden abrir tickets a Customers/Suppliers
+- Usuarios internos pueden responder "como" Customer/Supplier
+- Colores diferentes para las respuestas en el chat de mensajes
+- Modificada clase de blink para los tickets con nuevas respuestas
 - Agregado mensaje de confirmacion antes de cerrar un ticket, ticket cerrado no puede volver a ser abierto.
 - Agregada clase de blink para tickets con respuestas no leidas
 - Interfaz de creacion de tickets como clientes por usuarios internos
