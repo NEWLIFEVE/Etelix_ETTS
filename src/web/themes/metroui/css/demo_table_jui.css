@@ -182,7 +182,7 @@ table.display td {
         font-size: 90% !important;
 }
 
-@-webkit-keyframes myfirst {
+/*@-webkit-keyframes myfirst {
     from {text-shadow: 0px 0px 10px rgba(16, 43, 236, 0.9);}
     to {text-shadow : none;}
 }
@@ -194,16 +194,32 @@ table.display td {
 @keyframes myfirst {
     from {text-shadow: 0px 0px 10px rgba(16, 43, 236, 0.9);}
     to {text-shadow : none;}
+}*/
+@-webkit-keyframes myfirst {
+	0% {text-shadow: 0px 0px 10px rgba(16, 43, 236, 0);}
+    50% {text-shadow: 0px 0px 10px rgba(16, 43, 236, 0.9);}
+    100% {text-shadow: 0px 0px 10px rgba(16, 43, 236, 0);}
+}
+
+@-moz-keyframes myfirst {
+    0% {text-shadow: 0px 0px 10px rgba(16, 43, 236, 0);}
+    50% {text-shadow: 0px 0px 10px rgba(16, 43, 236, 0.9);}
+    100% {text-shadow: 0px 0px 10px rgba(16, 43, 236, 0);}
+}
+@keyframes myfirst {
+    0% {text-shadow: 0px 0px 10px rgba(16, 43, 236, 0);}
+    50% {text-shadow: 0px 0px 10px rgba(16, 43, 236, 0.9);}
+    100% {text-shadow: 0px 0px 10px rgba(16, 43, 236, 0);}
 }
 
 table.display tr.blink
 {
-	font-weight:bold;
-	color: black;
-    /*text-shadow: 3px 3px 5px rgba(16, 43, 236, 0.8);
-    -webkit-animation: myfirst 3.5s linear infinite;
-    -moz-animation: myfirst 3.5s linear infinite;
-    animation: myfirst 3.5s linear infinite;*/
+	/*font-weight:bold;*/
+	color: #2E62B4;
+    text-shadow: 3px 3px 5px rgba(16, 43, 236, 0.8);
+    -webkit-animation: myfirst 2s linear infinite;
+    -moz-animation: myfirst 2s linear infinite;
+    animation: myfirst 2s linear infinite;
 }
 
 
