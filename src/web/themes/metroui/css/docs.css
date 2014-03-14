@@ -567,9 +567,9 @@ div.answer-ticket {
 }
 
 div.answer-ticket div.msg-ticket {
-    border: 1px solid #dfdfdf;
+    /*border: 1px solid #dfdfdf;
     border: 1px solid rgba(0, 0, 0, .18);
-    border-bottom-color: rgba(0, 0, 0, .29);
+    border-bottom-color: rgba(0, 0, 0, .29);*/
     -webkit-box-shadow: 0 1px 0 #dce0e6;
     line-height: 1.28;
     margin: 5px 5px 8px 0;
@@ -631,6 +631,8 @@ div.option-panel {
     /*border: 1px solid red;*/
 }
 div.option-panel.left {
+    padding: 0px 8px 0px 0px;
+    text-align: left;
     float: left;
 }
 
@@ -638,6 +640,11 @@ div.option-panel.right {
     padding: 0px 8px 0px 0px;
     text-align: right;
     float: right;
+}
+
+div.option-panel.left.confirmation {
+    width: 185px;
+    padding: 0px 8px 0px 8px;
 }
 
 a.edit-status {

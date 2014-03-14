@@ -256,4 +256,22 @@ class CuerpoCorreo
     {
         return $this->_headerCustomer . $this->_infoTT . $this->_detail . $this->_footerTT;
     }
+    
+    public function formatTicketNumber($ticketNumber = false)
+    {
+        if (!isset($this->_ticketNumber) || empty($this->_ticketNumber)) {
+            if ($ticketNumber) {
+                $this->_ticketNumber = $ticketNumber;
+            } else {
+                return false;
+            }
+        } else {
+            $this->_ticketNumber = $this->_ticketNumber;
+        }
+        
+        if (strpos($this->_ticketNumber, 'C'))
+            return 'Customer';
+        if (strpos($this->_ticketNumber, 'S') || strpos($this->_ticketNumber, 'P'))
+            return 'Supplier';
+    }
 }

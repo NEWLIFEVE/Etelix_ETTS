@@ -16,7 +16,7 @@ return array(
 	// autoloading model and component classes
 	'import'=>array(
 		'application.models.*',
-        'application.controllers.*',
+                'application.controllers.*',
 		'application.components.*',
 		'application.modules.cruge.components.*',
 		'application.modules.cruge.extensions.crugemailer.*',
@@ -105,17 +105,17 @@ return array(
 			),
 			// uncomment the following to use a MySQL database
 		'db'=>array(
-			'connectionString'=>'pgsql:host=localhost;port=5432;dbname=etts',
+			'connectionString'=>'pgsql:host='.SERVER_DB.';port=5432;dbname='.ETTS_DB,
 			'emulatePrepare'=>true,
 			'username'=>'postgres',
-			'password'=>'Nsusfd8263',
+			'password'=>PASS_DB,
 			'charset' => 'utf8',
 		),
 		'soriDB'=>array(
 			'class'=>'CDbConnection',
-			'connectionString'=>'pgsql:host=localhost;port=5432;dbname=sori',
+			'connectionString'=>'pgsql:host='.SERVER_DB.';port=5432;dbname='.SORI_DB,
 			'username'=>'postgres',
-			'password'=>'Nsusfd8263',
+			'password'=>PASS_DB,
 			'charset'=>'utf8',
 			),
 		'errorHandler'=>array(
@@ -158,8 +158,14 @@ return array(
         	'datetimeFormat'=>"d M, Y h:m:s a",
         	),
         'session'=>array(
-        	'timeout'=>false,
+        	'timeout'=>'3600',
         	),
+        'clientScript'=>array(
+                  'scriptMap'=>array(
+                      'jquery.js' => '/js/plugins/jquery/jquery.min.js',
+                      'jquery.yii.js' => '/js/plugins/jquery/jquery.min.js',
+                  ),
+            ),
         ),
         // application-level parameters that can be accessed
         // using Yii::app()->params['paramName']

@@ -140,16 +140,16 @@ class SiteController extends Controller
 		if($tipoUsuario=="A")
 		{
 			return array(
+                array(
+                    'label'=>'Closed',
+                    'url'=>array('/ticket/adminclose')
+				),
 				array(
-					'label'=>'My tickets',
-					'url'=>array('/ticket/admin')
-					),
-				array(
-					'label'=>'Open client ticket',
+					'label'=>'Open TT as customer/supplier by Etelix',
 					'url'=>array('/ticket/createtoclient')
 					),
                                 array(
-					'label'=>'Open ticket to supplier',
+					'label'=>'Open TT to customer/supplier',
 					'url'=>array('/ticket/createinternal')
 					),
 				);
@@ -158,16 +158,16 @@ class SiteController extends Controller
 		if($tipoUsuario=="S")
 		{
 			return array(
-				array(
-					'label'=>'My tickets',
-					'url'=>array('/ticket/admin')
+                array(
+                    'label'=>'Closed',
+                    'url'=>array('/ticket/adminclose')
 					),
 				array(
-					'label'=>'Open client ticket',
+					'label'=>'Open TT as customer/supplier by Etelix',
 					'url'=>array('/ticket/createtoclient')
 					),
-                                array(
-					'label'=>'Open ticket to supplier',
+                array(
+					'label'=>'Open TT to customer/supplier',
 					'url'=>array('/ticket/createinternal')
 					),
 				);
@@ -190,16 +190,16 @@ class SiteController extends Controller
 		if($tipoUsuario=="I")
 		{
 			return array(
-				array(
-					'label'=>'My tickets',
-					'url'=>array('/ticket/admin')
+                array(
+					'label'=>'Closed',
+					'url'=>array('/ticket/adminclose')
 					),
-                                array(
-					'label'=>'Open client ticket',
+                array(
+					'label'=>'Open TT as customer/supplier',
 					'url'=>array('/ticket/createtoclient')
 					),
-				array(
-					'label'=>'Open ticket to supplier',
+                array(
+					'label'=>'Open TT to customer/supplier by Etelix',
 					'url'=>array('/ticket/createinternal')
 					),
 				);

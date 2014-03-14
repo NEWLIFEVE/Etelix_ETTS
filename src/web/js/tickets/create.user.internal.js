@@ -189,7 +189,9 @@ $(document).on('ready', function(){
                         $('[name="attachFileSave[]"]'),                         // FILE SAVE NAME
                         $('[name="attachFileSize[]"]'),                         // FILE SIZE
                         '1',                                                    // Si es cliente = 0 de lo contrario = 1
-                        $("#ticket-form")                                       // Limpiar Formulario
+                        $("#ticket-form"),                                      // Limpiar Formulario,
+                        null,
+                        $('select#class option:selected').text()
                      );
                 });
             }
@@ -256,7 +258,8 @@ $(document).on('ready', function(){
                         $('[name="attachFileSize[]"]'),                         // FILE SIZE
                         '0',                                                    // Si es cliente = 0 de lo contrario = 1
                         $("#ticket-form-to-client"),                            // Limpiar Formulario
-                        $('#etelix-as-customer').val()
+                        $('#etelix-as-customer').val(),
+                        $('select#class option:selected').text()
                      );
                 });
             }

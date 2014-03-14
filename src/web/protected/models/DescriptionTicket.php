@@ -13,6 +13,7 @@
  * @property integer $id_user
  * @property integer $read_carrier
  * @property integer $read_internal
+ * @property integer $response_by
  *
  * The followings are the available model relations:
  * @property File[] $files

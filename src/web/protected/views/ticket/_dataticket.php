@@ -1,4 +1,3 @@
-
 <input type="hidden" id="id_ticket" value="<?php echo $datos->id; ?>">
 <div class="input-control select block">
 Response to
@@ -96,6 +95,16 @@ if ($tipoUsuario !== 'C'):
     <div class="option-panel right">
         <div id="mulitplefileuploader">Add file</div>
     </div>
+    <?php if (CrugeAuthassignment::getRoleUser() != 'C'): ?>
+    <div class="option-panel left confirmation">
+        <div class="input-control checkbox" data-role="input-control">
+            <label>
+                <input type="checkbox" id="internalAsCarrier" value="1">
+                <span class="check"></span>  Respond as Carrier
+            </label>
+	</div>
+    </div>
+    <?php endif; ?>
 </div>
 <div id="area-add-file"></div>
 <div id="status"></div>
