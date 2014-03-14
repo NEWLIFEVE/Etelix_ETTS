@@ -221,26 +221,17 @@ class TicketController extends Controller
                 $modelTicket->id_gmt=null;
                 if (!$modelTicket->save()) $isOk=false;
             }
-        }
-        else
-        {
-            $modelTicket->id_gmt=$_POST['gmt'];
-            if(!$modelTicket->save())
+            else
             {
                 $modelTicket->id_gmt=$_POST['gmt'];
-                if (!$modelTicket->save()) $isOk=false;
+                if(!$modelTicket->save())
+                {
+                    $modelTicket->id_gmt=$_POST['gmt'];
+                    if (!$modelTicket->save()) $isOk=false;
 
-            // Guardando number
-            $number=count($_POST['testedNumber']);
-            for($i=0; $i<$number; $i++)
-            {
-                $modelTestedNumber=new TestedNumber;
-                $modelTestedNumber->id_ticket=$modelTicket->id;
-                $modelTestedNumber->id_country=$_POST['_country'][$i];
-                $modelTestedNumber->numero=$_POST['testedNumber'][$i];
-                $modelTestedNumber->date=$_POST['_date'][$i];
-                $modelTestedNumber->hour=$_POST['_hour'][$i];
-                if(!$modelTestedNumber->save())
+                // Guardando number
+                $number=count($_POST['testedNumber']);
+                for($i=0; $i<$number; $i++)
                 {
                     $modelTestedNumber=new TestedNumber;
                     $modelTestedNumber->id_ticket=$modelTicket->id;
@@ -248,10 +239,18 @@ class TicketController extends Controller
                     $modelTestedNumber->numero=$_POST['testedNumber'][$i];
                     $modelTestedNumber->date=$_POST['_date'][$i];
                     $modelTestedNumber->hour=$_POST['_hour'][$i];
-                    if (!$modelTestedNumber->save()) $isOk=false;
+                    if(!$modelTestedNumber->save())
+                    {
+                        $modelTestedNumber=new TestedNumber;
+                        $modelTestedNumber->id_ticket=$modelTicket->id;
+                        $modelTestedNumber->id_country=$_POST['_country'][$i];
+                        $modelTestedNumber->numero=$_POST['testedNumber'][$i];
+                        $modelTestedNumber->date=$_POST['_date'][$i];
+                        $modelTestedNumber->hour=$_POST['_hour'][$i];
+                        if (!$modelTestedNumber->save()) $isOk=false;
+                    }
                 }
             }
-        }
 
         // Guardando los mails (to)
         if (isset($_POST['responseTo']) && $_POST['responseTo'] != null)
