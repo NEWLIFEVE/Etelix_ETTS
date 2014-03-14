@@ -30,7 +30,6 @@ switch ($server)
 		define('PASS_DB','Nsusfd8263');
 		break;
 	case 'SERVER_NAME_DEV':
-	default:
 		defined('YII_DEBUG') or define('YII_DEBUG',true);
 		defined('YII_TRACE_LEVEL') or define('YII_TRACE_LEVEL',3);
 		define('SERVER_DB','172.16.17.190');
