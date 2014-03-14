@@ -140,16 +140,16 @@ class SiteController extends Controller
 		if($tipoUsuario=="A")
 		{
 			return array(
-                                array(
-                                        'label'=>'Closed',
-                                        'url'=>array('/ticket/adminclose')
-					),
+                array(
+                    'label'=>'Closed',
+                    'url'=>array('/ticket/adminclose')
+				),
 				array(
-					'label'=>'Open TT from customer/supplier by Etelix',
+					'label'=>'Open TT as customer/supplier by Etelix',
 					'url'=>array('/ticket/createtoclient')
 					),
                                 array(
-					'label'=>'Open TT to customer/supplier by Etelix',
+					'label'=>'Open TT to customer/supplier',
 					'url'=>array('/ticket/createinternal')
 					),
 				);
@@ -158,16 +158,16 @@ class SiteController extends Controller
 		if($tipoUsuario=="S")
 		{
 			return array(
-                                array(
-                                        'label'=>'Closed',
-                                        'url'=>array('/ticket/adminclose')
+                array(
+                    'label'=>'Closed',
+                    'url'=>array('/ticket/adminclose')
 					),
 				array(
-					'label'=>'Open TT from customer/supplier by Etelix',
+					'label'=>'Open TT as customer/supplier by Etelix',
 					'url'=>array('/ticket/createtoclient')
 					),
-                                array(
-					'label'=>'Open TT to customer/supplier by Etelix',
+                array(
+					'label'=>'Open TT to customer/supplier',
 					'url'=>array('/ticket/createinternal')
 					),
 				);
@@ -190,15 +190,15 @@ class SiteController extends Controller
 		if($tipoUsuario=="I")
 		{
 			return array(
-                                array(
+                array(
 					'label'=>'Closed',
 					'url'=>array('/ticket/adminclose')
 					),
-                                array(
-					'label'=>'Open TT from customer/supplier by Etelix',
+                array(
+					'label'=>'Open TT as customer/supplier',
 					'url'=>array('/ticket/createtoclient')
 					),
-                                array(
+                array(
 					'label'=>'Open TT to customer/supplier by Etelix',
 					'url'=>array('/ticket/createinternal')
 					),
