@@ -153,10 +153,10 @@ class MailController extends Controller
 	 */
 	public function actionSetMail()
 	{
-		$model=new Mail;
-		$modelMailUser=new MailUser;
-        $idUser=Yii::app()->user->id;
-        $option=$_POST['option'];
+            $model=new Mail;
+            $modelMailUser=new MailUser;
+            $idUser=Yii::app()->user->id;
+            $option=$_POST['option'];
                 
         switch($option)
         {
