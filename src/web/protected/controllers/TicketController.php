@@ -289,7 +289,7 @@ class TicketController extends Controller
             $modelDescriptionTicket->date=date('Y-m-d');
             $modelDescriptionTicket->hour=date('H:i:s');
             $modelDescriptionTicket->id_user=Yii::app()->user->id;
-            if (isset($_POST['etelixAsCustomer']) && $_POST['etelixAsCustomer'] == 'yes') $etelixAsCustomer=true;
+            if (isset($_POST['optionOpen']) && $_POST['optionOpen'] == 'etelix_as_carrier') $etelixAsCustomer=true;
             $optionRead=DescriptionticketController::getUserNewDescription($etelixAsCustomer);
             $modelDescriptionTicket->read_carrier=$optionRead['read_carrier'];
             $modelDescriptionTicket->read_internal=$optionRead['read_internal'];
@@ -396,9 +396,9 @@ class TicketController extends Controller
 
                 $mailer=new EnviarEmail; 
                 $asunto=new Subject;
-                $etelixAsCustomer='';
-                if (isset($_POST['etelixAsCustomer'])) $etelixAsCustomer=$_POST['etelixAsCustomer'];
-                $subject=$asunto->subjectOpenTicket($ticketNumber, Carrier::getCarriers(true, $modelTicket->id), $etelixAsCustomer);
+                $optionOpen='';
+                if (isset($_POST['optionOpen'])) $optionOpen=$_POST['optionOpen'];
+                $subject=$asunto->subjectOpenTicket($ticketNumber, Carrier::getCarriers(true, $modelTicket->id), $optionOpen);
                 $envioMail=$mailer->enviar($cuerpo, $to,'',$subject,$rutaAttachFile,$cc);
 
                 if($envioMail===true)

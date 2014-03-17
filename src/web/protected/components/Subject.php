@@ -18,14 +18,15 @@ class Subject
      * @param string $etelixAsCustomer
      * @return string
      */
-    public function subjectOpenTicket($ticketNumber, $nameCarrier, $etelixAsCustomer)
+    public function subjectOpenTicket($ticketNumber, $nameCarrier, $optionOpen)
     {
-        $nameCarrier2 = $nameCarrier;
-        
-        if ($etelixAsCustomer == 'yes') $nameCarrier2 = 'Etelix';
-        
-        $this->_subject='TT'.$this->_defineFromForNewTicket().' '.$this->_formatTicketNumber($ticketNumber);
-        $this->_subject.=' '.$nameCarrier.', New TT '. $this->_defineBy($nameCarrier2).$ticketNumber.' (00:00)';
+        $this->_subject=$this->_firstElementSubject($optionOpen, $ticketNumber, $nameCarrier);
+//        $nameCarrier2 = $nameCarrier;
+//        
+//        if ($optionOpen == 'etelix_as_carrier') $nameCarrier2 = 'Etelix';
+//                
+//        $this->_subject='TT'.$this->_defineFromForNewTicket().' '.$this->_formatTicketNumber($ticketNumber);
+//        $this->_subject.=' '.$nameCarrier.', New TT '. $this->_defineBy($nameCarrier2).$ticketNumber.' (00:00)';
         
         return $this->_subject;
     }
@@ -105,6 +106,9 @@ class Subject
         return $body;
     }
     
+    /**
+     * Metodo encargado de definir el from o for cuando se abre el ticket 
+     */
     private function _defineFromForNewTicket()
     {
         if(CrugeAuthassignment::getRoleUser() == 'C')
@@ -118,6 +122,17 @@ class Subject
         return $body;
     }
     
+    private function _firstElementSubject($optionOpen, $ticketNumber, $nameCarrier)
+    {
+        if ($optionOpen == 'etelix_as_carrier') 
+            return 'TT '.$this->_formatTicketNumber($ticketNumber).' '.$nameCarrier.' to Etelix (by Etelix on ETTS), '. $ticketNumber.' (00:00)';
+        if ($optionOpen == 'carrier_to_etelix')
+            return 'TT Etelix to '.$this->_formatTicketNumber($ticketNumber).' '.$nameCarrier.' '.$ticketNumber.' (00:00)';
+        if ($optionOpen == '' || $optionOpen == false) 
+            return 'TT '.$this->_formatTicketNumber($ticketNumber).' '.$nameCarrier.' to Etelix '.$ticketNumber.' (00:00)';
+    }
+
+
     /**
      *
      */
