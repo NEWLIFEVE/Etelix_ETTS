@@ -343,6 +343,12 @@ $ETTS.UI=(function(){
                 _quitarValidacion(select2);
             }
         },
+        clearOptions:function(select){
+            if(select.val()) 
+            {
+                select.find('option:selected').attr('selected',false);
+            }
+        },
         addAllEmails:function(select, select2){
                 select.html('');
                 select2.find('option').clone().appendTo(select);

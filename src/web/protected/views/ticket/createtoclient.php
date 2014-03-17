@@ -26,7 +26,7 @@ $form=$this->beginWidget('CActiveForm', array(
 
 
 <div class="span9">
-    <h2>Ticket Information</h2>
+    <h2>Ticket Information - Open TT from Carrier by Etelix</h2>
     <div class="example">
         <?php $this->renderPartial('_formtoclient', array('form'=>$form,'model'=>$model)); ?>
     </div>

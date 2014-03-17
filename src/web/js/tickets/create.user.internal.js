@@ -67,7 +67,11 @@ $(document).on('ready', function(){
     // Append options
     $(document).on('click', 'a.a-bajar-correo', function(){
         $ETTS.UI.appendOptions($(this), $('#mails'));
-    });   
+    });  
+    
+    $(document).on('click', '#Ticket_mail', function(){
+        $ETTS.UI.clearOptions($('#mails'));
+    });  
     
     /**
      *   Add mails

@@ -24,11 +24,8 @@ class Subject
         
         if ($etelixAsCustomer == 'yes') $nameCarrier2 = 'Etelix';
         
-        if (CrugeAuthassignment::getRoleUser() == 'C') {
-            $this->_subject = 'TT from '. $this->_formatTicketNumber($ticketNumber) .' '.$nameCarrier.', New TT (by '.$nameCarrier2.' on ETTS), '.$ticketNumber.' (00:00)';
-        } else {
-            $this->_subject = 'TT for '. $this->_formatTicketNumber($ticketNumber) .' '.$nameCarrier.', New TT (by '.$nameCarrier2.' on ETTS), '.$ticketNumber.' (00:00)';
-        }
+        $this->_subject='TT'.$this->_defineFromForNewTicket().' '.$this->_formatTicketNumber($ticketNumber);
+        $this->_subject.=' '.$nameCarrier.', New TT '. $this->_defineBy($nameCarrier2).$ticketNumber.' (00:00)';
         
         return $this->_subject;
     }
@@ -107,6 +104,20 @@ class Subject
         }
         return $body;
     }
+    
+    private function _defineFromForNewTicket()
+    {
+        if(CrugeAuthassignment::getRoleUser() == 'C')
+        {
+            $body=' from ';
+        }
+        else
+        {
+            $body=' for ';
+        }
+        return $body;
+    }
+    
     /**
      *
      */
@@ -136,5 +147,20 @@ class Subject
     private function _setCarrier($ticketNumber)
     {
         $this->_carrier=Carrier::getNameByUser(CrugeUser2::getUserTicket(Ticket::getId($ticketNumber),true)->iduser);
+    }
+    
+    /**
+     * 
+     * @param string $nameCarrier
+     * @return string
+     */
+    private function _defineBy($nameCarrier)
+    {
+        if ($nameCarrier == 'Etelix')
+        {
+            return '(by Etelix on ETTS), ';
+        }
+        
+        return ', ';
     }
 }

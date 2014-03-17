@@ -153,97 +153,84 @@ class MailController extends Controller
 	 */
 	public function actionSetMail()
 	{
-		$model=new Mail;
-		$modelMailUser=new MailUser;
-        $idUser=Yii::app()->user->id;
-        $option=$_POST['option'];
-                
-        switch($option)
-        {
-        	case '0':  // Cliente
-        	case '1':  // Interno a cliente
-        	case '2':  // Interno a proveedor
-        		if($option=='1'||$option=='2') $idUser=$_POST['user'];
-        		if($option=='0'||$option=='1')
-        		{
-        			if(!$modelMailUser::getCountMail($idUser))
-        			{
-        				echo "tope alcanzado";
-        				return;
-        			}
-        		}
+            $model=new Mail;
+            $modelMailUser=new MailUser;
+            $idUser=Yii::app()->user->id;
+            $option=$_POST['option'];
 
-        		$existeMail=$model->find("mail=:mail",array(":mail"=>$_POST['mail']));
-                if($existeMail!=null)
+            if($option !='0') 
+            {
+                $idUser=$_POST['user'];
+            }
+            else
+            {
+                    if(!$modelMailUser::getCountMail($idUser))
+                    {
+                            echo "tope alcanzado";
+                            return;
+                    }
+            }
+
+            $existeMail=$model->find("mail=:mail",array(":mail"=>$_POST['mail']));
+            if($existeMail!=null)
+            {
+                $existeMailUser=$modelMailUser->findBySql("SELECT * FROM mail_user WHERE id_user=$idUser AND id_mail=".$existeMail->id." AND status=0");
+                if($existeMailUser!=null)
                 {
-                    $existeMailUser=$modelMailUser->findBySql("SELECT * FROM mail_user WHERE id_user=$idUser AND id_mail=".$existeMail->id." AND status=0");
-                    if($existeMailUser!=null)
-                    {
-                        $modelMailUser::model()->updateByPk($existeMailUser->id,array("status"=>'1', "assign_by" => $_POST['typeUser']));
-                        echo 'true';
-                    }
-                    else
-                    {
-                        $existeMailUser2=$modelMailUser->findBySql("SELECT * FROM mail_user WHERE id_user=$idUser AND id_mail=".$existeMail->id." AND status=1");
-                        if($existeMailUser2!=null)
-                        {
-                            echo 'existe correo';
-                        }
-                        else
-                        {
-
-                            $modelMailUser->id_mail=$existeMail->id;
-                            $modelMailUser->id_user=$idUser;
-                            $modelMailUser->status=1;
-                            $modelMailUser->assign_by=$_POST['typeUser'];
-                            if($modelMailUser->save())
-                                    echo 'true';
-                            else
-                                    echo 'false';
-                        }
-                    }
+                    $modelMailUser::model()->updateByPk($existeMailUser->id,array("status"=>'1', "assign_by" => $this->_assignBy(CrugeAuthassignment::getRoleUser())));
+                    echo 'true';
                 }
                 else
                 {
-                    $model->mail=$_POST['mail'];
-                    if($model->save())
+                    $existeMailUser2=$modelMailUser->findBySql("SELECT * FROM mail_user WHERE id_user=$idUser AND id_mail=".$existeMail->id." AND status=1");
+                    if($existeMailUser2!=null)
                     {
-                        $modelMailUser->id_mail=$model->id;
+                        echo 'existe correo';
+                    }
+                    else
+                    {
+
+                        $modelMailUser->id_mail=$existeMail->id;
                         $modelMailUser->id_user=$idUser;
                         $modelMailUser->status=1;
-                        $modelMailUser->assign_by=$_POST['typeUser'];
-
+                        $modelMailUser->assign_by=$this->_assignBy(CrugeAuthassignment::getRoleUser());
                         if($modelMailUser->save())
                                 echo 'true';
                         else
                                 echo 'false';
                     }
                 }
-                break;
-            default:
-            	echo 'Error';
-            	break;
-        }
+            }
+            else
+            {
+                $model->mail=$_POST['mail'];
+                if($model->save())
+                {
+                    $modelMailUser->id_mail=$model->id;
+                    $modelMailUser->id_user=$idUser;
+                    $modelMailUser->status=1;
+                    $modelMailUser->assign_by=$this->_assignBy(CrugeAuthassignment::getRoleUser());
+
+                    if($modelMailUser->save())
+                            echo 'true';
+                    else
+                            echo 'false';
+                }
+            }
 	}
 
     /**
      * 
      * @param string $typeUser
-     * @param string $noCustomer
      * @return int
      */
-    private function _typeUserSaveMail($typeUser)
+    private function _assignBy($typeUser)
     {
-        $assignBy=1;
-
-        if ($typeUser == 'customer') // Si es cliente
-        {
-            $assignBy=1;
-        }
-        else                         // Si es proveedor
-        {
+        $assignBy=0;
+        if ($typeUser == 'C') // Si es carrier
             $assignBy=0;
-        }
+        else     
+            $assignBy=1;
         
         return $assignBy;
     }

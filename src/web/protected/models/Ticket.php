@@ -293,4 +293,5 @@ class Ticket extends CActiveRecord
     {
         return self::model()->find('ticket_number=:number',array(':number'=>$ticketNumber))->id;
     }
+    
 }

@@ -107,16 +107,20 @@ class MailUser extends CActiveRecord
          * @return array
          */
         public static function getMails($user, $json = false)
-        {   if ($json == false) {        
+        {   
+            $assignBy='';
+            if (CrugeAuthassignment::getRoleUser() == 'C') $assignBy=' AND assign_by = 0';
+            
+            if ($json == false) {        
                 return self::model()->findAllBySql("select mu.id as id, m.mail as mail
                                                 from mail m, mail_user mu
-                                                where mu.id_user = $user and mu.id_mail = m.id AND mu.status = 1");
+                                                where mu.id_user = $user and mu.id_mail = m.id AND mu.status = 1 $assignBy");
             } else {
                 if ($user != null) 
                 {
                     echo CJSON::encode(Mail::model()->findAllBySql("select mu.id as id, m.mail as mail " .
                                                 "from mail m, mail_user mu " .
-                                                "where mu.id_user = $user and mu.id_mail = m.id AND mu.status = 1"));
+                                                "where mu.id_user = $user and mu.id_mail = m.id AND mu.status = 1 $assignBy"));
                 }
             }
         }
@@ -139,7 +143,7 @@ class MailUser extends CActiveRecord
          */
         public static function getCountMail($user)
         {
-                $count =self::model()->findBySql("SELECT COUNT(id_user) AS mailcount FROM mail_user WHERE id_user = $user AND status = 1");
+                $count =self::model()->findBySql("SELECT COUNT(id_user) AS mailcount FROM mail_user WHERE id_user = $user AND status = 1 AND assign_by=0");
                 if($count->mailcount < 5){
                     return TRUE;
                 }else{
