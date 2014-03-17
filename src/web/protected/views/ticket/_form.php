@@ -98,7 +98,7 @@
 
         <div class="input-control text span2 margen-number fecha_div">
             <br>
-            <?php echo $form->textField($model,'date_number[]',array('placeholder' => 'Date', 'class' => 'fecha validate[required]', 'readonly' => 'readonly')); ?>
+            <?php echo $form->textField($model,'date_number[]',array('placeholder' => 'Date', 'class' => 'fecha validate[required] text-input datepicker', 'value' => '', 'readonly' => 'readonly')); ?>
             <?php echo $form->error($model,'date_number[]'); ?>
         </div>
 

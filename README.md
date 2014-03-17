@@ -11,10 +11,14 @@ Release 1.1.6
 	- Cambio de asunto de correos al crear/nueva respuesta/cerrar tickets
 
 17/03/2014
--Correccion al guardar email en interfaz de crear tickets. Los usuarios internos
-pueden agregar tantos correos deseen, los carriers solo pueden agregar 5. Los correos 
-que sean agregados por usuarios internos, no se veran a la hora de que un carrier
-abra la interfaz de abrir ticket
+        -Correccion al guardar email en interfaz de crear tickets. Los usuarios internos
+         pueden agregar tantos correos deseen, los carriers solo pueden agregar 5. Los correos 
+         que sean agregados por usuarios internos, no se veran a la hora de que un carrier
+         abra la interfaz de abrir ticket.
+        -Cambio en el menu de ticket para usuarios internos
+        -Ticket Information - Open TT from Carrier by Etelix, Ticket Information - Open TT to Carrier
+        -Corrección en el datepicker del tested number
+
 
 Release 1.1.5
 	-Modificada la tabla description_ticket creando los campos: 
