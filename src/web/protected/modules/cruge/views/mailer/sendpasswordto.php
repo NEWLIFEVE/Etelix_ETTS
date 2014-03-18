@@ -1,13 +1,19 @@
-<p>Dear user, your account credentials are:</p>
-<p><?php echo "username: " . $model->username; ?></p>
-<p><?php echo "email: ".$model->email; ?></p>
-<p><?php echo "password: ".$password;?></p>
-<p>Please take precautions to save your password</p>
+<p>Dear User,</p>
+<p>Your information to enter ETTS is:</p>
+<p>Username: <?php echo $model->username; ?></p>
+<p>Email: <?php echo $model->email; ?></p>
+<p>Password: <?php echo $password;?></p>
+<p>Please take precautions to save your password.</p>
+<p>Best regards,</p>
 
 <hr>
 
-<p>Estimado usuario, las credenciales de su cuenta son:</p>
-<p><?php echo "usuario: ".$model->username; ?></p>
-<p><?php echo "email: ".$model->email;?></p>
-<p><?php echo "su clave es: ".$password;?></p>
-<p>Por favor tome las precauciones necesarias para guardar su clave</p>
+<p>Estimado Usuario,</p>
+<p>La información para ingresar a ETTS es:</p>
+<p>Usuario: <?php echo $model->username; ?></p>
+<p>Email: <?php echo $model->email; ?></p>
+<p>Password: <?php echo $password;?></p>
+<p>Por favor tome las precauciones necesarias para guardar sus datos.</p>
+<p>Saludos cordiales,</p>
+<
+

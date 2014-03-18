@@ -88,6 +88,11 @@ class Mail extends CActiveRecord
 		));
 	}
         
+        /**
+         * Método para retornal los emails
+         * @param string $condition
+         * @return array
+         */
         public static function getMails($condition = false)
         {
             if (!$condition)
@@ -96,7 +101,11 @@ class Mail extends CActiveRecord
                 return self::model()->findAll($condition);
         }
 
-
+        /**
+         * Método para buscar los nombres de los correos filtrado por id_ticket
+         * @param integer $id_ticket
+         * @return array
+         */
         public static function getNameMails($id_ticket)
         {
             $mailID = array();
@@ -107,6 +116,52 @@ class Mail extends CActiveRecord
             
             foreach (self::getMails("id in(".implode(",", $mailID).")") as $value)
                 $correo[] = $value->mail;
+            
+            return $correo;
+        }
+        
+        /**
+         * Método para buscar los nombres de los correos(cc) filtrado por id_ticket
+         * @param integer $id_ticket
+         * @return array
+         */
+        public static function getNameMailsCC($id_ticket)
+        {
+            $mailID = null;
+            $correo = null;
+            $cc=MailTicket::getCc($id_ticket);
+            
+            if ($cc != null) {
+                foreach ($cc as $value)
+                    $mailID[] = $value->idMailUser->id_mail;
+            }
+            if ($mailID != null) {
+                foreach (self::getMails("id in(".implode(",", $mailID).")") as $value)
+                    $correo[] = $value->mail;
+            }
+            
+            return $correo;
+        }
+        
+        /**
+         * Método para buscar los nombres de los correos(bcc) filtrado por id_ticket
+         * @param integer $id_ticket
+         * @return array
+         */
+        public static function getNameMailsBcc($id_ticket)
+        {
+            $mailID = null;
+            $correo = null;
+            $bcc=MailTicket::getBcc($id_ticket);
+            
+            if ($bcc != null) {
+                foreach ($bcc as $value)
+                    $mailID[] = $value->idMailUser->id_mail;
+            }
+            if ($mailID != null) {
+                foreach (self::getMails("id in(".implode(",", $mailID).")") as $value)
+                    $correo[] = $value->mail;
+            }
             
             return $correo;
         }
