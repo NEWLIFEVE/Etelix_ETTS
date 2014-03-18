@@ -140,9 +140,10 @@ class Carrier extends CActiveRecord
      */
     public static function getListUserCarriers()
     {
-        $idCarriers = array();
-        foreach (CrugeUser2::getUsuerByIdCarrier() as $carrier) {
-            $idCarriers[] = $carrier->id_carrier;
+        $idCarriers=array();
+        foreach (CrugeUser2::getUsuerByIdCarrier() as $carrier)
+        {
+            $idCarriers[]=$carrier->id_carrier;
         }
         return $idCarriers;
     }
@@ -152,17 +153,23 @@ class Carrier extends CActiveRecord
      */
     public static function getCarriers($returnNameCarrier = false, $idTicket = false)
     {
-        if ($returnNameCarrier) {
-            $idCarrier = CrugeUser2::getUserTicket($idTicket, true, true)->id_carrier;
-            $idUser = CrugeUser2::getUserTicket($idTicket, true)->iduser;
+        if($returnNameCarrier)
+        {
+            $idCarrier=CrugeUser2::getUserTicket($idTicket,true,true)->id_carrier;
+            $idUser=CrugeUser2::getUserTicket($idTicket,true)->iduser;
             
-            if ($idCarrier != null) {
+            if($idCarrier!=null)
+            {
                 return self::model()->find("id = $idCarrier")->name;
-            } else {
+            }
+            else
+            {
                 return 'ETELIX('.CrugeAuthassignment::getRoleUser(true, $idUser) . ')';
             }
-        } else {
-            return CHtml::listData(self::model()->findAll("id not in(".implode(",", self::getListUserCarriers()).") order by name asc"), 'id', 'name');
+        }
+        else
+        {
+            return CHtml::listData(self::model()->findAll("id NOT IN(".implode(",", self::getListUserCarriers()).") ORDER BY name ASC"), 'id', 'name');
         }
         
     }
@@ -180,7 +187,7 @@ class Carrier extends CActiveRecord
         $id=array();
         $consulta=null;
         
-        if ($type=='supplier') 
+        if($type=='supplier') 
         {
             $consulta=self::getSupplier();
             foreach($consulta as $value)
@@ -188,7 +195,7 @@ class Carrier extends CActiveRecord
                 $id[]=$value->id;
             }
         }
-        else if ($type=='customer')
+        else if($type=='customer')
         {
             $consulta=self::getCustomer();
             foreach($consulta as $value)
@@ -200,64 +207,63 @@ class Carrier extends CActiveRecord
         {
             $id=null;
         }
-        
         return $id;
     }
-        
+
+    /**
+     * @access public
+     * @static
+     */   
     public static function getCustomer($id = false)
     {
-        if ($id) {
-            return self::model()->findAllBySql("SELECT c.id
-                                                FROM carrier c,
-                                                contrato x,
-                                                contrato_termino_pago ctp
-                                                WHERE c.id = x.id_carrier AND 
-                                                ctp.id_contrato = x.id AND 
-                                                ctp.end_date IS NULL AND
-                                                c.id = $id AND
-                                                ctp.id_termino_pago <> (SELECT id FROM termino_pago WHERE name='Sin estatus')");
-        } else {
-            return self::model()->findAllBySql("SELECT c.id
-                                                FROM carrier c,
-                                                contrato x,
-                                                contrato_termino_pago ctp
-                                                WHERE c.id = x.id_carrier AND 
-                                                ctp.id_contrato = x.id AND 
-                                                ctp.end_date IS NULL AND
-                                                ctp.id_termino_pago <> (SELECT id FROM termino_pago WHERE name='Sin estatus')");
+        if($id)
+        {
+            return self::model()->findAllBySql("SELECT car.*
+                                                FROM carrier car, contrato con, contrato_termino_pago ctp
+                                                WHERE con.id_carrier=car.id AND con.sign_date<=current_date AND con.end_date IS NULL AND ctp.id_contrato=con.id AND car.id={$id} AND ctp.start_date<=current_date AND ctp.end_date IS NULL AND ctp.id_termino_pago<>(SELECT id FROM termino_pago WHERE name='Sin estatus')
+                                                ORDER BY car.name ASC");
+        }
+        else
+        {
+            return self::model()->findAllBySql("SELECT car.id
+                                                FROM carrier car, contrato con, contrato_termino_pago ctp
+                                                WHERE con.id_carrier=car.id AND con.sign_date<=current_date AND con.end_date IS NULL AND ctp.id_contrato=con.id AND ctp.start_date<=current_date AND ctp.end_date IS NULL AND ctp.id_termino_pago<>(SELECT id FROM termino_pago WHERE name='Sin estatus')
+                                                ORDER BY car.name ASC");
         }
     }
-        
+
+    /**
+     * @access public
+     * @static
+     */
     public static function getSupplier($id = false)
     {
-        if ($id) {
-            return self::model()->findAllBySql("SELECT c.id
-                                                FROM carrier c,
-                                                contrato x,
-                                                contrato_termino_pago_supplier ctps
-                                                WHERE c.id = x.id_carrier AND 
-                                                ctps.id_contrato = x.id AND 
-                                                ctps.end_date IS NULL AND 
-                                                c.id = $id AND
-                                                ctps.id_termino_pago_supplier <> (SELECT id FROM termino_pago WHERE name='Sin estatus')");
-        } else {
-            return self::model()->findAllBySql("SELECT c.id
-                                                FROM carrier c,
-                                                contrato x,
-                                                contrato_termino_pago_supplier ctps
-                                                WHERE c.id = x.id_carrier AND 
-                                                ctps.id_contrato = x.id AND 
-                                                ctps.end_date IS NULL AND 
-                                                ctps.id_termino_pago_supplier <> (SELECT id FROM termino_pago WHERE name='Sin estatus')");
+        if($id)
+        {
+            return self::model()->findAllBySql("SELECT car.*
+                                                FROM carrier car, contrato con, contrato_termino_pago_supplier ctps
+                                                WHERE con.id_carrier=car.id AND con.sign_date<=current_date AND con.end_date IS NULL AND ctps.id_contrato=con.id AND car.id={$id} AND ctps.start_date<=current_date AND ctps.end_date IS NULL AND ctps.id_termino_pago_supplier<>(SELECT id FROM termino_pago WHERE name='Sin estatus')
+                                                ORDER BY car.name ASC");
+        }
+        else
+        {
+            return self::model()->findAllBySql("SELECT car.id
+                                                FROM carrier car, contrato con, contrato_termino_pago_supplier ctps
+                                                WHERE con.id_carrier=car.id AND con.sign_date<=current_date AND con.end_date IS NULL AND ctps.id_contrato=con.id AND ctps.start_date<=current_date AND ctps.end_date IS NULL AND ctps.id_termino_pago_supplier<>(SELECT id FROM termino_pago WHERE name='Sin estatus')
+                                                ORDER BY car.name ASC");
         }
     }
-        
+
+    /**
+     * @access public
+     * @static
+     */
     public static function getTypeCarrier($idUser)
     {
         $idCarrier=CrugeUser2::getIdCarrier($idUser);
-        if ($idCarrier != null) 
+        if($idCarrier != null) 
         {
-            if (self::getCustomer($idCarrier) != null) 
+            if(self::getCustomer($idCarrier) != null) 
             {
                 return 'Customer';
             }
