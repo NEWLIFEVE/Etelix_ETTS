@@ -145,11 +145,11 @@ class SiteController extends Controller
                     'url'=>array('/ticket/adminclose')
 				),
 				array(
-					'label'=>'Open TT as customer/supplier by Etelix',
+					'label'=>'Open TT to Customer/Suplier by Etelix',
 					'url'=>array('/ticket/createtoclient')
 					),
                                 array(
-					'label'=>'Open TT to customer/supplier',
+					'label'=>'Open TT from Customer/Supplier by Etelix',
 					'url'=>array('/ticket/createinternal')
 					),
 				);
@@ -163,11 +163,11 @@ class SiteController extends Controller
                     'url'=>array('/ticket/adminclose')
 					),
 				array(
-					'label'=>'Open TT as customer/supplier by Etelix',
+					'label'=>'Open TT to Customer/Suplier by Etelix',
 					'url'=>array('/ticket/createtoclient')
 					),
-                array(
-					'label'=>'Open TT to customer/supplier',
+                                array(
+					'label'=>'Open TT from Customer/Supplier by Etelix',
 					'url'=>array('/ticket/createinternal')
 					),
 				);
@@ -190,19 +190,19 @@ class SiteController extends Controller
 		if($tipoUsuario=="I")
 		{
 			return array(
-                array(
-					'label'=>'Closed',
-					'url'=>array('/ticket/adminclose')
-					),
-                array(
-					'label'=>'Open TT as customer/supplier',
+                            array(
+                                'label'=>'Closed',
+                                'url'=>array('/ticket/adminclose')
+                                ),
+                            array(
+					'label'=>'Open TT to Customer/Suplier by Etelix',
 					'url'=>array('/ticket/createtoclient')
 					),
-                array(
-					'label'=>'Open TT to customer/supplier by Etelix',
+                                array(
+					'label'=>'Open TT from Customer/Supplier by Etelix',
 					'url'=>array('/ticket/createinternal')
 					),
-				);
+                            );
 		}
 	}
 }

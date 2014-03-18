@@ -4,7 +4,7 @@
 /* @var $form CActiveForm */
 ?>
 <div id="content_attached_file"></div>
-<input type="hidden" id="etelix-as-customer" value="yes">
+<input type="hidden" id="open-ticket" value="etelix_as_carrier">
 <fieldset>
         <legend>Use this form to submit a ticket.</legend>
 <?php echo $form->errorSummary($model); ?>   
@@ -117,7 +117,7 @@
 
         <div class="input-control text span2 margen-number fecha_div">
             <br>
-            <?php echo $form->textField($model,'date_number[]',array('placeholder' => 'Date', 'class' => 'fecha validate[required]', 'readonly' => 'readonly')); ?>
+            <?php echo $form->textField($model,'date_number[]',array('placeholder' => 'Date', 'class' => 'fecha validate[required] text-input datepicker', 'value' => '', 'readonly' => 'readonly')); ?>
             <?php echo $form->error($model,'date_number[]'); ?>
         </div>
 

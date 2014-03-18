@@ -67,7 +67,11 @@ $(document).on('ready', function(){
     // Append options
     $(document).on('click', 'a.a-bajar-correo', function(){
         $ETTS.UI.appendOptions($(this), $('#mails'));
-    });   
+    });  
+    
+    $(document).on('click', '#Ticket_mail', function(){
+        $ETTS.UI.clearOptions($('#mails'));
+    });  
     
     /**
      *   Add mails
@@ -140,7 +144,7 @@ $(document).on('ready', function(){
     
     /*************************************************************************
      * 
-     *                      Validate and preview ticket(usuario interno)
+     *                      Validate and preview ticket(Ticket Information - Open TT to Carrier)
      * 
      ************************************************************************/
      $("#ticket-form").validationEngine('attach',{
@@ -190,7 +194,7 @@ $(document).on('ready', function(){
                         $('[name="attachFileSize[]"]'),                         // FILE SIZE
                         '1',                                                    // Si es cliente = 0 de lo contrario = 1
                         $("#ticket-form"),                                      // Limpiar Formulario,
-                        null,
+                        $('#open-ticket').val(),
                         $('select#class option:selected').text()
                      );
                 });
@@ -200,7 +204,7 @@ $(document).on('ready', function(){
      
      /*************************************************************************
      * 
-     *                      Validate and preview ticket(usuario interno a cliente)
+     *                      Validate and preview ticket(Ticket Information - Open TT from Carrier by Etelix)
      * 
      ************************************************************************/
      $("#ticket-form-to-client").validationEngine('attach',{
@@ -258,7 +262,7 @@ $(document).on('ready', function(){
                         $('[name="attachFileSize[]"]'),                         // FILE SIZE
                         '0',                                                    // Si es cliente = 0 de lo contrario = 1
                         $("#ticket-form-to-client"),                            // Limpiar Formulario
-                        $('#etelix-as-customer').val(),
+                        $('#open-ticket').val(),
                         $('select#class option:selected').text()
                      );
                 });

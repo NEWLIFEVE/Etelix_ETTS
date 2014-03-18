@@ -161,7 +161,7 @@ $ETTS.ajax=(function(){
                         attachFileSave,
                         attachFileSize,
                         _isInternal, 
-                        formulario, _etelixAsCustomer, _carrier){
+                        formulario, _optionOpen, _carrier){
                             
             var responseToArray=[],
             responseToText=[],
@@ -183,10 +183,10 @@ $ETTS.ajax=(function(){
             lengthAttachFile=attachFile.length,
             lengthTestedNumber=_testedNumber.length;
             
-            if (_etelixAsCustomer) 
-                _etelixAsCustomer=_etelixAsCustomer;
+            if (_optionOpen) 
+                _optionOpen=_optionOpen;
             else
-                _etelixAsCustomer=false;
+                _optionOpen=false;
             
             for (var i = 0; i < lengtTo; i++) 
             {
@@ -285,7 +285,7 @@ $ETTS.ajax=(function(){
                     _date: dateArray,
                     _hour: hourArray,
                     typeUser:_typeUser,
-                    etelixAsCustomer:_etelixAsCustomer
+                    optionOpen:_optionOpen
                 },
                 success:function(data) {
                     if (data == 'success') {
