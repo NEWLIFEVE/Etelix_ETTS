@@ -324,14 +324,20 @@ class TicketController extends Controller
 
                 // Variables para enviar al cuerpo del correo
                 $cuerpo='';
-                $cuerpo_tt='';
                 // to, cc y bbc si es enviado por el supplier
                 $to=array();
                 $bbc=null;
                 $cc=null;
 
-                $cuerpoMail=new CuerpoCorreo();
-
+                $user=Yii::app()->user->name;
+                $optionOpen='';
+                if (isset($_POST['optionOpen'])) $optionOpen=$_POST['optionOpen'];
+                
+                if (isset($_POST['user']) && isset($_POST['idUser']) && $_POST['user'] != null && $_POST['idUser'] != null)
+                {
+                    $user=$_POST['user'];
+                    $idUser=$_POST['idUser'];
+                }
                 // Si es interntal
                 if (isset($_POST['isInternal']) && $_POST['isInternal'] == '1')
                 {
@@ -341,7 +347,7 @@ class TicketController extends Controller
 
                     $data=array(
                         'ticketNumber'=>$ticketNumber,
-                        'username'=>Yii::app()->user->name,
+                        'username'=>$user,
                         'emails'=>$_POST['emails'],
                         'failure'=>$_POST['failureText'],
                         'originationIp'=>$_POST['originationIp'],
@@ -355,20 +361,15 @@ class TicketController extends Controller
                         'description'=>$_POST['description'],
                         'cc'=>$cc,
                         'bcc'=>$bbc,
-                        'speech'=>$_POST['speech']
+                        'speech'=>$_POST['speech'],
+                        'idTicket'=>$modelTicket->id,
                     );
-                    $cuerpoMail->init($data);
-                    $cuerpo=$cuerpoMail->getBodySupplier();
+                    $cuerpoMail=new CuerpoCorreo($data);
+                    $cuerpo=$cuerpoMail->getBodyOpenTicket($optionOpen);
                 }
                 // Si es cliente
                 else
                 {
-                    $user=Yii::app()->user->name;
-                    if (isset($_POST['user']) && isset($_POST['idUser']) && $_POST['user'] != null && $_POST['idUser'] != null)
-                    {
-                        $user=$_POST['user'];
-                        $idUser=$_POST['idUser'];
-                    }
                     $data=array(
                         'ticketNumber'=>$ticketNumber,
                         'username'=>$user,
@@ -385,19 +386,18 @@ class TicketController extends Controller
                         'description'=>$_POST['description'],
                         'cc'=>null,
                         'bcc'=>null,
-                        'speech'=>null
+                        'speech'=>null,
+                        'idTicket'=>$modelTicket->id,
                     );
-                    $cuerpoMail->init($data);
-                    $cuerpo=$cuerpoMail->getBodyCustumer();
-                    $cuerpo_tt=$cuerpoMail->getBodyTT();
+                    $cuerpoMail=new CuerpoCorreo($data);
+                    $cuerpo=$cuerpoMail->getBodyOpenTicket($optionOpen);
 
                     $to=$_POST['emails']; 
                 }
 
                 $mailer=new EnviarEmail; 
                 $asunto=new Subject;
-                $optionOpen='';
-                if (isset($_POST['optionOpen'])) $optionOpen=$_POST['optionOpen'];
+                
                 $subject=$asunto->subjectOpenTicket($ticketNumber, Carrier::getCarriers(true, $modelTicket->id), $optionOpen);
                 $envioMail=$mailer->enviar($cuerpo, $to,'',$subject,$rutaAttachFile,$cc);
 
@@ -452,7 +452,6 @@ class TicketController extends Controller
         $ticketNumber=Ticket::model()->findByPk($id)->ticket_number;
         $hour=Ticket::model()->findByPk($id)->hour;
         $date=Ticket::model()->findByPk($id)->date;
-        $body=self::getBodyMails($id,Mail::getNameMails($id),'status',$statuName);
 
         $mailer=new EnviarEmail;
         $ticketModel = new Ticket;
@@ -470,7 +469,11 @@ class TicketController extends Controller
         }
         
         $asunto=new Subject;
+        $cuerpoCorreo=new CuerpoCorreo(self::getTicketAsArray($id));
+        
+        $body=$cuerpoCorreo->getBodyCloseTicket($statuName);
         $subject=$asunto->subjectCloseTicket($ticketNumber, Carrier::getCarriers(true, $id), Utility::restarHoras($hour, date('H:i:s'), floor(Utility::getTime($date, $hour)/ (60 * 60 * 24))));
+        
         $envioMail=$mailer->enviar($body,$mailModel::getNameMails($id),'',$subject,null);
 
         if($envioMail===true)
@@ -501,138 +504,6 @@ class TicketController extends Controller
     public function actionGetdataticket($id)
     {
         $this->renderPartial('_dataticket', array('datos' => Ticket::ticketsByUsers(Yii::app()->user->id, $id, false, true, true)));
-    }
-        
-    
-    
-    /**
-     * Método para retornar el cuerpo del mail al cambiar el status del ticket o
-     * al dar una respuesta
-     * 
-     * @param type $idTicket
-     * @param type $email
-     * @param type $typeOperation
-     * @param type $status
-     * @return string
-     */
-    public static function getBodyMails($idTicket,$email,$typeOperation,$status=false)
-    {
-        $datos=Ticket::ticketsByUsers(CrugeUser2::getUserTicket($idTicket,true)->iduser,$idTicket,false);
-
-        $user=CrugeUser2::getUserTicket($idTicket);
-        $testedNumber=TestedNumber::getTestedNumberArray($idTicket);
-        $info='';
-
-        $header='<div style="width:100%">
-                    <img src="http://deve.sacet.com.ve/images/logo.jpg" height="100"/>
-                    <hr>
-                    <div style="text-align:right">Ticket Confirmation<br>Ticket #: '.$datos->ticket_number.'</div>';
-            
-        switch($typeOperation)
-        {
-            
-            // Al cambiar de status
-            case 'status':
-                $info='<div>
-                        <h2>Hello "'.$user.'"</h2>
-                        <p style="text-align:justify">
-                            <div>Dear Customer:</div>
-                            <br/>
-                            <div>Change status: "'. $status .'"</div>
-                            <br/>
-                            Etelix NOC Team.
-                        </p>
-                       </div>
-                       <hr>
-                    </div>';
-                break;
-            // Al responder la descripcion
-            case 'answer':
-                $info='<div>
-                        <h2>Hello "'.$user.'"</h2>
-                        <p style="text-align:justify">
-                            <div>Dear Customer:</div>
-                            <br/>
-                            <div>There is a new message related to your TT</div>
-                            <br/>
-                            Etelix NOC Team.
-                        </p>
-                      </div>
-                      <hr>
-                     </div>';
-                break;
-            default:
-                break;
-        }
-
-        $detail='<h2>Ticket Details</h2>
-                 <table style="border-spacing: 0; width:100%; border: solid #ccc 1px;">
-                    <tr>
-                        <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc; padding: 5px 10px; text-align: left;">Response to</th>
-                    </tr>
-                    <tr>
-                        <td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'. implode('<br>', $email) .'</td>
-                    </tr>
-                    <tr>
-                        <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Failure</th>
-                    </tr>
-                    <tr>
-                            <td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$datos->idFailure->name.'</td>
-                    </tr>
-
-                    <tr>
-                        <th colspan="1" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Origination IP</th>
-                        <th colspan="3" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Destination IP</th>
-                    </tr>
-                    <tr>
-                            <td colspan="1" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$datos->origination_ip.'</td>
-                            <td colspan="3" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$datos->destination_ip.'</td>
-                    </tr>
-                    <tr>
-                        <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Prefix</th>
-                    </tr>
-                    <tr>
-                            <td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$datos->prefix.'</td>
-                    </tr>';
-        if(isset($datos->idGmt->name))
-        {
-            $detail.='<tr>
-                        <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">GMT</th>
-                      </tr>
-                      <tr>
-                        <td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$datos->idGmt->name.'</td>
-                    </tr>';
-        }
-        if(isset($testedNumber['number']))
-        {
-            $detail.='<tr>
-                        <th style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Tested number</th>
-                        <th style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Country</th>
-                        <th style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Date</th>
-                        <th style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Hour</th>
-                      </tr>
-                      <tr>
-                        <td style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.implode('<br>', $testedNumber['number']).'</td>
-                        <td style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.implode('<br>', $testedNumber['country']).'</td>
-                        <td style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.implode('<br>', $testedNumber['date']).'</td>
-                        <td style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.implode('<br>', $testedNumber['hour']).'</td>
-                    </tr>';
-        }
-
-        $detail.='<tr>
-                        <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Description</th>
-                    </tr>
-                    <tr>
-                            <td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.  DescriptionticketController::getDescription($idTicket, $datos).'</td>
-                    </tr>
-                    </table>';
-        $footer = '<div style="width:100%">
-                        <p style="text-align:justify">
-                            <br/>
-                            <div style="font-style:italic;">Please do not reply to this email. Replies to this message are routed to an unmonitored mailbox.</div>
-                        </p>
-                   </div>';
-        return $header.$info.$detail.$footer;
     }
         
     /**
@@ -666,5 +537,54 @@ class TicketController extends Controller
     public function actionAdminclose()
     {
         $this->render('adminclose');
+    }
+    
+    /**
+     * Método para retornar los datos del ticket que se mostrarán al mandar un correo
+     * @param integer $idTicket
+     * @return array
+     */
+    public static function getTicketAsArray($idTicket)
+    {
+        $data=Ticket::ticketsByUsers(CrugeUser2::getUserTicket($idTicket,true)->iduser,$idTicket,false);
+        $testedNumber=TestedNumber::getTestedNumberArray($idTicket);
+        
+        $datos = array(
+            'ticketNumber'=>$data->ticket_number, 
+            'username'=>CrugeUser2::getUserTicket($idTicket),
+            'emails'=>Mail::getNameMails($idTicket),
+            'failure'=>$data->idFailure->name,
+            'originationIp'=>$data->origination_ip,
+            'destinationIp'=>$data->destination_ip,
+            'prefix'=>$data->prefix,
+            'gmt'=>null,
+            'testedNumber'=>null,
+            'country'=>null,
+            'date'=>null,
+            'hour'=>null,
+            'description'=>'description',
+            'cc'=>Mail::getNameMailsCC($idTicket),
+            'bcc'=>Mail::getNameMailsBcc($idTicket),
+            'speech'=>null,
+            'idTicket'=>$idTicket
+        );
+        
+        if ($testedNumber != null) {
+            $numbers = array(
+                'testedNumber'=>$testedNumber['number'],
+                'country'=>$testedNumber['country'],
+                'date'=>$testedNumber['date'],
+                'hour'=>$testedNumber['hour'],
+            );
+            
+            $datos = array_merge($datos, $numbers);
+        }
+        
+        if (isset($data->idGmt->name)) {
+            $gmt = array('gmt' => $data->idGmt->name);
+            $datos = array_merge($datos, $gmt);
+        }
+        
+        return $datos;
     }
 }

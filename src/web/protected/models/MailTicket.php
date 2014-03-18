@@ -93,8 +93,43 @@ class MailTicket extends CActiveRecord
 		));
 	}
         
+        /**
+         * Retorna los correos que tienen asociado un o varios tickets
+         * @param integer $id_tickets
+         * @return array|null
+         */
         public static function getMails($id_tickets)
         {
-            return self::model()->findAll("id_ticket = $id_tickets");
+            return self::model()->findAll("id_ticket = $id_tickets AND id_type_mailing = 1");
+        }
+        
+        /**
+         * Retorna los correos(cc) que tienen asociado un o varios tickets
+         * @param integer $id_tickets
+         * @return array|null
+         */
+        public static function getCc($id_tickets)
+        {
+            $mail =  self::model()->findAll("id_ticket = $id_tickets AND id_type_mailing = 2");
+            if ($mail != null)
+            {
+                return $mail;
+            }
+            return null;
+        }
+        
+        /**
+         * Retorna los correos(bcc) que tienen asociado un o varios tickets
+         * @param integer $id_tickets
+         * @return array|null
+         */
+        public static function getBcc($id_tickets)
+        {
+            $mail = self::model()->findAll("id_ticket = $id_tickets AND id_type_mailing = 3");
+            if ($mail != null)
+            {
+                return $mail;
+            }
+            return null;
         }
 }

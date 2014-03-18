@@ -174,18 +174,18 @@ class DescriptionticketController extends Controller
     {
     	if(isset($_POST['idTicket']))
     	{
-    		$mailer=new EnviarEmail;
-    		$speech=null;
-    		if(isset($_POST['idSpeech'])) $speech=$_POST['idSpeech'];
+            $mailer=new EnviarEmail;
+            $speech=null;
+            if(isset($_POST['idSpeech'])) $speech=$_POST['idSpeech'];
             //Guardar Description
-    		$model=new DescriptionTicket;
-    		$model->id_ticket=$_POST['idTicket'];
-    		$model->description=$_POST['message'];
-    		$model->date=date('Y-m-d');
-    		$model->hour=date('H:i:s');
-    		$model->id_speech=$speech;
+            $model=new DescriptionTicket;
+            $model->id_ticket=$_POST['idTicket'];
+            $model->description=$_POST['message'];
+            $model->date=date('Y-m-d');
+            $model->hour=date('H:i:s');
+            $model->id_speech=$speech;
             $optionRead=self::getUserNewDescription();
-    		$model->read_carrier=$optionRead['read_carrier'];
+            $model->read_carrier=$optionRead['read_carrier'];
             $model->read_internal=$optionRead['read_internal'];
             if (isset($_POST['internalAsCarrier']) && $_POST['internalAsCarrier'] == 1) $model->id_user=CrugeUser2::getUserTicket($_POST['idTicket'],true)->iduser;
             else $model->id_user=Yii::app()->user->id;
@@ -194,10 +194,8 @@ class DescriptionticketController extends Controller
                 
     		if($model->save())
     		{
-    			//Guardar Description
-    			$ticketNumber=Ticket::model()->findByPk($model->id_ticket)->ticket_number;
-    			//Renderizar para mostrar la repsuesta
-    			$this->renderPartial('/ticket/_answer', array('datos' => Ticket::ticketsByUsers(Yii::app()->user->id, $model->id_ticket, false)));
+                    //Guardar Description
+                    $ticketNumber=Ticket::model()->findByPk($model->id_ticket)->ticket_number;
 	            /**
 	            * Se verifica si se envia por post
 	            * Guardando Attach File
@@ -218,18 +216,19 @@ class DescriptionticketController extends Controller
                         }
                     }
                     
-                    $ticketNumber=Ticket::model()->findByPk($model->id_ticket)->ticket_number;
                     $hour=Ticket::model()->findByPk($model->id_ticket)->hour;
                     $date=Ticket::model()->findByPk($model->id_ticket)->date;
                     //Renderizar para mostrar la repsuesta
                     $this->renderPartial('/ticket/_answer', array('datos' => Ticket::ticketsByUsers(Yii::app()->user->id, $model->id_ticket, false)));
                     $mailsAll=Mail::getNameMails($model->id_ticket);
                     
-                    if (isset($_POST['internalAsCarrier'])) $internalAsCarrier='Etelix';
-                    
                     $asunto=new Subject;
+                    $cuerpoCorreo=new CuerpoCorreo(TicketController::getTicketAsArray($model->id_ticket));
+                    
+                    $body=$cuerpoCorreo->getBodyNewAnwer();
                     $subject=$asunto->subjectNewAnswer($ticketNumber, $model->id_user, $model->response_by, Utility::restarHoras($hour, date('H:i:s'), floor(Utility::getTime($date, $hour)/ (60 * 60 * 24))));
-                    $mailer->enviar(TicketController::getBodyMails($model->id_ticket, Mail::getNameMails($model->id_ticket), 'answer'), $mailsAll, '', $subject);
+                    
+                    $mailer->enviar($body, $mailsAll, '', $subject);
         	}
 	    	else
             {
@@ -237,53 +236,6 @@ class DescriptionticketController extends Controller
             }
         }
     }
-    
-    /**
-     * 
-     * @param int $idTicket
-     * @param array $datos
-     * @return string
-     */  
-    public static function getDescription($idTicket, $datos)
-    {
-        $areaAnswer = '<div>';
-        foreach ($datos->descriptionTickets as $value) {
-            if($value->idUser !==null){
-                $usuario=CrugeAuthassignment::getRoleUser(false, $value->id_user);
-                if (($usuario == 'I' || $usuario == 'C' || $usuario == 'A' || $usuario == 'S') && $value->id_user != $value->response_by) {
-                    $style='float: left; color: #3e454c; background: rgba(196, 191, 191, 0.5);';
-                }
-
-                if ($usuario == 'C' && $value->id_user == $value->response_by) {
-                    $style='float: left; color: #3e454c; background: white;';
-                }
-
-                if ($usuario != 'C' && $value->id_user == $value->response_by) {
-                    $style='float: right; color: #fff; background: #6badf6;';
-                }
-                
-                $areaAnswer .= '<div style="border: 1px solid #dfdfdf;
-                                    border: 1px solid rgba(0, 0, 0, .18);
-                                    border-bottom-color: rgba(0, 0, 0, .29);
-                                    -webkit-box-shadow: 0 1px 0 #dce0e6;
-                                    line-height: 1.28;
-                                    margin: 5px 5px 8px 0;
-                                    min-height: 14px;
-                                    padding: 4px 5px 3px 6px;
-                                    position: relative;
-                                    text-align: left;
-                                    white-space: pre-wrap;
-                                    word-wrap: break-word;
-                                    min-width: 20%;
-                                    max-width: 100%;
-                                    clear: both; '.$style.'">' . 
-                        $value->description . '   <br><strong>Date: </strong>' . $value->date . ' || <strong>Hour: </strong>' . $value->hour . ' || <strong>User: </strong>' . $value->idUser->username .  
-                     '</div>';   
-            } 
-        }
-        $areaAnswer .= '</div>';
-        return $areaAnswer;
-    }  
     
     /**
      *
