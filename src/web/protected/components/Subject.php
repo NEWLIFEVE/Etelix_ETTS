@@ -105,11 +105,11 @@ class Subject
     private function _firstElementSubject($optionOpen, $ticketNumber, $nameCarrier)
     {
         if ($optionOpen == 'etelix_as_carrier') 
-            return 'TT '.$this->_formatTicketNumber($ticketNumber).' '.$nameCarrier.' to Etelix (by Etelix on ETTS), '. $ticketNumber.' (00:00)';
+            return 'TT '.$this->_formatTicketNumber($ticketNumber).' '.$nameCarrier.' New TT to Etelix (by Etelix on ETTS), '. $ticketNumber.' (00:00)';
         if ($optionOpen == 'carrier_to_etelix')
-            return 'TT Etelix to '.$this->_formatTicketNumber($ticketNumber).' '.$nameCarrier.' '.$ticketNumber.' (00:00)';
+            return 'TT Etelix to '.$this->_formatTicketNumber($ticketNumber).' '.$nameCarrier.' New TT '.$ticketNumber.' (00:00)';
         if ($optionOpen == '' || $optionOpen == false) 
-            return 'TT '.$this->_formatTicketNumber($ticketNumber).' '.$nameCarrier.' to Etelix '.$ticketNumber.' (00:00)';
+            return 'TT '.$this->_formatTicketNumber($ticketNumber).' '.$nameCarrier.' New TT to Etelix '.$ticketNumber.' (00:00)';
     }
 
 
