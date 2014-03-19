@@ -546,7 +546,7 @@ class TicketController extends Controller
      */
     public static function getTicketAsArray($idTicket)
     {
-        $data=Ticket::ticketsByUsers(CrugeUser2::getUserTicket($idTicket,true)->iduser,$idTicket,false);
+        $data=Ticket::ticketsByUsers(CrugeUser2::getUserTicket($idTicket,true)->iduser,$idTicket,false,false,true);
         $testedNumber=TestedNumber::getTestedNumberArray($idTicket);
         
         $datos = array(

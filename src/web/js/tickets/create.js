@@ -474,7 +474,8 @@ $(document).on('ready', function(){
                        _attachFile: attachFileArray,
                        _attachFileSave: attachFileSaveArray,
                        _attachFileSize: attachFileSizeArray,
-                       isInternal: '0'
+                       isInternal: '0',
+                       optionOpen:$('#open-ticket').val()
                    },
                    success:function(data){
                         if (data == 'success') {

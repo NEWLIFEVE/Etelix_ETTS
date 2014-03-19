@@ -159,13 +159,15 @@ class Ticket extends CActiveRecord
     /**
      *
      */
-    public static function ticketsByUsers($idUser,$idTicket=false,$returnArray=true,$allTickets=false)
+    public static function ticketsByUsers($idUser,$idTicket=false,$returnArray=true,$allTickets=false,$current=false)
     {
         $tipoUsuario=CrugeAuthassignment::getRoleUser();
         $conditionUser='';
         $conditionTicket='';
         $order='ASC';
         $sql='';
+        $currentDate="AND date>=CURRENT_DATE - interval '1 day'";
+        if ($current) $currentDate='';
         
         /**
          * Si el tipo de usuario es cliente, se muestran sus tickets, de lo
@@ -214,7 +216,7 @@ class Ticket extends CActiveRecord
                         UNION
                         SELECT * 
                         FROM ticket 
-                        WHERE id_status=(SELECT id FROM status WHERE name='close') AND id IN (SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user $conditionUser)) $conditionTicket AND date>=CURRENT_DATE - interval '1 day') t
+                        WHERE id_status=(SELECT id FROM status WHERE name='close') AND id IN (SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user $conditionUser)) $conditionTicket $currentDate) t
                   ORDER BY date $order, id_status $order";
 
             // Si $returnArray esta en true, retorna un array con los datos del ticket

@@ -34,13 +34,21 @@ class Subject
      */
     public function subjectCloseTicket($ticketNumber, $nameCarrier, $timeTicket)
     {
-        if (CrugeAuthassignment::getRoleUser() == 'C') {
-            $this->_subject = 'TT from '. $this->_formatTicketNumber($ticketNumber) .' '.$nameCarrier.', Closed TT, '.$ticketNumber.' ('.$timeTicket.')';
-        } else {
-            $this->_subject = 'TT for '. $this->_formatTicketNumber($ticketNumber) .' '.$nameCarrier.', Closed TT, '.$ticketNumber.' ('.$timeTicket.')';
-        }
-        
+           
+        $this->_subject = 'TT '. $this->_formatTicketNumber($ticketNumber) .' '.$nameCarrier.' to Etelix, Closed TT '.$this->_checkOpenTicket($ticketNumber, $nameCarrier).', '.$ticketNumber.' ('.$timeTicket.')';
         return $this->_subject;
+    }
+    
+    private function _checkOpenTicket($ticketNumber, $nameCarrier)
+    {
+        $idTicket=Ticket::getId($ticketNumber);
+        $userTicket=CrugeUser2::getUserTicket($idTicket);
+        $userOpenTicket=Ticket::model()->findByPk($idTicket)->idUser->username;
+        
+        if ($userTicket == $userOpenTicket)
+            return '(by '.$nameCarrier.' on ETTS)';
+        else 
+            return '(by Etelix on ETTS)';
     }
     
     /**
@@ -106,9 +114,9 @@ class Subject
     {
         if ($optionOpen == 'etelix_as_carrier') 
             return 'TT '.$this->_formatTicketNumber($ticketNumber).' '.$nameCarrier.' to Etelix (by Etelix on ETTS), New TT, '. $ticketNumber.' (00:00)';
-        if ($optionOpen == 'carrier_to_etelix')
+        if ($optionOpen == 'etelix_to_carrier')
             return 'TT '.$this->_formatTicketNumber($ticketNumber).' '.$nameCarrier.' to Etelix, New TT, '.$ticketNumber.' (00:00)';
-        if ($optionOpen == '' || $optionOpen == false) 
+        if ($optionOpen == 'carrier_to_etelix') 
            return 'TT Etelix to '.$this->_formatTicketNumber($ticketNumber).' '.$nameCarrier.', New TT, '.$ticketNumber.' (00:00)';
     }
 
