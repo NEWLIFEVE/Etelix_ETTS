@@ -100,7 +100,7 @@ class Subject
     }
     
     /**
-     * Metodo encargado de definir el from o for cuando se abre el ticket 
+     * Metodo encargado de definir el subject cuando se abre el ticket 
      */
     private function _firstElementSubject($optionOpen, $ticketNumber, $nameCarrier)
     {
