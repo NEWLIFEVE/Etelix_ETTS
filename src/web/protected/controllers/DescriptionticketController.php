@@ -231,8 +231,7 @@ class DescriptionticketController extends Controller
                     $mailer->enviar($body, $mailsAll, '', $subject);
                     if($mailer===true)
                         echo 'success';
-                    else
-                        echo 'Error al enviar el correo: '.$mailer;
+                    
         	}
 	    	else
             {
