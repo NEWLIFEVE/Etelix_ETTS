@@ -4,6 +4,7 @@
 /* @var $form CActiveForm */
 ?>
 <div id="content_attached_file"></div>
+<input type="hidden" id="open-ticket" value="carrier_to_etelix">
 <fieldset>
         <legend>Use this form to submit a ticket.</legend>
 <?php echo $form->errorSummary($model); ?>       

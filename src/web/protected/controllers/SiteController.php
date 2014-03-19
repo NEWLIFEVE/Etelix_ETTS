@@ -143,13 +143,13 @@ class SiteController extends Controller
                 array(
                     'label'=>'Closed',
                     'url'=>array('/ticket/adminclose')
-				),
-				array(
-					'label'=>'Open TT to Customer/Suplier by Etelix',
-					'url'=>array('/ticket/createtoclient')
 					),
-                                array(
-					'label'=>'Open TT from Customer/Supplier by Etelix',
+				array(
+					'label'=>'Open TT Customer/Supplier to Etelix by Etelix',
+					'url'=>array('/ticket/createascarrier')
+					),
+                array(
+					'label'=>'Open TT Etelix to Customer/Supplier',
 					'url'=>array('/ticket/createinternal')
 					),
 				);
@@ -163,11 +163,11 @@ class SiteController extends Controller
                     'url'=>array('/ticket/adminclose')
 					),
 				array(
-					'label'=>'Open TT to Customer/Suplier by Etelix',
-					'url'=>array('/ticket/createtoclient')
+					'label'=>'Open TT Customer/Supplier to Etelix by Etelix',
+					'url'=>array('/ticket/createascarrier')
 					),
                                 array(
-					'label'=>'Open TT from Customer/Supplier by Etelix',
+					'label'=>'Open TT Etelix to Customer/Supplier',
 					'url'=>array('/ticket/createinternal')
 					),
 				);
@@ -190,19 +190,19 @@ class SiteController extends Controller
 		if($tipoUsuario=="I")
 		{
 			return array(
-                            array(
-                                'label'=>'Closed',
-                                'url'=>array('/ticket/adminclose')
-                                ),
-                            array(
-					'label'=>'Open TT to Customer/Suplier by Etelix',
-					'url'=>array('/ticket/createtoclient')
+				array(
+                    'label'=>'Closed',
+                    'url'=>array('/ticket/adminclose')
+                    ),
+                array(
+					'label'=>'Open TT Customer/Supplier to Etelix by Etelix',
+					'url'=>array('/ticket/createascarrier')
 					),
-                                array(
-					'label'=>'Open TT from Customer/Supplier by Etelix',
+                array(
+					'label'=>'Open TT Etelix to Customer/Supplier',
 					'url'=>array('/ticket/createinternal')
 					),
-                            );
+                );
 		}
 	}
 }

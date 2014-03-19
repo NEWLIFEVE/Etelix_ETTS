@@ -9,6 +9,11 @@ class Subject
 {
     private $_subject;
     private $_carrier;
+
+    public function open($ticketNumber, $nameCarrier, $optionOpen)
+    {
+
+    }
     
     /**
      * Método que retornará el subject al abrir un ticket
@@ -106,9 +111,9 @@ class Subject
     {
         if ($optionOpen == 'etelix_as_carrier') 
             return 'TT '.$this->_formatTicketNumber($ticketNumber).' '.$nameCarrier.' to Etelix (by Etelix on ETTS), New TT, '. $ticketNumber.' (00:00)';
-        if ($optionOpen == 'carrier_to_etelix')
+        if ($optionOpen == null)
             return 'TT '.$this->_formatTicketNumber($ticketNumber).' '.$nameCarrier.' to Etelix, New TT, '.$ticketNumber.' (00:00)';
-        if ($optionOpen == '' || $optionOpen == false) 
+        if ($optionOpen == 'etelix_to_carrier')
            return 'TT Etelix to '.$this->_formatTicketNumber($ticketNumber).' '.$nameCarrier.', New TT, '.$ticketNumber.' (00:00)';
     }
 

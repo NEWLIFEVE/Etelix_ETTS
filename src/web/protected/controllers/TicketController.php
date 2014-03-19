@@ -69,24 +69,24 @@ class TicketController extends Controller
     }
 
     /**
-     *
+     * Action encargada de crear tickets Etelix a Carrier
      */
-    public function actionCreateinternal()
+    public function actionCreatetocarrier()
     {
         $model=new Ticket;
                 
-        $this->render('createinternal',array(
+        $this->render('createtocarrier',array(
             'model'=>$model
         ));
     }
         
-        /**
-     *
+    /**
+     * Action encargada de crear un ticket a Etelix como un carrier (cliente/proveedor) desde Etelix
      */
-    public function actionCreatetoclient()
+    public function actionCreateascarrier()
     {
         $model=new Ticket;
-        $this->render('createtoclient',array(
+        $this->render('createascarrier',array(
             'model'=>$model
         ));
     }
