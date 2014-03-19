@@ -28,37 +28,48 @@ class CuerpoCorreo
     private $_bcc;
     private $_speech;
     private $_idTicket;
+    // Estilos css
+    private $_th;
+    private $_td;
 
-    public function __construct($key)
+    /**
+     * El constructor recibe el detalle del ticket
+     * @param array $key
+     */
+    public function __construct($key = false)
     {
-        $this->_ticketNumber = $key['ticketNumber'];
-        $this->_username = $key['username'];
-        $this->_emails = $key['emails'];
-        $this->_failure = $key['failure'];
-        $this->_originationIp = $key['originationIp'];
-        $this->_destinationIp = $key['destinationIp'];
-        $this->_prefix = $key['prefix'];
-        $this->_gmt = $key['gmt'];
-        $this->_testedNumber = $key['testedNumber'];
-        $this->_country = $key['country'];
-        $this->_date = $key['date'];
-        $this->_hour = $key['hour'];
-        $this->_description = $key['description'];
-        $this->_cc = $key['cc'];
-        $this->_bcc = $key['bcc'];
-        $this->_speech = $key['speech'];
-        $this->_idTicket = $key['idTicket'];
-        // Footer to customer
-        $this->_footerCustomer='<div style="width:100%">
-                                    <p style="text-align:justify">
-                                        <br/>
-                                        <div style="font-style:italic;">Please do not reply to this email. Replies to this message are routed to an unmonitored mailbox.</div>
-                                    </p>
-                                </div>';
-        // Footer to supplier
-        $this->_footerSupplier=$this->_footerCustomer;
-        // Footer tt
-        $this->_footerTT=$this->_footerCustomer;
+        if ($key) {
+            $this->_ticketNumber = $key['ticketNumber'];
+            $this->_username = $key['username'];
+            $this->_emails = $key['emails'];
+            $this->_failure = $key['failure'];
+            $this->_originationIp = $key['originationIp'];
+            $this->_destinationIp = $key['destinationIp'];
+            $this->_prefix = $key['prefix'];
+            $this->_gmt = $key['gmt'];
+            $this->_testedNumber = $key['testedNumber'];
+            $this->_country = $key['country'];
+            $this->_date = $key['date'];
+            $this->_hour = $key['hour'];
+            $this->_description = $key['description'];
+            $this->_cc = $key['cc'];
+            $this->_bcc = $key['bcc'];
+            $this->_speech = $key['speech'];
+            $this->_idTicket = $key['idTicket'];
+            // Footer to customer
+            $this->_footerCustomer='<div style="width:100%">
+                                        <p style="text-align:justify">
+                                            <br/>
+                                            <div style="font-style:italic;">Please do not reply to this email. Replies to this message are routed to an unmonitored mailbox.</div>
+                                        </p>
+                                    </div>';
+            // Footer to supplier
+            $this->_footerSupplier=$this->_footerCustomer;
+            // Footer tt
+            $this->_footerTT=$this->_footerCustomer;
+            $this->_th = 'colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;"';
+            $this->_td = 'colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;"';
+        }
     }
     
     public function getBodyOpenTicket($optionOpen)
@@ -190,11 +201,13 @@ class CuerpoCorreo
         return '';
     }
 
-    public function getChat()
+    public function getChat($idTicket = false)
     {
-        if (!empty($this->_idTicket))
+        if (!$idTicket) $idTicket = $this->_idTicket;
+        
+        if (!empty($idTicket))
         {
-            $description=DescriptionTicket::getDescription($this->_idTicket);
+            $description=DescriptionTicket::getDescription($idTicket);
             $chat = '<div>';
             foreach ($description as $value) {
                 if($value->idUser !==null){
@@ -246,10 +259,10 @@ class CuerpoCorreo
         if (!empty($this->_failure))
         {
             return '<tr>
-                        <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Failure</th>
+                        <th '.$this->_th.'>Failure</th>
                     </tr>
                     <tr>
-                        <td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$this->_failure.'</td>
+                        <td '.$this->_td.'>'.$this->_failure.'</td>
                     </tr>';
         }
         return '';
@@ -265,10 +278,10 @@ class CuerpoCorreo
         if (!empty($this->_emails))
         {
             return '<tr>
-                        <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc; padding: 5px 10px; text-align: left;">'.$title.'</th>
+                        <th '.$this->_th.'>'.$title.'</th>
                     </tr>
                     <tr>
-                        <td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'. implode('<br>', $this->_emails) .'</td>
+                        <td '.$this->_td.'>'. implode('<br>', $this->_emails) .'</td>
                     </tr>';
         }
         return '';
@@ -283,10 +296,10 @@ class CuerpoCorreo
         if(is_array($this->_cc))
         { 
             return '<tr>
-                        <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc; padding: 5px 10px; text-align: left;">CC</th>
+                        <th '.$this->_th.'>CC</th>
                     </tr>
                     <tr>
-                        <td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'. implode('<br>', $this->_cc) .'</td>
+                        <td '.$this->_td.'>'. implode('<br>', $this->_cc) .'</td>
                     </tr>';
         }
         return '';
@@ -301,10 +314,10 @@ class CuerpoCorreo
         if(is_array($this->_bcc))
         {
             return '<tr>
-                        <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc; padding: 5px 10px; text-align: left;">BCC</th>
+                        <th '.$this->_th.'>BCC</th>
                     </tr>
                     <tr>
-                        <td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'. implode('<br>', $this->_bcc) .'</td>
+                        <td '.$this->_td.'>'. implode('<br>', $this->_bcc) .'</td>
                     </tr>';
         }
         return '';
@@ -340,10 +353,10 @@ class CuerpoCorreo
         if (!empty($this->_prefix))
         {
             return '<tr>
-                        <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Prefix</th>
+                        <th '.$this->_th.'>Prefix</th>
                     </tr>
                     <tr>
-                        <td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$this->_prefix.'</td>
+                        <td '.$this->_td.'>'.$this->_prefix.'</td>
                     </tr>';
         }
         return '';
@@ -358,10 +371,10 @@ class CuerpoCorreo
         if (!empty($this->_gmt))
         {
             return '<tr>
-                        <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">GMT</th>
+                        <th '.$this->_th.'>GMT</th>
                     </tr>
                     <tr>
-                        <td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$this->_gmt.'</td>
+                        <td '.$this->_td.'>'.$this->_gmt.'</td>
                     </tr>';
         }
         return '';
@@ -400,10 +413,10 @@ class CuerpoCorreo
         if (!empty($this->_description))
         {
             return '<tr>
-                        <th colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Description</th>
+                        <th '.$this->_th.'>Description</th>
                     </tr>
                     <tr>
-                        <td colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$this->getChat().'</td>
+                        <td '.$this->_td.'>'.$this->getChat().'</td>
                     </tr>';
         }
         return '';
