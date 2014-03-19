@@ -16,27 +16,15 @@ switch ($server)
 	case SERVER_NAME_PROD:
 		defined('YII_DEBUG') or define('YII_DEBUG',false);
 		defined('YII_TRACE_LEVEL') or define('YII_TRACE_LEVEL',0);
-		define('SERVER_DB','localhost');
-		define('SORI_DB','sori');
-		define('ETTS_DB','etts');
-		define('PASS_DB','Nsusfd8263');
 		break;
 	case SERVER_NAME_PRE_PROD:
 		defined('YII_DEBUG') or define('YII_DEBUG',true);
 		defined('YII_TRACE_LEVEL') or define('YII_TRACE_LEVEL',3);
-		define('SERVER_DB','localhost');
-		define('SORI_DB','dev_sori');
-		define('ETTS_DB','dev_etts');
-		define('PASS_DB','Nsusfd8263');
 		break;
 	case SERVER_NAME_DEV:
 	default:
 		defined('YII_DEBUG') or define('YII_DEBUG',true);
 		defined('YII_TRACE_LEVEL') or define('YII_TRACE_LEVEL',3);
-		define('SERVER_DB','172.16.17.190');
-		define('SORI_DB','sori');
-		define('ETTS_DB','etts');
-		define('PASS_DB','123');
 		break;
 }
 
