@@ -2,16 +2,17 @@
 $description=DescriptionTicket::getDescription($datos->id);
 
 foreach ($description as $value) {
-    $usuarioAmostrar='By '.$value->idUser->username.' (Etelix NOC) on ETTS';
     if($value->idUser !==null){
         $usuario=CrugeAuthassignment::getRoleUser(false, $value->id_user);
+        $usuarioAmostrar='By '.$value->idUser->username.' (by Etelix) on ETTS';
+        
         if (($usuario == 'I' || $usuario == 'C' || $usuario == 'A' || $usuario == 'S') && $value->id_user != $value->response_by) {
             $style='float: left; color: #3e454c; background: rgba(196, 191, 191, 0.5);';
         }
         
         if ($usuario == 'C' && $value->id_user == $value->response_by) {
-            $usuarioAmostrar='By '.$value->idUser->username;
             $style='float: left; color: #3e454c; background: white;';
+            $usuarioAmostrar='By '.$value->idUser->username.' on ETTS';
         }
         
         if ($usuario != 'C' && $value->id_user == $value->response_by) {

@@ -229,6 +229,10 @@ class DescriptionticketController extends Controller
                     $subject=$asunto->subjectNewAnswer($ticketNumber, $model->id_user, $model->response_by, Utility::restarHoras($hour, date('H:i:s'), floor(Utility::getTime($date, $hour)/ (60 * 60 * 24))));
                     
                     $mailer->enviar($body, $mailsAll, '', $subject);
+                    if($mailer===true)
+                        echo 'success';
+                    else
+                        echo 'Error al enviar el correo: '.$mailer;
         	}
 	    	else
             {

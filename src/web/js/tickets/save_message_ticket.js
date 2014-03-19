@@ -52,10 +52,12 @@ function saveMessage()
                 );
             },
             success:function(data){
-                if (data !== 'false') {
+                if (data == 'success') {
                     $('div.answer-ticket, div.pre-loader').empty();
                     $('div.answer-ticket').html(data);
                     $('div.answer-ticket').scrollTop(100000);
+                } else {
+                    alert(data)
                 }
             }
         });

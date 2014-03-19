@@ -64,7 +64,7 @@ class Subject
     {
         $this->_setCarrier($ticketNumber);
         //Primera parte del subject
-        $this->_subject="TT".$this->_defineFromFor($ticketNumber)." ".$this->_formatTicketNumber($ticketNumber)." ".$this->_carrier.", ";
+        $this->_subject="TT ".$this->_formatTicketNumber($ticketNumber)." ".$this->_carrier." to Etelix, ";
         //Segunda parte del subject
         $this->_subject.=$this->_defineStatus($idUser,$idResponseBy);
         //Tercera parte del subject
@@ -115,9 +115,9 @@ class Subject
         if ($optionOpen == 'etelix_as_carrier') 
             return 'TT '.$this->_formatTicketNumber($ticketNumber).' '.$nameCarrier.' to Etelix (by Etelix on ETTS), New TT, '. $ticketNumber.' (00:00)';
         if ($optionOpen == 'etelix_to_carrier')
-            return 'TT '.$this->_formatTicketNumber($ticketNumber).' '.$nameCarrier.' to Etelix, New TT, '.$ticketNumber.' (00:00)';
+            return 'TT Etelix to '.$this->_formatTicketNumber($ticketNumber).' '.$nameCarrier.', New TT, '.$ticketNumber.' (00:00)';
         if ($optionOpen == 'carrier_to_etelix') 
-           return 'TT Etelix to '.$this->_formatTicketNumber($ticketNumber).' '.$nameCarrier.', New TT, '.$ticketNumber.' (00:00)';
+           return 'TT '.$this->_formatTicketNumber($ticketNumber).' '.$nameCarrier.' to Etelix, New TT, '.$ticketNumber.' (00:00)';
     }
 
 
