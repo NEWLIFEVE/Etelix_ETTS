@@ -16,6 +16,7 @@
  * @property integer $id_gmt
  * @property string $ticket_number
  * @property integer $id_user
+ * @property string $option_open
  *
  * The followings are the available model relations:
  * @property TicketRelation[] $ticketRelations
@@ -296,9 +297,27 @@ class Ticket extends CActiveRecord
         return self::model()->find('ticket_number=:number',array(':number'=>$ticketNumber))->id;
     }
     
+    /**
+     * Retorna el id del usuario filtrado por id_ticket
+     * @param integer $idTicket
+     * @return integer
+     */
     public static function getIdUser($idTicket)
     {
         return self::model()->findByPk($idTicket)->id_user;
+    }
+    
+    /**
+     * Retorna como fue abierto el ticket, es decir, si el carrier abrió un ticket
+     * a etelix, si etelix abrió un ticket como el carrier o si etelix le abre un
+     * ticket al carrier
+     * 
+     * @param integer $idTicket
+     * @return string
+     */
+    public static function getOptionOpen($idTicket)
+    {
+        return self::model()->findByPk($idTicket)->option_open;
     }
     
 }

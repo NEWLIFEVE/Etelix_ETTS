@@ -126,4 +126,22 @@ class TestedNumber extends CActiveRecord
             }
             return  $array;
         }
+        
+        public static function saveTestedNumbers($attributes)
+        {
+            $model=new TestedNumber;
+            $isOk=true;
+            $count=count($attributes['testedNumber']);
+            for($i=0; $i<$count; $i++)
+            {
+                $model->id_ticket=$attributes['id_ticket'];
+                $model->id_country=$attributes['_country'][$i];
+                $model->numero=$attributes['testedNumber'][$i];
+                $model->date=$attributes['_date'][$i];
+                $model->hour=$attributes['_hour'][$i];
+                if (!$model->save())
+                    $isOk = false;
+            }
+            return $isOk;
+        }
 }

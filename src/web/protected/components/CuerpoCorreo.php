@@ -28,10 +28,10 @@ class CuerpoCorreo
     private $_bcc;
     private $_speech;
     private $_idTicket;
+    private $_optionOpen;
     // Estilos css
     private $_th;
     private $_td;
-
     /**
      * El constructor recibe el detalle del ticket
      * @param array $key
@@ -56,6 +56,7 @@ class CuerpoCorreo
             $this->_bcc = $key['bcc'];
             $this->_speech = $key['speech'];
             $this->_idTicket = $key['idTicket'];
+            $this->_optionOpen = $key['optionOpen'];
             // Footer to customer
             $this->_footerCustomer='<div style="width:100%">
                                         <p style="text-align:justify">
@@ -68,20 +69,101 @@ class CuerpoCorreo
             // Footer tt
             $this->_footerTT=$this->_footerCustomer;
             $this->_th = 'colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;"';
-            $this->_td = 'colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;"';
+            $this->_td = 'colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;"';    
         }
     }
     
+    /**
+     * Retorna el texto que contendrá el correo cuando etelix abra, responda o cierre un ticket como 
+     * el carrier
+     * @param string $carrier
+     * @return string
+     */
+    private function _ettsAsCarrier($carrier, $option, $status = false)
+    {
+        if ($option == 'open') {
+            return 'Dear '.$carrier.':<br>
+                    Thanks for using our online tool "Etelix Trouble Ticket System" (etts.etelix.com).<br>
+                    Your issue has been opened with the TT Number (please see below).<br>
+                    Your TT will be answered by an Etelix Analyst soon.<br>
+
+                    Etelix NOC Team. ';
+        } elseif ($option == 'close') {
+            return '<div>Dear '.$carrier.':</div>
+                    <br/>
+                    <div>Change status: "'. $status .'"</div>
+                    <br/>
+                    Etelix NOC Team.';
+        } elseif ($option == 'answer') {
+            return '<div>Dear '.$carrier.':</div>
+                    <br/>
+                    <div>There is a new message related to your TT</div>
+                    <br/>
+                    Etelix NOC Team.';
+        }
+    }
+    
+    /**
+     * Retorna el texto que contendrá el correo cuando el carrier le abra, responda o cierre un ticket
+     * a etelix
+     * @param string $carrier
+     * @return strign
+     */
+    private function _carrierToEtts($carrier, $option)
+    {
+        return $this->_ettsAsCarrier($carrier, $option);
+    }
+    
+    /**
+     * Retorna el texto que contendrá el correo cuando etelix le abra, responda o cierre un ticket 
+     * al carrier
+     * @param string $carrier
+     * @return string
+     */
+    private function _ettsToCarrier($carrier, $option, $status = false)
+    {
+        if ($option == 'open') {
+            return 'Dear '.$carrier.':<br>
+                Etelix NOC Team. ';
+        } elseif ($option == 'close') {
+            return '<div>Dear '.$carrier.':</div>
+                    <br/>
+                    <div>Change status: "'. $status .'"</div>
+                    <br/>
+                    Etelix NOC Team.';
+        } elseif ($option == 'answer') {
+            return '<div>Dear '.$carrier.':</div>
+                    <br/>
+                    <div>There is a new message related to your TT</div>
+                    <br/>
+                    Etelix NOC Team.';
+        }
+    }
+    
+    /**
+     * Retorna el cuerpo completo del correo al abrir un ticket
+     * @param string $optionOpen
+     * @return string
+     */
     public function getBodyOpenTicket($optionOpen)
     {
         return $this->_getHeader() . $this->_getInfoOpenTicket($optionOpen) . $this->_getDetailTicket() . $this->_footerCustomer;
     }
     
+    /**
+     * Retorna el cuerpo comepleto del correo al escribir una respuesta
+     * @return string
+     */
     public function getBodyNewAnwer()
     {
         return $this->_getHeader() . $this->_getInfoNewAnswer() . $this->_getDetailTicket() . $this->_footerCustomer;
     }
     
+    /**
+     * Retorna el cuerpo completo del correo al cerrar un ticket
+     * @param string $status
+     * @return string
+     */
     public function getBodyCloseTicket($status)
     {
         return $this->_getHeader() . $this->_getInfoCloseTicekt($status) . $this->_getDetailTicket() . $this->_footerCustomer;
@@ -104,7 +186,35 @@ class CuerpoCorreo
     }
     
     /**
-     * Retorna la cabecera cuando un customer abre un ticket
+     * Retorna el texto que contendrá el correo dependiendo de quien abra el ticket
+     * @param string $optionOpen
+     * @return string
+     */
+    private function _getHeaderInfo($optionOpen, $operation, $status = false)
+    {
+        $info='';
+        
+        switch ($optionOpen) {
+            case 'etelix_as_carrier':
+                $info=$this->_ettsAsCarrier($this->formatTicketNumber(), $operation, $status);
+                break;
+            case 'carrier_to_etelix':
+                $info=$this->_carrierToEtts($this->formatTicketNumber(), $operation, $status);
+                break;
+            case 'etelix_to_carrier':
+                $info=$this->_ettsToCarrier($this->formatTicketNumber(), $operation, $status);
+                break;
+
+            default:
+                $info='Mensaje no disponible';
+                break;
+        }
+        
+        return $info;
+    }
+    
+    /**
+     * Retorna la cabecera cuando se abre un ticket
      * @return string
      */
     private function _getInfoOpenTicket($optionOpen)
@@ -114,13 +224,7 @@ class CuerpoCorreo
             return '<div>
                         <h2>Hello "'. $this->_username .'"</h2>
                         <p style="text-align:justify">
-                            <div>Dear '.$this->formatTicketNumber().':</div>
-                            <br/>
-                            <div>
-                            '.$this->_getHeaderInfo($optionOpen).'
-                            </div>
-                            <br/>
-                            Etelix NOC Team.
+                            '.$this->_getHeaderInfo($optionOpen, 'open').'
                         </p>
                     </div>
                     <hr>
@@ -129,38 +233,10 @@ class CuerpoCorreo
         return '';
     }
     
-    private function _getHeaderInfo($optionOpen)
-    {
-        $info='Thanks for using our online tool "Etelix Trouble Ticket System" (etts.etelix.com).<br/>
-                      Your issue has been opened with the TT Number (please see below).<br/>
-                      Your TT will be answered by an Etelix Analyst soon.';
-        if ($optionOpen == 'etelix_as_carrier') {
-            if ($this->formatTicketNumber() != 'Customer'){
-                $info=$info;
-            } else {
-                $info=$info;
-            }
-        }
-            
-        if ($optionOpen == 'carrier_to_etelix'){
-            if ($this->formatTicketNumber() != 'Customer') {
-                $info=$info;
-            } else {
-                $info=$info;
-            }
-        }
-            
-        if ($optionOpen == '' || $optionOpen == false) {
-            if ($this->formatTicketNumber() != 'Customer'){
-                $info=$info;
-            } else {
-                $info=$info;
-            }
-        }
-        return $info;
-    }
-
-
+    /**
+     * Retorna la cabecera cuando se responde un ticket
+     * @return string
+     */
     private function _getInfoNewAnswer()
     {
         if (!empty($this->_username))
@@ -168,11 +244,7 @@ class CuerpoCorreo
             return '<div>
                         <h2>Hello "'.$this->_username.'"</h2>
                         <p style="text-align:justify">
-                            <div>Dear '.$this->formatTicketNumber().':</div>
-                            <br/>
-                            <div>There is a new message related to your TT</div>
-                            <br/>
-                            Etelix NOC Team.
+                            '.$this->_getHeaderInfo($this->_optionOpen, 'answer').'
                         </p>
                       </div>
                       <hr>
@@ -181,6 +253,11 @@ class CuerpoCorreo
         return '';
     }
     
+    /**
+     * Retorna la cabecera cuando se cierra un ticket
+     * @param string $status
+     * @return string
+     */
     private function _getInfoCloseTicekt($status)
     {
         if (!empty($this->_username))
@@ -188,11 +265,7 @@ class CuerpoCorreo
             return '<div>
                         <h2>Hello "'.$this->_username.'"</h2>
                         <p style="text-align:justify">
-                            <div>Dear '.$this->formatTicketNumber().':</div>
-                            <br/>
-                            <div>Change status: "'. $status .'"</div>
-                            <br/>
-                            Etelix NOC Team.
+                            '.$this->_getHeaderInfo($this->_optionOpen, 'close', $status).'
                         </p>
                        </div>
                        <hr>
@@ -200,7 +273,13 @@ class CuerpoCorreo
         }
         return '';
     }
-
+    
+    
+    /**
+     * Retorna el chat asociado a un ticket
+     * @param integer $idTicket
+     * @return string
+     */
     public function getChat($idTicket = false)
     {
         if (!$idTicket) $idTicket = $this->_idTicket;
@@ -212,12 +291,14 @@ class CuerpoCorreo
             foreach ($description as $value) {
                 if($value->idUser !==null){
                     $usuario=CrugeAuthassignment::getRoleUser(false, $value->id_user);
+                    $usuarioAmostrar='By '.$value->idUser->username.' (by Etelix) on ETTS';
                     if (($usuario == 'I' || $usuario == 'C' || $usuario == 'A' || $usuario == 'S') && $value->id_user != $value->response_by) {
                         $style='float: left; color: #3e454c; background: rgba(196, 191, 191, 0.5);';
                     }
 
                     if ($usuario == 'C' && $value->id_user == $value->response_by) {
                         $style='float: left; color: #3e454c; background: white;';
+                        $usuarioAmostrar='By '.$value->idUser->username.' on ETTS';
                     }
 
                     if ($usuario != 'C' && $value->id_user == $value->response_by) {
@@ -239,7 +320,7 @@ class CuerpoCorreo
                                         min-width: 20%;
                                         max-width: 100%;
                                         clear: both; '.$style.'">' . 
-                            $value->description . '   <br><strong>Date: </strong>' . $value->date . ' || <strong>Hour: </strong>' . $value->hour . ' || <strong>User: </strong>' . $value->idUser->username .  
+                            $value->description . '   <br><strong>Date: </strong>' . $value->date . ' || <strong>Hour: </strong>' . $value->hour . ' || <strong>User: </strong>' . $usuarioAmostrar .  
                          '</div>';   
                 } 
             }
@@ -442,6 +523,11 @@ class CuerpoCorreo
                '</table>';
     }
     
+    /**
+     * Retorna si es customer o supplier dependiendo del ticketNumber
+     * @param strign $ticketNumber
+     * @return boolean|string
+     */
     public function formatTicketNumber($ticketNumber = false)
     {
         if (!isset($this->_ticketNumber) || empty($this->_ticketNumber)) {

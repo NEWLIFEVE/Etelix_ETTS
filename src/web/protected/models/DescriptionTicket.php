@@ -149,4 +149,29 @@ class DescriptionTicket extends CActiveRecord
                   WHERE id_ticket=$idTicket 
                   ORDER BY date DESC, hour DESC");
     }
+    
+    public static function saveDescription($attributes,$optionOpen,$attributtesFile=null)
+    {
+        $model=new DescriptionTicket;
+        $isOk=true;
+        $etelixAsCarrier=false;
+        
+        $model->id_ticket=$attributes['id_ticket'];
+        $model->description=$attributes['description'];
+        $model->date=date('Y-m-d');
+        $model->hour=date('H:i:s');
+        $model->id_user=Yii::app()->user->id;
+        if ($optionOpen == 'etelix_as_carrier') $etelixAsCarrier=true;
+        $optionRead=DescriptionticketController::getUserNewDescription($etelixAsCarrier);
+        $model->read_carrier=$optionRead['read_carrier'];
+        $model->read_internal=$optionRead['read_internal'];
+        $model->response_by=Yii::app()->user->id;;
+        if (!$model->save()) $isOk=false;
+        
+        if ($attributtesFile != null){
+            if (!File::saveFile($attributtesFile,$model->id)) $isOk=false;
+        }
+        
+        return $isOk;
+    }
 }

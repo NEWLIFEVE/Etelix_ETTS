@@ -42,7 +42,6 @@ function saveMessage()
                 files:_files,
                 fileServer:_fileServer,
                 internalAsCarrier:_internalAsCarrier
-
             },
             beforeSend:function(){
                 $('div.pre-loader').html(
@@ -52,12 +51,10 @@ function saveMessage()
                 );
             },
             success:function(data){
-                if (data == 'success') {
+                if (data !== 'false') {
                     $('div.answer-ticket, div.pre-loader').empty();
                     $('div.answer-ticket').html(data);
                     $('div.answer-ticket').scrollTop(100000);
-                } else {
-                    alert(data)
                 }
             }
         });

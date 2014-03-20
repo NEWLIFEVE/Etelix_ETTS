@@ -176,6 +176,7 @@ class DescriptionticketController extends Controller
     	{
             $mailer=new EnviarEmail;
             $speech=null;
+            $internalAsCarrier=null;
             if(isset($_POST['idSpeech'])) $speech=$_POST['idSpeech'];
             //Guardar Description
             $model=new DescriptionTicket;
@@ -187,8 +188,12 @@ class DescriptionticketController extends Controller
             $optionRead=self::getUserNewDescription();
             $model->read_carrier=$optionRead['read_carrier'];
             $model->read_internal=$optionRead['read_internal'];
-            if (isset($_POST['internalAsCarrier']) && $_POST['internalAsCarrier'] == 1) $model->id_user=CrugeUser2::getUserTicket($_POST['idTicket'],true)->iduser;
-            else $model->id_user=Yii::app()->user->id;
+            if (isset($_POST['internalAsCarrier']) && $_POST['internalAsCarrier'] == 1) {
+                $model->id_user=CrugeUser2::getUserTicket($_POST['idTicket'],true)->iduser;
+                $internalAsCarrier=$_POST['internalAsCarrier'];
+            } else {
+                $model->id_user=Yii::app()->user->id;
+            }
 
             $model->response_by=Yii::app()->user->id;
                 
@@ -229,9 +234,6 @@ class DescriptionticketController extends Controller
                     $subject=$asunto->subjectNewAnswer($ticketNumber, $model->id_user, $model->response_by, Utility::restarHoras($hour, date('H:i:s'), floor(Utility::getTime($date, $hour)/ (60 * 60 * 24))));
                     
                     $mailer->enviar($body, $mailsAll, '', $subject);
-                    if($mailer===true)
-                        echo 'success';
-                    
         	}
 	    	else
             {
