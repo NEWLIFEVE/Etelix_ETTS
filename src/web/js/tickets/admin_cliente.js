@@ -31,7 +31,7 @@ function attachFile()
 }
 
 $(document).ready(function() {
-       $ETTS.UI.refresh(900000);
+       $ETTS.UI.refresh(300000);
        //Tooltip del statu y el tiempo que lleva desde que se abrió
         $( document ).tooltip({
             track: true

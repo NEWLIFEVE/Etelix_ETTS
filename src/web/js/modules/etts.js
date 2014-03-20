@@ -386,9 +386,11 @@ $ETTS.UI=(function(){
             boton.parent().parent().removeClass('blink');
         },
         refresh:function(time){
-            setInterval(function(){
-               window.location.reload(true);
-           }, time); 
+            if (!$('div.metro.window-overlay').length) {
+                setInterval(function(){
+                window.location.reload(true);
+                }, time); 
+            }
         }
     }
     

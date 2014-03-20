@@ -104,7 +104,7 @@ function getSpeech(idSpeech)
 
 $(document).on('ready', function() {
         
-        $ETTS.UI.refresh(30000);
+        $ETTS.UI.refresh(300000);
         
         // Los usuarios que no sean clientes contendran esta clase en el div page
         $('div.page').addClass('width-page');
