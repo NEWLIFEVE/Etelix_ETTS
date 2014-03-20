@@ -9,6 +9,11 @@ class Subject
 {
     private $_subject;
     private $_carrier;
+
+    public function open($ticketNumber, $nameCarrier, $optionOpen)
+    {
+
+    }
     
     /**
      * Método que retornará el subject al abrir un ticket
