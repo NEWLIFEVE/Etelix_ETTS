@@ -31,7 +31,7 @@ function attachFile()
 }
 
 $(document).ready(function() {
-      
+       $ETTS.UI.refresh(900000);
        //Tooltip del statu y el tiempo que lleva desde que se abrió
         $( document ).tooltip({
             track: true
@@ -79,8 +79,8 @@ $(document).ready(function() {
             "bDestroy": true,
             "sPaginationType": "full_numbers",
             "aoColumnDefs": [
-                    { "aDataSort": false, "aTargets": [ 0,7 ] },
-                    { "bSortable": false, "aTargets": [ 7 ] }
+                    { "aDataSort": false, "aTargets": [ 0,6 ] },
+                    { "bSortable": false, "aTargets": [ 6 ] }
             ],
             "aaSorting": [[ 0, "desc" ]]
 

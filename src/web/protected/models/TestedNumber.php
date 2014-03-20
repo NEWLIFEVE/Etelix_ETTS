@@ -112,6 +112,20 @@ class TestedNumber extends CActiveRecord
             }
         }
         
+        /**
+         * Retorna el primer Number que cumpla con la condición
+         * @param integer $idTicket
+         * @return string
+         */
+        public static function getNumber($idTicket)
+        {
+            $count = self::model()->count("id_ticket=:id_ticket", array(':id_ticket' => $idTicket));
+            if ($count > 0) {
+                return self::model()->find("id_ticket=:id_ticket", array(':id_ticket' => $idTicket));
+            }
+            return false;
+        }
+        
         public static function getTestedNumberArray($idTicket)
         {
             $array = null;

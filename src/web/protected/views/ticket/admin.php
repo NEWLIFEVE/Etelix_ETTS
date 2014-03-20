@@ -16,8 +16,7 @@
                     <th id="th-ticket-number">Ticket Number</th>
                     <th id="th-failure">Failure</th>
                     <th id="th-status">Status</th>
-                    <th id="th-oip">Origination Ip</th>
-                    <th id="th-dip">Destination Ip</th>
+                    <th id="th-oip">Country</th>
                     <th id="th-date">Date</th>
                     <th id="th-life">LT</th>
                     <th id="th-preview">&nbsp;</th>
@@ -66,8 +65,7 @@
                                 </span>
                             <?php endif; ?>
                         </td>
-                        <td><?php echo $ticket->origination_ip; ?></td>
-                        <td><?php echo $ticket->destination_ip; ?></td>
+                        <td><?php if (TestedNumber::getNumber($ticket->id) != false) echo TestedNumber::getNumber($ticket->id)->idCountry->name; ?></td>
                         <td><?php echo $ticket->date; ?></td>
                         <td><?php  echo Utility::restarHoras($ticket->hour, date('H:i:s'), floor($timeTicket/ (60 * 60 * 24))); ?></td>
                         <td><a href="javascript:void(0)" class="preview" rel="<?php echo $ticket->id; ?>"><img width="12" height="12" src="<?php echo Yii::app()->request->baseUrl.'/images/view.gif'; ?>"></a></td>

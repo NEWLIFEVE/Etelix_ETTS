@@ -8,7 +8,6 @@ function fnFormatDetails ( data,id )
         widthFailure = $('th#th-failure').clone().outerWidth(),
         widthStatus = $('th#th-status').clone().outerWidth(),
         widthOip = $('th#th-oip').clone().outerWidth(),
-        widthDip = $('th#th-dip').clone().outerWidth(),
         widthDate = $('th#th-date').clone().outerWidth(),
         widthPreview = $('th#th-preview').clone().outerWidth(),
         aData = data,
@@ -29,7 +28,6 @@ function fnFormatDetails ( data,id )
              sOut += '</span>';
              sOut += '</td>';
              sOut += '<td style="width:'+(widthOip+15)+'px !important; ">'+aData[i].origination_ip + '</td>';
-             sOut += '<td style="width:'+(widthDip+10)+'px !important; ">' +aData[i].destination_ip + '</td>';
              sOut += '<td style="width:'+(widthDate+8)+'px !important; ">' + aData[i].date + '</td>';
              sOut += '<td>&nbsp;</td>';
              sOut += '<td style="width:'+(widthPreview+12)+'px !important; "><a href="javascript:void(0)" class="preview" rel="'+aData[i].id_ticket+'"><img width="12" height="12" src="/images/view.gif"></a></td>';
@@ -106,6 +104,8 @@ function getSpeech(idSpeech)
 
 $(document).on('ready', function() {
         
+        $ETTS.UI.refresh(30000);
+        
         // Los usuarios que no sean clientes contendran esta clase en el div page
         $('div.page').addClass('width-page');
         
@@ -164,8 +164,8 @@ $(document).on('ready', function() {
 //                "bAutoWidth": false,
                 "sPaginationType": "full_numbers",
                 "aoColumnDefs": [
-                        { "aDataSort": false, "aTargets": [ 0,10 ] },
-                        { "bSortable": false, "aTargets": [ 0,10 ] }
+                        { "aDataSort": false, "aTargets": [ 0,9 ] },
+                        { "bSortable": false, "aTargets": [ 0,9 ] }
                 ]
                 
         });
