@@ -150,7 +150,7 @@ class SiteController extends Controller
 					),
                 array(
 					'label'=>'Open TT Etelix to Customer/Supplier',
-					'url'=>array('/ticket/createinternal')
+					'url'=>array('/ticket/createtocarrier')
 					),
 				);
 		}
@@ -168,7 +168,7 @@ class SiteController extends Controller
 					),
                                 array(
 					'label'=>'Open TT Etelix to Customer/Supplier',
-					'url'=>array('/ticket/createinternal')
+					'url'=>array('/ticket/createtocarrier')
 					),
 				);
 		}
@@ -200,7 +200,7 @@ class SiteController extends Controller
 					),
                 array(
 					'label'=>'Open TT Etelix to Customer/Supplier',
-					'url'=>array('/ticket/createinternal')
+					'url'=>array('/ticket/createtocarrier')
 					),
                 );
 		}
