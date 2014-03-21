@@ -7,11 +7,11 @@ foreach ($description as $value) {
         $usuarioAmostrar='By '.$value->idUser->username.' (by Etelix) on ETTS';
         
         if (($usuario == 'I' || $usuario == 'C' || $usuario == 'A' || $usuario == 'S') && $value->id_user != $value->response_by) {
-            $style='float: left; color: #3e454c; background: rgba(196, 191, 191, 0.5);';
+            $style='float: left; color: #3e454c; border:1px solid silver; background: white;';
         }
         
         if ($usuario == 'C' && $value->id_user == $value->response_by) {
-            $style='float: left; color: #3e454c; background: white;';
+            $style='float: left; color: #3e454c; background: rgba(196, 191, 191, 0.5);';
             $usuarioAmostrar='By '.$value->idUser->username.' on ETTS';
         }
         
