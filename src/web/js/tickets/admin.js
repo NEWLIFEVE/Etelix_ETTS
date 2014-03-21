@@ -101,11 +101,18 @@ function getSpeech(idSpeech)
        }
     });
 }
-
+/**
+*Función para refrescar la vista admin.php cada 5 minutos. Si se da un preview del
+*ticket se interrrumpe el proceso y al cerrar el preview se vuelven a contar los 
+*cinco minutos.
+*/
+var refreshInterval = setInterval(function(){
+            window.location.reload(true);
+            }, 300000);
+            
 $(document).on('ready', function() {
-        
-        $ETTS.UI.refresh(300000);
-        
+        // Llamado de refresh
+        refreshInterval;
         // Los usuarios que no sean clientes contendran esta clase en el div page
         $('div.page').addClass('width-page');
         
@@ -124,6 +131,7 @@ $(document).on('ready', function() {
        
        // Boton para abrir el preview del ticket
        $(document).on('click', 'table#example tbody tr td a.preview', function () {
+                clearInterval(refreshInterval);
                 var clase=$(this).parent().parent().attr('class'),
                 idTicket = $(this).attr('rel');
                 $.ajax({
@@ -134,6 +142,7 @@ $(document).on('ready', function() {
                         $.Dialog({
                             shadow: true,
                             overlay: true,
+                            overlayClickClose: false,
                             flat:true,
                             icon: "<span class=icon-eye-2></span>",
                             title: "Ticket Information",
@@ -141,7 +150,13 @@ $(document).on('ready', function() {
                             height: 300,
                             paddingBottom: 20,
                             draggable: true,
-                            content:"<div id=content_detail>"+data+"</div>"
+                            content:"<div id=content_detail>"+data+"</div>",
+                            sysBtnCloseClick: function(event){
+                                // Al cerrar la ventana, se vuelve a contar los 5 munitos
+                                setInterval(function(){
+                                window.location.reload(true);
+                                }, 300000);
+                            }
                         });
                         $('div.answer-ticket').scrollTop(100000);
                     }

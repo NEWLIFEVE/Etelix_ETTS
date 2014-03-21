@@ -31,7 +31,6 @@ function attachFile()
 }
 
 $(document).ready(function() {
-       $ETTS.UI.refresh(300000);
        //Tooltip del statu y el tiempo que lleva desde que se abrió
         $( document ).tooltip({
             track: true
@@ -49,6 +48,7 @@ $(document).ready(function() {
                         $.Dialog({
                             shadow: true,
                             overlay: true,
+                            overlayClickClose: false,
                             flat:true,
                             icon: "<span class=icon-eye-2></span>",
                             title: "Ticket Information",

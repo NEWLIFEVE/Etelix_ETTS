@@ -1,6 +1,6 @@
 <?php
 /**
- * version 1.1
+ * version 1.1.2
  * 
  * @package components
  */
@@ -11,24 +11,7 @@ class CuerpoCorreo
     private $_footerCustomer;
     private $_footerSupplier;
     // Propiedades de la informacion del correo
-    private $_ticketNumber;
-    private $_username;
-    private $_emails;
-    private $_failure;
-    private $_originationIp;
-    private $_destinationIp;
-    private $_prefix;
-    private $_gmt;
-    private $_testedNumber;
-    private $_country;
-    private $_date;
-    private $_hour;
-    private $_description;
-    private $_cc;
-    private $_bcc;
-    private $_speech;
-    private $_idTicket;
-    private $_optionOpen;
+    private $_properties;
     // Estilos css
     private $_th;
     private $_td;
@@ -40,24 +23,7 @@ class CuerpoCorreo
     public function __construct($key = false)
     {
         if ($key) {
-            $this->_ticketNumber = $key['ticketNumber'];
-            $this->_username = $key['username'];
-            $this->_emails = $key['emails'];
-            $this->_failure = $key['failure'];
-            $this->_originationIp = $key['originationIp'];
-            $this->_destinationIp = $key['destinationIp'];
-            $this->_prefix = $key['prefix'];
-            $this->_gmt = $key['gmt'];
-            $this->_testedNumber = $key['testedNumber'];
-            $this->_country = $key['country'];
-            $this->_date = $key['date'];
-            $this->_hour = $key['hour'];
-            $this->_description = $key['description'];
-            $this->_cc = $key['cc'];
-            $this->_bcc = $key['bcc'];
-            $this->_speech = $key['speech'];
-            $this->_idTicket = $key['idTicket'];
-            $this->_optionOpen = $key['optionOpen'];
+            $this->_properties = $key;
             // Footer to customer
             $this->_footerCustomer='<div style="width:100%">
                                         <p style="text-align:justify">
@@ -152,7 +118,7 @@ class CuerpoCorreo
     }
     
     /**
-     * Retorna el cuerpo comepleto del correo al escribir una respuesta
+     * Retorna el cuerpo completo del correo al escribir una respuesta
      * @return string
      */
     public function getBodyNewAnwer()
@@ -176,12 +142,12 @@ class CuerpoCorreo
      */
     private function _getHeader()
     {
-        if (!empty($this->_ticketNumber))
+        if (!empty($this->_properties['ticketNumber']))
         {
             return '<div style="width:100%">
                     <img src="http://deve.sacet.com.ve/images/logo.jpg" height="100"/>
                     <hr>
-                    <div style="text-align:right">Ticket Confirmation<br>Ticket #: '.$this->_ticketNumber.'</div>';
+                    <div style="text-align:right">Ticket Confirmation<br>Ticket #: '.$this->_properties['ticketNumber'].'</div>';
         }
         return '';
     }
@@ -220,10 +186,10 @@ class CuerpoCorreo
      */
     private function _getInfoOpenTicket($optionOpen)
     {
-        if (!empty($this->_username))
+        if (!empty($this->_properties['username']))
         {
             return '<div>
-                        <h2>Hello "'. $this->_username .'"</h2>
+                        <h2>Hello "'. $this->_properties['username'] .'"</h2>
                         <p style="text-align:justify">
                             '.$this->_getHeaderInfo($optionOpen, 'open').'
                         </p>
@@ -240,12 +206,12 @@ class CuerpoCorreo
      */
     private function _getInfoNewAnswer()
     {
-        if (!empty($this->_username))
+        if (!empty($this->_properties['username']))
         {
             return '<div>
-                        <h2>Hello "'.$this->_username.'"</h2>
+                        <h2>Hello "'.$this->_properties['username'].'"</h2>
                         <p style="text-align:justify">
-                            '.$this->_getHeaderInfo($this->_optionOpen, 'answer').'
+                            '.$this->_getHeaderInfo($this->_properties['optionOpen'], 'answer').'
                         </p>
                       </div>
                       <hr>
@@ -261,12 +227,12 @@ class CuerpoCorreo
      */
     private function _getInfoCloseTicekt($status)
     {
-        if (!empty($this->_username))
+        if (!empty($this->_properties['username']))
         {
             return '<div>
-                        <h2>Hello "'.$this->_username.'"</h2>
+                        <h2>Hello "'.$this->_properties['username'].'"</h2>
                         <p style="text-align:justify">
-                            '.$this->_getHeaderInfo($this->_optionOpen, 'close', $status).'
+                            '.$this->_getHeaderInfo($this->_properties['optionOpen'], 'close', $status).'
                         </p>
                        </div>
                        <hr>
@@ -282,7 +248,7 @@ class CuerpoCorreo
      */
     public function getChat($idTicket = false)
     {
-        if (!$idTicket) $idTicket = $this->_idTicket;
+        if (!$idTicket) $idTicket = $this->_properties['idTicket'];
         
         if (!empty($idTicket))
         {
@@ -337,13 +303,13 @@ class CuerpoCorreo
      */
     private function _getFailure()
     {
-        if (!empty($this->_failure))
+        if (!empty($this->_properties['failure']))
         {
             return '<tr>
                         <th '.$this->_th.'>Failure</th>
                     </tr>
                     <tr>
-                        <td '.$this->_td.'>'.$this->_failure.'</td>
+                        <td '.$this->_td.'>'.$this->_properties['failure'].'</td>
                     </tr>';
         }
         return '';
@@ -356,13 +322,13 @@ class CuerpoCorreo
      */
     private function _getEmails($title)
     {
-        if (!empty($this->_emails))
+        if (!empty($this->_properties['emails']))
         {
             return '<tr>
                         <th '.$this->_th.'>'.$title.'</th>
                     </tr>
                     <tr>
-                        <td '.$this->_td.'>'. implode('<br>', $this->_emails) .'</td>
+                        <td '.$this->_td.'>'. implode('<br>', $this->_properties['emails']) .'</td>
                     </tr>';
         }
         return '';
@@ -374,13 +340,13 @@ class CuerpoCorreo
      */
     private function _getCc()
     {
-        if(is_array($this->_cc))
+        if(is_array($this->_properties['cc']))
         { 
             return '<tr>
                         <th '.$this->_th.'>CC</th>
                     </tr>
                     <tr>
-                        <td '.$this->_td.'>'. implode('<br>', $this->_cc) .'</td>
+                        <td '.$this->_td.'>'. implode('<br>', $this->_properties['cc']) .'</td>
                     </tr>';
         }
         return '';
@@ -392,13 +358,13 @@ class CuerpoCorreo
      */
     private function _getBcc()
     {
-        if(is_array($this->_bcc))
+        if(is_array($this->_properties['bcc']))
         {
             return '<tr>
                         <th '.$this->_th.'>BCC</th>
                     </tr>
                     <tr>
-                        <td '.$this->_td.'>'. implode('<br>', $this->_bcc) .'</td>
+                        <td '.$this->_td.'>'. implode('<br>', $this->_properties['bcc']) .'</td>
                     </tr>';
         }
         return '';
@@ -411,15 +377,15 @@ class CuerpoCorreo
      */
     private function _getIp()
     {
-        if (!empty($this->_originationIp) || !empty($this->_destinationIp))
+        if (!empty($this->_properties['originationIp']) || !empty($this->_properties['destinationIp']))
         {
             return '<tr>
                         <th colspan="1" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Origination IP</th>
                         <th colspan="3" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Destination IP</th>
                     </tr>
                     <tr>
-                        <td colspan="1" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$this->_originationIp.'</td>
-                        <td colspan="3" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$this->_destinationIp.'</td>
+                        <td colspan="1" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$this->_properties['originationIp'].'</td>
+                        <td colspan="3" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'.$this->_properties['destinationIp'].'</td>
                     </tr>';
         }
         return '';
@@ -431,13 +397,13 @@ class CuerpoCorreo
      */
     private function _getPrefix()
     {
-        if (!empty($this->_prefix))
+        if (!empty($this->_properties['prefix']))
         {
             return '<tr>
                         <th '.$this->_th.'>Prefix</th>
                     </tr>
                     <tr>
-                        <td '.$this->_td.'>'.$this->_prefix.'</td>
+                        <td '.$this->_td.'>'.$this->_properties['prefix'].'</td>
                     </tr>';
         }
         return '';
@@ -449,13 +415,13 @@ class CuerpoCorreo
      */
     private function _getGmt()
     {
-        if (!empty($this->_gmt))
+        if (!empty($this->_properties['gmt']))
         {
             return '<tr>
                         <th '.$this->_th.'>GMT</th>
                     </tr>
                     <tr>
-                        <td '.$this->_td.'>'.$this->_gmt.'</td>
+                        <td '.$this->_td.'>'.$this->_properties['gmt'].'</td>
                     </tr>';
         }
         return '';
@@ -467,7 +433,7 @@ class CuerpoCorreo
      */
     private function _getTestedNumber()
     {
-        if (!empty($this->_testedNumber))
+        if (!empty($this->_properties['testedNumber']))
         {
             return '<tr>
                         <th style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Tested number</th>
@@ -476,10 +442,10 @@ class CuerpoCorreo
                         <th style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Hour</th>
                     </tr>
                     <tr>
-                        <td style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'. implode('<br>', $this->_testedNumber) .'</td>
-                        <td style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'. implode('<br>', $this->_country) .'</td>
-                        <td style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'. implode('<br>', $this->_date) .'</td>
-                        <td style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'. implode('<br>', $this->_hour) .'</td>
+                        <td style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'. implode('<br>', $this->_properties['testedNumber']) .'</td>
+                        <td style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'. implode('<br>', $this->_properties['country']) .'</td>
+                        <td style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'. implode('<br>', $this->_properties['date']) .'</td>
+                        <td style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">'. implode('<br>', $this->_properties['hour']) .'</td>
                     </tr>';
         }
         return '';
@@ -491,7 +457,7 @@ class CuerpoCorreo
      */
     private function _getDescription()
     {
-        if (!empty($this->_description))
+        if (!empty($this->_properties['description']))
         {
             return '<tr>
                         <th '.$this->_th.'>Description</th>
@@ -530,19 +496,19 @@ class CuerpoCorreo
      */
     public function formatTicketNumber($ticketNumber = false)
     {
-        if (!isset($this->_ticketNumber) || empty($this->_ticketNumber)) {
+        if (!isset($this->_properties['ticketNumber']) || empty($this->_properties['ticketNumber'])) {
             if ($ticketNumber) {
-                $this->_ticketNumber = $ticketNumber;
+                $this->_properties['ticketNumber'] = $ticketNumber;
             } else {
                 return false;
             }
         } else {
-            $this->_ticketNumber = $this->_ticketNumber;
+            $this->_properties['ticketNumber'] = $this->_properties['ticketNumber'];
         }
         
-        if (strpos($this->_ticketNumber, 'C'))
+        if (strpos($this->_properties['ticketNumber'], 'C'))
             return 'Customer';
-        if (strpos($this->_ticketNumber, 'S') || strpos($this->_ticketNumber, 'P'))
+        if (strpos($this->_properties['ticketNumber'], 'S') || strpos($this->_properties['ticketNumber'], 'P'))
             return 'Supplier';
     }
 }

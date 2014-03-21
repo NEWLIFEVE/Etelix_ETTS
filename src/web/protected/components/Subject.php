@@ -88,8 +88,12 @@ class Subject
         
         if ($optionOpen == 'etelix_as_carrier' || $internalAsCarrier != null)
             $this->_subject .= '(by Etelix on ETTS)' . $lastStringSubject;
-        if ($optionOpen == 'etelix_to_carrier')
-            $this->_subject = 'TT Etelix to '. $this->_formatTicketNumber($ticketNumber) .' '.$this->_carrier.', New Etelix Status' . $lastStringSubject;
+        if ($optionOpen == 'etelix_to_carrier') {
+            if (CrugeAuthassignment::getRoleUser() == 'C')
+                $this->_subject = 'TT Etelix to '. $this->_formatTicketNumber($ticketNumber) .' '.$this->_carrier.', New '. $this->_carrier.' Status' . $lastStringSubject;
+            else
+                $this->_subject = 'TT Etelix to '. $this->_formatTicketNumber($ticketNumber) .' '.$this->_carrier.', New Etelix Status' . $lastStringSubject;
+        }
         if ($optionOpen == 'carrier_to_etelix')
             $this->_subject .= $lastStringSubject;
         if ($optionOpen == '')
