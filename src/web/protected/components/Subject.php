@@ -83,24 +83,25 @@ class Subject
         $optionOpen=Ticket::getOptionOpen($idTicket);
         $this->_setCarrier($ticketNumber);
         
-        $this->_subject = 'TT '. $this->_formatTicketNumber($ticketNumber) .' '.$this->_carrier.' to Etelix, New ' . $this->_carrier.' Status';
-        $lastStringSubject = ', '.$ticketNumber.' ('.$timeTicket.')';
+        $this->_subject = 'TT '. $this->_formatTicketNumber($ticketNumber) .' '.$this->_carrier.' to Etelix, New ';
+        $lastStringSubject = ' Status, '.$ticketNumber.' ('.$timeTicket.')';
+        $user = '';
+        if (CrugeAuthassignment::getRoleUser() == 'C')
+            $user = $this->_carrier;
+        else
+            $user = 'Etelix';
         
-        if ($optionOpen == 'etelix_as_carrier' || $internalAsCarrier != null)
-            $this->_subject .= '(by Etelix on ETTS)' . $lastStringSubject;
-        if ($optionOpen == 'etelix_to_carrier') {
-            $user = '';
-            if (CrugeAuthassignment::getRoleUser() == 'C')
-                $user = $this->_carrier;
-            else
-                $user = 'Etelix';
-            
-                $this->_subject = 'TT Etelix to '. $this->_formatTicketNumber($ticketNumber) .' '.$this->_carrier.', New '.$user.' Status' . $lastStringSubject;
+        if ($optionOpen == 'etelix_as_carrier' || $internalAsCarrier != null) {
+            $this->_subject .= $user . ' (by Etelix on ETTS)' . $lastStringSubject;
         }
-        if ($optionOpen == 'carrier_to_etelix')
-            $this->_subject .= $lastStringSubject;
+        if ($optionOpen == 'etelix_to_carrier') {
+            $this->_subject = 'TT Etelix to '. $this->_formatTicketNumber($ticketNumber) .' '.$this->_carrier.', New '.$user.' Status' . $lastStringSubject;
+        }
+        if ($optionOpen == 'carrier_to_etelix') {
+            $this->_subject .= $user . $lastStringSubject;
+        }
         if ($optionOpen == '')
-            $this->_subject .= $lastStringSubject;
+            $this->_subject .= $user . $lastStringSubject;
         
         return $this->_subject;
     }
