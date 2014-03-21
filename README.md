@@ -2,13 +2,7 @@ Etelix_ETTS
 ===========
 
 Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
-Release 1.1.6
-	- Modificacion de asunto de nueva respuesta, TT from/for Customer/Supplier Carrier, New Etelix/Carrier Status (By Etelix on ETTS), ticket_number (tiempo)
-	- Usuarios Internos, pueden abrir tickets a Customers/Suppliers
-	- Usuarios internos pueden responder "como" Customer/Supplier
-	- Colores diferentes para las respuestas en el chat de mensajes
-	- Modificada clase de blink para los tickets con nuevas respuestas
-	- Cambio de asunto de correos al crear/nueva respuesta/cerrar tickets
+
 
 21/03/2014
         - Cambio del subject al abrir, cerrar o dar una respuesta al ticket.
@@ -24,7 +18,14 @@ Release 1.1.6
         -Cambio en el menu de ticket para usuarios internos
         -Ticket Information - Open TT from Carrier by Etelix, Ticket Information - Open TT to Carrier
         -Corrección en el datepicker del tested number
-
+        
+Release 1.1.6
+	- Modificacion de asunto de nueva respuesta, TT from/for Customer/Supplier Carrier, New Etelix/Carrier Status (By Etelix on ETTS), ticket_number (tiempo)
+	- Usuarios Internos, pueden abrir tickets a Customers/Suppliers
+	- Usuarios internos pueden responder "como" Customer/Supplier
+	- Colores diferentes para las respuestas en el chat de mensajes
+	- Modificada clase de blink para los tickets con nuevas respuestas
+	- Cambio de asunto de correos al crear/nueva respuesta/cerrar tickets
 
 Release 1.1.5
 	-Modificada la tabla description_ticket creando los campos: 
