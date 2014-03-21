@@ -5,6 +5,7 @@ Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
 
 Release 1.1.7
 21/03/2014
+		- En la interfaz de administracion de tickets, agregado el pais con mayor incidencia entre los tested number del ticket
         - Cambio del subject al abrir, cerrar o dar una respuesta al ticket.
         - Refresh cada 5 minutos de vista admin
         - Cambio del menu ticket.
