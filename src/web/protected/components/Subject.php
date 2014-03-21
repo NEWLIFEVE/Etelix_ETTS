@@ -9,11 +9,6 @@ class Subject
 {
     private $_subject;
     private $_carrier;
-
-    public function open($ticketNumber, $nameCarrier, $optionOpen)
-    {
-
-    }
     
     /**
      * Método que retornará el subject al abrir un ticket
@@ -82,18 +77,23 @@ class Subject
      * @param string $timeTicket
      * @return string
      */
-    public function subjectNewAnswer($ticketNumber, $nameCarrier, $timeTicket)
+    public function subjectNewAnswer($ticketNumber, $timeTicket, $internalAsCarrier = null)
     {
         $idTicket=Ticket::getId($ticketNumber);
         $optionOpen=Ticket::getOptionOpen($idTicket);
-        if ($optionOpen == 'etelix_as_carrier')
-            $this->_subject = 'TT '. $this->_formatTicketNumber($ticketNumber) .' '.$nameCarrier.' to Etelix, New '.$nameCarrier.' Status(by Etelix on ETTS), '.$ticketNumber.' ('.$timeTicket.')';
+        $this->_setCarrier($ticketNumber);
+        
+        $this->_subject = 'TT '. $this->_formatTicketNumber($ticketNumber) .' '.$this->_carrier.' to Etelix, New ' . $this->_carrier.' Status';
+        $lastStringSubject = ', '.$ticketNumber.' ('.$timeTicket.')';
+        
+        if ($optionOpen == 'etelix_as_carrier' || $internalAsCarrier != null)
+            $this->_subject .= '(by Etelix on ETTS)' . $lastStringSubject;
         if ($optionOpen == 'etelix_to_carrier')
-            $this->_subject = 'TT Etelix to '. $this->_formatTicketNumber($ticketNumber) .' '.$nameCarrier.', New Etelix Status, '.$ticketNumber.' ('.$timeTicket.')';
+            $this->_subject = 'TT Etelix to '. $this->_formatTicketNumber($ticketNumber) .' '.$this->_carrier.', New Etelix Status' . $lastStringSubject;
         if ($optionOpen == 'carrier_to_etelix')
-            $this->_subject = 'TT '. $this->_formatTicketNumber($ticketNumber) .' '.$nameCarrier.' to Etelix, New '.$nameCarrier.' Status, '.$ticketNumber.' ('.$timeTicket.')';
+            $this->_subject .= $lastStringSubject;
         if ($optionOpen == '')
-            $this->_subject = 'Asunto no disponible';
+            $this->_subject .= $lastStringSubject;
         
         return $this->_subject;
     }

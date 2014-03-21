@@ -32,6 +32,7 @@ class CuerpoCorreo
     // Estilos css
     private $_th;
     private $_td;
+    
     /**
      * El constructor recibe el detalle del ticket
      * @param array $key
@@ -206,7 +207,7 @@ class CuerpoCorreo
                 break;
 
             default:
-                $info='Mensaje no disponible';
+                $info=$this->_ettsToCarrier($this->formatTicketNumber(), $operation, $status);
                 break;
         }
         
@@ -273,7 +274,6 @@ class CuerpoCorreo
         }
         return '';
     }
-    
     
     /**
      * Retorna el chat asociado a un ticket

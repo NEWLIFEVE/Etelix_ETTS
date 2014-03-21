@@ -188,6 +188,7 @@ class DescriptionticketController extends Controller
             $optionRead=self::getUserNewDescription();
             $model->read_carrier=$optionRead['read_carrier'];
             $model->read_internal=$optionRead['read_internal'];
+            
             if (isset($_POST['internalAsCarrier']) && $_POST['internalAsCarrier'] == 1) {
                 $model->id_user=CrugeUser2::getUserTicket($_POST['idTicket'],true)->iduser;
                 $internalAsCarrier=$_POST['internalAsCarrier'];
@@ -231,7 +232,7 @@ class DescriptionticketController extends Controller
                     $cuerpoCorreo=new CuerpoCorreo(TicketController::getTicketAsArray($model->id_ticket));
                     
                     $body=$cuerpoCorreo->getBodyNewAnwer();
-                    $subject=$asunto->subjectNewAnswer($ticketNumber, $model->id_user, $model->response_by, Utility::restarHoras($hour, date('H:i:s'), floor(Utility::getTime($date, $hour)/ (60 * 60 * 24))));
+                    $subject=$asunto->subjectNewAnswer($ticketNumber, Utility::restarHoras($hour, date('H:i:s'), floor(Utility::getTime($date, $hour)/ (60 * 60 * 24))), $internalAsCarrier);
                     
                     $mailer->enviar($body, $mailsAll, '', $subject);
         	}

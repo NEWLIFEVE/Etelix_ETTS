@@ -160,8 +160,14 @@ class DescriptionTicket extends CActiveRecord
         $model->description=$attributes['description'];
         $model->date=date('Y-m-d');
         $model->hour=date('H:i:s');
-        $model->id_user=Yii::app()->user->id;
-        if ($optionOpen == 'etelix_as_carrier') $etelixAsCarrier=true;
+        
+        if ($optionOpen == 'etelix_as_carrier') {
+            $model->id_user=CrugeUser2::getUserTicket($attributes['id_ticket'],true)->iduser;
+            $etelixAsCarrier=true;
+        } else {
+            $model->id_user=Yii::app()->user->id;
+        }
+        
         $optionRead=DescriptionticketController::getUserNewDescription($etelixAsCarrier);
         $model->read_carrier=$optionRead['read_carrier'];
         $model->read_internal=$optionRead['read_internal'];
