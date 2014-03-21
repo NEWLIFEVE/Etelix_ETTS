@@ -10,6 +10,12 @@ Release 1.1.6
 	- Modificada clase de blink para los tickets con nuevas respuestas
 	- Cambio de asunto de correos al crear/nueva respuesta/cerrar tickets
 
+21/03/2014
+        - Cambio del subject al abrir, cerrar o dar una respuesta al ticket.
+        - Refresh cada 5 minutos de vista admin
+        - Cambio del menu ticket.
+        - Corregido error(Aparrecia la validación) al seleccionar date en abrir ticket(Todos los casos)
+
 17/03/2014
         -Correccion al guardar email en interfaz de crear tickets. Los usuarios internos
          pueden agregar tantos correos deseen, los carriers solo pueden agregar 5. Los correos 
