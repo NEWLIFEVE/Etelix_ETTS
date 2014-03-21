@@ -39,7 +39,7 @@ class Subject
         
         $user = 'Etelix';
         
-        if (CrugeAuthassignment::getRoleUser() == 'C') $user = $this->_carrier;
+        if (CrugeAuthassignment::getRoleUser() == 'C') $user = $nameCarrier;
         
         if ($optionOpen == 'etelix_as_carrier')
             $this->_subject = 'TT '. $this->_formatTicketNumber($ticketNumber) .' '.$nameCarrier.' to Etelix, Closed TT (by '.$user.' on ETTS), '.$ticketNumber.' ('.$timeTicket.')';
