@@ -36,10 +36,15 @@ class Subject
     {
         $idTicket=Ticket::getId($ticketNumber);
         $optionOpen=Ticket::getOptionOpen($idTicket);
+        
+        $user = 'Etelix';
+        
+        if (CrugeAuthassignment::getRoleUser() == 'C') $user = $this->_carrier;
+        
         if ($optionOpen == 'etelix_as_carrier')
-            $this->_subject = 'TT '. $this->_formatTicketNumber($ticketNumber) .' '.$nameCarrier.' to Etelix, Closed TT (by Etelix on ETTS), '.$ticketNumber.' ('.$timeTicket.')';
+            $this->_subject = 'TT '. $this->_formatTicketNumber($ticketNumber) .' '.$nameCarrier.' to Etelix, Closed TT (by '.$user.' on ETTS), '.$ticketNumber.' ('.$timeTicket.')';
         if ($optionOpen == 'etelix_to_carrier')
-            $this->_subject = 'TT Etelix to '. $this->_formatTicketNumber($ticketNumber) .' '.$nameCarrier.', Closed TT (by Etelix on ETTS), '.$ticketNumber.' ('.$timeTicket.')';
+            $this->_subject = 'TT Etelix to '. $this->_formatTicketNumber($ticketNumber) .' '.$nameCarrier.', Closed TT (by '.$user.' on ETTS), '.$ticketNumber.' ('.$timeTicket.')';
         if ($optionOpen == 'carrier_to_etelix')
             $this->_subject = 'TT '. $this->_formatTicketNumber($ticketNumber) .' '.$nameCarrier.' to Etelix, Closed TT (by '.$nameCarrier.' on ETTS), '.$ticketNumber.' ('.$timeTicket.')';
         if ($optionOpen == '')
