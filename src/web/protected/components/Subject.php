@@ -46,7 +46,7 @@ class Subject
         if ($optionOpen == 'etelix_to_carrier')
             $this->_subject = 'TT Etelix to '. $this->_formatTicketNumber($ticketNumber) .' '.$nameCarrier.', Closed TT (by '.$user.' on ETTS), '.$ticketNumber.' ('.$timeTicket.')';
         if ($optionOpen == 'carrier_to_etelix')
-            $this->_subject = 'TT '. $this->_formatTicketNumber($ticketNumber) .' '.$nameCarrier.' to Etelix, Closed TT (by '.$nameCarrier.' on ETTS), '.$ticketNumber.' ('.$timeTicket.')';
+            $this->_subject = 'TT '. $this->_formatTicketNumber($ticketNumber) .' '.$nameCarrier.' to Etelix, Closed TT (by '.$user.' on ETTS), '.$ticketNumber.' ('.$timeTicket.')';
         if ($optionOpen == '')
             $this->_subject = 'Asunto no disponible';
         
