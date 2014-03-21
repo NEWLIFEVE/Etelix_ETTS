@@ -91,7 +91,9 @@ class CuerpoCorreo
     {
         if ($option == 'open') {
             return 'Dear '.$carrier.':<br>
-                Etelix NOC Team. ';
+                    Etelix NOC has opened a Trouble Ticket for the issue described below.<br>
+                    Please enter our platform through the link: http://etts.etelix.com/ with your credentials to update and comment the issue.<br>
+                    Thanks in advanced';
         } elseif ($option == 'close') {
             return '<div>Dear '.$carrier.':</div>
                     <br/>
