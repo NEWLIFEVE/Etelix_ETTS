@@ -96,7 +96,7 @@ class Subject
         if ($optionOpen == 'etelix_as_carrier' || $internalAsCarrier != null) 
             $this->_subject .= $user . ' (by Etelix on ETTS)' . $lastStringSubject;
         if ($optionOpen == 'etelix_to_carrier') 
-            $this->_subject = 'TT Etelix to '. $this->_formatTicketNumber($ticketNumber) .' '.$this->_carrier.', New '.$user.' Status' . $lastStringSubject;
+            $this->_subject = 'TT Etelix to '. $this->_formatTicketNumber($ticketNumber) .' '.$this->_carrier.', New '.$user.' ' . $lastStringSubject;
         if ($optionOpen == 'carrier_to_etelix')
             $this->_subject .= $user . $lastStringSubject;
         if ($optionOpen == '')
