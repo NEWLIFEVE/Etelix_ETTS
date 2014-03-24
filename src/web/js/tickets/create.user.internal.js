@@ -66,7 +66,7 @@ $(document).on('ready', function(){
     
     // Append options
     $(document).on('click', 'a.a-bajar-correo', function(){
-        $ETTS.UI.appendOptions($(this), $('#mails'));
+        $ETTS.UI.appendOptions($(this), $('#mails'), $('#open-ticket'));
     });  
     
     $(document).on('click', '#Ticket_mail', function(){
@@ -262,6 +262,68 @@ $(document).on('ready', function(){
                         $('[name="attachFileSize[]"]'),                         // FILE SIZE
                         '0',                                                    // Si es cliente = 0 de lo contrario = 1
                         $("#ticket-form-to-client"),                            // Limpiar Formulario
+                        $('#open-ticket').val(),
+                        $('select#class option:selected').text()
+                     );
+                });
+            }
+        }
+     });
+     
+     $("#form-carrier-to-etelix").validationEngine('attach',{
+        autoHidePrompt:true,
+        onValidationComplete:function(form, status){
+            
+            if (status==true)
+            {
+                var originationIP = $('#oip1').val() + '.' + $('#oip2').val() + '.' + $('#oip3').val() + '.' + $('#oip4').val(),
+                destinationIP = $('#dip1').val() + '.' + $('#dip2').val() + '.' + $('#dip3').val() + '.' + $('#dip4').val();
+                
+                if (originationIP == '...') originationIP = '';
+                if (destinationIP == '...') destinationIP = '';
+                
+                $ETTS.UI.previewTicket(
+                    null,
+                    $('select#user option:selected').text(),
+                    $('select#Ticket_mail option'),
+                    [],
+                    [],
+                    $('select#Ticket_id_failure option:selected').text(),
+                    originationIP,
+                    destinationIP,
+                    $('#Ticket_prefix').val(),
+                    null,
+                    $('#Ticket_description').val(),
+                    $('select#Ticket_idGmt option:selected').text(),
+                    $('[name="Ticket[tested_numbers][]"]'),
+                    $('[name="Ticket[country][]"]'),
+                    $('[name="Ticket[date_number][]"]'),
+                    $('[name="Ticket[hour_number][]"]')
+                );
+
+                $('#save_ticket').on('click', function(){
+                    $ETTS.ajax.saveTicket(
+                        $('#Ticket_idGmt option:selected'),
+                        $('[name="Ticket[tested_numbers][]"]'),
+                        $('[name="Ticket[country][]"]'),
+                        $('[name="Ticket[date_number][]"]'),
+                        $('[name="Ticket[hour_number][]"]'),
+                        null,                                                   // USER
+                        $('[name="Ticket[mail][]"] option'),                    // TO
+                        [],                                                     // CC
+                        [],                                                     // BBC
+                        $('#Ticket_id_failure').val(),                          // FAILURE
+                        $('#Ticket_id_failure option:selected').text(),         // Texto de la falla para enviar por correo
+                        originationIP,                                          // Origination IP            
+                        destinationIP,                                          // Destination IP
+                        $('#Ticket_prefix').val(),                              // PREFIX
+                        null,                                                   // SPEECH
+                        $('#Ticket_description').val(),                         // DESCRIPTION $('div.nicEdit-main').text()
+                        $('[name="attachFile[]"]'),                             // FILE REAL NAME
+                        $('[name="attachFileSave[]"]'),                         // FILE SAVE NAME
+                        $('[name="attachFileSize[]"]'),                         // FILE SIZE
+                        '0',                                                    // Si es cliente = 0 de lo contrario = 1
+                        $("#form-carrier-to-etelix"),                            // Limpiar Formulario
                         $('#open-ticket').val(),
                         $('select#class option:selected').text()
                      );

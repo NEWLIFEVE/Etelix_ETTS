@@ -326,7 +326,7 @@ $ETTS.UI=(function(){
                   _quitarValidacion(element);
               }
         },
-        appendOptions:function(boton, select){
+        appendOptions:function(boton, select, optionOpen){
             
             var select2 = boton.parent().children('select');
             
@@ -334,11 +334,17 @@ $ETTS.UI=(function(){
             {
                 var option = select.find('option:selected'),
                 longitud=option.length;
-                
+                if (optionOpen.val() == 'carrier_to_etelix' || optionOpen.val() == 'etelix_as_carrier') {
+                    if (select2.find('option').length > 4) {
+                        alert('Only five emails allowed');
+                        return false;
+                    }
+                }
                 for (var i=0; i < longitud; i++)
                 {
                     select2.append('<option value="'+option[i].value+'">'+option[i].text+'</option>');
                 }
+                
                 select.find('option:selected').attr('selected',false);
                 _quitarValidacion(select2);
             }
