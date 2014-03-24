@@ -153,8 +153,8 @@ $(document).on('ready', function() {
                             content:"<div id=content_detail>"+data+"</div>",
                             sysBtnCloseClick: function(event){
                                 // Al cerrar la ventana, se vuelve a contar los 5 munitos
-                                setInterval(function(){
-                                window.location.reload(true);
+                                refreshInterval = setInterval(function(){
+                                   window.location.reload(true);
                                 }, 300000);
                             }
                         });

@@ -2,6 +2,12 @@ Etelix_ETTS
 ===========
 
 Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
+
+24/03/2014
+        - Corrección en refresh. Ahora al abrir el chat se cancela el refresh y 
+        al cerrarlo se continua con el mismo. Siguiendo el mismo flujo cada vez
+        que se abra y cierre el chat.
+
 Release 1.1.6
 	- Modificacion de asunto de nueva respuesta, TT from/for Customer/Supplier Carrier, New Etelix/Carrier Status (By Etelix on ETTS), ticket_number (tiempo)
 	- Usuarios Internos, pueden abrir tickets a Customers/Suppliers
