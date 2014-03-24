@@ -1,3 +1,15 @@
+// Asociar mas correos al ticket creado
+function toggleMails()
+{
+    $('.div-agregar-correo, .down-mail').toggle('fast');
+}
+
+// Bajar correos a la lista a donde se enviará la nota al cerrar o dar una respuesta al ticket
+function bajarCorreo()
+{
+    $ETTS.UI.appendOptions($('a.a-bajar-correo'), $('#mails'));
+}
+
 // Función para agregar archivos en el description
 function attachFile()
 {
@@ -38,8 +50,10 @@ $(document).ready(function() {
         
        // Boton para abrir el preview del ticket
        $(document).on('click', 'table#example tbody tr td a.preview', function () {
-                 var clase=$(this).parent().parent().attr('class'),
-                 idTicket = $(this).attr('rel');
+                setTimeout(function(){$('.div-agregar-correo, .down-mail').hide();}, 500);
+
+                var clase=$(this).parent().parent().attr('class'),
+                idTicket = $(this).attr('rel');
                  
                 $.ajax({
                     type:"POST",

@@ -105,7 +105,7 @@ class Subject
         if ($optionOpen == 'carrier_to_etelix')
             $this->_subject .= $user . $lastStringSubject;
         if ($optionOpen == '')
-            $this->_subject .= $user . $lastStringSubject;
+            $this->_subject = $this->_formatTicketNumber($ticketNumber) . ' New '  . $this->_carrier . $lastStringSubject;
         
         return $this->_subject;
     }
