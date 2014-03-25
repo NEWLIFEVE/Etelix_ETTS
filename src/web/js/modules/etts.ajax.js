@@ -3,7 +3,7 @@
  */
 $ETTS.ajax=(function(){
    
-   function _limpiarForm(miForm) {
+   function _limpiarForm(miForm, optionOpen) {
         // recorremos todos los campos que tiene el formulario
         $(':input', miForm).each(function() {
             var type = this.type;
@@ -20,7 +20,8 @@ $ETTS.ajax=(function(){
                 this.selectedIndex = -1;
         });
         
-        $('select#mails, select#Ticket_mail, select#cc, select#bbc, div.nicEdit-main, #content_attached_file').empty();
+        if (optionOpen != 'carrier_to_etelix') $('select#mails').empty();
+        $('select#Ticket_mail, select#cc, select#bbc, div.nicEdit-main, #content_attached_file').empty();
         $('#uploadFile').find('ul').empty();
     }
     
@@ -300,7 +301,7 @@ $ETTS.ajax=(function(){
                                 content: '<center><h2>Success<h2></center>'
                           });
                           
-                          _limpiarForm(formulario);
+                          _limpiarForm(formulario, _optionOpen);
                           
                        } else {
                            $.Dialog.close();

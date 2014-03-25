@@ -41,6 +41,7 @@ $ETTS.UI=(function(){
             ccCompleto='',
             bbcCompleto='',
             claseCompleto='',
+            userCompleto='',
             gmtCompleto='',
             speechCompleto='',
             tableTestedNumber='';
@@ -54,9 +55,17 @@ $ETTS.UI=(function(){
 
             if (clase !== null)
             {
-                clase='<div class="input-control text block" >'+
+                claseCompleto='<div class="input-control text block" >'+
                             'Class'+
                             '<input type="text" value="'+clase+'" disabled>' +
+                      '</div>';
+            }
+            
+            if (user !== null)
+            {
+                userCompleto='<div class="input-control text block" >'+
+                            'User'+
+                            '<input type="text" value="'+user+'" disabled>' +
                       '</div>';
             }
             if (gmt !== null)
@@ -122,10 +131,7 @@ $ETTS.UI=(function(){
                         
                         claseCompleto+
                         
-                        '<div class="input-control text block" >'+
-                            'User'+
-                            '<input type="text" value="'+user+'" disabled>' +
-                        '</div>'+
+                        userCompleto+
                         
                         toCompleto+
                         

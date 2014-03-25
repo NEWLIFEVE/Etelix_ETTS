@@ -142,3 +142,8 @@
 <?php echo CHtml::submitButton($model->isNewRecord ? 'Preview Ticket' : 'Save', array('class' => 'primary large', 'name'=>'preview')); ?>
 
 </fieldset>
+
+<?php
+//$usuario = Yii::app()->user->um->loadUserById(Yii::app()->user->id,true) ;
+//echo $usuario->username;
+?>
