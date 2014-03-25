@@ -100,7 +100,6 @@ $(document).on('ready', function(){
     // Add tested numbers
     $(document).on('click', '.agregar-tested-number', function(){
         $ETTS.UI.addTestedNumber();
-        
     });
     
     // Remove tested numbers
