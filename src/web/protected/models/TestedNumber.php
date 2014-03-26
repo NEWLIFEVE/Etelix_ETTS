@@ -143,11 +143,11 @@ class TestedNumber extends CActiveRecord
         
         public static function saveTestedNumbers($attributes)
         {
-            $model=new TestedNumber;
             $isOk=true;
             $count=count($attributes['testedNumber']);
             for($i=0; $i<$count; $i++)
             {
+                $model=new TestedNumber;
                 $model->id_ticket=$attributes['id_ticket'];
                 $model->id_country=$attributes['_country'][$i];
                 $model->numero=$attributes['testedNumber'][$i];

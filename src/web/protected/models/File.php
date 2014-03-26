@@ -107,11 +107,11 @@ class File extends CActiveRecord
         
         public static function saveFile($attributes,$idDescription)
         {
-            $model=new File;
             $isOk=true;
             $count=count($attributes['_attachFile']);
             for($i=0; $i<$count; $i++)
             {
+                $model=new File;
                 $model->id_ticket=$attributes['id_ticket'];
                 $model->saved_name=$attributes['_attachFileSave'][$i];
                 $model->real_name=$attributes['_attachFile'][$i];
