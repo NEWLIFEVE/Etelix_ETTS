@@ -62,6 +62,14 @@ abstract class Utility extends CApplicationComponent
             } 
     }
     
+    public static function formatTicketNumber($ticketNumber)
+    {
+        if (strpos($ticketNumber, 'C'))
+            return 'Customer';
+        if (strpos($ticketNumber, 'S') || strpos($ticketNumber, 'P'))
+            return 'Supplier';
+    }
+    
     
 }
 ?>

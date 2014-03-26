@@ -384,7 +384,7 @@ class TicketController extends Controller
         $envioMail=$mailer->enviar($body,$mailModel::getNameMails($id),'',$subject,$rutaAttachFile);
 
         if($envioMail===true)
-            $this->renderPartial('/ticket/_answer', array('datos' => Ticket::ticketsByUsers(Yii::app()->user->id, $id, false)));
+            $this->renderPartial('/ticket/_answer', array('datos' => Ticket::ticketsByUsers(CrugeUser2::getUserTicket($id, true)->iduser, $id, false, false, true)));
         else
             echo 'false';
     }

@@ -17,7 +17,11 @@ $(document).on('ready', function(){
     
     // Get mails by user
     $(document).on('change', '#user', function(){
-        $ETTS.ajax.getMailsByUser($(this).val(), '#mails', '#Ticket_mail, select#cc, select#bbc');
+        var etelixAsCarrier = false;
+        if ($('#open-ticket').val() == 'etelix_as_carrier') {
+            etelixAsCarrier = true;
+        }
+        $ETTS.ajax.getMailsByUser($(this).val(), '#mails', '#Ticket_mail', etelixAsCarrier);
     });
     /*************************************************************************
      * 
@@ -76,20 +80,9 @@ $(document).on('ready', function(){
     
     /**
      *   Add mails
-     *   
-     *   último parámetro:
-     *   0 cuando un cliente abre un ticket
-     *   1 cuando un interno le abre un ticket a un (carrier)cliente
-     *   2 cuando un interno le abre un ticket a un (carrier)proveedor   
      */
-    $(document).on('click', '.btn-agregar-correo-cliente', function(){
-        $ETTS.ajax.saveMail($('#new_mail'),'1',$('#user'),$('#mails'),$('#Ticket_mail'), '0');
-    });
-    $(document).on('click', '.btn-agregar-correo-interno-cliente', function(){
-        $ETTS.ajax.saveMail($('#new_mail'),'1',$('#user'),$('#mails'),$('#Ticket_mail'), '1');
-    });
-    $(document).on('click', '.btn-agregar-correo-interno-proveedor', function(){
-        $ETTS.ajax.saveMail($('#new_mail'),$('#class').val(),$('#user'),$('#mails'),$('#Ticket_mail'), '2');
+    $(document).on('click', '.btn-agregar-correo', function(){
+        $ETTS.ajax.saveMail($('#new_mail'),'1',$('#user'),$('#mails'),$('#Ticket_mail'), $('#open-ticket'));
     });
     
     // Add all emails

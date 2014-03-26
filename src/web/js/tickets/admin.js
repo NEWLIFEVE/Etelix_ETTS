@@ -56,8 +56,6 @@ function getTicketsRelated(id, nTr, oTable)
 // Función para agregar archivos en el description
 function attachFile()
 {
-
-   
     var settings = {
                 url: "/file/uploadjquery",
                 dragDrop:false,
@@ -193,7 +191,7 @@ $(document).on('ready', function() {
         var oTable = $('#example').dataTable( {
                 "bJQueryUI": true,
                 "bDestroy": true,
-//                "bAutoWidth": false,
+                "bAutoWidth": false,
                 "sPaginationType": "full_numbers",
                 "aoColumnDefs": [
                         { "aDataSort": false, "aTargets": [ 0,9 ] },

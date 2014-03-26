@@ -88,13 +88,4 @@ $(document).on('ready', function(){
             });
         });
     });
-
-    // Al perder el foco del select del cambio de statu
-    $(document).on('blur', 'table#example tbody tr td select#status', function(){
-        var select=$(this)
-        setTimeout(function(){
-            select.next('span.span-status').show()
-            select.remove('select')
-        }, 1000)
-    }); 
 });

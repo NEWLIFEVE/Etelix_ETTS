@@ -5,6 +5,7 @@
 ?>
 <div id="content_attached_file"></div>
 <input type="hidden" id="open-ticket" value="carrier_to_etelix">
+<input type="hidden" id="user" value="<?php echo Yii::app()->user->id; ?>">
 <fieldset>
         <legend>Use this form to submit a ticket.</legend>
 <?php echo $form->errorSummary($model); ?>   
@@ -43,7 +44,7 @@
         </div>
         
         <div class="input-control text span2">
-            <button class="btn-agregar-correo-interno-cliente primary" type="button"><i class="icon-floppy on-left"></i>Save</button>
+            <button class="btn-agregar-correo primary" type="button"><i class="icon-floppy on-left"></i>Save</button>
         </div>
     </div>
     <?php echo $form->ListBox(

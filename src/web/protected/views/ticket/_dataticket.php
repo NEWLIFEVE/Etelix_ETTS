@@ -1,21 +1,21 @@
 <?php $mailByTicket=MailUser::getMails(CrugeUser2::getUserTicket($datos->id, true)->iduser); ?>
 <input type="hidden" id="id_ticket" value="<?php echo $datos->id; ?>">
 <?php if ($datos->id_status != '2'): ?>
-<div class="div-agregar-correo">
+<!--<div class="div-agregar-correo">
     <div class="input-control select block">
         <select id="mails" multiple>
-            <?php foreach ($mailByTicket as $mails): ?>
-                <option value="<?php echo $mails['id']; ?>"><?php echo $mails['mail']; ?></option>
-            <?php endforeach; ?>
+            <?php // foreach ($mailByTicket as $mails): ?>
+                <option value="<?php // echo $mails['id']; ?>"><?php // echo $mails['mail']; ?></option>
+            <?php // endforeach; ?>
         </select>
     </div>
-</div>
+</div>-->
 <?php endif; ?>
 <div class="input-control select block">
     Response to&nbsp;
     <?php if ($datos->id_status != '2'): ?>
-    <a href="javascript:void(0)" class="a-agregar-correo" onclick="toggleMails()"><i class="icon-plus-2"></i></a>
-    <a href="javascript:void(0)" class="a-bajar-correo down-mail" onclick="bajarCorreo()"><i class="icon-arrow-down"></i></a>
+    <!--<a href="javascript:void(0)" class="a-agregar-correo" onclick="toggleMails()"><i class="icon-plus-2"></i></a>-->
+    <!--<a href="javascript:void(0)" class="a-bajar-correo down-mail" onclick="bajarCorreo()"><i class="icon-arrow-down"></i></a>-->
     <!--<a href="javascript:void(0)" class="a-borrar-correo" ><i class="icon-cancel-2 fg-red "></i></a>-->
     <?php endif; ?>
     <select multiple="multiple" readonly="readonly" id="preview_response_to">
