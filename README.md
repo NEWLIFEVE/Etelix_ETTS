@@ -9,7 +9,7 @@ Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
         - Corregido bug al guardar mails. Ahora los carriers y etelix como
           el carrier solo pueden agregar 5 correos, cuando es etelix al 
           carrier puede agregar los correos que deseen
-          
+        - Corregido bug al guardar varios correos, tested number y archivos
 25/03/2014
         - De la interfaz crear ticket(carrier to etelix), ahora se le permite al carrier seleccionar si abrirá el ticket como customer o supplier.
 
