@@ -202,6 +202,7 @@ class DescriptionticketController extends Controller
     		{
                     //Guardar Description
                     $ticketNumber=Ticket::model()->findByPk($model->id_ticket)->ticket_number;
+                    $files=array();
 	            /**
 	            * Se verifica si se envia por post
 	            * Guardando Attach File
@@ -219,6 +220,7 @@ class DescriptionticketController extends Controller
                             $modelAttachFile->rute='uploads/'.$_POST['fileServer'][$i];
                             $modelAttachFile->id_description_ticket=$model->id;
                             $modelAttachFile->save();
+                            $files[]=$modelAttachFile->rute;
                         }
                     }
                     
@@ -234,7 +236,7 @@ class DescriptionticketController extends Controller
                     $body=$cuerpoCorreo->getBodyNewAnwer();
                     $subject=$asunto->subjectNewAnswer($ticketNumber, Utility::restarHoras($hour, date('H:i:s'), floor(Utility::getTime($date, $hour)/ (60 * 60 * 24))), $internalAsCarrier);
                     
-                    $mailer->enviar($body, $mailsAll, '', $subject);
+                    $mailer->enviar($body, $mailsAll, '', $subject, $files);
         	}
 	    	else
             {

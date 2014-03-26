@@ -1,11 +1,28 @@
+<?php $mailByTicket=MailUser::getMails(CrugeUser2::getUserTicket($datos->id, true)->iduser); ?>
 <input type="hidden" id="id_ticket" value="<?php echo $datos->id; ?>">
+<?php if ($datos->id_status != '2'): ?>
+<div class="div-agregar-correo">
+    <div class="input-control select block">
+        <select id="mails" multiple>
+            <?php foreach ($mailByTicket as $mails): ?>
+                <option value="<?php echo $mails['id']; ?>"><?php echo $mails['mail']; ?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+</div>
+<?php endif; ?>
 <div class="input-control select block">
-Response to
-<select multiple="multiple" disabled="disabled" id="preview_response_to">
-    <?php foreach (MailUser::getMailsByTicket($datos->id) as $value): ?>
-        <option><?php echo $value->idMail->mail; ?></option>
-    <?php endforeach; ?>
-</select>
+    Response to&nbsp;
+    <?php if ($datos->id_status != '2'): ?>
+    <a href="javascript:void(0)" class="a-agregar-correo" onclick="toggleMails()"><i class="icon-plus-2"></i></a>
+    <a href="javascript:void(0)" class="a-bajar-correo down-mail" onclick="bajarCorreo()"><i class="icon-arrow-down"></i></a>
+    <!--<a href="javascript:void(0)" class="a-borrar-correo" ><i class="icon-cancel-2 fg-red "></i></a>-->
+    <?php endif; ?>
+    <select multiple="multiple" readonly="readonly" id="preview_response_to">
+        <?php foreach (MailUser::getMailsByTicket($datos->id) as $value): ?>
+            <option><?php echo $value->idMail->mail; ?></option>
+        <?php endforeach; ?>
+    </select>
 </div>
 
 <div class="input-control text block">
@@ -70,7 +87,8 @@ Description
 <div class="answer-ticket">
     <?php $this->renderPartial('_answer', array('datos'=>$datos)); ?>
 </div>
-
+<?php if ($datos->id_status != '2'): ?>
+<div id="only-open">
 <?php
 $tipoUsuario = CrugeAuthassignment::getRoleUser();
 if ($tipoUsuario !== 'C'):
@@ -85,6 +103,7 @@ if ($tipoUsuario !== 'C'):
 </div>
 
 <?php endif; ?>
+
 <div class="input-control textarea" data-role="input-control">
     <textarea name="answer" id="answer"></textarea>
 </div>
@@ -95,17 +114,23 @@ if ($tipoUsuario !== 'C'):
     <div class="option-panel right">
         <div id="mulitplefileuploader">Add file</div>
     </div>
-    <?php if (CrugeAuthassignment::getRoleUser() != 'C'): ?>
     <div class="option-panel left confirmation">
         <div class="input-control checkbox" data-role="input-control">
+            <?php if (CrugeAuthassignment::getRoleUser() != 'C'): ?>
             <label>
                 <input type="checkbox" id="internalAsCarrier" value="1">
-                <span class="check"></span>  Respond as Carrier
+                <span class="check"></span>  <small class="text-muted ">Respond as Carrier</small>
+            </label>
+            <?php endif; ?>
+            <label>
+                <input type="checkbox" id="close-ticket" value="2">
+                <span class="check"></span> <small class="text-muted ">Close TT</small>
             </label>
 	</div>
     </div>
-    <?php endif; ?>
 </div>
 <div id="area-add-file"></div>
 <div id="status"></div>
 <div id="filename"></div>
+</div>
+<?php endif; ?>
