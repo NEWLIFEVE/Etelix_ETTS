@@ -219,55 +219,98 @@ class TicketController extends Controller
             $modelTicket->id_gmt=$_POST['gmt'];
             if (!$modelTicket->save()) $isOk=false;
             
-            // Guardando number
-            $attributes=array(
-                'id_ticket'=>$modelTicket->id, 
-                '_country'=>$_POST['_country'],
-                'testedNumber'=>$_POST['testedNumber'],
-                '_date'=>$_POST['_date'],
-                '_hour'=>$_POST['_hour']
-                );
-            if (!TestedNumber::saveTestedNumbers($attributes)) $isOk=false;
+            // Se guarda testedNumber
+            $count=count($_POST['testedNumber']);
+            for($i=0; $i<$count; $i++)
+            {
+                $modelTestedNumber=new TestedNumber;
+                $modelTestedNumber->id_ticket=$modelTicket->id;
+                $modelTestedNumber->id_country=$_POST['_country'][$i];
+                $modelTestedNumber->numero=$_POST['testedNumber'][$i];
+                $modelTestedNumber->date=$_POST['_date'][$i];
+                $modelTestedNumber->hour=$_POST['_hour'][$i];
+                if (!$modelTestedNumber->save())$isOk = false;
+            }
         }
 
         // Guardando los mails (to)
         if (isset($_POST['responseTo']) && $_POST['responseTo'] != null)
         {
-            $attributes=array('id_ticket'=>$modelTicket->id, 'responseTo'=>$_POST['responseTo']);
-            if (!MailTicket::saveMailTicket($attributes, 1)) $isOk=false;
+            $count=count($_POST['responseTo']);
+            for($i=0; $i<$count; $i++) 
+            {
+                $modelMailTicket=new MailTicket;
+                $modelMailTicket->id_mail_user=$_POST['responseTo'][$i];
+                $modelMailTicket->id_ticket=$modelTicket->id;
+                $modelMailTicket->id_type_mailing=1;
+                if (!$modelMailTicket->save()) $isOk=false;
+            }
         }
 
         // Guardando los mails (cc)
         if(isset($_POST['cc']) && $_POST['cc'] != null)
         {
-            $attributes=array('id_ticket'=>$modelTicket->id, 'responseTo'=>$_POST['cc']);
-            if (!MailTicket::saveMailTicket($attributes, 2)) $isOk=false;
+            $modelMailTicket=new MailTicket;
+            $modelMailTicket->id_mail_user=$_POST['cc'][$i];
+            $modelMailTicket->id_ticket=$modelTicket->id;
+            $modelMailTicket->id_type_mailing=2;
+            if (!$modelMailTicket->save()) $isOk=false;
         }
 
         // Guardando los mails (bbc)
         if (isset($_POST['bbc']) && $_POST['bbc'] != null)
         {
-            $attributes=array('id_ticket'=>$modelTicket->id, 'responseTo'=>$_POST['cc']);
-            if (!MailTicket::saveMailTicket($attributes, 3)) $isOk=false;
+            $modelMailTicket=new MailTicket;
+            $modelMailTicket->id_mail_user=$_POST['bbc'][$i];
+            $modelMailTicket->id_ticket=$modelTicket->id;
+            $modelMailTicket->id_type_mailing=3;
+            if (!$modelMailTicket->save()) $isOk=false;
         }
 
         // Guardando descripcion
-        $attributes=array('id_ticket'=>$modelTicket->id, 'description'=>$_POST['description']);
-        $attributtesFile=null;
         $rutaAttachFile=array();
         
-        if(isset($_POST['_attachFile']) && count($_POST['_attachFile'])){
-            $attributtesFile=array(
-                'id_ticket'=>$modelTicket->id,
-                '_attachFileSave'=>$_POST['_attachFileSave'],
-                '_attachFile'=>$_POST['_attachFile'],
-                '_attachFileSize'=>$_POST['_attachFileSize']
-            );
-            $sizeof=count($_POST['_attachFileSave']);
-            for($i=0; $i<$sizeof; $i++) $rutaAttachFile[]='uploads/'.$_POST['_attachFileSave'][$i];
+        $modelDescription=new DescriptionTicket;
+        $etelixAsCarrier=false;
+        
+        $modelDescription->id_ticket=$modelTicket->id;
+        $modelDescription->description=$_POST['description'];
+        $modelDescription->date=date('Y-m-d');
+        $modelDescription->hour=date('H:i:s');
+        
+        if ($_POST['optionOpen'] == 'etelix_as_carrier') 
+        {
+            $modelDescription->id_user=CrugeUser2::getUserTicket($modelTicket->id,true)->iduser;
+            $etelixAsCarrier=true;
+        } 
+        else 
+        {
+            $modelDescription->id_user=Yii::app()->user->id;
         }
         
-        if (!DescriptionTicket::saveDescription($attributes, $_POST['optionOpen'],$attributtesFile)) $isOk=false;
+        $optionRead=DescriptionticketController::getUserNewDescription($etelixAsCarrier);
+        $modelDescription->read_carrier=$optionRead['read_carrier'];
+        $modelDescription->read_internal=$optionRead['read_internal'];
+        $modelDescription->response_by=Yii::app()->user->id;
+        if (!$modelDescription->save()) $isOk=false;
+        
+        if(isset($_POST['_attachFile']) && count($_POST['_attachFile']))
+        {
+            $count=count($_POST['_attachFile']);
+            for($i=0; $i<$count; $i++)
+            {
+                $modelFile=new File;
+                $modelFile->id_ticket=$modelTicket->id;
+                $modelFile->saved_name=$_POST['_attachFileSave'][$i];
+                $modelFile->real_name=$_POST['_attachFile'][$i];
+                $modelFile->size=$_POST['_attachFileSize'][$i];
+                $modelFile->rute='uploads/'.$_POST['_attachFileSave'][$i];
+                $modelFile->id_description_ticket=$modelDescription->id;
+                $rutaAttachFile[]='uploads/'.$_POST['_attachFileSave'][$i];
+                if (!$modelFile->save()) $isOk=false;
+            }
+        }
+        
        
         if ($isOk == true)
         {
