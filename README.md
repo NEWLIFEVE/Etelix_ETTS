@@ -2,6 +2,13 @@ Etelix_ETTS
 ===========
 
 Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
+
+27/03/2014
+    - Corrección en el subject de nueva respuesta, se colocó una coma y la palabra "status" después del usuario que 
+      escribió la respuesta. También se colocó si es etelix que responde por el carrier si el option_open es "carrier_to_etelix".
+    - Ahora el carrier tiene la opción de ver tickets cerrados.
+    - Invertido el nombre de las ip en la interfaz tickets etelix a carrier
+
 Release 1.1.8 26/03/2014
     - Corrección al cerrar tickets viejos desde el preview del ticket.
     - Ahora desde adminclose se ve la columna country

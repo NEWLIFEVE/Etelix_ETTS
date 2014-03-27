@@ -102,12 +102,10 @@ class Subject
             }
         }
         
-        if ($optionOpen == 'etelix_as_carrier') 
+        if ($optionOpen == 'etelix_as_carrier' || $optionOpen == 'carrier_to_etelix') 
             $this->_subject .= $user . ' Status '.$byEtelix.', ' . $lastStringSubject;
         if ($optionOpen == 'etelix_to_carrier') 
             $this->_subject = 'TT Etelix to '. $this->_formatTicketNumber($ticketNumber) .' '.$this->_carrier.', New '.$user.' ' . $lastStringSubject;
-        if ($optionOpen == 'carrier_to_etelix')
-            $this->_subject .= $user . $lastStringSubject;
         if ($optionOpen == '')
             $this->_subject = $this->_formatTicketNumber($ticketNumber) . ' New '  . $this->_carrier . $lastStringSubject;
         

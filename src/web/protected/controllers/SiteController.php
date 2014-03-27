@@ -177,8 +177,8 @@ class SiteController extends Controller
 		{
 			return array(
 				array(
-					'label'=>'My tickets',
-					'url'=>array('/ticket/admin')
+					'label'=>'Closed TT',
+					'url'=>array('/ticket/adminclose')
 					),
 				array(
 					'label'=>'Open ticket',

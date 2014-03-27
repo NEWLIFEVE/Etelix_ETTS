@@ -34,10 +34,19 @@ Failure
 <?php
 $originationIp = explode('.', $datos->origination_ip);
 $destinationIp = explode('.', $datos->destination_ip);
+$etelixIp='Etelix IP';
+$customerIp='Customer IP';
+$espacios='';
+if ($datos->option_open=='etelix_to_carrier')
+{
+    $etelixIp='Customer IP';
+    $customerIp='Etelix IP';
+    $espacios='&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';    
+}
 ?>
 <?php if ($datos->origination_ip !== null): ?>
 
-<div class="_label">Origination IP <small class="text-muted "><em>(Customer IP)</em></small><span class="margen_17px"></span>&nbsp;&nbsp;&nbsp;&nbsp;DestinationIP  <small class="text-muted "><em>(Etelix IP)</em></small></div>
+<div class="_label">Origination IP <small class="text-muted "><em>(<?php echo $customerIp; ?>)</em></small><span class="margen_17px"></span>&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $espacios; ?>DestinationIP  <small class="text-muted "><em>(<?php echo $etelixIp; ?>)</em></small></div>
 <div class="input-control text block" data-role="input-control">
     
     <input type="text" value="<?php echo $originationIp[0]; ?>" disabled class="_ip" disabled id="oip1" maxlength="3" >
