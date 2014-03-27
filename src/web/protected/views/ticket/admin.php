@@ -59,6 +59,7 @@
                         <td><?php echo $ticket->ticket_number; ?></td>
                         <td><?php echo  $failure = strlen($ticket->idFailure->name) <= 15 ? $ticket->idFailure->name : substr($ticket->idFailure->name, 0, 15) .'...';  ?></td>
                         <td><?php if (TestedNumber::getNumber($ticket->id) != false) echo TestedNumber::getNumber($ticket->id)->idCountry->name; ?></td>
+                        <!--<td><?php // echo $ticket->date . ' / ' . $ticket->hour; ?></td>-->
                         <td><?php echo $ticket->date . ' / ' . $ticket->hour; ?></td>
                         <td><?php  echo Utility::restarHoras($ticket->hour, date('H:i:s'), floor($timeTicket/ (60 * 60 * 24))); ?></td>
                         <td><a href="javascript:void(0)" class="preview" rel="<?php echo $ticket->id; ?>"><img width="12" height="12" src="<?php echo Yii::app()->request->baseUrl.'/images/view.gif'; ?>"></a></td>

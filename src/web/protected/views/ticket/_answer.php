@@ -29,7 +29,7 @@ if ($description != null) {
             }
 
             echo '<div style="'.$style.'" class="msg-ticket">' . 
-                    $value->description . $upload . '   <br><strong>Date: </strong>' . $value->date . ' || <strong>Hour: </strong>' . $value->hour . ' || <strong> </strong>' . $usuarioAmostrar .  
+                    $value->description . $upload . '<p></p><small>Submitted on ' . Utility::getDayByDate($value->date) . ' at ' . $value->hour . ', ' . $usuarioAmostrar . '</small>' . 
                  '</div>';   
         } 
     }

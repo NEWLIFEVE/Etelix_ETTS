@@ -70,6 +70,23 @@ abstract class Utility extends CApplicationComponent
             return 'Supplier';
     }
     
+    /**
+     * Retorna las iniciales del día de la semana y del mas junto con el día y el año
+     * @param string $fecha
+     * @return string
+     */
+    public static function getDayByDate($fecha)
+    {
+        $fecha = explode('-', $fecha);
+        $anio = $fecha[0];
+        $mes = $fecha[1];
+        $dia = $fecha[2];
+
+        $fechats = strtotime($dia . '-' . $mes . '-' . $anio);  
+        return  date('D', $fechats) . ', ' . date('M', $fechats) . ' ' . $dia . ', ' . $anio;
+    }
+    
+    
     
 }
 ?>
