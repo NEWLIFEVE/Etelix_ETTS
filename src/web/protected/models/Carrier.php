@@ -263,14 +263,27 @@ class Carrier extends CActiveRecord
         $idCarrier=CrugeUser2::getIdCarrier($idUser);
         if($idCarrier != null) 
         {
-            if(self::getCustomer($idCarrier) != null) 
+            if (self::getCustomer($idCarrier) != null && self::getSupplier($idCarrier) != null) 
             {
-                return 'Customer';
+                return 'CS'; // Customer/Supplier
+            }
+            if (self::getCustomer($idCarrier) != null && self::getSupplier($idCarrier) == null)
+            {
+                return 'C'; // Customer
             }
             else
             {
-                return 'Supplier';
+                return 'S'; // Supplier
             }
+            
+//            if(self::getCustomer($idCarrier) != null) 
+//            {
+//                return 'Customer';
+//            }
+//            else
+//            {
+//                return 'Supplier';
+//            }
         }
         return false;
     }

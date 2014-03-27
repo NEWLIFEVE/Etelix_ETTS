@@ -28,7 +28,7 @@ $form=$this->beginWidget('CActiveForm', array(
 <div class="span9">
     <h2>Ticket Information</h2>
     <div class="example">
-        <?php $this->renderPartial('_form', array('form'=>$form,'model'=>$model)); ?>
+        <?php $this->renderPartial('_form', array('form'=>$form,'model'=>$model,'typeCarrier'=>$typeCarrier)); ?>
     </div>
 </div>
 

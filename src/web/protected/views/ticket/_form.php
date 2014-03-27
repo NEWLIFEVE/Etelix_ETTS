@@ -9,7 +9,8 @@
 <fieldset>
         <legend>Use this form to submit a ticket.</legend>
 <?php echo $form->errorSummary($model); ?>   
-        
+
+<?php if ($typeCarrier == 'CS'): ?>
 <div class="input-control select block">
         Open ticket as<small class="text-muted "><em> (required)</em></small>
         <select id="class" class="validate[required]">
@@ -18,7 +19,11 @@
             <option value="supplier">Supplier</option>
         </select>
 </div>
-      
+<?php elseif($typeCarrier == 'C'): ?>
+        <input type="hidden" id="class" value="customer">
+<?php elseif($typeCarrier == 'S'): ?>
+        <input type="hidden" id="class" value="supplier">
+<?php endif; ?>      
 <div class="input-control select block">
         Select the recipients emails that will received the ticket confirmation
         <small class="text-muted "><em> (maximum 5 emails)</em></small>
