@@ -135,11 +135,11 @@ class MailTicket extends CActiveRecord
         
         public static function saveMailTicket($attributes, $typeMail)
         {
-            $model=new MailTicket;
             $isOk=true;
             $count=count($attributes['responseTo']);
             for($i=0; $i<$count; $i++)
             {
+                $model=new MailTicket;
                 $model->id_mail_user=$attributes['responseTo'][$i];
                 $model->id_ticket=$attributes['id_ticket'];
                 $model->id_type_mailing=$typeMail;

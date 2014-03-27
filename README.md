@@ -3,10 +3,25 @@ Etelix_ETTS
 
 Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
 
+26/03/2014
+        - Corrección al cerrar tickets viejos desde el preview del ticket.
+        - Ahora desde adminclose se ve la columna country
+        - Corregido bug al guardar mails. Ahora los carriers y etelix como
+          el carrier solo pueden agregar 5 correos, cuando es etelix al 
+          carrier puede agregar los correos que deseen
+        - Corregido bug al guardar varios correos, tested number y archivos
+25/03/2014
+        - De la interfaz crear ticket(carrier to etelix), ahora se le permite al carrier seleccionar si abrirá el ticket como customer o supplier.
+
 24/03/2014
+<<<<<<< HEAD
     - Corrección en refresh. Ahora al abrir el chat se cancela el refresh y al cerrarlo se continua con el mismo. Siguiendo el mismo flujo cada vez que se abra y cierre el chat.
     - En preview del ticket ahora permite cerrar el ticket
     - En preview del ticket ahora permite asociar más correos electrónicos
+=======
+        - Corrección en refresh. Ahora al abrir el chat se cancela el refresh y al cerrarlo se continua con el mismo. Siguiendo el mismo flujo cada vez que se abra y cierre el chat.
+        - En preview del ticket ahora permite cerrar el ticket.
+>>>>>>> d3f3a3a78de08d0b3e9fd2028c95ba1fd19eff90
 
 Release 1.1.6
 	- Modificacion de asunto de nueva respuesta, TT from/for Customer/Supplier Carrier, New Etelix/Carrier Status (By Etelix on ETTS), ticket_number (tiempo)

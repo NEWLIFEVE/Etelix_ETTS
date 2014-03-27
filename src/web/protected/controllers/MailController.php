@@ -155,20 +155,17 @@ class MailController extends Controller
 	{
             $model=new Mail;
             $modelMailUser=new MailUser;
-            $idUser=Yii::app()->user->id;
+            $idUser=$_POST['user'];
             $option=$_POST['option'];
-
-            if($option !='0') 
+            
+            
+            if($option != 'etelix_to_carrier') 
             {
-                $idUser=$_POST['user'];
-            }
-            else
-            {
-                    if(!$modelMailUser::getCountMail($idUser))
-                    {
-                            echo "tope alcanzado";
-                            return;
-                    }
+                if(!$modelMailUser::getCountMail($idUser))
+                {
+                        echo "tope alcanzado";
+                        return;
+                }
             }
 
             $existeMail=$model->find("mail=:mail",array(":mail"=>$_POST['mail']));
@@ -177,7 +174,7 @@ class MailController extends Controller
                 $existeMailUser=$modelMailUser->findBySql("SELECT * FROM mail_user WHERE id_user=$idUser AND id_mail=".$existeMail->id." AND status=0");
                 if($existeMailUser!=null)
                 {
-                    $modelMailUser::model()->updateByPk($existeMailUser->id,array("status"=>'1', "assign_by" => $this->_assignBy(CrugeAuthassignment::getRoleUser())));
+                    $modelMailUser::model()->updateByPk($existeMailUser->id,array("status"=>'1', "assign_by" => $this->_assignBy($option)));
                     echo 'true';
                 }
                 else
@@ -193,7 +190,7 @@ class MailController extends Controller
                         $modelMailUser->id_mail=$existeMail->id;
                         $modelMailUser->id_user=$idUser;
                         $modelMailUser->status=1;
-                        $modelMailUser->assign_by=$this->_assignBy(CrugeAuthassignment::getRoleUser());
+                        $modelMailUser->assign_by=$this->_assignBy($option);
                         if($modelMailUser->save())
                                 echo 'true';
                         else
@@ -209,7 +206,7 @@ class MailController extends Controller
                     $modelMailUser->id_mail=$model->id;
                     $modelMailUser->id_user=$idUser;
                     $modelMailUser->status=1;
-                    $modelMailUser->assign_by=$this->_assignBy(CrugeAuthassignment::getRoleUser());
+                    $modelMailUser->assign_by=$this->_assignBy($option);
 
                     if($modelMailUser->save())
                             echo 'true';
@@ -224,13 +221,11 @@ class MailController extends Controller
      * @param string $typeUser
      * @return int
      */
-    private function _assignBy($typeUser)
+    private function _assignBy($optionOpen)
     {
-        $assignBy=0;
-        if ($typeUser == 'C') // Si es carrier
-            $assignBy=0;
-        else     
-            $assignBy=1;
+        $assignBy=1;
+        
+        if ($optionOpen != 'etelix_to_carrier') $assignBy=0;
         
         return $assignBy;
     }

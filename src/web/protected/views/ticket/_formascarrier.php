@@ -52,7 +52,7 @@
         </div>
         
         <div class="input-control text span2">
-            <button class="btn-agregar-correo-interno-cliente primary" type="button"><i class="icon-floppy on-left"></i>Save</button>
+            <button class="btn-agregar-correo primary" type="button"><i class="icon-floppy on-left"></i>Save</button>
         </div>
     </div>
     <?php echo $form->ListBox(
