@@ -2,11 +2,7 @@ Etelix_ETTS
 ===========
 
 Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
-
-<<<<<<< HEAD
-
-=======
-26/03/2014
+Release 1.1.8 26/03/2014
     - Corrección al cerrar tickets viejos desde el preview del ticket.
     - Ahora desde adminclose se ve la columna country
     - Corregido bug al guardar mails. Ahora los carriers y etelix como
@@ -18,30 +14,22 @@ Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
 24/03/2014
     - Corrección en refresh. Ahora al abrir el chat se cancela el refresh y al cerrarlo se continua con el mismo. Siguiendo el mismo flujo cada vez que se abra y cierre el chat.
     - En preview del ticket ahora permite cerrar el ticket
-    - En preview del ticket ahora permite asociar más correos electrónicos
-
-21/03/2014
-    - Cambio del subject al abrir, cerrar o dar una respuesta al ticket.
-    - Refresh cada 5 minutos de vista admin
-    - Cambio del menu ticket.
-    - Corregido error(Aparrecia la validación) al seleccionar date en abrir ticket(Todos los casos)
->>>>>>> dev
-
-17/03/2014
     -Correccion al guardar email en interfaz de crear tickets. Los usuarios internos
      pueden agregar tantos correos deseen, los carriers solo pueden agregar 5. Los correos 
      que sean agregados por usuarios internos, no se veran a la hora de que un carrier
      abra la interfaz de abrir ticket.
-    -Cambio en el menu de ticket para usuarios internos
-    -Ticket Information - Open TT from Carrier by Etelix, Ticket Information - Open TT to Carrier
-    -Corrección en el datepicker del tested number
     
+
 Release 1.1.7 21/03/2014
 	- En la interfaz de administracion de tickets, agregado el pais con mayor incidencia entre los tested number del ticket
     - Cambio del subject al abrir, cerrar o dar una respuesta al ticket.
     - Refresh cada 5 minutos de vista admin
     - Cambio del menu ticket.
     - Corregido error(Aparrecia la validación) al seleccionar date en abrir ticket(Todos los casos) 
+    -Cambio en el menu de ticket para usuarios internos
+    -Ticket Information - Open TT from Carrier by Etelix, Ticket Information - Open TT to Carrier
+    -Corrección en el datepicker del tested number
+
 
 Release 1.1.6
 	- Modificacion de asunto de nueva respuesta, TT from/for Customer/Supplier Carrier, New Etelix/Carrier Status (By Etelix on ETTS), ticket_number (tiempo)
