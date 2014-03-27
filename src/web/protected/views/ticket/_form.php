@@ -13,9 +13,15 @@
 <div class="input-control select block">
         Open ticket as<small class="text-muted "><em> (required)</em></small>
         <select id="class" class="validate[required]">
-            <option value=""></option>
-            <option value="customer">Customer</option>            
-            <option value="supplier">Supplier</option>
+            <?php if ($typeCarrier == 'CS'): ?>
+                <option value=""></option>
+                <option value="customer">Customer</option>            
+                <option value="supplier">Supplier</option>
+            <?php elseif ($typeCarrier == 'C'): ?>
+                <option value="customer" selected="selected">Customer</option>
+            <?php elseif($typeCarrier == 'S'): ?>
+                <option value="supplier" selected="selected">Supplier</option>
+            <?php endif; ?>
         </select>
 </div>
       

@@ -63,8 +63,13 @@ class TicketController extends Controller
     public function actionCreate()
     {
         $model=new Ticket;
+        $typeCarrier='';
+        if (Carrier::getTypeCarrier(Yii::app()->user->id) !== false) 
+            $typeCarrier=Carrier::getTypeCarrier(Yii::app()->user->id);
+        
         $this->render('create',array(
-            'model'=>$model
+            'model'=>$model,
+            'typeCarrier'=>$typeCarrier
         ));
     }
 
