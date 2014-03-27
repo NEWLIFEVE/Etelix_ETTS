@@ -11,7 +11,7 @@
 <?php echo $form->errorSummary($model); ?>   
         
 <div class="input-control select block">
-        Class<small class="text-muted "><em> (required)</em></small>
+        Open ticket as<small class="text-muted "><em> (required)</em></small>
         <select id="class" class="validate[required]">
             <option value=""></option>
             <option value="customer">Customer</option>            

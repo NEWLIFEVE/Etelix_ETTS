@@ -144,7 +144,11 @@ $ETTS.UI=(function(){
                             '<input type="text" value="'+falla+'" disabled>' +
                         '</div>'+
                         
-                        '<div class="_label">Origination IP <small class="text-muted "><em>(Customer IP)</em></small><span class="margen_17px"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DestinationIP  <small class="text-muted "><em>(Etelix IP)</em></small></div>'+
+                        '<div class="_label">Origination IP<span class="margen_17px"></span>' +
+                        '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+                        '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+                        '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+                        'DestinationIP </div>'+
                         '<div class="input-control text block" data-role="input-control">'+
                             '<input type="text" value="'+oip[0]+'" disabled class="_ip" disabled>' +
                             '<input type="text" value="'+oip[1]+'" disabled class="_ip" disabled>' +
