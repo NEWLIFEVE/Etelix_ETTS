@@ -56,8 +56,6 @@ function getTicketsRelated(id, nTr, oTable)
 // Función para agregar archivos en el description
 function attachFile()
 {
-
-   
     var settings = {
                 url: "/file/uploadjquery",
                 dragDrop:false,
@@ -101,6 +99,19 @@ function getSpeech(idSpeech)
        }
     });
 }
+
+// Asociar mas correos al ticket creado
+function toggleMails()
+{
+    $('.div-agregar-correo, .down-mail').toggle('fast');
+}
+
+// Bajar correos a la lista a donde se enviará la nota al cerrar o dar una respuesta al ticket
+function bajarCorreo()
+{
+    $ETTS.UI.appendOptions($('a.a-bajar-correo'), $('#mails'));
+}
+
 /**
 *Función para refrescar la vista admin.php cada 5 minutos. Si se da un preview del
 *ticket se interrrumpe el proceso y al cerrar el preview se vuelven a contar los 
@@ -131,7 +142,11 @@ $(document).on('ready', function() {
        
        // Boton para abrir el preview del ticket
        $(document).on('click', 'table#example tbody tr td a.preview', function () {
+                // Se detiene el refresh
                 clearInterval(refreshInterval);
+                // Se oculta el div para agregar correo
+                setTimeout(function(){$('.div-agregar-correo, .down-mail').hide();}, 500);
+                
                 var clase=$(this).parent().parent().attr('class'),
                 idTicket = $(this).attr('rel');
                 $.ajax({
@@ -153,8 +168,8 @@ $(document).on('ready', function() {
                             content:"<div id=content_detail>"+data+"</div>",
                             sysBtnCloseClick: function(event){
                                 // Al cerrar la ventana, se vuelve a contar los 5 munitos
-                                setInterval(function(){
-                                window.location.reload(true);
+                                refreshInterval = setInterval(function(){
+                                   window.location.reload(true);
                                 }, 300000);
                             }
                         });
@@ -176,7 +191,7 @@ $(document).on('ready', function() {
         var oTable = $('#example').dataTable( {
                 "bJQueryUI": true,
                 "bDestroy": true,
-//                "bAutoWidth": false,
+                "bAutoWidth": false,
                 "sPaginationType": "full_numbers",
                 "aoColumnDefs": [
                         { "aDataSort": false, "aTargets": [ 0,9 ] },

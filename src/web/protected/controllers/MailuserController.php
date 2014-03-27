@@ -183,19 +183,21 @@ class MailuserController extends Controller
 	 */
 	public function actionGetmailuser()
 	{
-        $user=null;
-        if (isset($_POST['iduser']) && $_POST['iduser'] != null)
-        {
-            $user=$_POST['iduser'];
-        }
-        else
-        {
-            $user=Yii::app()->user->id;
-        }
-        
-        if ($user!=null) 
-            MailUser::getMails($user, true); 
-                 
+            $user=null;
+            $etelixAsCarrier = 'false';
+            
+            if (isset($_POST['iduser']) && $_POST['iduser'] != null)
+            {
+                $user=$_POST['iduser'];
+            }
+            else
+            {
+                $user=Yii::app()->user->id;
+            }
+            
+            if (isset($_POST['etelixAsCarrier'])) $etelixAsCarrier = $_POST['etelixAsCarrier'];
+            
+            if ($user!=null) MailUser::getMails($user, true, $etelixAsCarrier);  
 	}
 
 	/**

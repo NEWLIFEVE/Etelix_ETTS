@@ -107,17 +107,17 @@ class File extends CActiveRecord
         
         public static function saveFile($attributes,$idDescription)
         {
-            $model=new File;
             $isOk=true;
-            $count=count($_POST['_attachFile']);
+            $count=count($attributes['_attachFile']);
             for($i=0; $i<$count; $i++)
             {
+                $model=new File;
                 $model->id_ticket=$attributes['id_ticket'];
                 $model->saved_name=$attributes['_attachFileSave'][$i];
                 $model->real_name=$attributes['_attachFile'][$i];
-                $model->size=$attributes['_attachFileSize'][$i];
+                $model->size=0.0;
                 $model->rute='uploads/'.$attributes['_attachFileSave'][$i];
-                self::model()->id_description_ticket=$idDescription;
+                $model->id_description_ticket=$idDescription;
                 if (!$model->save()) $isOk=false;
             }
             return $isOk;

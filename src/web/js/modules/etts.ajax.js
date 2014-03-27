@@ -3,7 +3,7 @@
  */
 $ETTS.ajax=(function(){
    
-   function _limpiarForm(miForm) {
+   function _limpiarForm(miForm, optionOpen) {
         // recorremos todos los campos que tiene el formulario
         $(':input', miForm).each(function() {
             var type = this.type;
@@ -20,12 +20,13 @@ $ETTS.ajax=(function(){
                 this.selectedIndex = -1;
         });
         
-        $('select#mails, select#Ticket_mail, select#cc, select#bbc, div.nicEdit-main, #content_attached_file').empty();
+        if (optionOpen != 'carrier_to_etelix') $('select#mails').empty();
+        $('select#Ticket_mail, select#cc, select#bbc, div.nicEdit-main, #content_attached_file').empty();
         $('#uploadFile').find('ul').empty();
     }
     
-    function _getMailUser(mails, user){
-        $.post('/mailuser/getmailuser', 'iduser='+user, function(data){
+    function _getMailUser(mails, user, _etelixAsCarrier){
+        $.post('/mailuser/getmailuser', 'iduser='+user+'&etelixAsCarrier='+_etelixAsCarrier, function(data){
             mails.html('');
             for (var i = 0; i < data.length; i++) 
             {
@@ -105,7 +106,7 @@ $ETTS.ajax=(function(){
          * @param int id
          * @param obj selectMail
          */
-        getMailsByUser:function(id, selectMail, clear){
+        getMailsByUser:function(id, selectMail, clear, _etelixAsCarrier){
             $(clear).empty();
             if (id.length > 0) 
             {
@@ -113,7 +114,8 @@ $ETTS.ajax=(function(){
                        type: 'POST',
                        url: '/mailuser/getmailuser',
                        data:{
-                           iduser:id
+                           iduser:id,
+                           etelixAsCarrier:_etelixAsCarrier
                        },
                        dataType:'json',
                        success:function(data){
@@ -300,7 +302,7 @@ $ETTS.ajax=(function(){
                                 content: '<center><h2>Success<h2></center>'
                           });
                           
-                          _limpiarForm(formulario);
+                          _limpiarForm(formulario, _optionOpen);
                           
                        } else {
                            $.Dialog.close();
@@ -319,6 +321,10 @@ $ETTS.ajax=(function(){
         },
         
         saveMail:function(_newMail,_typeUser, _user, contentMail, to, _option){
+            var _etelixAsCarrier = false;
+            if (_option.val() == 'etelix_as_carrier') {
+                _etelixAsCarrier = true;
+            }
             if (_user.val())
             {
                 
@@ -336,13 +342,13 @@ $ETTS.ajax=(function(){
                        mail: _newMail.val(),
                        typeUser:_typeUser,
                        user:_user.val(),
-                       option:_option
+                       option:_option.val()
                    },
                    success:function(data){
                        if (data == 'true') 
                        {    
                            _newMail.val('');
-                           _getMailUser(contentMail, _user.val());
+                           _getMailUser(contentMail, _user.val(), _etelixAsCarrier);
                            setTimeout(function(){
                                var option = contentMail.find('option:last-child');
                                to.append('<option value="'+option.val()+'" >'+option.text()+'</option>');

@@ -395,18 +395,41 @@ class TicketController extends Controller
             $ticketModel::model()->updateByPk($id,array('id_status'=>$_POST['idStatus']));
         }
         
+        $rutaAttachFile=array();        
+        if (isset($_POST['message']) && $_POST['message'] != null) {
+            // Guardando descripcion
+            $attributes=array('id_ticket'=>$id, 'description'=>$_POST['message']);
+            $attributtesFile=null;
+            
+            if(isset($_POST['files']) && count($_POST['files'])){
+                $attributtesFile=array(
+                    'id_ticket'=>$id,
+                    '_attachFileSave'=>$_POST['fileServer'],
+                    '_attachFile'=>$_POST['files'],
+                    '_attachFileSize'=>'0.0'
+                );
+                $sizeof=count($_POST['files']);
+                for($i=0; $i<$sizeof; $i++) $rutaAttachFile[]='uploads/'.$_POST['fileServer'][$i];
+            }
+            
+            $internalAsCarrier=null;
+            if (isset($_POST['internalAsCarrier']) && $_POST['internalAsCarrier'] != null) $internalAsCarrier='etelix_as_carrier';
+            
+            DescriptionTicket::saveDescription($attributes,$internalAsCarrier,$attributtesFile);
+        }
+        
         $asunto=new Subject;
         $cuerpoCorreo=new CuerpoCorreo(self::getTicketAsArray($id));
         
         $body=$cuerpoCorreo->getBodyCloseTicket($statuName);
         $subject=$asunto->subjectCloseTicket($ticketNumber, Carrier::getCarriers(true, $id), Utility::restarHoras($hour, date('H:i:s'), floor(Utility::getTime($date, $hour)/ (60 * 60 * 24))));
         
-        $envioMail=$mailer->enviar($body,$mailModel::getNameMails($id),'',$subject,null);
+        $envioMail=$mailer->enviar($body,$mailModel::getNameMails($id),'',$subject,$rutaAttachFile);
 
         if($envioMail===true)
-            echo 'true';
+            $this->renderPartial('/ticket/_answer', array('datos' => Ticket::ticketsByUsers(CrugeUser2::getUserTicket($id, true)->iduser, $id, false, false, true)));
         else
-            echo 'Error al enviar el correo: ' . $envioMail;
+            echo 'false';
     }
 
 

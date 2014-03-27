@@ -106,10 +106,14 @@ class MailUser extends CActiveRecord
          * @param boolean $json
          * @return array
          */
-        public static function getMails($user, $json = false)
+        public static function getMails($user, $json = false, $etelixAsCarrier = false)
         {   
             $assignBy='';
-            if (CrugeAuthassignment::getRoleUser() == 'C') $assignBy=' AND assign_by = 0';
+            if (CrugeAuthassignment::getRoleUser() == 'C') { 
+                $assignBy=' AND assign_by = 0';
+            } else {
+                if ($etelixAsCarrier == 'true') $assignBy=' AND assign_by = 0';
+            }
             
             if ($json == false) {        
                 return self::model()->findAllBySql("select mu.id as id, m.mail as mail
