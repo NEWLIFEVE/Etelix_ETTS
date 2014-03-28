@@ -179,7 +179,37 @@ class MailController extends Controller
                 }
                 else
                 {
-                    $existeMailUser2=$modelMailUser->findBySql("SELECT * FROM mail_user WHERE id_user=$idUser AND id_mail=".$existeMail->id." AND status=1");
+                    if($option == 'etelix_to_carrier')
+                    {
+                        $existeMailUser2=$modelMailUser->findBySql(
+                                "SELECT * FROM mail_user 
+                                WHERE id_user=$idUser AND 
+                                id_mail=".$existeMail->id." AND 
+                                status=1");
+                    }
+                    else
+                    {
+                        $existeMailUser2=$modelMailUser->findBySql(
+                                "SELECT * FROM mail_user 
+                                WHERE id_user=$idUser AND 
+                                id_mail=".$existeMail->id." AND 
+                                assign_by = 1 AND
+                                status=1");
+                        if($existeMailUser2!=null)
+                        {
+                            $modelMailUser::model()->updateByPk($existeMailUser2->id,array("assign_by"=>"0"));
+                            echo 'true';
+                            return;
+                        }
+                        
+                        $existeMailUser2=$modelMailUser->findBySql(
+                                "SELECT * FROM mail_user 
+                                WHERE id_user=$idUser AND 
+                                id_mail=".$existeMail->id." AND 
+                                assign_by = 0 AND
+                                status=1");
+                    }
+                    
                     if($existeMailUser2!=null)
                     {
                         echo 'existe correo';
