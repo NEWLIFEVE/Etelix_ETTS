@@ -214,7 +214,7 @@ class TicketController extends Controller
         $modelTicket->id_user=Yii::app()->user->id;
         $modelTicket->id_status=1;
         $modelTicket->option_open=$_POST['optionOpen'];
-        if(isset($_POST['isInternal']) && $_POST['isInternal'] == '1')
+        if($modelTicket->option_open == 'etelix_to_carrier')
         {
             $modelTicket->id_gmt=null;
             if (!$modelTicket->save()) $isOk=false;
@@ -223,18 +223,18 @@ class TicketController extends Controller
         {
             $modelTicket->id_gmt=$_POST['gmt'];
             if (!$modelTicket->save()) $isOk=false;
-            
-            // Guardando number
-            $attributes=array(
-                'id_ticket'=>$modelTicket->id, 
-                '_country'=>$_POST['_country'],
-                'testedNumber'=>$_POST['testedNumber'],
-                '_date'=>$_POST['_date'],
-                '_hour'=>$_POST['_hour']
-                );
-            if (!TestedNumber::saveTestedNumbers($attributes)) $isOk=false;
         }
-
+        
+        // Guardando number
+        $attributes=array(
+            'id_ticket'=>$modelTicket->id, 
+            '_country'=>$_POST['_country'],
+            'testedNumber'=>$_POST['testedNumber'],
+            '_date'=>$_POST['_date'],
+            '_hour'=>$_POST['_hour']
+            );
+        if (!TestedNumber::saveTestedNumbers($attributes)) $isOk=false;
+        
         // Guardando los mails (to)
         if (isset($_POST['responseTo']) && $_POST['responseTo'] != null)
         {
@@ -252,7 +252,7 @@ class TicketController extends Controller
         // Guardando los mails (bbc)
         if (isset($_POST['bbc']) && $_POST['bbc'] != null)
         {
-            $attributes=array('id_ticket'=>$modelTicket->id, 'responseTo'=>$_POST['cc']);
+            $attributes=array('id_ticket'=>$modelTicket->id, 'responseTo'=>$_POST['bbc']);
             if (!MailTicket::saveMailTicket($attributes, 3)) $isOk=false;
         }
 
