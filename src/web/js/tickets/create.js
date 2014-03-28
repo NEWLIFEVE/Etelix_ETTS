@@ -164,13 +164,21 @@ $(document).on('ready', function(){
                     $('#Ticket_prefix').val(),
                     $('select#speech option:selected').text(),
                     $('#Ticket_description').val(),
-                    null,[],[],[],[]
+                    null,
+                    $('[name="Ticket[tested_numbers][]"]'),
+                    $('[name="Ticket[country][]"]'),
+                    $('[name="Ticket[date_number][]"]'),
+                    $('[name="Ticket[hour_number][]"]')
                 );
 
                 // Save Ticket
                 $('#save_ticket').on('click', function(){
                     $ETTS.ajax.saveTicket(
-                        null,[],[],[],[],
+                        null,
+                        $('[name="Ticket[tested_numbers][]"]'),
+                        $('[name="Ticket[country][]"]'),
+                        $('[name="Ticket[date_number][]"]'),
+                        $('[name="Ticket[hour_number][]"]'),
                         $('#user option:selected'),                             // USER
                         $('[name="Ticket[mail][]"] option'),                    // TO
                         $('#cc option'),                                        // CC
@@ -231,7 +239,7 @@ $(document).on('ready', function(){
                     $('[name="Ticket[hour_number][]"]')
                 );
 
-                // Save Ticket(interno a cliente)
+                // Save Ticket(interno como cliente)
                 $('#save_ticket').on('click', function(){
                     $ETTS.ajax.saveTicket(
                         $('#Ticket_idGmt option:selected'),
