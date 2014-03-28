@@ -3,6 +3,9 @@ Etelix_ETTS
 
 Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
 
+28/03/2014(Corrección en master)
+    - En la interfaz "createtocarrier", en el label "Destination IP (Customer IP)", se cambió por "Destination IP (Carrier IP)"
+
 27/03/2014(Correcciones en master)
     - Corrección en el subject de nueva respuesta, se colocó una coma y la palabra "status" después del usuario que 
       escribió la respuesta. También se colocó si es etelix que responde por el carrier si el option_open es "carrier_to_etelix".

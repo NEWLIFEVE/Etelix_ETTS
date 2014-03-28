@@ -85,7 +85,18 @@
         <select id="tt_asociado"></select>
 </div>-->
 
-<div class="_label">Origination IP<input type="text" id="originationIp" class="validate[custom[ipv4]]"><small class="text-muted "><em>(Etelix IP)</em></small><span class="margen_31px"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Destination IP<input type="text" id="destinationIp" class="validate[,custom[ipv4]]"><small class="text-muted "><em>(Customer IP)</em></small></div>
+<div class="_label">
+    Origination IP<input type="text" id="originationIp" class="validate[custom[ipv4]]">
+    <small class="text-muted ">
+        <em>(Etelix IP)</em>
+    </small>
+    <span class="margen_31px"></span>
+    &nbsp;&nbsp;&nbsp;
+    Destination IP<input type="text" id="destinationIp" class="validate[,custom[ipv4]]">
+    <small class="text-muted ">
+        <em>(Carrier IP)</em>
+    </small>
+</div>
 <div class="input-control text block" data-role="input-control">
 
     <input type="text" class="_ip validate[custom[integer]]" id="oip1" name="oip1" maxlength="3"> 
