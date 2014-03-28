@@ -3,7 +3,9 @@ Etelix_ETTS
 
 Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
 
+Release 1.1.8.1
 28/03/2014(Corrección en master)
+	- Corrección en creacion de tickets, comprobacion de option open, cuando es etelix_to_carrier comprueba que exista el correo, si es etelis_as_carrier o carrier_to_etelix, comprueba que exista y que asign_by sea 1
     - En la interfaz "createtocarrier", en el label "Destination IP (Customer IP)", se cambió por "Destination IP (Carrier IP)"
     - Se agrego tested number en la interfaz de etelix to carrier
 
