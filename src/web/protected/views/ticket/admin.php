@@ -29,7 +29,7 @@
                     <tr <?php
                             $timeTicket = Utility::getTime($ticket->date, $ticket->hour);
                             $read=DescriptionticketController::blinkTr($ticket->id);
-                            
+                            $carrier=Carrier::getCarriers(true, $ticket->id);
                             switch ($ticket->idStatus->id) {
                                 case '1':
                                     if($timeTicket > 86400 )
@@ -48,9 +48,15 @@
                             <?php else: ?>
                                 <td>&nbsp;</td>
                             <?php endif; ?>
-                                <td><?php echo Utility::formatTicketNumber($ticket->ticket_number); ?></td>
-                                <td><?php if (isset($ticket->idUser->username)) echo $ticket->idUser->username; ?></td>
-                            <td title="<?php echo $carrier=Carrier::getCarriers(true, $ticket->id); ?>">
+                            <td><?php echo Utility::formatTicketNumber($ticket->ticket_number); ?></td>
+                            <td>
+                                <?php if ($ticket->option_open == 'etelix_to_carrier'): ?>
+                                    <?php if (isset($ticket->idUser->username)) echo $ticket->idUser->username; ?>
+                                <?php elseif ($ticket->option_open == 'etelix_as_carrier'): ?>
+                                    <?php  echo  strlen($carrier) <= 9 ? $carrier : substr($carrier, 0, 9) .'...'; ?>
+                                <?php endif; ?>
+                            </td>
+                            <td title="<?php echo $carrier; ?>">
                                 <?php  echo  strlen($carrier) <= 9 ? $carrier : substr($carrier, 0, 9) .'...'; ?>
                             </td>
                         <?php else: ?>
@@ -59,7 +65,6 @@
                         <td><?php echo $ticket->ticket_number; ?></td>
                         <td><?php echo  $failure = strlen($ticket->idFailure->name) <= 15 ? $ticket->idFailure->name : substr($ticket->idFailure->name, 0, 15) .'...';  ?></td>
                         <td><?php if (TestedNumber::getNumber($ticket->id) != false) echo TestedNumber::getNumber($ticket->id)->idCountry->name; ?></td>
-                        <!--<td><?php // echo $ticket->date . ' / ' . $ticket->hour; ?></td>-->
                         <td><?php echo $ticket->date . ' / ' . $ticket->hour; ?></td>
                         <td><?php  echo Utility::restarHoras($ticket->hour, date('H:i:s'), floor($timeTicket/ (60 * 60 * 24))); ?></td>
                         <td><a href="javascript:void(0)" class="preview" rel="<?php echo $ticket->id; ?>"><img width="12" height="12" src="<?php echo Yii::app()->request->baseUrl.'/images/view.gif'; ?>"></a></td>
