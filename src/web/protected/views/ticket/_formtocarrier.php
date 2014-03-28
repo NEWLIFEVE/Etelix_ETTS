@@ -119,24 +119,48 @@
         <?php echo $form->error($model,'prefix'); ?>
 </div>
 
-<!--        
-<div class="input-control select">
-        Status<small class="text-muted "><em> (required)</em></small>
-        <select id="statu" class="validate[required]">
-            <option value=""></option>
-            <?php // foreach (Status::getStatus() as $value): ?>
-                <option value="<?php // echo $value->id; ?>"><?php // echo $value->name; ?></option>
-            <?php // endforeach; ?>
-        </select>
+<!--Preview tested number-->
+<div id="preview_tested_number"> 
+<div id="elemento" class="grid" >
+        <div class="input-control text span3" >
+            <span>Tested numbers<small class="text-muted "><em> (required)</em></small></span>
+            <?php echo $form->textField($model,'tested_numbers[]',array('placeholder' => 'Without prefix', 'class' => 'validate[required,custom[integer]]')); ?>
+            <?php echo $form->error($model,'tested_numbers[]'); ?>
+        </div>
+
+        <div id="content_country">
+            <div class="input-control select span2 margen-number">
+                <br>
+                <?php echo $form->dropDownList($model,'country[]', Country::getNames(),  array('empty'=>'Country', 'class' => 'validate[required]')); ?>
+                <?php echo $form->error($model,'country[]'); ?>
+            </div>
+        </div>
+
+        <div class="input-control text span2 margen-number fecha_div">
+            <br>
+            <?php echo $form->textField($model,'date_number[]',array('placeholder' => 'Date', 'class' => 'fecha validate[required] text-input datepicker', 'value' => '', 'readonly' => 'readonly')); ?>
+            <?php echo $form->error($model,'date_number[]'); ?>
+        </div>
+
+        <div class="input-control text span1 margen-number hour_div">
+            <br>
+            <?php echo $form->textField($model,'hour_number[]',array('placeholder' => 'Hour', 'class' => 'hour validate[required]')); ?>
+            <?php echo $form->error($model,'hour_number[]'); ?>
+        </div>
+
+
+        <div class="input-control text span1" style="margin-left: 5px; padding-top: 5px; width: 10px !important;">
+            <br>
+            <a href="javascript:void(0)" class="agregar-tested-number"><i class="icon-plus-2"></i></a>
+        </div>
 </div>
         
-<div class="input-control select block">
-        Account Manager<small class="text-muted "><em> (required)</em></small>
-        <?php // echo $form->dropDownList($model,'id_manager', Managers::getListManagers(),  array('empty' => '' ,'class' => 'validate[required]')); ?>
-        <?php // echo $form->error($model,'id_manager'); ?>
-</div>-->
+<div style="clear: left;"></div>
+
+<div class="container_agregar"></div>
+</div> <!--/.preview_tested_number-->
         
-<div class="input-control select block">
+<div class="input-control select">
         SPEECHS
         <select id="speech">
             <option value=""></option>
