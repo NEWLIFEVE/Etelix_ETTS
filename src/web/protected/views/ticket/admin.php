@@ -52,7 +52,7 @@
                             <td>
                                 <?php if ($ticket->option_open == 'etelix_to_carrier'): ?>
                                     <?php if (isset($ticket->idUser->username)) echo $ticket->idUser->username; ?>
-                                <?php elseif ($ticket->option_open == 'etelix_as_carrier'): ?>
+                                <?php else: ?>
                                     <?php  echo  strlen($carrier) <= 9 ? $carrier : substr($carrier, 0, 9) .'...'; ?>
                                 <?php endif; ?>
                             </td>
