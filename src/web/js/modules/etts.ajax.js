@@ -57,7 +57,7 @@ $ETTS.ajax=(function(){
         getSpeechSupplier:function(settings){
             $.ajax({
                 type:'POST',
-                url:'/failure/gettextspeech',
+                url:'/failure/getspeechsupplier',
                 data: {
                   idFailure:settings.failure.val(),
                   failure:settings.failure.find('option:selected').text(),
@@ -65,11 +65,32 @@ $ETTS.ajax=(function(){
                 },
                 dataType:'json',
                 success:function(data) {
-                   if (data != 'false') 
+                   if (data.x != 'false') 
                    {
                        settings.append.val(data.speech);
-                       settings.speech.find('option[value="'+data.idSpeech+'"]').prop('selected', 'selected')
+                       settings.speech.html('');
+                       settings.speech.append('<option value="'+data.idSpeech+'" selected="selected">'+data.title+'</option>');
                    }
+                   else
+                   {
+                       settings.append.val('');
+                       settings.speech.html('');
+                   }
+                }
+             });
+        },
+        getSpeechCustomer:function(speech){
+            $.ajax({
+                type:'POST',
+                url:'/speech/getspeechcustomer',
+                dataType:'json',
+                success:function(data) {
+                    var count = data.length;
+                    speech.html('<option value=""></option>');
+                    for (var i = 0; i < count; i++)
+                    {
+                        speech.append('<option value="'+data[i].id+'">'+data[i].title+'</option>');
+                    }
                 }
              });
         },

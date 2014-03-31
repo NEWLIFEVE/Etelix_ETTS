@@ -5,7 +5,8 @@ Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
 
 31/03/2014
     - Se creo un campo nuevo en la tabla failure llamado id_speech que se relaciona con speech. Se agregó en el metodo relations dichas relaciones por cada modelo afectado por el campo agregado
-    - Se creó un action nuevo en FailureController (actionGettextspeech)
+    - Se creó un action nuevo en FailureController (actionGetspeechsupplier) para obtener los speech de los suppliers
+    - Se creó un action nuevo en SpeechController (actionGetspeechcustomer) para obtener los speech de los customers
 
 Release 1.1.8.1
 28/03/2014(Corrección en master)
