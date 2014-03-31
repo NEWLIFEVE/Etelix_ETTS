@@ -3,6 +3,10 @@ Etelix_ETTS
 
 Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
 
+31/03/2014
+    - Se creo un campo nuevo en la tabla failure llamado id_speech que se relaciona con speech. Se agregó en el metodo relations dichas relaciones por cada modelo afectado por el campo agregado
+    - Se creó un action nuevo en FailureController (actionGettextspeech)
+
 Release 1.1.8.1
 28/03/2014(Corrección en master)
 	- Corrección en creacion de tickets, comprobacion de option open, cuando es etelix_to_carrier comprueba que exista el correo, si es etelis_as_carrier o carrier_to_etelix, comprueba que exista y que asign_by sea 1
