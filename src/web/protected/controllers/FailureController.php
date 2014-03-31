@@ -132,7 +132,31 @@ class FailureController extends Controller
 			'dataProvider'=>$dataProvider,
 		));
 	}
-
+        
+        public function actionGettextspeech()
+        {
+                $model=new Failure;
+                $idFailure=$_POST['idFailure'];
+                if ($idFailure != null) 
+                {
+                    $speech=$model::model()->findByPk($idFailure)->idSpeech;
+                    if ($speech !== null)
+                    {
+                        $speech->speech = preg_replace('/FAILURE/', $_POST['failure'], $speech->speech);
+                        $speech->speech = preg_replace('/COUNTRY/', $_POST['country'], $speech->speech);
+                        $data=array(
+                            'idSpeech'=>$speech->id,
+                            'speech'=>$speech->speech
+                        );
+                        echo CJSON::encode($data);
+                    }
+                    else
+                    {
+                        echo 'false';
+                    }
+                }
+        }
+        
 	/**
 	 * Manages all models.
 	 */
