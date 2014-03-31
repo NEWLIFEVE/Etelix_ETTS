@@ -4,13 +4,12 @@ $(document).on('ready', function(){
      *                      EVENT(change)
      * 
      ************************************************************************/
-       $(document).on('change', '#class, #Ticket_id_failure, #Ticket_country', function(){
-            // Speechs para supplier
+     $(document).on('change', '#class, #Ticket_id_failure, #Ticket_country', function(){
+        // Speechs para supplier
+        if ($('#class').val() == 'supplier')
+        {
             if ($('#class').val() && $('#Ticket_id_failure').val() && $('#Ticket_country').val()) 
             {
-                if ($('#class').val() == 'supplier')
-                {
-                    
                     var settings = {
                         supplier:true,
                         failure:$('#Ticket_id_failure'),
@@ -19,18 +18,24 @@ $(document).on('ready', function(){
                         speech:$('#speech')
                     }
                     $ETTS.ajax.getSpeechSupplier(settings);
-                }
-                else
-                {
-                    $('#Ticket_description').val('') 
-                }
             }
             else
             {
-               $('#Ticket_description').val('') 
+               $('#Ticket_description').val('');
+               $('#speech').html('');
             }
-        });
-     
+        }
+        else if ($('#class').val() == 'customer')
+        {
+            $('#Ticket_description').val('');
+            $ETTS.ajax.getSpeechCustomer($('#speech'));
+        }
+        else
+        {
+            $('#Ticket_description').val('');
+            $('#speech').html('');
+        }
+    });
      
      // Append speech
     $(document).on('change', '#speech', function(){

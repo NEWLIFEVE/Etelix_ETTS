@@ -188,4 +188,11 @@ class SpeechController extends Controller
         $idSpeech=$_POST['_idSpeech'];
         if ($idSpeech != null) echo $model::model()->find("id = '$idSpeech'")->speech;
     }
+    
+    public function actionGetspeechcustomer()
+    {
+        $model=new Speech;
+        $data = $model::model()->findAll("id BETWEEN 1 AND 13", array('order'=>'id ASC'));
+        if ($data !== null) echo CJSON::encode($data);
+    }
 }

@@ -133,7 +133,12 @@ class FailureController extends Controller
 		));
 	}
         
-        public function actionGettextspeech()
+
+        /*
+         * Obtiene los speech asociado a un supplier
+         */
+        public function actionGetspeechsupplier()
+
         {
                 $model=new Failure;
                 $idFailure=$_POST['idFailure'];
@@ -146,13 +151,15 @@ class FailureController extends Controller
                         $speech->speech = preg_replace('/COUNTRY/', $_POST['country'], $speech->speech);
                         $data=array(
                             'idSpeech'=>$speech->id,
-                            'speech'=>$speech->speech
+                            'speech'=>$speech->speech,
+                            'title'=>$speech->title
                         );
                         echo CJSON::encode($data);
                     }
                     else
                     {
-                        echo 'false';
+
+                        echo CJSON::encode(array('x'=>'false'));
                     }
                 }
         }

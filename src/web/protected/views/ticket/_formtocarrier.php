@@ -164,9 +164,6 @@
         SPEECHS
         <select id="speech">
             <option value=""></option>
-            <?php foreach (Speech::getSpeech() as $value): ?>
-                <option value="<?php echo $value->id; ?>"><?php echo $value->title; ?></option>
-            <?php endforeach; ?>
         </select>
 </div>
 
