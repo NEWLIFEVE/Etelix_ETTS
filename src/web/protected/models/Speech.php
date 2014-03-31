@@ -52,6 +52,7 @@ class Speech extends CActiveRecord
 		return array(
 			'idLanguage' => array(self::BELONGS_TO, 'Language', 'id_language'),
 			'descriptionTickets' => array(self::HAS_MANY, 'DescriptionTicket', 'id_speech'),
+                        'failures' => array(self::HAS_MANY, 'Failure', 'id_speech'),
 		);
 	}
 

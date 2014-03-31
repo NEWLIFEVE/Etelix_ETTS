@@ -6,6 +6,7 @@
  * The followings are the available columns in table 'failure':
  * @property integer $id
  * @property string $name
+ * @property integer $id_speech
  *
  * The followings are the available model relations:
  * @property Ticket[] $tickets
@@ -54,6 +55,7 @@ class Failure extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+                        'idSpeech' => array(self::BELONGS_TO, 'Speech', 'id_speech'),
 			'tickets' => array(self::HAS_MANY, 'Ticket', 'id_failure'),
 		);
 	}

@@ -54,6 +54,25 @@ $ETTS.ajax=(function(){
                 }
              });
         },
+        getSpeechSupplier:function(settings){
+            $.ajax({
+                type:'POST',
+                url:'/failure/gettextspeech',
+                data: {
+                  idFailure:settings.failure.val(),
+                  failure:settings.failure.find('option:selected').text(),
+                  country:settings.country.find('option:selected').text()
+                },
+                dataType:'json',
+                success:function(data) {
+                   if (data != 'false') 
+                   {
+                       settings.append.val(data.speech);
+                       settings.speech.find('option[value="'+data.idSpeech+'"]').prop('selected', 'selected')
+                   }
+                }
+             });
+        },
         /**
          * @param obj selectTop
 	 * @param obj selectDown
