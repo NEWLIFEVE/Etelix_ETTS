@@ -86,10 +86,21 @@ $ETTS.ajax=(function(){
                 success:function(data) {
                     var count = data.length;
                     speech.html('<option value=""></option>');
+                    
+                    speech.append('<optgroup label="English">');
                     for (var i = 0; i < count; i++)
                     {
-                        speech.append('<option value="'+data[i].id+'">'+data[i].title+'</option>');
-                    }
+                        if (data[i].id_language == '1') 
+                            speech.append('<option value="'+data[i].id+'">'+data[i].title+'</option>');
+                    } 
+                    speech.append('</optgroup>');
+                    speech.append('<optgroup label="Spanish">');
+                    for (var i = 0; i < count; i++)
+                    {
+                        if (data[i].id_language == '2') 
+                            speech.append('<option value="'+data[i].id+'">'+data[i].title+'</option>');
+                    }  
+                    speech.append('</optgroup>');
                 }
              });
         },

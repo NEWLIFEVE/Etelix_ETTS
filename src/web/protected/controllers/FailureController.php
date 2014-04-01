@@ -152,7 +152,8 @@ class FailureController extends Controller
                         $data=array(
                             'idSpeech'=>$speech->id,
                             'speech'=>$speech->speech,
-                            'title'=>$speech->title
+                            'title'=>$speech->title,
+                            'idLanguage'=>$speech->id_language,
                         );
                         echo CJSON::encode($data);
                     }

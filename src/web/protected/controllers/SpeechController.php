@@ -192,7 +192,9 @@ class SpeechController extends Controller
     public function actionGetspeechcustomer()
     {
         $model=new Speech;
-        $data = $model::model()->findAll("id BETWEEN 1 AND 13", array('order'=>'id ASC'));
+//        $data = $model::model()->findAll("id BETWEEN 1 AND 13", array('order'=>'id ASC'));
+//        $data = $model::model()->findAllBySql("SELECT * FROM speech WHERE id BETWEEN 1 AND 13 UNION SELECT * FROM speech WHERE id  BETWEEN 23 AND 33 order by id asc");
+        $data = $model::model()->findAllBySql("SELECT * FROM speech WHERE code LIKE '%C%' ORDER BY id ASC");
         if ($data !== null) echo CJSON::encode($data);
     }
 }
