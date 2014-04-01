@@ -1,29 +1,25 @@
 <?php
 
-
 /**
- * This is the model class for table "speech".
+ * This is the model class for table "failure_speech".
  *
- * The followings are the available columns in table 'speech':
+ * The followings are the available columns in table 'failure_speech':
  * @property integer $id
- * @property string $speech
- * @property string $code
- * @property string $title
- * @property integer $id_language
+ * @property integer $id_failure
+ * @property integer $id_speech
  *
  * The followings are the available model relations:
- * @property Language $idLanguage
- * @property DescriptionTicket[] $descriptionTickets
- * @property FailureSpeech[] $failureSpeeches
+ * @property Failure $idFailure
+ * @property Speech $idSpeech
  */
-class Speech extends CActiveRecord
+class FailureSpeech extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'speech';
+		return 'failure_speech';
 	}
 
 	/**
@@ -34,12 +30,11 @@ class Speech extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('speech', 'required'),
-			array('id_language', 'numerical', 'integerOnly'=>true),
-			array('code, title', 'length', 'max'=>50),
+			array('id_failure, id_speech', 'required'),
+			array('id_failure, id_speech', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, speech, code, title, id_language', 'safe', 'on'=>'search'),
+			array('id, id_failure, id_speech', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -51,10 +46,8 @@ class Speech extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'idLanguage' => array(self::BELONGS_TO, 'Language', 'id_language'),
-			'descriptionTickets' => array(self::HAS_MANY, 'DescriptionTicket', 'id_speech'),
-                        'failureSpeeches' => array(self::HAS_MANY, 'FailureSpeech', 'id_speech'),
-                        
+			'idFailure' => array(self::BELONGS_TO, 'Failure', 'id_failure'),
+			'idSpeech' => array(self::BELONGS_TO, 'Speech', 'id_speech'),
 		);
 	}
 
@@ -65,10 +58,8 @@ class Speech extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'speech' => 'Speech',
-			'code' => 'Code',
-			'title' => 'Title',
-			'id_language' => 'Id Language',
+			'id_failure' => 'Id Failure',
+			'id_speech' => 'Id Speech',
 		);
 	}
 
@@ -91,10 +82,8 @@ class Speech extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('speech',$this->speech,true);
-		$criteria->compare('code',$this->code,true);
-		$criteria->compare('title',$this->title,true);
-		$criteria->compare('id_language',$this->id_language);
+		$criteria->compare('id_failure',$this->id_failure);
+		$criteria->compare('id_speech',$this->id_speech);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -105,20 +94,10 @@ class Speech extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return Speech2 the static model class
+	 * @return FailureSpeech the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
 	}
-        
-        /**
-         * Método para retornar una lista de los speech
-         * @return array
-         */
-        public static function getSpeech()
-        {
-            return self::model()->findAll(array('order' => 'id ASC'));
-        }
-        
 }

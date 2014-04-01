@@ -133,38 +133,6 @@ class FailureController extends Controller
 		));
 	}
         
-
-        /*
-         * Obtiene los speech asociado a un supplier
-         */
-        public function actionGetspeechsupplier()
-
-        {
-                $model=new Failure;
-                $idFailure=$_POST['idFailure'];
-                if ($idFailure != null) 
-                {
-                    $speech=$model::model()->findByPk($idFailure)->idSpeech;
-                    if ($speech !== null)
-                    {
-                        $speech->speech = preg_replace('/FAILURE/', $_POST['failure'], $speech->speech);
-                        $speech->speech = preg_replace('/COUNTRY/', $_POST['country'], $speech->speech);
-                        $data=array(
-                            'idSpeech'=>$speech->id,
-                            'speech'=>$speech->speech,
-                            'title'=>$speech->title,
-                            'idLanguage'=>$speech->id_language,
-                        );
-                        echo CJSON::encode($data);
-                    }
-                    else
-                    {
-
-                        echo CJSON::encode(array('x'=>'false'));
-                    }
-                }
-        }
-        
 	/**
 	 * Manages all models.
 	 */

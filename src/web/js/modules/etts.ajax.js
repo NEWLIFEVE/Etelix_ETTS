@@ -41,12 +41,14 @@ $ETTS.ajax=(function(){
 	 * @param int idSpeech
          * @param obj append
          */
-        getSpeech:function(idSpeech, append){
+        getSpeech:function(idSpeech, append, settings){
             $.ajax({
                 type:'POST',
                 url:'/speech/gettextspeech',
                 data: {
-                  _idSpeech:idSpeech   
+                  _idSpeech:idSpeech,
+                  failure:settings.failure.find('option:selected').text(),
+                  country:settings.country.find('option:selected').text()
                 },
                 success:function(data) {
                    $(append).val(data);
@@ -56,7 +58,7 @@ $ETTS.ajax=(function(){
         getSpeechSupplier:function(settings){
             $.ajax({
                 type:'POST',
-                url:'/failure/getspeechsupplier',
+                url:'/speech/getspeechsupplier',
                 data: {
                   idFailure:settings.failure.val(),
                   failure:settings.failure.find('option:selected').text(),
@@ -64,17 +66,32 @@ $ETTS.ajax=(function(){
                 },
                 dataType:'json',
                 success:function(data) {
-                   if (data.x != 'false') 
-                   {
-                       settings.append.val(data.speech);
-                       settings.speech.html('');
-                       settings.speech.append('<option value="'+data.idSpeech+'" selected="selected">'+data.title+'</option>');
-                   }
-                   else
-                   {
-                       settings.append.val('');
-                       settings.speech.html('');
-                   }
+                    if (data.x != 'false') 
+                    {
+                        var count = data.length;
+                        settings.speech.html('<option value=""></option>');
+                        settings.append.val('');
+                        
+                        settings.speech.append('<optgroup label="English">');
+                        for (var i = 0; i < count; i++)
+                        {
+                            if (data[i].idLanguage == '1') 
+                                settings.speech.append('<option value="'+data[i].idSpeech+'">'+data[i].title+'</option>');
+                        } 
+                        settings.speech.append('</optgroup>');
+                        settings.speech.append('<optgroup label="Spanish">');
+                        for (var i = 0; i < count; i++)
+                        {
+                            if (data[i].idLanguage == '2') 
+                                settings.speech.append('<option value="'+data[i].idSpeech+'">'+data[i].title+'</option>');
+                        }  
+                        settings.speech.append('</optgroup>');
+                    }
+                    else
+                    {
+                        settings.append.val('');
+                        settings.speech.html('');
+                    }
                 }
              });
         },

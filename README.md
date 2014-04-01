@@ -4,7 +4,11 @@ Etelix_ETTS
 Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
 
 01/04/2014
-    - Ahora el usuario interno tiene  la lista de speech en ingles y español para los clientes
+    - Ahora el usuario interno tiene  la lista de speech en ingles y español
+    - Se creo un action nuevo en SpeechController(actionGetspeechcustomer) para obtener los speech de los suppliers y se borro actionGetspeechsupplier en FailureController
+    - Se borró el campo id_speech de la tabla failure
+    - Se creó una nueva tabla llamada failure_speech
+    - Al abrirle un ticket a un supplier, estando seleccionado la falla y el pais, se cargará el speech correspondiente pudiendo seleccionar si setea en ingles o en español
 
 31/03/2014
     - Se creo un campo nuevo en la tabla failure llamado id_speech que se relaciona con speech. Se agregó en el metodo relations dichas relaciones por cada modelo afectado por el campo agregado

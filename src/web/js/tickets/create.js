@@ -39,7 +39,8 @@ $(document).on('ready', function(){
      
      // Append speech
     $(document).on('change', '#speech', function(){
-       $ETTS.ajax.getSpeech($(this).val(), $('#Ticket_description')); 
+       var settings = {failure:$('#Ticket_id_failure'), country:$('#Ticket_country')};
+       $ETTS.ajax.getSpeech($(this).val(), $('#Ticket_description'), settings); 
     });
     
     // Get Carrier by Class
