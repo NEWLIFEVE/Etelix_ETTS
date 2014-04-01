@@ -105,9 +105,16 @@ if ($tipoUsuario !== 'C'):
 <div class="input-control select medium">
     <select id="speech">
         <option value="">Speech</option>
-        <?php foreach (Speech::getSpeech() as $value): ?>
+        <optgroup label="English">
+        <?php foreach (Speech::getSpeech($datos->ticket_number) as $value): ?>
             <option value="<?php echo $value->id; ?>"><?php echo $value->title; ?></option>
         <?php endforeach; ?>
+        </optgroup>
+        <optgroup label="Spanish">
+        <?php foreach (Speech::getSpeechSpanish($datos->ticket_number) as $value): ?>
+            <option value="<?php echo $value->id; ?>"><?php echo $value->title; ?></option>
+        <?php endforeach; ?>
+        </optgroup>
     </select>
 </div>
 

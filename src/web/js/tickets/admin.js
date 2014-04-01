@@ -137,6 +137,8 @@ $(document).on('ready', function() {
             if ($(this).val()){
                var idTitle=$('#speech option:selected').val();
                getSpeech(idTitle)
+            } else {
+                $('#answer').val('')
             }
         });
        

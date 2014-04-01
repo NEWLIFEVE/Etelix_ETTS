@@ -9,6 +9,7 @@ Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
     - Se borró el campo id_speech de la tabla failure
     - Se creó una nueva tabla llamada failure_speech
     - Al abrirle un ticket a un supplier, estando seleccionado la falla y el pais, se cargará el speech correspondiente pudiendo seleccionar si setea en ingles o en español
+    - Ordenados speech's en preview ticket por idioma. También dependen si es customer o supplier
 
 31/03/2014
     - Se creo un campo nuevo en la tabla failure llamado id_speech que se relaciona con speech. Se agregó en el metodo relations dichas relaciones por cada modelo afectado por el campo agregado
