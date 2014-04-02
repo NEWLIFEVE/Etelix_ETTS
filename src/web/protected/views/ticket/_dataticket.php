@@ -27,7 +27,7 @@
 
 <div class="input-control text block">
 Failure
-<input type="text" value="<?php echo $datos->idFailure->name; ?>" disabled>
+<input type="text" id="Ticket_id_failure" value="<?php echo $datos->idFailure->name; ?>" disabled>
 </div>
 
 
@@ -85,7 +85,7 @@ $testedNumber=TestedNumber::getNumbers($datos->id);
 <div id="tabla_tested_number" class="grid">
     <?php $tabla = '<div><table id="tabla_preview"><thead><tr><th>Tested Numbers</th><th>Country</th><th>Date</th><th>Hour</th></thead><tbody>';
     foreach ($testedNumber as $value){
-        $tabla .= '<tr><td>' . $value->numero . '</td><td>' . $value->idCountry->name . '</td><td>' . $value->date . '</td><td>' . $value->hour . '</td></tr>';
+        $tabla .= '<tr><td>' . $value->numero . '</td><td id="Ticket_country">' . $value->idCountry->name . '</td><td>' . $value->date . '</td><td>' . $value->hour . '</td></tr>';
     } 
     echo $tabla . '</tbody></table></div>';
     ?>

@@ -42,13 +42,19 @@ $ETTS.ajax=(function(){
          * @param obj append
          */
         getSpeech:function(idSpeech, append, settings){
+            var _country = settings.country.find('option:selected').text(),
+            _failure = settings.failure.find('option:selected').text();
+            
+            if (_country == '') _country = settings.country.first().text();
+            if (_failure == '') _failure = settings.failure.val();
+            
             $.ajax({
                 type:'POST',
                 url:'/speech/gettextspeech',
                 data: {
                   _idSpeech:idSpeech,
-                  failure:settings.failure.find('option:selected').text(),
-                  country:settings.country.find('option:selected').text()
+                  failure:_failure,
+                  country:_country
                 },
                 success:function(data) {
                    $(append).val(data);

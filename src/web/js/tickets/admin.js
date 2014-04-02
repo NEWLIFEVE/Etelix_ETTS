@@ -86,20 +86,6 @@ function attachFile()
 }
 
 
-function getSpeech(idSpeech)
-{
-    $.ajax({
-       type:'POST',
-       url:'/speech/gettextspeech',
-       data: {
-         _idSpeech:idSpeech   
-       },
-       success:function(data) {
-          $('#answer').val(data);
-       }
-    });
-}
-
 // Asociar mas correos al ticket creado
 function toggleMails()
 {
@@ -135,8 +121,11 @@ $(document).on('ready', function() {
         //Append Speech
         $(document).on('change', 'select#speech', function(){
             if ($(this).val()){
-               var idTitle=$('#speech option:selected').val();
-               getSpeech(idTitle)
+                var settings = {
+                    failure:$('#Ticket_id_failure'), 
+                    country:$('#Ticket_country')
+                };
+                $ETTS.ajax.getSpeech($(this).val(), $('#answer'), settings); 
             } else {
                 $('#answer').val('')
             }

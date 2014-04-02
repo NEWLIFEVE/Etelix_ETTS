@@ -3,6 +3,9 @@ Etelix_ETTS
 
 Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
 
+02/04/2014
+    - Corrección en los speech del preview del ticket. No se concatenaba la falla y el pais, ahora ya lo hace.
+
 01/04/2014
     - Ahora el usuario interno tiene  la lista de speech en ingles y español
     - Se creo un action nuevo en SpeechController(actionGetspeechcustomer) para obtener los speech de los suppliers y se borro actionGetspeechsupplier en FailureController
