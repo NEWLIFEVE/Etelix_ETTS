@@ -393,39 +393,46 @@ $ETTS.ajax=(function(){
              });
         },
         
-        saveMail:function(_newMail,_typeUser, _user, contentMail, to, _option){
+        /**
+         * Este método guarda los mails desde la interfaz crear ticket(Todos los casos),
+         * también lo hace en la interfaz del detalle del ticket pero a diferencia de las
+         * demas vistas, en el detalle también guarda en la tabla mail_ticket
+         */
+        saveMail:function(_newMail,_typeUser,_user,contentMail,to,_option,_idTicket){
+            
             var _etelixAsCarrier = false;
-            if (_option.val() == 'etelix_as_carrier') {
-                _etelixAsCarrier = true;
-            }
+            if (_option.val() == 'etelix_as_carrier') _etelixAsCarrier = true;
+            
             if (_user.val())
             {
-                
-                if (_typeUser=='customer')
-                    _typeUser=1;
-                else if (_typeUser=='supplier')
-                    _typeUser=0;
-                else
-                    _typeUser=_typeUser;
-                
                 $.ajax({
                    type:'POST',
                    url:'/mail/setmail',
                    data:{
                        mail: _newMail.val(),
-                       typeUser:_typeUser,
                        user:_user.val(),
-                       option:_option.val()
+                       option:_option.val(),
+                       idTicket:_idTicket
                    },
                    success:function(data){
                        if (data == 'true') 
                        {    
+                           if (contentMail != null)
+                           {
+                                _getMailUser(contentMail, _user.val(), _etelixAsCarrier);
+                                setTimeout(function(){
+                                    var option = contentMail.find('option:last-child');
+                                    to.append('<option value="'+option.val()+'" >'+option.text()+'</option>');
+                                },500);
+                           }
+                           else
+                           {
+                               if (to != null)
+                               {
+                                   to.append('<option>'+_newMail.val()+'</option>');
+                               }
+                           }
                            _newMail.val('');
-                           _getMailUser(contentMail, _user.val(), _etelixAsCarrier);
-                           setTimeout(function(){
-                               var option = contentMail.find('option:last-child');
-                               to.append('<option value="'+option.val()+'" >'+option.text()+'</option>');
-                           },500);
                        } 
                        else if(data == 'tope alcanzado') 
                        {
@@ -445,12 +452,14 @@ $ETTS.ajax=(function(){
                             $.Dialog({
                                     shadow: true,
                                     overlay: false,
+                                    overlayClickClose: false,
                                     icon: '<span class="icon-rocket"></span>',
                                     title: 'Error',
                                     width: 500,
                                     padding: 10,
                                     content: '<center><h2>Error, email already exists, try another direction<h2></center>'
                               });
+                              
                        } 
                        else if (data == 'false') 
                        {
@@ -468,12 +477,48 @@ $ETTS.ajax=(function(){
                 });
             }
         },
+        
         removeBlink:function(_idTicket){
             $.ajax({
                type:'POST',
                url:'/descriptionticket/read',
                data:{
                    idTicket:_idTicket
+               }
+            });
+        },
+        
+        /**
+         * Este método guardará en uno o varios correos en la tabal mail_ticket 
+         * asociados a un usuario. Para esto ya debe existir el mail más no debe
+         * estar en mail_ticket
+         * @param {object} settings
+         */
+        saveMailTicket:function(settings){
+            $.ajax({
+               type:'POST',
+               url:'/mailticket/savemailticket',
+               data:{
+                   idTicket:settings.idTicket.val(),
+                   mail:settings.mail
+               }
+            });
+        },
+        /**
+         * Borrará uno o varios mails de mail_ticket
+         */
+        deleteMailTicket:function(settigns){
+            $.ajax({
+               type:'POST',
+               url:'/mailticket/delete',
+               data:{
+                   idMailTicket:settigns.idMailTicket
+               },
+               success:function(data){
+                   if (data == 'true')
+                   {
+                       alert('Borro')
+                   }
                }
             });
         }

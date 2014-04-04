@@ -336,9 +336,16 @@ $ETTS.UI=(function(){
                   _quitarValidacion(element);
               }
         },
-        appendOptions:function(boton, select, optionOpen){
-            
+        /**
+         * @param {obj} boton
+         * @param {obj} select
+         * @param {string} optionOpen
+         * @param {boolean} save
+         * @returns {Boolean}
+         */
+        appendOptions:function(boton, select, optionOpen, settings){
             var select2 = boton.parent().children('select');
+            if (select2.length === 0) select2 = boton.parent().parent().children('select');
             
             if(select.val()) 
             {
@@ -357,6 +364,9 @@ $ETTS.UI=(function(){
                 
                 select.find('option:selected').attr('selected',false);
                 _quitarValidacion(select2);
+                if (settings.save === true) {
+                    $ETTS.ajax.saveMailTicket(settings);
+                }
             }
         },
         clearOptions:function(select){

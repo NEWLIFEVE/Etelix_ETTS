@@ -149,7 +149,7 @@ class MailController extends Controller
 	}
 
 	/**
-	 *
+	 *Guarda los mail relacionados a usuarios y también los mails de los tickets
 	 */
 	public function actionSetMail()
 	{
@@ -222,9 +222,23 @@ class MailController extends Controller
                         $modelMailUser->status=1;
                         $modelMailUser->assign_by=$this->_assignBy($option);
                         if($modelMailUser->save())
-                                echo 'true';
+                        {
+                                if (isset($_POST['idTicket']) && $_POST['idTicket'] != null)
+                                { 
+                                    if  ($this->_saveMailTicket($_POST['idTicket'], $modelMailUser->id)) 
+                                        echo 'true';
+                                    else 
+                                        echo 'false';
+                                }
+                                else
+                                {
+                                    echo 'true';
+                                }
+                        }
                         else
+                        {
                                 echo 'false';
+                        }
                     }
                 }
             }
@@ -239,12 +253,42 @@ class MailController extends Controller
                     $modelMailUser->assign_by=$this->_assignBy($option);
 
                     if($modelMailUser->save())
-                            echo 'true';
+                    {
+                            if (isset($_POST['idTicket']) && $_POST['idTicket'] != null)
+                            { 
+                                if  ($this->_saveMailTicket($_POST['idTicket'], $modelMailUser->id)) 
+                                    echo 'true';
+                                else 
+                                    echo 'false';
+                            }
+                            else
+                            {
+                                echo 'true';
+                            }
+                    }
                     else
+                    {
                             echo 'false';
+                    }
                 }
             }
+            
 	}
+        
+        /**
+         * Guardará en la tabla mail_ticket al guardar en mail y mail_user
+         * @param int $idticket
+         * @param int $idMailUser
+         * @return boolean
+         */
+        private function _saveMailTicket($idticket, $idMailUser)
+        {
+            $attributes=array('id_ticket'=>$idticket, 'responseTo'=>$idMailUser);
+                if (!MailTicket::saveMailTicket($attributes, 1)) 
+                    return false;
+                else
+                    return true;
+        }
 
     /**
      * 

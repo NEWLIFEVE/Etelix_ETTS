@@ -1,26 +1,44 @@
-<?php $mailByTicket=MailUser::getMails(CrugeUser2::getUserTicket($datos->id, true)->iduser); ?>
+<?php 
+$optionOpen='';
+if ($datos->option_open == 'etelix_as_carrier' || $datos->option_open == 'carrier_to_etelix') $optionOpen='true';
+$mailByTicket=MailUser::getMails(CrugeUser2::getUserTicket($datos->id, true)->iduser, false, $optionOpen, $datos->id);
+$tipoUsuario=CrugeAuthassignment::getRoleUser();
+?>
 <input type="hidden" id="id_ticket" value="<?php echo $datos->id; ?>">
-<?php if ($datos->id_status != '2'): ?>
-<!--<div class="div-agregar-correo">
+<input type="hidden" id="open-ticket" value="<?php echo $datos->option_open; ?>">
+<input type="hidden" id="user-ticket" value="<?php echo CrugeUser2::getUserTicket($datos->id, true)->iduser; ?>">
+<?php if ($datos->id_status != '2' && $tipoUsuario != 'C' && $datos->option_open == 'etelix_to_carrier'): ?>
+<div class="options-hide">
     <div class="input-control select block">
         <select id="mails" multiple>
-            <?php // foreach ($mailByTicket as $mails): ?>
-                <option value="<?php // echo $mails['id']; ?>"><?php // echo $mails['mail']; ?></option>
-            <?php // endforeach; ?>
+            <?php foreach ($mailByTicket as $mails): ?>
+                <option value="<?php echo $mails['id']; ?>"><?php echo $mails['mail']; ?></option>
+            <?php endforeach; ?>
         </select>
     </div>
-</div>-->
+    <div class="div-agregar-correo">
+        <div class="input-control text span3"  data-role="input-control">
+            <input type="text" id="new_mail" class="validate[custom[email]]" name="new_mail" placeholder="example@example.com" />
+        </div>
+        
+        <div class="input-control text span2">
+            <button class="btn-agregar-correo primary" type="button" onclick="newMailTicket(this)"><i class="icon-floppy on-left"></i>Save</button>
+        </div>
+    </div>
+</div>
 <?php endif; ?>
 <div class="input-control select block">
-    Response to&nbsp;
-    <?php if ($datos->id_status != '2'): ?>
-    <!--<a href="javascript:void(0)" class="a-agregar-correo" onclick="toggleMails()"><i class="icon-plus-2"></i></a>-->
-    <!--<a href="javascript:void(0)" class="a-bajar-correo down-mail" onclick="bajarCorreo()"><i class="icon-arrow-down"></i></a>-->
-    <!--<a href="javascript:void(0)" class="a-borrar-correo" ><i class="icon-cancel-2 fg-red "></i></a>-->
+    Response to&nbsp;  
+    <?php if ($datos->id_status != '2' && $tipoUsuario != 'C' && $datos->option_open == 'etelix_to_carrier'): ?>
+    <a href="javascript:void(0)" class="a-agregar-correo" onclick="seeOptions(this)">Add more email's</a>&nbsp;&nbsp;
+    <span class="options-hide">
+        <a href="javascript:void(0)" class="a-bajar-correo" onclick="bajarCorreo(this)"><i class="icon-arrow-down"></i></a>
+        <a href="javascript:void(0)" class="a-borrar-correo" onclick="borrarCorreo(this)" ><i class="icon-cancel-2 fg-red "></i></a>
+    </span>
     <?php endif; ?>
-    <select multiple="multiple" readonly="readonly" id="preview_response_to">
-        <?php foreach (MailUser::getMailsByTicket($datos->id) as $value): ?>
-            <option><?php echo $value->idMail->mail; ?></option>
+    <select multiple="multiple" readonly="readonly" id="mostrar-mails">
+        <?php foreach (Mail::getMailsTicket($datos->id) as $value): ?>
+        <option value="<?php echo $value->id; ?>"><?php echo $value->mail; ?></option>
         <?php endforeach; ?>
     </select>
 </div>
@@ -99,7 +117,6 @@ Description
 <?php if ($datos->id_status != '2'): ?>
 <div id="only-open">
 <?php
-$tipoUsuario = CrugeAuthassignment::getRoleUser();
 if ($tipoUsuario !== 'C'):
 ?>
 <div class="input-control select medium">

@@ -87,15 +87,60 @@ function attachFile()
 
 
 // Asociar mas correos al ticket creado
-function toggleMails()
+function seeOptions(e)
 {
-    $('.div-agregar-correo, .down-mail').toggle('fast');
+    $('.options-hide').show('fast');
+    $(e).text('hide');
+    $(e).attr('onclick', 'hideOptions(this)');
+}
+function hideOptions(e)
+{
+    $('.options-hide').hide('fast');
+    $(e).text('Add more email\'s');
+    $(e).attr('onclick', 'seeOptions(this)');
 }
 
 // Bajar correos a la lista a donde se enviará la nota al cerrar o dar una respuesta al ticket
-function bajarCorreo()
+function bajarCorreo(e)
 {
-    $ETTS.UI.appendOptions($('a.a-bajar-correo'), $('#mails'));
+    var totalMails = $('#mails option:selected'), mails = [];
+
+    for (var i=0; i<totalMails.length; i++) mails.push(totalMails[i].value);
+    
+    var settings = {
+        save:true,
+        idTicket:$('#id_ticket'),
+        mail:mails
+    };
+    
+    $ETTS.UI.appendOptions($(e), $('#mails'), $('#open-ticket'), settings);
+}
+
+function newMailTicket(e)
+{
+    if ($('#new_mail').val().length > 0) 
+        $ETTS.ajax.saveMail($('#new_mail'),'',$('#user-ticket'),null,$('#mostrar-mails'),$('#open-ticket'),$('#id_ticket').val());
+}
+
+function borrarCorreo(e)
+{
+    var longitudTotal = $('#mostrar-mails option').length, 
+    longitudSeleccionados = $('#mostrar-mails option:selected').length,
+    options = $('#mostrar-mails option:selected'),
+    total=longitudTotal - longitudSeleccionados, 
+    _idMailticket=[];
+    
+    if ($('#mostrar-mails').val()) 
+    {
+        if (total !== 0)
+        {
+            for (var i = 0; i < longitudSeleccionados; i++) _idMailticket.push(options[i].value);
+            var settings = {
+                idMailTicket:_idMailticket
+            };
+            $ETTS.ajax.deleteMailTicket(settings);
+        }
+    }
 }
 
 /**
@@ -136,7 +181,7 @@ $(document).on('ready', function() {
                 // Se detiene el refresh
                 clearInterval(refreshInterval);
                 // Se oculta el div para agregar correo
-                setTimeout(function(){$('.div-agregar-correo, .down-mail').hide();}, 500);
+                 setTimeout(function(){$('.options-hide').hide();}, 500);
                 
                 var clase=$(this).parent().parent().attr('class'),
                 idTicket = $(this).attr('rel');

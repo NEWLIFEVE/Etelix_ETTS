@@ -3,6 +3,16 @@ Etelix_ETTS
 
 Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
 
+04/04/2014
+    - Se modificó el método saveMailTicket en el modelo MailTicket, ahora si los atributos pueden llegar tanto como array o como un solo atributo
+
+03/04/2014
+    - Corrección en adminclose, antes se mostraban todos los tickets cerrados a los carriers, ahora solo se muestran los tickets asociados a ellos.
+    - Se agregó un nuevo action en MailticketController(actionSavemailticket), el cual servirá para guardar los mails(ya registrados en mail_user) al dar una nueva respuesta.
+    - Nuevos métodos en admin.js: seeOptions(), hideOptions() los cuales muestran u ocultan la opción de agregar un correo.
+    - Nuevo método en admin.js: bajarCorreo() el cual al bajar el correo guardará de una vez el mail en la tabla mail_ticket.
+    
+
 02/04/2014
     - Corrección en los speech del preview del ticket. No se concatenaba la falla y el pais, ahora ya lo hace.
 

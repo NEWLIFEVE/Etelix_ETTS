@@ -236,9 +236,12 @@ class Ticket extends CActiveRecord
      */
     public static function ticketsClosed()
     {
+        $conditionUser='';
+        if(CrugeAuthassignment::getRoleUser()=="C") $conditionUser=' WHERE id_user='.Yii::app()->user->id;
+        
         return self::model()->findAllBySql("SELECT *
                                             FROM ticket
-                                            WHERE id IN (SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user)) AND id_status=2
+                                            WHERE id IN (SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user $conditionUser)) AND id_status=2
                                             ORDER BY id_status, id  ASC");
     }
 
