@@ -500,4 +500,17 @@ class TicketController extends Controller
         
         return $datos;
     }
+    
+    public function actionTestimap()
+    {
+        error_reporting(E_ALL & ~E_NOTICE); 
+        $imap = new Imap();
+        echo '<pre>';
+    //        $message = $imap->formatMessage('20140328-001-C19');
+    //        print_r($imap->formatMessage('20140328-001-C19'));
+        print_r($imap->lastMessage());
+        $imap->close();
+
+    //        $this->render('imap', array('message' => $message));
+    }
 }
