@@ -196,5 +196,11 @@ return array(
 	'params'=>array(
 	// this is used in contact page
 		'adminEmail'=>'manuelz@sacet.biz',
+//                'IMAP_HOST'=>'{mail.etelix.com:995/pop3/ssl/novalidate-cert}INBOX',
+//                'IMAP_USER'=>'etts@etelix.com',
+//                'IMAP_PASS'=>'3t3l1x.etts',
+                'IMAP_HOST'=>'{imap.gmail.com:993/imap/ssl}INBOX',
+                'IMAP_USER'=>'tsu.nelsonmarcano@gmail.com',
+                'IMAP_PASS'=>'NayeskaMarcano123'
 		),
 	);
