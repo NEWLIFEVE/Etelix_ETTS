@@ -201,6 +201,9 @@ class SpeechController extends Controller
         }
     }
     
+    /**
+     *
+     */
     public function actionGetspeechcustomer()
     {
         $model=new Speech;
@@ -208,6 +211,9 @@ class SpeechController extends Controller
         if ($data !== null) echo CJSON::encode($data);
     }
     
+    /**
+     *
+     */
     public function actionGetspeechsupplier()
     {
             $model=new Speech;
