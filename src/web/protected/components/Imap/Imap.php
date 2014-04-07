@@ -19,7 +19,6 @@ class Imap extends Connection
     
     /**
      * Retorna todos los mensajes con el subject, from, to, date y el cuerpo
-     * 
      * @return array
      */
     public function getMessages()
@@ -37,8 +36,7 @@ class Imap extends Connection
     }
 
     /**
-     * Retorna un array de un mensaje dado, pasando como parametro el id del mensaje
-     * 
+     * Retorna un array de un mensaje dado, pasando como parametro el ticketNumber
      * @param string $ticketNumber
      * @return array
      */
@@ -57,8 +55,45 @@ class Imap extends Connection
     }
     
     /**
-     * Retorna formateado los o  el mensaje filtrado por ticketNumber
-     * 
+     * Retorna la respuesta de los mensajes asociados a un ticketnumber
+     * @param string $ticketNumber
+     * @return array
+     */
+    public function allBodysByTicketNumber($ticketNumber)
+    {
+        foreach ($this->getIdMessage($ticketNumber) as $idMessage) {
+            $cadena = $this->getBody($idMessage); 
+            $subcadena = '<'; 
+            $posicionSubcadena = strpos ($cadena, $subcadena); 
+            $retorno = substr ($cadena, 0,($posicionSubcadena));
+            
+            if ($retorno != null) {
+                $this->_message[] = array(
+                    'body' => $retorno 
+                );
+            }
+        }
+        return $this->_message;
+    }
+    
+    /**
+     * Retorna el texto del ultimo mensaje enviado asociado a un ticketnumber
+     * @param string $ticketNumber
+     * @return string
+     */
+    public function lastBodyByTicketNumber($ticketNumber)
+    {
+        $idMail = $this->getIdMessage($ticketNumber);
+        $lastMail = end($idMail);
+        $cadena = $this->getBody($lastMail); 
+        $subcadena = '<'; 
+        $posicionSubcadena = strpos ($cadena, $subcadena); 
+        $retorno = substr ($cadena, 0,($posicionSubcadena)); 
+        return $retorno;
+    }
+    
+    /**
+     * Retorna formateado el o los mensaje filtrado por ticketNumber
      * @param string $ticketNumber
      * @return string
      */
@@ -66,13 +101,24 @@ class Imap extends Connection
     {
         $message = '<div class="answer-ticket">';
         foreach ($this->messageByTicketNumber($ticketNumber) as $value) {
-            $message .= '<div style="float: left; color: #3e454c; background: white;" class="msg-ticket">';
-            $message .= '<strong>Subject:</strong> ' . $value['subject'] . '<br>';
-            $message .= '<strong>From:</strong> ' . $value['from'] . '<br>';
-            $message .= '<strong>TO:</strong> ' . $value['to'] . '<br>';
-            $message .= '<strong>Date:</strong> ' . $value['date'] . '<br>';
-            $message .= '<strong>Cuerpo del mensaje:</strong><br> ' . $value['body'];
-            $message .= '</div>';
+            
+            $cadena = $value['body']; 
+            $subcadena = '<'; 
+            $posicionSubcadena = strpos ($cadena, $subcadena); 
+            $retorno = substr ($cadena, 0,($posicionSubcadena));
+            
+            $cadena2 = $retorno; 
+            $subCadena2 = 'quoted-printable';
+            $posicionSubcadena2 = strpos ($cadena2, $subCadena2); 
+            $retorno2 = substr ($cadena2, ($posicionSubcadena2 + 0)); 
+            $retorno2 = preg_replace('/quoted-printable/', '', $retorno2);
+            
+            if ($retorno != null) {
+                $message .= '<div style="float: left; border:1px solid silver; color: #3e454c; background: white;" class="msg-ticket">';
+                $message .= '<strong>Mensajes enviados desde el correo:</strong><br> ' . $retorno2;
+                $message .= '</div>';
+            }
+            
         }
         $message .= '</div>';
         return $message;
@@ -80,7 +126,6 @@ class Imap extends Connection
     
     /**
      * Retorna el subject del mensaje
-     * 
      * @param integer $messageID
      * @return string
      */
@@ -96,7 +141,6 @@ class Imap extends Connection
     
     /**
      * Retorna un array con todos los subject del buzón
-     * 
      * @return array
      */
     public function getAllSubject()
@@ -110,7 +154,6 @@ class Imap extends Connection
     
     /**
      * Retorna el id del o los mensajes dependiendo del ticketNumber
-     * 
      * @param string $ticketNumber
      * @return array
      */
@@ -119,9 +162,12 @@ class Imap extends Connection
         return imap_search($this->_inbox, 'SUBJECT "'.$ticketNumber.'" ');
     }
     
+    /**
+     * Retorna el último mensaje del buzón
+     * @return array
+     */
     public function lastMessage()
     {
-//        return   quoted_printable_decode(imap_fetchbody($this->_inbox, $this->_count, 1));
         return array(
                 'subject' => $this->getSubject($this->_count),
                 'from' => $this->getFrom($this->_count),
@@ -133,7 +179,6 @@ class Imap extends Connection
     
     /**
      * Retorna el to del mensaje
-     * 
      * @param integer $messageID
      * @return string
      */
@@ -149,7 +194,6 @@ class Imap extends Connection
     
     /**
      * Retorna el form del mensaje
-     * 
      * @param integer $messageID
      * @return string
      */
@@ -165,7 +209,6 @@ class Imap extends Connection
     
     /**
      * Retorna la fecha del mensaje
-     * 
      * @param integer $messageID
      * @return string
      */
@@ -181,7 +224,6 @@ class Imap extends Connection
     
     /**
      * Retorna el cuerpo del mensaje
-     * 
      * @param integer $messageID
      * @return string
      */

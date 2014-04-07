@@ -505,12 +505,14 @@ class TicketController extends Controller
     {
         error_reporting(E_ALL & ~E_NOTICE); 
         $imap = new Imap();
-        echo '<pre>';
-    //        $message = $imap->formatMessage('20140328-001-C19');
-    //        print_r($imap->formatMessage('20140328-001-C19'));
-        print_r($imap->lastMessage());
+//        
+//        echo '<pre>';
+        $mails = $imap->formatMessage('20140327-004-S19');
+//        print_r($lastEmail);
+//        print_r(end($lastEmail));
+//        print_r($imap->bodyByTicketNumber('20140327-004-S19'));
         $imap->close();
-
-    //        $this->render('imap', array('message' => $message));
+        
+        $this->render('imap', array('mails'=>$mails));
     }
 }
