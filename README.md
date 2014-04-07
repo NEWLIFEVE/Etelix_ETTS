@@ -3,6 +3,9 @@ Etelix_ETTS
 
 Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
 
+07/04/2014
+    - Ahora los usuarios internos tienen la posibilidad de agregar mas correos en la interfaz del detalle del ticket(Solo cuando el ticket es abierto etelix_to_carrier)
+
 04/04/2014
     - Se modificó el método saveMailTicket en el modelo MailTicket, ahora si los atributos pueden llegar tanto como array o como un solo atributo
 

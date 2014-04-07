@@ -25,8 +25,11 @@ $ETTS.ajax=(function(){
         $('#uploadFile').find('ul').empty();
     }
     
-    function _getMailUser(mails, user, _etelixAsCarrier){
-        $.post('/mailuser/getmailuser', 'iduser='+user+'&etelixAsCarrier='+_etelixAsCarrier, function(data){
+    function _getMailUser(mails, user, _etelixAsCarrier, idTicket){
+        
+        if (!idTicket) idTicket = null;
+            
+        $.post('/mailuser/getmailuser', 'iduser='+user+'&etelixAsCarrier='+_etelixAsCarrier+'&idTicket='+idTicket, function(data){
             mails.html('');
             for (var i = 0; i < data.length; i++) 
             {
@@ -415,26 +418,7 @@ $ETTS.ajax=(function(){
                        idTicket:_idTicket
                    },
                    success:function(data){
-                       if (data == 'true') 
-                       {    
-                           if (contentMail != null)
-                           {
-                                _getMailUser(contentMail, _user.val(), _etelixAsCarrier);
-                                setTimeout(function(){
-                                    var option = contentMail.find('option:last-child');
-                                    to.append('<option value="'+option.val()+'" >'+option.text()+'</option>');
-                                },500);
-                           }
-                           else
-                           {
-                               if (to != null)
-                               {
-                                   to.append('<option>'+_newMail.val()+'</option>');
-                               }
-                           }
-                           _newMail.val('');
-                       } 
-                       else if(data == 'tope alcanzado') 
+                       if(data == 'tope alcanzado') 
                        {
                             $.Dialog({
                                 shadow: true,
@@ -445,7 +429,6 @@ $ETTS.ajax=(function(){
                                 padding: 10,
                                 content: '<center><h2>Only five emails allowed<h2></center>'
                           });
-
                        } 
                        else if (data == 'existe correo') 
                        {
@@ -459,7 +442,6 @@ $ETTS.ajax=(function(){
                                     padding: 10,
                                     content: '<center><h2>Error, email already exists, try another direction<h2></center>'
                               });
-                              
                        } 
                        else if (data == 'false') 
                        {
@@ -472,6 +454,29 @@ $ETTS.ajax=(function(){
                                 padding: 10,
                                 content: '<center><h2>Error<h2></center>'
                             });
+                       } 
+                       else 
+                       {
+                           if (contentMail != null)
+                           {
+                                _getMailUser(contentMail, _user.val(), _etelixAsCarrier);
+                                setTimeout(function(){
+                                    var option = contentMail.find('option:last-child');
+                                    to.append('<option value="'+option.val()+'" >'+option.text()+'</option>');
+                                },500);
+                           }
+                           else
+                           {
+                               if (to != null)
+                               {
+                                   to.html('');
+                                   for (var i = 0; i < data.length; i++)
+                                   {
+                                       to.append('<option value="'+data[i].id+'">'+data[i].mail+'</option>');
+                                   }
+                               }
+                           }
+                           _newMail.val('');
                        }
                    }
                 });
@@ -488,8 +493,9 @@ $ETTS.ajax=(function(){
             });
         },
         
+        
         /**
-         * Este método guardará en uno o varios correos en la tabal mail_ticket 
+         * Este método guardará uno o varios correos en la tabal mail_ticket 
          * asociados a un usuario. Para esto ya debe existir el mail más no debe
          * estar en mail_ticket
          * @param {object} settings
@@ -501,6 +507,17 @@ $ETTS.ajax=(function(){
                data:{
                    idTicket:settings.idTicket.val(),
                    mail:settings.mail
+               },
+               dataType:'json',
+               success:function(data){
+                   if (data != 'false')
+                   {
+                       settings.select.html('');
+                       for (var i = 0; i < data.length; i++)
+                       {
+                           settings.select.append('<option value="'+data[i].id+'">'+data[i].mail+'</option>');
+                       }
+                   }
                }
             });
         },
@@ -515,10 +532,8 @@ $ETTS.ajax=(function(){
                    idMailTicket:settigns.idMailTicket
                },
                success:function(data){
-                   if (data == 'true')
-                   {
-                       alert('Borro')
-                   }
+                   settigns.select2.find('option:selected').remove();
+                    _getMailUser(settigns.select, settigns.idUser.val(), 'false', settigns.idTicket.val());
                }
             });
         }

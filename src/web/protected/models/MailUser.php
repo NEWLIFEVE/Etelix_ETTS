@@ -117,11 +117,11 @@ class MailUser extends CActiveRecord
                 if ($etelixAsCarrier == 'true') $assignBy=' AND assign_by = 0';
             }
             
-            if ($idTicket) $implode = ' and mu.id not in (' . implode(",", self::idMailUser($idTicket)) . ')';
+            if ($idTicket) $implode = ' and mu.id NOT IN (' . implode(",", self::idMailUser($idTicket)) . ')';
 
-            $sql="select mu.id as id, m.mail as mail
-                      from mail m, mail_user mu
-                      where mu.id_user = $user and mu.id_mail = m.id AND mu.status = 1 $assignBy $implode";
+            $sql="SELECT mu.id AS id, m.mail AS mail
+                      FROM mail m, mail_user mu
+                      WHERE mu.id_user = $user AND mu.id_mail = m.id AND mu.status = 1 $assignBy $implode";
             if ($user!=null) 
             {
                 if ($json == false)       

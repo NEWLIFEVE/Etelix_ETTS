@@ -110,7 +110,8 @@ function bajarCorreo(e)
     var settings = {
         save:true,
         idTicket:$('#id_ticket'),
-        mail:mails
+        mail:mails,
+        select:$('#mostrar-mails')
     };
     
     $ETTS.UI.appendOptions($(e), $('#mails'), $('#open-ticket'), settings);
@@ -136,7 +137,11 @@ function borrarCorreo(e)
         {
             for (var i = 0; i < longitudSeleccionados; i++) _idMailticket.push(options[i].value);
             var settings = {
-                idMailTicket:_idMailticket
+                idMailTicket:_idMailticket,
+                select:$('#mails'),
+                select2:$('#mostrar-mails'),
+                idUser:$('#user-ticket'),
+                idTicket:$('#id_ticket')
             };
             $ETTS.ajax.deleteMailTicket(settings);
         }

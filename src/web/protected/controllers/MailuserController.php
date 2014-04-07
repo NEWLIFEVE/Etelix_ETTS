@@ -185,6 +185,7 @@ class MailuserController extends Controller
 	{
             $user=null;
             $etelixAsCarrier = 'false';
+            $idTicket=false;
             
             if (isset($_POST['iduser']) && $_POST['iduser'] != null)
             {
@@ -196,8 +197,9 @@ class MailuserController extends Controller
             }
             
             if (isset($_POST['etelixAsCarrier'])) $etelixAsCarrier = $_POST['etelixAsCarrier'];
+            if (isset($_POST['idTicket']) && $_POST['idTicket'] != 'null') $idTicket=$_POST['idTicket'];
             
-            if ($user!=null) MailUser::getMails($user, true, $etelixAsCarrier);  
+            if ($user!=null) MailUser::getMails($user, true, $etelixAsCarrier, $idTicket);  
 	}
 
 	/**

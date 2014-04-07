@@ -357,15 +357,21 @@ $ETTS.UI=(function(){
                         return false;
                     }
                 }
-                for (var i=0; i < longitud; i++)
-                {
-                    select2.append('<option value="'+option[i].value+'">'+option[i].text+'</option>');
-                }
                 
-                select.find('option:selected').attr('selected',false);
-                _quitarValidacion(select2);
-                if (settings.save === true) {
-                    $ETTS.ajax.saveMailTicket(settings);
+                if (!settings) 
+                {
+                    for (var i=0; i < longitud; i++) select2.append('<option value="'+option[i].value+'">'+option[i].text+'</option>');
+                    
+                    select.find('option:selected').attr('selected',false);
+                    _quitarValidacion(select2);
+                }
+                else
+                {
+                    if (settings.save === true) 
+                    {
+                        select.find('option:selected').remove()
+                        $ETTS.ajax.saveMailTicket(settings);
+                    }
                 }
             }
         },

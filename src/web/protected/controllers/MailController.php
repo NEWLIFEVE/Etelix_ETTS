@@ -115,11 +115,12 @@ class MailController extends Controller
 	 */
 	public function actionDelete($id)
 	{
-		$this->loadModel($id)->delete();
-
-		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-		if(!isset($_GET['ajax']))
-			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+            echo $id;
+//		$this->loadModel($id)->delete();
+//
+//		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+//		if(!isset($_GET['ajax']))
+//			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
 	}
 
 	/**
@@ -226,9 +227,14 @@ class MailController extends Controller
                                 if (isset($_POST['idTicket']) && $_POST['idTicket'] != null)
                                 { 
                                     if  ($this->_saveMailTicket($_POST['idTicket'], $modelMailUser->id)) 
-                                        echo 'true';
+                                    {
+                                        header('Content-type: application/json');
+                                        echo CJSON::encode(Mail::getMailsTicket($_POST['idTicket']));
+                                    }
                                     else 
+                                    {
                                         echo 'false';
+                                    }
                                 }
                                 else
                                 {
@@ -257,9 +263,14 @@ class MailController extends Controller
                             if (isset($_POST['idTicket']) && $_POST['idTicket'] != null)
                             { 
                                 if  ($this->_saveMailTicket($_POST['idTicket'], $modelMailUser->id)) 
-                                    echo 'true';
+                                {
+                                    header('Content-type: application/json');
+                                    echo CJSON::encode(Mail::getMailsTicket($_POST['idTicket']));
+                                }
                                 else 
+                                {
                                     echo 'false';
+                                }
                             }
                             else
                             {

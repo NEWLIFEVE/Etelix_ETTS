@@ -192,6 +192,6 @@ class MailticketController extends Controller
             if (!MailTicket::saveMailTicket($attributes, 1)) 
                 echo 'false';
             else
-                echo 'true';
+                echo CJSON::encode(Mail::getMailsTicket($_POST['idTicket']));
         }
 }
