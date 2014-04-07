@@ -41,6 +41,7 @@ return array(
 		'application.models.*',
                 'application.controllers.*',
 		'application.components.*',
+                'application.components.Imap.*',
 		'application.modules.cruge.components.*',
 		'application.modules.cruge.extensions.crugemailer.*',
 		),
