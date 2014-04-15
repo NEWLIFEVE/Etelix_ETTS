@@ -1,3 +1,4 @@
 <?php
-
-echo $mails;
+echo '<pre>';
+print_r($mails);
+echo '</pre>';

@@ -10,15 +10,15 @@ class Imap extends Connection
     private $_message;
     private $_count;
 
-    public function __construct() 
+    public function __construct($connection = false) 
     {
-        $this->_inbox = parent::__construct();
+        $this->_inbox = parent::__construct($connection);
         $this->_message = array();
         $this->_count = imap_num_msg($this->_inbox);
     }
     
     /**
-     * Retorna todos los mensajes con el subject, from, to, date y el cuerpo
+     * Retorna todos los mensajes
      * @return array
      */
     public function getMessages()
@@ -34,6 +34,77 @@ class Imap extends Connection
         }
         return $this->_message;
     }
+    
+    /**
+     * Retorna una cantidad de mensajes dependiendo del parametro que se le setee 
+     * @param int $key
+     * @return array
+     */
+    public function getMessagesByQuantity($key = false)
+    {
+        if($key === false)  $key = 1;
+        if ($key >= $this->_count) $key = 1;
+        $resta = $this->_count - $key;
+        $rules = array('quoted-printable');
+        for ($i = $this->_count; $i > $resta; $i--) {
+            if (!strpos($this->getSubject($i), 'delivery')) {
+                $body = $this->getBody($i);
+                $body = $this->_filterBodyToLeft($body, $rules);
+                $body = $this->_filterBodyToRight($body, 'Saludos');
+                $body = $this->_filterBodyToRight($body, 'regards');
+                $body = $this->_filterBodyToRight($body, 'Regards');
+                $body = $this->_filterBodyToRight($body, 'base64');
+                $this->_message[] = array(
+                    'subject' => $this->getSubject($i),
+                    'from' => $this->getFrom($i),
+                    'to' => $this->getTo($i),
+                    'date' => $this->getDate($i),
+                    'body' => $body,
+                );
+            }
+        }
+        return $this->_message;
+    }
+    
+    /**
+     * Filtra el cuerpo del mensaje mostrando solo la parte derecha del mismo
+     * dependiendo de las reglas de filtrado que se pasen por el segundo parametro
+     * 
+     * @param string $body
+     * @param array $rules
+     * @return string
+     */
+    private function _filterBodyToLeft($body, $rules = array())
+    {
+        $count = count($rules);
+        $result = '';
+        for ($i = 0; $i < $count; $i++) {
+            $positionSubString = strpos ($body, $rules[$i]); 
+            $result .= substr ($body, ($positionSubString));
+            $result = preg_replace('/' . $rules[$i] . '/', '', $result);
+        }
+        return $result;
+    }
+    
+    /**
+     * Filtra el cuerpo del mensaje mostrando solo la parte izquierda del mismo
+     * dependiendo de la regla de filtrado que se pase por el segundo parametro
+     * 
+     * @param string $body
+     * @param string $rules
+     * @return string
+     */
+    private function _filterBodyToRight($body, $rules)
+    {
+        $result = '';
+        if (strpos($body, $rules)) {
+            $positionSubString = strpos($body, $rules); 
+            $result = substr($body, 0, ($positionSubString + strlen($rules)));
+        } else {
+            $result = $body;
+        }
+        return $result;
+    }
 
     /**
      * Retorna un array de un mensaje dado, pasando como parametro el ticketNumber
@@ -42,39 +113,30 @@ class Imap extends Connection
      */
     public function messageByTicketNumber($ticketNumber)
     {
-        foreach ($this->getIdMessage($ticketNumber) as $idMessage) {
-            $this->_message[] = array(
-                'subject' => $this->getSubject($idMessage),
-                'from' => $this->getFrom($idMessage),
-                'to' => $this->getTo($idMessage),
-                'date' => $this->getDate($idMessage),
-                'body' => $this->getBody($idMessage) 
-            );
-        }
-        return $this->_message;
-    }
-    
-    /**
-     * Retorna la respuesta de los mensajes asociados a un ticketnumber
-     * @param string $ticketNumber
-     * @return array
-     */
-    public function allBodysByTicketNumber($ticketNumber)
-    {
-        foreach ($this->getIdMessage($ticketNumber) as $idMessage) {
-            $cadena = $this->getBody($idMessage); 
-            $subcadena = '<'; 
-            $posicionSubcadena = strpos ($cadena, $subcadena); 
-            $retorno = substr ($cadena, 0,($posicionSubcadena));
-            
-            if ($retorno != null) {
+        $idMessages = $this->getIdMessage($ticketNumber);
+        $rules = array('quoted-printable');
+        if ($idMessages != false) {
+            foreach ($idMessages as $idMessage) {
+                $body = $this->getBody($idMessage);
+                $body = $this->_filterBodyToLeft($body, $rules);
+                $body = $this->_filterBodyToRight($body, 'Saludos');
+                $body = $this->_filterBodyToRight($body, 'regards');
+                $body = $this->_filterBodyToRight($body, 'Regards');
+                $body = $this->_filterBodyToRight($body, 'base64');
                 $this->_message[] = array(
-                    'body' => $retorno 
+                    'id' => $this->getUid($idMessage),
+                    'subject' => $this->getSubject($idMessage),
+                    'from' => $this->getFrom($idMessage),
+                    'to' => $this->getTo($idMessage),
+                    'date' => $this->getDate($idMessage),
+                    'body' => $body
                 );
             }
+            return $this->_message;
         }
-        return $this->_message;
+        return false;
     }
+    
     
     /**
      * Retorna el texto del ultimo mensaje enviado asociado a un ticketnumber
@@ -85,43 +147,11 @@ class Imap extends Connection
     {
         $idMail = $this->getIdMessage($ticketNumber);
         $lastMail = end($idMail);
-        $cadena = $this->getBody($lastMail); 
-        $subcadena = '<'; 
-        $posicionSubcadena = strpos ($cadena, $subcadena); 
-        $retorno = substr ($cadena, 0,($posicionSubcadena)); 
-        return $retorno;
-    }
-    
-    /**
-     * Retorna formateado el o los mensaje filtrado por ticketNumber
-     * @param string $ticketNumber
-     * @return string
-     */
-    public function formatMessage($ticketNumber)
-    {
-        $message = '<div class="answer-ticket">';
-        foreach ($this->messageByTicketNumber($ticketNumber) as $value) {
-            
-            $cadena = $value['body']; 
-            $subcadena = '<'; 
-            $posicionSubcadena = strpos ($cadena, $subcadena); 
-            $retorno = substr ($cadena, 0,($posicionSubcadena));
-            
-            $cadena2 = $retorno; 
-            $subCadena2 = 'quoted-printable';
-            $posicionSubcadena2 = strpos ($cadena2, $subCadena2); 
-            $retorno2 = substr ($cadena2, ($posicionSubcadena2 + 0)); 
-            $retorno2 = preg_replace('/quoted-printable/', '', $retorno2);
-            
-            if ($retorno != null) {
-                $message .= '<div style="float: left; border:1px solid silver; color: #3e454c; background: white;" class="msg-ticket">';
-                $message .= '<strong>Mensajes enviados desde el correo:</strong><br> ' . $retorno2;
-                $message .= '</div>';
-            }
-            
+        $body = $this->getBody($lastMail);
+        if ($body != null) {
+            return $body;
         }
-        $message .= '</div>';
-        return $message;
+        return false;
     }
     
     /**
@@ -138,43 +168,33 @@ class Imap extends Connection
             return $exc->getMessage();
         }
     }
-    
-    /**
-     * Retorna un array con todos los subject del buzón
-     * @return array
-     */
-    public function getAllSubject()
-    {
-        $subject = array();
-        for ($i = 1; $i <= $this->_count; $i++) {
-            $subject[] = $this->getSubject($i);
-        }
-        return $subject;
-    }
-    
+        
     /**
      * Retorna el id del o los mensajes dependiendo del ticketNumber
      * @param string $ticketNumber
-     * @return array
+     * @return array|boolean
      */
     public function getIdMessage($ticketNumber)
     {
-        return imap_search($this->_inbox, 'SUBJECT "'.$ticketNumber.'" ');
+        $idMessage = imap_search($this->_inbox, 'SUBJECT "'.$ticketNumber.'" ');
+        if ($idMessage != null){
+            return $idMessage;
+        }
+        return false;
     }
     
     /**
-     * Retorna el último mensaje del buzón
-     * @return array
+     * Retorna el id unico de cada mensaje
+     * @param int $messageID
+     * @return int
      */
-    public function lastMessage()
+    public function getUid($messageID)
     {
-        return array(
-                'subject' => $this->getSubject($this->_count),
-                'from' => $this->getFrom($this->_count),
-                'to' => $this->getTo($this->_count),
-                'date' => $this->getDate($this->_count),
-                'body' => $this->getBody($this->_count) 
-            );
+        try {
+            return imap_uid($this->_inbox, $messageID);
+        } catch (Exception $exc) {
+            return $exc->getMessage();
+        }
     }
     
     /**
@@ -237,7 +257,24 @@ class Imap extends Connection
     }
     
     /**
-     * Cerrar la conexón imap
+     * Borra los mensajes por su id
+     * @param array $mails
+     * @return void
+     */
+    public function deleteMessage($mails)
+    {
+        try {
+            foreach ($mails as $value) {
+                imap_delete($this->_inbox, $value['id'], FT_UID);
+                imap_expunge($this->_inbox);
+            }
+        } catch (Exception $exc) {
+            return $exc->getMessage();
+        }
+    }
+    
+    /**
+     * Cerrar la conexion imap
      */
     public function close()
     {

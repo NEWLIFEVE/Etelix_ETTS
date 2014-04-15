@@ -536,6 +536,35 @@ $ETTS.ajax=(function(){
                     _getMailUser(settigns.select, settigns.idUser.val(), 'false', settigns.idTicket.val());
                }
             });
+        },
+        getMailsImap:function(settings){
+            $.ajax({
+               type:'POST',
+               url:'/ticket/getmailsimap',
+               data:{
+                   ticketNumber:settings.ticketNumber,
+                   optionOpen:settings.optionOpen,
+                   idTicket:settings.idTicket
+               },
+               success:function(data){
+                   if (data !== 'false') {
+                       settings.answer.empty();
+                       settings.loader.empty();
+                       settings.answer.html(data);
+                       settings.answer.append('<div class="pre-loader"></div>');
+                       settings.answer.scrollTop(100000);
+                   } else {
+                       settings.loader.empty();
+                   }
+               },
+               beforeSend:function(){
+                   settings.loader.html(
+                        '<div style="width:100% !important; text-align:center !important;">' +
+                            '<div style="margin:auto;"><img src="/images/preloader.GIF"></div>' +
+                        '</div>'
+                    );
+               }
+            });
         }
     }
 })();

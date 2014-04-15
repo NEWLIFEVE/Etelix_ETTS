@@ -4,13 +4,16 @@
  *
  * @author Nelson Marcano
  */
-class Connection
+abstract class Connection
 {
     private $_con;
     
-    protected function __construct()
+    protected function __construct($key = false)
     {
-        $this->_con = imap_open(Yii::app()->params['IMAP_HOST'], Yii::app()->params['IMAP_USER'], Yii::app()->params['IMAP_PASS']);
+        if ($key)
+            $this->_con = imap_open($key['IMAP_HOST'], $key['IMAP_USER'], $key['IMAP_PASS']);
+        else
+            $this->_con = imap_open(Yii::app()->params['IMAP_HOST'], Yii::app()->params['IMAP_USER'], Yii::app()->params['IMAP_PASS']);
         
         if ($this->_con) 
             return $this->_con;

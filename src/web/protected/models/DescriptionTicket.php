@@ -177,7 +177,7 @@ class DescriptionTicket extends CActiveRecord
         $optionRead=DescriptionticketController::getUserNewDescription($etelixAsCarrier);
         $model->read_carrier=$optionRead['read_carrier'];
         $model->read_internal=$optionRead['read_internal'];
-        $model->response_by=Yii::app()->user->id;;
+        $model->response_by=Yii::app()->user->id;
         if (!$model->save()) $isOk=false;
         
         if ($attributtesFile != null){

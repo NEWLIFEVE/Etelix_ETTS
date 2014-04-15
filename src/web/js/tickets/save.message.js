@@ -57,6 +57,7 @@ function saveMessage()
                     if (data != 'false') {
                         $('div.answer-ticket, div.pre-loader').empty();
                         $('div.answer-ticket').html(data);
+                        $('div.answer-ticket').append('<div class="get-mails"></div><div class="pre-loader"></div>');
                         $('div.answer-ticket').scrollTop(100000);
                         $('#only-open').slideUp('slow');
                         $('.a-agregar-correo').hide('fast');
@@ -92,6 +93,7 @@ function saveMessage()
                 if (data !== 'false') {
                     $('div.answer-ticket, div.pre-loader').empty();
                     $('div.answer-ticket').html(data);
+                    $('div.answer-ticket').append('<div class="get-mails"></div><div class="pre-loader"></div>');
                     $('div.answer-ticket').scrollTop(100000);
                 }
             }

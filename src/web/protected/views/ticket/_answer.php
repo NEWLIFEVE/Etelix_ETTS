@@ -35,4 +35,4 @@ if ($description != null) {
     }
 }
 ?>
-<div class="pre-loader"></div>
+
