@@ -148,6 +148,18 @@ function borrarCorreo(e)
     }
 }
 
+
+function show(e, show)
+{
+    $(show).show('fast');
+}
+function hide(e, show)
+{
+    $(show).hide('fast');
+}
+
+
+
 /**
 *Función para refrescar la vista admin.php cada 5 minutos. Si se da un preview del
 *ticket se interrrumpe el proceso y al cerrar el preview se vuelven a contar los 
@@ -182,11 +194,16 @@ $(document).on('ready', function() {
         });
        
        // Boton para abrir el preview del ticket
-       $(document).on('click', 'table#example tbody tr td a.preview', function () {
+       $(document).on('click', '.preview', function () {
+                setTimeout(function(){
+                    $('.tab-control').tabcontrol({
+                        effect: 'fade' // or 'slide'
+                    });
+                }, 1000);
                 // Se detiene el refresh
                 clearInterval(refreshInterval);
                 // Se oculta el div para agregar correo
-                 setTimeout(function(){$('.options-hide').hide();}, 500);
+                setTimeout(function(){$('.options-hide, .mails-associates').hide();}, 500);
                 
                 var clase=$(this).parent().parent().attr('class'),
                 idTicket = $(this).attr('rel');
@@ -202,11 +219,12 @@ $(document).on('ready', function() {
                             flat:true,
                             icon: "<span class=icon-eye-2></span>",
                             title: "Ticket Information",
-                            width: 510,
-                            height: 300,
-                            paddingBottom: 20,
+                            width: 1024,
+                            height: 540,
+                            padding:0,
+                            paddingBottom: 0,
                             draggable: true,
-                            content:"<div id=content_detail>"+data+"</div>",
+                            content:data,
                             sysBtnCloseClick: function(event){
                                 // Al cerrar la ventana, se vuelve a contar los 5 munitos
                                 refreshInterval = setInterval(function(){
@@ -214,7 +232,20 @@ $(document).on('ready', function() {
                                 }, 300000);
                             }
                         });
+                        // Scroll abajo al cargar el detalle del ticket
                         $('div.answer-ticket').scrollTop(100000);
+                        // Click para cargar los corres entrantes con imap
+                        $('.see-email').on('click', function () {
+                            var settings = {
+                                ticketNumber:$(this).attr('id'),
+                                loader:$('.pre-loader'),
+                                answer:$('.answer-ticket'),
+                                optionOpen:$('#open-ticket').val(),
+                                idTicket:$('#id_ticket').val()
+                            };
+                            
+                            $ETTS.ajax.getMailsImap(settings);
+                        });
                     }
                 });
                 setTimeout('attachFile()', 1000);

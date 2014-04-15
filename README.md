@@ -3,6 +3,12 @@ Etelix_ETTS
 
 Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
 
+15/04/2014
+    - Se amplió la interfaz del detalle delticket.
+    - Se colocó un botón de refresh(para el chat) en el detalle del ticket.
+    - Al darle al botón de refresh, también descargará los correos asociados(de existir alguno) a ese 
+      número de ticket y guardará en base de datos.
+
 07/04/2014
     - Ahora los usuarios internos tienen la posibilidad de agregar mas correos en la interfaz del detalle del ticket(Solo cuando el ticket es abierto etelix_to_carrier)
 
