@@ -455,11 +455,6 @@ class TicketController extends Controller
     {
         if (isset($_POST['ticketNumber']) && !empty($_POST['ticketNumber'])) {
             error_reporting(E_ALL & ~E_NOTICE); 
-            $connection = array(
-                'IMAP_HOST'=>'{imap.gmail.com:993/imap/ssl}INBOX',
-                'IMAP_USER'=>'tsu.nelsonmarcano@gmail.com',
-                'IMAP_PASS'=>'NayeskaMarcano123'
-            );
             $imap = new Imap();
             $mails = $imap->messageByTicketNumber($_POST['ticketNumber']);
             if ($mails != false) {
