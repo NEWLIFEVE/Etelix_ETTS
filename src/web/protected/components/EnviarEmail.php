@@ -39,7 +39,7 @@ class EnviarEmail extends CApplicationComponent
             $mailer->IsSMTP();
             $mailer->IsHTML(true); 
             $mailer->From='etts@etelix.com';
-            $mailer->FromName = 'ETELIX TT System (ETTS)';
+            $mailer->FromName='ETELIX Trouble Ticket System (ETTS)';
             
             if($user!=null)
             {

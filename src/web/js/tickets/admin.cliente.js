@@ -1,3 +1,15 @@
+// Asociar mas correos al ticket creado
+function toggleMails()
+{
+    $('.div-agregar-correo, .down-mail').toggle('fast');
+}
+
+// Bajar correos a la lista a donde se enviará la nota al cerrar o dar una respuesta al ticket
+function bajarCorreo()
+{
+    $ETTS.UI.appendOptions($('a.a-bajar-correo'), $('#mails'));
+}
+
 // Función para agregar archivos en el description
 function attachFile()
 {
@@ -31,16 +43,17 @@ function attachFile()
 }
 
 $(document).ready(function() {
-      
        //Tooltip del statu y el tiempo que lleva desde que se abrió
         $( document ).tooltip({
             track: true
         });
         
        // Boton para abrir el preview del ticket
-       $(document).on('click', 'table#example tbody tr td a.preview', function () {
-                 var clase=$(this).parent().parent().attr('class'),
-                 idTicket = $(this).attr('rel');
+       $(document).on('click', 'a.preview', function () {
+                setTimeout(function(){$('.div-agregar-correo, .down-mail').hide();}, 500);
+
+                var clase=$(this).parent().parent().attr('class'),
+                idTicket = $(this).attr('rel');
                  
                 $.ajax({
                     type:"POST",
@@ -49,6 +62,7 @@ $(document).ready(function() {
                         $.Dialog({
                             shadow: true,
                             overlay: true,
+                            overlayClickClose: false,
                             flat:true,
                             icon: "<span class=icon-eye-2></span>",
                             title: "Ticket Information",
@@ -59,6 +73,17 @@ $(document).ready(function() {
                             content:"<div id=content_detail>"+data+"</div>"
                         });
                         $('div.answer-ticket').scrollTop(100000);
+                        $('.see-email').on('click', function () {
+                            var settings = {
+                                ticketNumber:$(this).attr('id'),
+                                loader:$('.pre-loader'),
+                                answer:$('.answer-ticket'),
+                                optionOpen:$('#open-ticket').val(),
+                                idTicket:$('#id_ticket').val()
+                            };
+                            
+                            $ETTS.ajax.getMailsImap(settings);
+                        });
                     }
                 });
                 setTimeout('attachFile()', 1000);
@@ -79,8 +104,8 @@ $(document).ready(function() {
             "bDestroy": true,
             "sPaginationType": "full_numbers",
             "aoColumnDefs": [
-                    { "aDataSort": false, "aTargets": [ 0,7 ] },
-                    { "bSortable": false, "aTargets": [ 7 ] }
+                    { "aDataSort": false, "aTargets": [ 0,6 ] },
+                    { "bSortable": false, "aTargets": [ 6 ] }
             ],
             "aaSorting": [[ 0, "desc" ]]
 

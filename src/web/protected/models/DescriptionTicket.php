@@ -118,8 +118,14 @@ class DescriptionTicket extends CActiveRecord
      * @param int $idTicket
      */
     public static function getDescription($idTicket)
-    {
-        return self::model()->findAllBySql("select * from description_ticket where id_ticket=$idTicket order by id ASC");
+    {   
+        if (empty($idTicket) || !isset($idTicket)) return null;
+    
+        $query = self::model()->findAllBySql("SELECT * FROM description_ticket WHERE id_ticket=$idTicket ORDER BY id ASC");
+        if ($query != null) {
+            return $query;
+        }
+        return null;
     }
     
     /**
@@ -148,5 +154,36 @@ class DescriptionTicket extends CActiveRecord
                   FROM description_ticket 
                   WHERE id_ticket=$idTicket 
                   ORDER BY date DESC, hour DESC");
+    }
+    
+    public static function saveDescription($attributes,$optionOpen,$attributtesFile=null)
+    {
+        $model=new DescriptionTicket;
+        $isOk=true;
+        $etelixAsCarrier=false;
+        
+        $model->id_ticket=$attributes['id_ticket'];
+        $model->description=$attributes['description'];
+        $model->date=date('Y-m-d');
+        $model->hour=date('H:i:s');
+        
+        if ($optionOpen == 'etelix_as_carrier') {
+            $model->id_user=CrugeUser2::getUserTicket($attributes['id_ticket'],true)->iduser;
+            $etelixAsCarrier=true;
+        } else {
+            $model->id_user=Yii::app()->user->id;
+        }
+        
+        $optionRead=DescriptionticketController::getUserNewDescription($etelixAsCarrier);
+        $model->read_carrier=$optionRead['read_carrier'];
+        $model->read_internal=$optionRead['read_internal'];
+        $model->response_by=Yii::app()->user->id;
+        if (!$model->save()) $isOk=false;
+        
+        if ($attributtesFile != null){
+            if (!File::saveFile($attributtesFile,$model->id)) $isOk=false;
+        }
+        
+        return $isOk;
     }
 }

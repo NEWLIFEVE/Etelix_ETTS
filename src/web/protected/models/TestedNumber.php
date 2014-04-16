@@ -112,15 +112,50 @@ class TestedNumber extends CActiveRecord
             }
         }
         
+        /**
+         * Retorna el primer Number que cumpla con la condición
+         * @param integer $idTicket
+         * @return string
+         */
+        public static function getNumber($idTicket)
+        {
+            $count = self::model()->count("id_ticket=:id_ticket", array(':id_ticket' => $idTicket));
+            if ($count > 0) {
+                return self::model()->find("id_ticket=:id_ticket", array(':id_ticket' => $idTicket));
+            }
+            return false;
+        }
+        
         public static function getTestedNumberArray($idTicket)
         {
-            $array = array();
-            foreach (self::getNumbers($idTicket) as $key => $value){
-                $array['number'][] = $value->numero;
-                $array['country'][] = $value->idCountry->name;
-                $array['date'][] = $value->date;
-                $array['hour'][] = $value->hour;
-            } 
+            $array = null;
+            $numbers=self::getNumbers($idTicket);
+            if ($numbers != null) {
+                foreach ($numbers as $key => $value){
+                    $array['number'][] = $value->numero;
+                    $array['country'][] = $value->idCountry->name;
+                    $array['date'][] = $value->date;
+                    $array['hour'][] = $value->hour;
+                } 
+            }
             return  $array;
+        }
+        
+        public static function saveTestedNumbers($attributes)
+        {
+            $isOk=true;
+            $count=count($attributes['testedNumber']);
+            for($i=0; $i<$count; $i++)
+            {
+                $model=new TestedNumber;
+                $model->id_ticket=$attributes['id_ticket'];
+                $model->id_country=$attributes['_country'][$i];
+                $model->numero=$attributes['testedNumber'][$i];
+                $model->date=$attributes['_date'][$i];
+                $model->hour=$attributes['_hour'][$i];
+                if (!$model->save())
+                    $isOk = false;
+            }
+            return $isOk;
         }
 }

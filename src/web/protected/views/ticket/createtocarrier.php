@@ -1,4 +1,7 @@
 <?php
+/**
+ * Vista de abrir ticket a un carrier
+ */
 $form=$this->beginWidget('CActiveForm',array(
     'id'=>'ticket-form',
     /**
@@ -12,9 +15,9 @@ $form=$this->beginWidget('CActiveForm',array(
 )); ?>
 
 <div class="span9">
-    <h2>Ticket Information</h2>
+    <h2>Ticket Information - Open TT to Carrier</h2>
     <div class="example">
-        <?php $this->renderPartial('_forminternal',array('form'=>$form,'model'=>$model)); ?>
+        <?php $this->renderPartial('_formtocarrier',array('form'=>$form,'model'=>$model)); ?>
     </div>
 </div>
 
@@ -49,10 +52,9 @@ $form=$this->beginWidget('CActiveForm',array(
 
 <?php Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl . '/css/validationEngine.jquery.css'); ?>
 <?php Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl . '/css/jquery.timeentry.css'); ?>
+<?php Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl . '/css/datepicker.css'); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->theme->baseUrl . '/js/jquery/jquery.timeentry.min.js',CClientScript::POS_END); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/plugins/jquery/jquery.validationEngine-es.js',CClientScript::POS_END); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/plugins/jquery/jquery.validationEngine.js',CClientScript::POS_END); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/modules/etts.ajax.js',CClientScript::POS_END); ?>
-<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/create.user.internal.js',CClientScript::POS_END); ?>
-<?php // Yii::app()->clientScript->registerScriptFile('http://js.nicedit.com/nicEdit-latest.js',CClientScript::POS_HEAD); ?>
-<?php // Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/textarea.enriquecido.js',CClientScript::POS_HEAD); ?>
+<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/create.js',CClientScript::POS_END); ?>

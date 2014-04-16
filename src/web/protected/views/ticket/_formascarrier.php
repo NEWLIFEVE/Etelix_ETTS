@@ -4,33 +4,36 @@
 /* @var $form CActiveForm */
 ?>
 <div id="content_attached_file"></div>
-<input type="hidden" id="open-ticket" value="carrier_to_etelix">
-<input type="hidden" id="user" value="<?php echo Yii::app()->user->id; ?>">
+<input type="hidden" id="open-ticket" value="etelix_as_carrier">
 <fieldset>
         <legend>Use this form to submit a ticket.</legend>
 <?php echo $form->errorSummary($model); ?>   
-
-<?php if ($typeCarrier == 'CS'): ?>
+        
 <div class="input-control select block">
-        Open ticket as<small class="text-muted "><em> (required)</em></small>
+        Class<small class="text-muted "><em> (required)</em></small>
         <select id="class" class="validate[required]">
             <option value=""></option>
             <option value="customer">Customer</option>            
             <option value="supplier">Supplier</option>
         </select>
 </div>
-<?php elseif($typeCarrier == 'C'): ?>
-        <input type="hidden" id="class" value="customer">
-<?php elseif($typeCarrier == 'S'): ?>
-        <input type="hidden" id="class" value="supplier">
-<?php endif; ?>      
+        
+<div class="input-control select block">
+        User<small class="text-muted "><em> (required)</em></small>
+        <select id="user" class="validate[required]">
+            <option value=""></option>
+            <?php foreach(CrugeUser2::getUsuerByIdCarrier() as $value): ?>
+            <option value="<?php echo $value->iduser; ?>"><?php echo $value->username; ?></option>
+            <?php endforeach; ?>
+        </select>
+</div>
+        
 <div class="input-control select block">
         Select the recipients emails that will received the ticket confirmation
+
         <small class="text-muted "><em> (maximum 5 emails)</em></small>
         <select id="mails" multiple>
-            <?php foreach (MailUser::getMails(Yii::app()->user->id) as $mails): ?>
-                <option value="<?php echo $mails['id']; ?>"><?php echo $mails['mail']; ?></option>
-            <?php endforeach; ?>
+            
         </select>
 </div>
       
@@ -149,7 +152,3 @@
 
 </fieldset>
 
-<?php
-//$usuario = Yii::app()->user->um->loadUserById(Yii::app()->user->id,true) ;
-//echo $usuario->username;
-?>

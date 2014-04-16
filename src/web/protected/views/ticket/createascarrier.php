@@ -1,6 +1,9 @@
 <?php
-/* @var $this TicketsController */
-/* @var $model Tickets */
+/**
+ * Vista en donde se crean los tickets Carrier a Etelix desde Etelix
+ * @var $this TicketsController
+ * @var $model Tickets 
+ */
 $this->breadcrumbs=array(
 	'Tickets'=>array('index'),
 	'Create',
@@ -26,9 +29,9 @@ $form=$this->beginWidget('CActiveForm', array(
 
 
 <div class="span9">
-    <h2>Ticket Information</h2>
+    <h2>Ticket Information - Open TT from Carrier by Etelix</h2>
     <div class="example">
-        <?php $this->renderPartial('_formtoclient', array('form'=>$form,'model'=>$model)); ?>
+        <?php $this->renderPartial('_formascarrier', array('form'=>$form,'model'=>$model)); ?>
     </div>
 </div>
 
@@ -60,4 +63,4 @@ $form=$this->beginWidget('CActiveForm', array(
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/plugins/jquery/jquery.validationEngine-es.js',CClientScript::POS_END); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/plugins/jquery/jquery.validationEngine.js',CClientScript::POS_END); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/modules/etts.ajax.js',CClientScript::POS_END); ?>
-<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/create.user.internal.js',CClientScript::POS_END); ?>
+<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/create.js',CClientScript::POS_END); ?>

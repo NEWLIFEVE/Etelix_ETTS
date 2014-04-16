@@ -115,11 +115,12 @@ class MailController extends Controller
 	 */
 	public function actionDelete($id)
 	{
-		$this->loadModel($id)->delete();
-
-		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-		if(!isset($_GET['ajax']))
-			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+            echo $id;
+//		$this->loadModel($id)->delete();
+//
+//		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+//		if(!isset($_GET['ajax']))
+//			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
 	}
 
 	/**
@@ -149,101 +150,168 @@ class MailController extends Controller
 	}
 
 	/**
-	 *
+	 *Guarda los mail relacionados a usuarios y también los mails de los tickets
 	 */
 	public function actionSetMail()
 	{
             $model=new Mail;
             $modelMailUser=new MailUser;
-            $idUser=Yii::app()->user->id;
+
+            $idUser=$_POST['user'];
             $option=$_POST['option'];
-                
-        switch($option)
-        {
-        	case '0':  // Cliente
-        	case '1':  // Interno a cliente
-        	case '2':  // Interno a proveedor
-        		if($option=='1'||$option=='2') $idUser=$_POST['user'];
-        		if($option=='0'||$option=='1')
-        		{
-        			if(!$modelMailUser::getCountMail($idUser))
-        			{
-        				echo "tope alcanzado";
-        				return;
-        			}
-        		}
-
-        		$existeMail=$model->find("mail=:mail",array(":mail"=>$_POST['mail']));
-                if($existeMail!=null)
+            
+            
+            if($option != 'etelix_to_carrier') 
+            {
+                if(!$modelMailUser::getCountMail($idUser))
                 {
-                    $existeMailUser=$modelMailUser->findBySql("SELECT * FROM mail_user WHERE id_user=$idUser AND id_mail=".$existeMail->id." AND status=0");
-                    if($existeMailUser!=null)
-                    {
-                        $modelMailUser::model()->updateByPk($existeMailUser->id,array("status"=>'1', "assign_by" => $_POST['typeUser']));
-                        echo 'true';
-                    }
-                    else
-                    {
-                        $existeMailUser2=$modelMailUser->findBySql("SELECT * FROM mail_user WHERE id_user=$idUser AND id_mail=".$existeMail->id." AND status=1");
-                        if($existeMailUser2!=null)
-                        {
-                            echo 'existe correo';
-                        }
-                        else
-                        {
+                        echo "tope alcanzado";
+                        return;
+                }
+            }
 
-                            $modelMailUser->id_mail=$existeMail->id;
-                            $modelMailUser->id_user=$idUser;
-                            $modelMailUser->status=1;
-                            $modelMailUser->assign_by=$_POST['typeUser'];
-                            if($modelMailUser->save())
-                                    echo 'true';
-                            else
-                                    echo 'false';
-                        }
-                    }
+            $existeMail=$model->find("mail=:mail",array(":mail"=>$_POST['mail']));
+            if($existeMail!=null)
+            {
+                $existeMailUser=$modelMailUser->findBySql("SELECT * FROM mail_user WHERE id_user=$idUser AND id_mail=".$existeMail->id." AND status=0");
+                if($existeMailUser!=null)
+                {
+                    $modelMailUser::model()->updateByPk($existeMailUser->id,array("status"=>'1', "assign_by" => $this->_assignBy($option)));
+                    echo 'true';
                 }
                 else
                 {
-                    $model->mail=$_POST['mail'];
-                    if($model->save())
+                    if($option == 'etelix_to_carrier')
                     {
-                        $modelMailUser->id_mail=$model->id;
+                        $existeMailUser2=$modelMailUser->findBySql(
+                                "SELECT * FROM mail_user 
+                                WHERE id_user=$idUser AND 
+                                id_mail=".$existeMail->id." AND 
+                                status=1");
+                    }
+                    else
+                    {
+                        $existeMailUser2=$modelMailUser->findBySql(
+                                "SELECT * FROM mail_user 
+                                WHERE id_user=$idUser AND 
+                                id_mail=".$existeMail->id." AND 
+                                assign_by = 1 AND
+                                status=1");
+                        if($existeMailUser2!=null)
+                        {
+                            $modelMailUser::model()->updateByPk($existeMailUser2->id,array("assign_by"=>"0"));
+                            echo 'true';
+                            return;
+                        }
+                        
+                        $existeMailUser2=$modelMailUser->findBySql(
+                                "SELECT * FROM mail_user 
+                                WHERE id_user=$idUser AND 
+                                id_mail=".$existeMail->id." AND 
+                                assign_by = 0 AND
+                                status=1");
+                    }
+                    
+                    if($existeMailUser2!=null)
+                    {
+                        echo 'existe correo';
+                    }
+                    else
+                    {
+
+                        $modelMailUser->id_mail=$existeMail->id;
                         $modelMailUser->id_user=$idUser;
                         $modelMailUser->status=1;
-                        $modelMailUser->assign_by=$_POST['typeUser'];
-
+                        $modelMailUser->assign_by=$this->_assignBy($option);
                         if($modelMailUser->save())
-                                echo 'true';
+                        {
+                                if (isset($_POST['idTicket']) && $_POST['idTicket'] != null)
+                                { 
+                                    if  ($this->_saveMailTicket($_POST['idTicket'], $modelMailUser->id)) 
+                                    {
+                                        header('Content-type: application/json');
+                                        echo CJSON::encode(Mail::getMailsTicket($_POST['idTicket']));
+                                    }
+                                    else 
+                                    {
+                                        echo 'false';
+                                    }
+                                }
+                                else
+                                {
+                                    echo 'true';
+                                }
+                        }
                         else
+                        {
                                 echo 'false';
+                        }
                     }
                 }
-                break;
-            default:
-            	echo 'Error';
-            	break;
-        }
+            }
+            else
+            {
+                $model->mail=$_POST['mail'];
+                if($model->save())
+                {
+                    $modelMailUser->id_mail=$model->id;
+                    $modelMailUser->id_user=$idUser;
+                    $modelMailUser->status=1;
+                    $modelMailUser->assign_by=$this->_assignBy($option);
+
+                    if($modelMailUser->save())
+                    {
+                            if (isset($_POST['idTicket']) && $_POST['idTicket'] != null)
+                            { 
+                                if  ($this->_saveMailTicket($_POST['idTicket'], $modelMailUser->id)) 
+                                {
+                                    header('Content-type: application/json');
+                                    echo CJSON::encode(Mail::getMailsTicket($_POST['idTicket']));
+                                }
+                                else 
+                                {
+                                    echo 'false';
+                                }
+                            }
+                            else
+                            {
+                                echo 'true';
+                            }
+                    }
+                    else
+                    {
+                            echo 'false';
+                    }
+                }
+            }
+            
 	}
+        
+        /**
+         * Guardará en la tabla mail_ticket al guardar en mail y mail_user
+         * @param int $idticket
+         * @param int $idMailUser
+         * @return boolean
+         */
+        private function _saveMailTicket($idticket, $idMailUser)
+        {
+            $attributes=array('id_ticket'=>$idticket, 'responseTo'=>$idMailUser);
+                if (!MailTicket::saveMailTicket($attributes, 1)) 
+                    return false;
+                else
+                    return true;
+        }
 
     /**
      * 
      * @param string $typeUser
-     * @param string $noCustomer
      * @return int
      */
-    private function _typeUserSaveMail($typeUser)
+    private function _assignBy($optionOpen)
     {
         $assignBy=1;
-
-        if ($typeUser == 'customer') // Si es cliente
-        {
-            $assignBy=1;
-        }
-        else                         // Si es proveedor
-        {
-            $assignBy=0;
-        }
+        
+        if ($optionOpen != 'etelix_to_carrier') $assignBy=0;
         
         return $assignBy;
     }

@@ -1,14 +1,18 @@
 <?php
-/* @var $this TicketsController */
-/* @var $model Tickets */
-/* @var $form CActiveForm */
+/**
+ * Formulario desde la interfaz de usuarios de etelix, aqui abren los tickets como carriers
+ * @var $this TicketsController}
+ * @var $model Tickets
+ * @var $form CActiveForm
+ */
 ?>
 <div id="content_attached_file"></div>
-<input type="hidden" id="etelix-as-customer" value="yes">
+<input type="hidden" id="open-ticket" value="etelix_to_carrier">
 <fieldset>
-        <legend>Use this form to submit a ticket.</legend>
-<?php echo $form->errorSummary($model); ?>   
-        
+    <legend>Use this form to submit a ticket.</legend>
+<?php echo $form->errorSummary($model); ?>
+
+
 <div class="input-control select block">
         Class<small class="text-muted "><em> (required)</em></small>
         <select id="class" class="validate[required]">
@@ -17,59 +21,82 @@
             <option value="supplier">Supplier</option>
         </select>
 </div>
-        
+    
 <div class="input-control select block">
         User<small class="text-muted "><em> (required)</em></small>
-        <select id="user" class="validate[required]">
-            <option value=""></option>
-            <?php foreach(CrugeUser2::getUsuerByIdCarrier() as $value): ?>
-            <option value="<?php echo $value->iduser; ?>"><?php echo $value->username; ?></option>
-            <?php endforeach; ?>
-        </select>
+        <select id="user" class="validate[required]"></select>
 </div>
-        
-<div class="input-control select block">
+    
+<div id="recipients-emails">
+    <div class="input-control select block">
         Select the recipients emails that will received the ticket confirmation
-
-        <small class="text-muted "><em> (maximum 5 emails)</em></small>
-        <select id="mails" multiple>
-            
-        </select>
+        <select id="mails" multiple></select>
+    </div>
 </div>
-      
+
 <div class="input-control select block">
-    Response to <small class="text-muted "><em>(required)</em></small>&nbsp;&nbsp;
+    <span class="toggle">To</span>&nbsp;<small class="text-muted "><em>(required)</em></small>&nbsp;
     <a href="javascript:void(0)" class="a-agregar-correo"><i class="icon-plus-2"></i></a>
-    &nbsp;
-    <a href="javascript:void(0)" class="a-bajar-correo"><i class="icon-arrow-down"></i></a>
-    &nbsp;
-    <a href="javascript:void(0)" class="a-borrar-correo" ><i class="icon-cancel-2 fg-red "></i></a>
-    &nbsp;
-    <a href="javascript:void(0)" class="add-all-email" >Add all emails</a>
+    <a href="javascript:void(0)" class="a-bajar-correo"><i class="icon-arrow-down"></i></a>&nbsp;
+    <a href="javascript:void(0)" class="a-borrar-correo" ><i class="icon-cancel-2 fg-red "></i></a>&nbsp;&nbsp;
+    <span class="toggle cc" title="Click to add a copy">CC</span>&nbsp;&nbsp;&nbsp;<span class="toggle bbc" title="Click to add a Bcc">BBC</span>&nbsp;
     <div class="div-agregar-correo">
         <div class="input-control text span3"  data-role="input-control">
             <input type="text" id="new_mail" class="validate[custom[email]]" name="new_mail" placeholder="example@example.com" />
         </div>
         
         <div class="input-control text span2">
-            <button class="btn-agregar-correo-interno-cliente primary" type="button"><i class="icon-floppy on-left"></i>Save</button>
+            <button class="btn-agregar-correo primary" type="button"><i class="icon-floppy on-left"></i>Save</button>
         </div>
     </div>
     <?php echo $form->ListBox(
                 $model,'mail[]', 
                 array(),  
-                array('multiple' => 'multiple', 'class' => 'validate[required]')) ?>
+                array('multiple' => 'multiple', 'class'=>'validate[required]')) ?>
     <?php echo $form->error($model,'mail[]'); ?>
 </div>
 
+<div id="div-cc"> 
+    <div class="input-control select block" >
+        CC&nbsp;
+        <a href="javascript:void(0)" class="a-bajar-correo"><i class="icon-arrow-down"></i></a>&nbsp;
+        <a href="javascript:void(0)" class="a-borrar-correo" ><i class="icon-cancel-2 fg-red "></i></a>
+        <select id="cc" multiple></select>
+    </div>
+</div>
+
+<div id="div-bbc"> 
+    <div  class="input-control select block" >
+        BBC&nbsp;
+        <a href="javascript:void(0)" class="a-bajar-correo"><i class="icon-arrow-down"></i></a>&nbsp;
+        <a href="javascript:void(0)" class="a-borrar-correo" ><i class="icon-cancel-2 fg-red "></i></a>
+        <select id="bbc" multiple></select>
+    </div>
+</div>
 
 <div class="input-control select block">
         Failure<small class="text-muted "><em> (required)</em></small>
         <?php echo $form->dropDownList($model,'id_failure', CHtml::listData(Failure::model()->findAll(), 'id', 'name'),  array('empty' => '' ,'class' => 'validate[required]')); ?>
         <?php echo $form->error($model,'id_failure'); ?>
 </div>
+ 
+<!--<div class="input-control select block">
+        Asociate to TT
+        <select id="tt_asociado"></select>
+</div>-->
 
-        <div class="_label">Origination IP<input type="text" id="originationIp" class="validate[required,custom[ipv4]]"><small class="text-muted "><em>(Customer IP)(required)</em></small><span class="margen_17px"></span>Destination IP<input type="text" id="destinationIp" class="validate[required,custom[ipv4]]"><small class="text-muted "><em>(Etelix IP)(required)</em></small></div>
+<div class="_label">
+    Origination IP<input type="text" id="originationIp" class="validate[custom[ipv4]]">
+    <small class="text-muted ">
+        <em>(Etelix IP)</em>
+    </small>
+    <span class="margen_31px"></span>
+    &nbsp;&nbsp;&nbsp;
+    Destination IP<input type="text" id="destinationIp" class="validate[,custom[ipv4]]">
+    <small class="text-muted ">
+        <em>(Carrier IP)</em>
+    </small>
+</div>
 <div class="input-control text block" data-role="input-control">
 
     <input type="text" class="_ip validate[custom[integer]]" id="oip1" name="oip1" maxlength="3"> 
@@ -87,15 +114,9 @@
 
 
 <div class="input-control text block" data-role="input-control">
-        Prefix <small class="text-muted "><em>(required)</em></small>
-        <?php echo $form->textField($model,'prefix', array('class' => 'validate[required,custom[integer]]')); ?>
+        Prefix
+        <?php echo $form->textField($model,'prefix', array('class' => 'validate[custom[integer]]')); ?>
         <?php echo $form->error($model,'prefix'); ?>
-</div>
-
-<div class="input-control select block">
-        GMT <small class="text-muted "><em>(required)</em></small>
-        <?php echo $form->dropDownList($model,'idGmt', CHtml::listData(Gmt::model()->findAll(array('order'=>'id')), 'id', 'name'),  array('empty' => '', 'class' => 'validate[required]')); ?>
-        <?php echo $form->error($model,'idGmt'); ?>
 </div>
 
 <!--Preview tested number-->
@@ -117,7 +138,7 @@
 
         <div class="input-control text span2 margen-number fecha_div">
             <br>
-            <?php echo $form->textField($model,'date_number[]',array('placeholder' => 'Date', 'class' => 'fecha validate[required]', 'readonly' => 'readonly')); ?>
+            <?php echo $form->textField($model,'date_number[]',array('placeholder' => 'Date', 'class' => 'fecha validate[required] text-input datepicker', 'value' => '', 'readonly' => 'readonly')); ?>
             <?php echo $form->error($model,'date_number[]'); ?>
         </div>
 
@@ -138,6 +159,13 @@
 
 <div class="container_agregar"></div>
 </div> <!--/.preview_tested_number-->
+        
+<div class="input-control select">
+        SPEECHS
+        <select id="speech">
+            <option value=""></option>
+        </select>
+</div>
 
 
 <div class="input-control textarea" data-role="input-control">

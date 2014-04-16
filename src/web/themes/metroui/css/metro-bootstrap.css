@@ -3481,7 +3481,7 @@ a {
   display: inline-block;
   vertical-align: middle;
 }
-.metro .input-control.checkbox:hover .check,
+.metro .input-control.checkbox label:hover .check,
 .metro .input-control.radio:hover .check {
   border-color: #919191;
 }

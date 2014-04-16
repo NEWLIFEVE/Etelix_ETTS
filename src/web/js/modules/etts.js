@@ -41,6 +41,7 @@ $ETTS.UI=(function(){
             ccCompleto='',
             bbcCompleto='',
             claseCompleto='',
+            userCompleto='',
             gmtCompleto='',
             speechCompleto='',
             tableTestedNumber='';
@@ -54,9 +55,17 @@ $ETTS.UI=(function(){
 
             if (clase !== null)
             {
-                clase='<div class="input-control text block" >'+
+                claseCompleto='<div class="input-control text block" >'+
                             'Class'+
                             '<input type="text" value="'+clase+'" disabled>' +
+                      '</div>';
+            }
+            
+            if (user !== null)
+            {
+                userCompleto='<div class="input-control text block" >'+
+                            'User'+
+                            '<input type="text" value="'+user+'" disabled>' +
                       '</div>';
             }
             if (gmt !== null)
@@ -122,10 +131,7 @@ $ETTS.UI=(function(){
                         
                         claseCompleto+
                         
-                        '<div class="input-control text block" >'+
-                            'User'+
-                            '<input type="text" value="'+user+'" disabled>' +
-                        '</div>'+
+                        userCompleto+
                         
                         toCompleto+
                         
@@ -138,7 +144,11 @@ $ETTS.UI=(function(){
                             '<input type="text" value="'+falla+'" disabled>' +
                         '</div>'+
                         
-                        '<div class="_label">Origination IP <small class="text-muted "><em>(Customer IP)</em></small><span class="margen_17px"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DestinationIP  <small class="text-muted "><em>(Etelix IP)</em></small></div>'+
+                        '<div class="_label">Origination IP<span class="margen_17px"></span>' +
+                        '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+                        '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+                        '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+                        'DestinationIP </div>'+
                         '<div class="input-control text block" data-role="input-control">'+
                             '<input type="text" value="'+oip[0]+'" disabled class="_ip" disabled>' +
                             '<input type="text" value="'+oip[1]+'" disabled class="_ip" disabled>' +
@@ -326,21 +336,49 @@ $ETTS.UI=(function(){
                   _quitarValidacion(element);
               }
         },
-        appendOptions:function(boton, select){
-            
+        /**
+         * @param {obj} boton
+         * @param {obj} select
+         * @param {string} optionOpen
+         * @param {boolean} save
+         * @returns {Boolean}
+         */
+        appendOptions:function(boton, select, optionOpen, settings){
             var select2 = boton.parent().children('select');
+            if (select2.length === 0) select2 = boton.parent().parent().children('select');
             
             if(select.val()) 
             {
                 var option = select.find('option:selected'),
                 longitud=option.length;
-                
-                for (var i=0; i < longitud; i++)
-                {
-                    select2.append('<option value="'+option[i].value+'">'+option[i].text+'</option>');
+                if (optionOpen.val() == 'carrier_to_etelix' || optionOpen.val() == 'etelix_as_carrier') {
+                    if (select2.find('option').length > 4) {
+                        alert('Only five emails allowed');
+                        return false;
+                    }
                 }
+                
+                if (!settings) 
+                {
+                    for (var i=0; i < longitud; i++) select2.append('<option value="'+option[i].value+'">'+option[i].text+'</option>');
+                    
+                    select.find('option:selected').attr('selected',false);
+                    _quitarValidacion(select2);
+                }
+                else
+                {
+                    if (settings.save === true) 
+                    {
+                        select.find('option:selected').remove()
+                        $ETTS.ajax.saveMailTicket(settings);
+                    }
+                }
+            }
+        },
+        clearOptions:function(select){
+            if(select.val()) 
+            {
                 select.find('option:selected').attr('selected',false);
-                _quitarValidacion(select2);
             }
         },
         addAllEmails:function(select, select2){
@@ -378,6 +416,11 @@ $ETTS.UI=(function(){
         },
         removeBlink:function(boton){
             boton.parent().parent().removeClass('blink');
+        },
+        refresh:function(time){
+            setInterval(function(){
+            window.location.reload(true);
+            }, time);  
         }
     }
     

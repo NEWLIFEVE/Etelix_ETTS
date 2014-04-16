@@ -15,21 +15,12 @@ class Subject
      * 
      * @param string $ticketNumber
      * @param string $nameCarrier
-     * @param string $etelixAsCustomer
+     * @param string $optionOpen
      * @return string
      */
-    public function subjectOpenTicket($ticketNumber, $nameCarrier, $etelixAsCustomer)
+    public function subjectOpenTicket($ticketNumber, $nameCarrier, $optionOpen)
     {
-        $nameCarrier2 = $nameCarrier;
-        
-        if ($etelixAsCustomer == 'yes') $nameCarrier2 = 'Etelix';
-        
-        if (CrugeAuthassignment::getRoleUser() == 'C') {
-            $this->_subject = 'TT from '. $this->_formatTicketNumber($ticketNumber) .' '.$nameCarrier.', New TT (by '.$nameCarrier2.' on ETTS), '.$ticketNumber.' (00:00)';
-        } else {
-            $this->_subject = 'TT for '. $this->_formatTicketNumber($ticketNumber) .' '.$nameCarrier.', New TT (by '.$nameCarrier2.' on ETTS), '.$ticketNumber.' (00:00)';
-        }
-        
+        $this->_subject=$this->_firstElementSubject($optionOpen, $ticketNumber, $nameCarrier);
         return $this->_subject;
     }
     
@@ -43,36 +34,88 @@ class Subject
      */
     public function subjectCloseTicket($ticketNumber, $nameCarrier, $timeTicket)
     {
+        $idTicket=Ticket::getId($ticketNumber);
+        $optionOpen=Ticket::getOptionOpen($idTicket);
+        
+        $user = 'Etelix';
+        
+        if (CrugeAuthassignment::getRoleUser() == 'C') $user = $nameCarrier;
+        
+        if ($optionOpen == 'etelix_as_carrier')
+            $this->_subject = 'TT '. $this->_formatTicketNumber($ticketNumber) .' '.$nameCarrier.' to Etelix, Closed TT (by '.$user.' on ETTS), '.$ticketNumber.' ('.$timeTicket.')';
+        if ($optionOpen == 'etelix_to_carrier')
+            $this->_subject = 'TT Etelix to '. $this->_formatTicketNumber($ticketNumber) .' '.$nameCarrier.', Closed TT (by '.$user.' on ETTS), '.$ticketNumber.' ('.$timeTicket.')';
+        if ($optionOpen == 'carrier_to_etelix')
+            $this->_subject = 'TT '. $this->_formatTicketNumber($ticketNumber) .' '.$nameCarrier.' to Etelix, Closed TT (by '.$user.' on ETTS), '.$ticketNumber.' ('.$timeTicket.')';
+        if ($optionOpen == '')
+            $this->_subject = 'TT '. $this->_formatTicketNumber($ticketNumber) .' '.$nameCarrier.' to Etelix, Closed TT (by '.$user.' on ETTS), '.$ticketNumber.' ('.$timeTicket.')';
+        
+        return $this->_subject;
+    }
+    
+    
+//    /**
+//     * Método para retornar el asunto cuando se responde un ticket
+//     * 
+//     * @param string $ticketNumber
+//     * @param string $nameCarrier
+//     * @param string $timeTicket
+//     * @param integer $etelixAsCustomer
+//     * @return string
+//     */
+//    public function subjectNewAnswer($ticketNumber,$idUser,$idResponseBy,$timeTicket)
+//    {
+//        $this->_setCarrier($ticketNumber);
+//        //Primera parte del subject
+//        $this->_subject="TT ".$this->_formatTicketNumber($ticketNumber)." ".$this->_carrier." to Etelix, ";
+//        //Segunda parte del subject
+//        $this->_subject.=$this->_defineStatus($idUser,$idResponseBy);
+//        //Tercera parte del subject
+//        $this->_subject.=$ticketNumber." (".$timeTicket.")";
+//        return $this->_subject;
+//    }
+    
+    /**
+     * Retorna el subject del correo al dar una nueva repuesta
+     * @param string $ticketNumber
+     * @param string $nameCarrier
+     * @param string $timeTicket
+     * @return string
+     */
+    public function subjectNewAnswer($ticketNumber, $timeTicket, $internalAsCarrier = null)
+    {
+        $idTicket=Ticket::getId($ticketNumber);
+        $optionOpen=Ticket::getOptionOpen($idTicket);
+        $this->_setCarrier($ticketNumber);
+        
+        $this->_subject = 'TT '. $this->_formatTicketNumber($ticketNumber) .' '.$this->_carrier.' to Etelix, New ';
+        $lastStringSubject = $ticketNumber.' ('.$timeTicket.')';
+        $user = 'Etelix';
+        $byEtelix = '';
+        
         if (CrugeAuthassignment::getRoleUser() == 'C') {
-            $this->_subject = 'TT from '. $this->_formatTicketNumber($ticketNumber) .' '.$nameCarrier.', Closed TT, '.$ticketNumber.' ('.$timeTicket.')';
+            $user = $this->_carrier;
         } else {
-            $this->_subject = 'TT for '. $this->_formatTicketNumber($ticketNumber) .' '.$nameCarrier.', Closed TT, '.$ticketNumber.' ('.$timeTicket.')';
+            if ($internalAsCarrier != null ) {
+                $user = $this->_carrier;
+                $byEtelix = '(by Etelix on ETTS)';
+            }
         }
+        
+        if ($optionOpen == 'etelix_as_carrier' || $optionOpen == 'carrier_to_etelix') 
+            $this->_subject .= $user . ' Status '.$byEtelix.', ' . $lastStringSubject;
+        if ($optionOpen == 'etelix_to_carrier') 
+            $this->_subject = 'TT Etelix to '. $this->_formatTicketNumber($ticketNumber) .' '.$this->_carrier.', New '.$user.' ' . $lastStringSubject;
+        if ($optionOpen == '')
+            $this->_subject = $this->_formatTicketNumber($ticketNumber) . ' New '  . $this->_carrier . $lastStringSubject;
         
         return $this->_subject;
     }
     
     /**
-     * Método para retornar el asunto cuando se responde un ticket
-     * 
-     * @param string $ticketNumber
-     * @param string $nameCarrier
-     * @param string $timeTicket
-     * @param integer $etelixAsCustomer
+     * Retorna el subject al crear un usuario
      * @return string
      */
-    public function subjectNewAnswer($ticketNumber,$idUser,$idResponseBy,$timeTicket)
-    {
-        $this->_setCarrier($ticketNumber);
-        //Primera parte del subject
-        $this->_subject="TT".$this->_defineFromFor($ticketNumber)." ".$this->_formatTicketNumber($ticketNumber)." ".$this->_carrier.", ";
-        //Segunda parte del subject
-        $this->_subject.=$this->_defineStatus($idUser,$idResponseBy);
-        //Tercera parte del subject
-        $this->_subject.=$ticketNumber." (".$timeTicket.")";
-        return $this->_subject;
-    }
-    
     public function subjectNewUser()
     {
         $this->_subject = 'User information (ETTS)';
@@ -107,6 +150,21 @@ class Subject
         }
         return $body;
     }
+    
+    /**
+     * Metodo encargado de definir el subject cuando se abre el ticket 
+     */
+    private function _firstElementSubject($optionOpen, $ticketNumber, $nameCarrier)
+    {
+        if ($optionOpen == 'etelix_as_carrier') 
+            return 'TT '.$this->_formatTicketNumber($ticketNumber).' '.$nameCarrier.' to Etelix (by Etelix on ETTS), New TT, '. $ticketNumber.' (00:00)';
+        if ($optionOpen == 'etelix_to_carrier')
+            return 'TT Etelix to '.$this->_formatTicketNumber($ticketNumber).' '.$nameCarrier.', New TT, '.$ticketNumber.' (00:00)';
+        if ($optionOpen == 'carrier_to_etelix') 
+           return 'TT '.$this->_formatTicketNumber($ticketNumber).' '.$nameCarrier.' to Etelix, New TT, '.$ticketNumber.' (00:00)';
+    }
+
+
     /**
      *
      */
@@ -136,5 +194,20 @@ class Subject
     private function _setCarrier($ticketNumber)
     {
         $this->_carrier=Carrier::getNameByUser(CrugeUser2::getUserTicket(Ticket::getId($ticketNumber),true)->iduser);
+    }
+    
+    /**
+     * 
+     * @param string $nameCarrier
+     * @return string
+     */
+    private function _defineBy($nameCarrier)
+    {
+        if ($nameCarrier == 'Etelix')
+        {
+            return '(by Etelix on ETTS), ';
+        }
+        
+        return ', ';
     }
 }

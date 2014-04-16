@@ -1,4 +1,27 @@
 <?php
+$server=$_SERVER['SERVER_NAME'];
+switch ($server)
+{
+	case SERVER_NAME_PROD:
+		$server_db='localhost';
+		$sori_db='sori';
+		$etts_db='etts';
+		$pass_db='Nsusfd8263';
+		break;
+	case SERVER_NAME_PRE_PROD:
+		$server_db='localhost';
+		$sori_db='dev_sori';
+		$etts_db='dev_etts';
+		$pass_db='Nsusfd8263';
+		break;
+	case SERVER_NAME_DEV:
+	default:
+		$server_db='172.16.17.190';
+		$sori_db='sori';
+		$etts_db='etts';
+		$pass_db='123';
+		break;
+}
 // uncomment the following to define a path alias
 // Yii::setPathOfAlias('local','path/to/local-folder');
 
@@ -18,6 +41,7 @@ return array(
 		'application.models.*',
                 'application.controllers.*',
 		'application.components.*',
+                'application.components.Imap.*',
 		'application.modules.cruge.components.*',
 		'application.modules.cruge.extensions.crugemailer.*',
 		),
@@ -105,17 +129,17 @@ return array(
 			),
 			// uncomment the following to use a MySQL database
 		'db'=>array(
-			'connectionString'=>'pgsql:host='.SERVER_DB.';port=5432;dbname='.ETTS_DB,
+			'connectionString'=>'pgsql:host='.$server_db.';port=5432;dbname='.$etts_db,
 			'emulatePrepare'=>true,
 			'username'=>'postgres',
-			'password'=>PASS_DB,
+			'password'=>$pass_db,
 			'charset' => 'utf8',
 		),
 		'soriDB'=>array(
 			'class'=>'CDbConnection',
-			'connectionString'=>'pgsql:host='.SERVER_DB.';port=5432;dbname='.SORI_DB,
+			'connectionString'=>'pgsql:host='.$server_db.';port=5432;dbname='.$sori_db,
 			'username'=>'postgres',
-			'password'=>PASS_DB,
+			'password'=>$pass_db,
 			'charset'=>'utf8',
 			),
 		'errorHandler'=>array(
@@ -172,5 +196,8 @@ return array(
 	'params'=>array(
 	// this is used in contact page
 		'adminEmail'=>'manuelz@sacet.biz',
+                'IMAP_HOST'=>'{mail.etelix.com:995/pop3/ssl/novalidate-cert}INBOX',
+                'IMAP_USER'=>'etts@etelix.com',
+                'IMAP_PASS'=>'3t3l1x.etts'
 		),
 	);
