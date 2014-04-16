@@ -120,6 +120,7 @@ class Imap extends Connection
                 $body = $this->getBody($idMessage);
                 $body = $this->_filterBodyToLeft($body, $rules);
                 $body = $this->_filterBodyToRight($body, 'Saludos');
+                $body = $this->_filterBodyToRight($body, 'saludos');
                 $body = $this->_filterBodyToRight($body, 'regards');
                 $body = $this->_filterBodyToRight($body, 'Regards');
                 $body = $this->_filterBodyToRight($body, 'base64');
@@ -261,17 +262,27 @@ class Imap extends Connection
      * @param array $mails
      * @return void
      */
-    public function deleteMessage($mails)
+    public function deleteMessage($mails, $optionOpen = false, $idTicket = false)
     {
-        try {
-            foreach ($mails as $value) {
-                imap_delete($this->_inbox, $value['id'], FT_UID);
-                imap_expunge($this->_inbox);
+        foreach ($mails as $value) {
+            imap_delete($this->_inbox, $value['id'], FT_UID);
+            imap_expunge($this->_inbox);
+            if ($optionOpen && $idTicket) {
+                $model = new DescriptionTicket;
+                $model->id_ticket=$idTicket;
+                $model->description=$value['body'];
+                $model->date=new CDbExpression('NOW()');
+                $model->hour=new CDbExpression('NOW()');
+                $model->id_user=CrugeUser2::getUserTicket($idTicket,true)->iduser;
+                $optionRead=DescriptionticketController::getUserNewDescription(false);
+                $model->read_carrier=$optionRead['read_carrier'];
+                $model->read_internal=$optionRead['read_internal'];
+                $model->response_by=CrugeUser2::getUserTicket($idTicket,true)->iduser;
+                $model->save();
             }
-        } catch (Exception $exc) {
-            return $exc->getMessage();
         }
     }
+    
     
     /**
      * Cerrar la conexion imap
