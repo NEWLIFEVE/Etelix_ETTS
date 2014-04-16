@@ -667,5 +667,4 @@ class TicketController extends Controller
     {
         $this->render('adminclose');
     }
-    
 }

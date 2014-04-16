@@ -8,6 +8,7 @@
 class Subject 
 {
     private $_subject;
+    private $_carrier;
     
     /**
      * Método que retornará el subject al abrir un ticket
@@ -60,18 +61,15 @@ class Subject
      * @param integer $etelixAsCustomer
      * @return string
      */
-    public function subjectNewAnswer($ticketNumber, $nameCarrier, $timeTicket, $etelixAsCustomer)
+    public function subjectNewAnswer($ticketNumber,$idUser,$idResponseBy,$timeTicket)
     {
-        $nameCarrier2 = $nameCarrier;
-        
-        if ($etelixAsCustomer == 1) $nameCarrier2 = 'Etelix';
-        
-        if(CrugeAuthassignment::getRoleUser() == 'C'){
-            $this->_subject = 'TT from '. $this->_formatTicketNumber($ticketNumber) .' '.$nameCarrier.', New '.$nameCarrier2.' Status (by Carrier on ETTS) '.$ticketNumber.' ('.$timeTicket.')';
-        } else {
-            $this->_subject = 'TT for '. $this->_formatTicketNumber($ticketNumber) .' '.$nameCarrier.', New Etelix Status (by Carrier on ETTS), '.$ticketNumber.' ('.$timeTicket.')';
-        }
-        
+        $this->_setCarrier($ticketNumber);
+        //Primera parte del subject
+        $this->_subject="TT".$this->_defineFromFor($ticketNumber)." ".$this->_formatTicketNumber($ticketNumber)." ".$this->_carrier.", ";
+        //Segunda parte del subject
+        $this->_subject.=$this->_defineStatus($idUser,$idResponseBy);
+        //Tercera parte del subject
+        $this->_subject.=$ticketNumber." (".$timeTicket.")";
         return $this->_subject;
     }
     
@@ -93,5 +91,50 @@ class Subject
         if (strpos($ticketNumber, 'S') || strpos($ticketNumber, 'P'))
             return 'Supplier';
     }
-}
 
+    /**
+     * Metodo encargado de definir el from
+     */
+    private function _defineFromFor($ticketNumber)
+    {
+        if(CrugeAuthassignment::getRoleUser(false,Ticket::getFirstUser($ticketNumber)) == 'C')
+        {
+            $body=' from ';
+        }
+        else
+        {
+            $body=' for ';
+        }
+        return $body;
+    }
+    /**
+     *
+     */
+    private function _defineStatus($idUser,$idResponseBy)
+    {
+        $body="New ";
+        $final=", ";
+        if(CrugeAuthassignment::getRoleUser(false,$idUser) == 'C')
+        {
+            $body.=$this->_carrier;
+            if(CrugeAuthassignment::getRoleUser(false,$idResponseBy) != 'C')
+            {
+                $final=" (by Etelix on ETTS), ";
+            }
+        }
+        else
+        {
+            $body.="Etelix";
+        }
+        $body.=" Status";
+        return $body.$final;
+    }
+
+    /**
+     * 
+     */
+    private function _setCarrier($ticketNumber)
+    {
+        $this->_carrier=Carrier::getNameByUser(CrugeUser2::getUserTicket(Ticket::getId($ticketNumber),true)->iduser);
+    }
+}

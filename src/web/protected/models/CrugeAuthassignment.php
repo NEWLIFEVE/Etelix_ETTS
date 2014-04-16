@@ -100,35 +100,35 @@ class CrugeAuthassignment extends CActiveRecord
 		return parent::model($className);
 	}
         
-        /**
-         * Método para retornar el rol de usuarios, si el primer parametro es true
-         * se retornará el nombre completo del rol, de lo contrario solo retorna
-         * la primera letra del rol
-         * 
-         * @param boolean $nameFull
-         * @param int $userId
-         * @return string
-         */
-        public static function getRoleUser($nameFull = false, $userId = false)
-        {
-            if ($userId) {
-                $userId = $userId;
-            } else {
-                $userId = Yii::app()->user->id;
-            }
-            
-            $role = self::model()->find("userid=" . $userId);
-            
-            if ($role != null) {
-                if ($nameFull) 
-                    return $role->itemname;
-                else 
-                    return substr(ucfirst($role->itemname), 0, 1);
-            } else {
-                if ($nameFull) 
-                    return 'admin';
-                else
-                    return 'A';
-            }
+    /**
+     * Método para retornar el rol de usuarios, si el primer parametro es true
+     * se retornará el nombre completo del rol, de lo contrario solo retorna
+     * la primera letra del rol
+     * 
+     * @param boolean $nameFull
+     * @param int $userId
+     * @return string
+     */
+    public static function getRoleUser($nameFull = false, $userId = false)
+    {
+        if ($userId) {
+            $userId = $userId;
+        } else {
+            $userId = Yii::app()->user->id;
         }
+        
+        $role = self::model()->find("userid=" . $userId);
+        
+        if ($role != null) {
+            if ($nameFull) 
+                return $role->itemname;
+            else 
+                return substr(ucfirst($role->itemname), 0, 1);
+        } else {
+            if ($nameFull) 
+                return 'admin';
+            else
+                return 'A';
+        }
+    }
 }

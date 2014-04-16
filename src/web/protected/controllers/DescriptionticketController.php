@@ -177,21 +177,20 @@ class DescriptionticketController extends Controller
     		$mailer=new EnviarEmail;
     		$speech=null;
     		if(isset($_POST['idSpeech'])) $speech=$_POST['idSpeech'];
-                //Guardar Description
+            //Guardar Description
     		$model=new DescriptionTicket;
     		$model->id_ticket=$_POST['idTicket'];
     		$model->description=$_POST['message'];
     		$model->date=date('Y-m-d');
     		$model->hour=date('H:i:s');
     		$model->id_speech=$speech;
-    		$model->id_user=Yii::app()->user->id;
-                $optionRead=self::getUserNewDescription();
+            $optionRead=self::getUserNewDescription();
     		$model->read_carrier=$optionRead['read_carrier'];
-                $model->read_internal=$optionRead['read_internal'];
-                if (isset($_POST['internalAsCarrier']) && $_POST['internalAsCarrier'] == 1)
-                    $model->response_by=0;
-                else
-                    $model->response_by=Yii::app()->user->id;
+            $model->read_internal=$optionRead['read_internal'];
+            if (isset($_POST['internalAsCarrier']) && $_POST['internalAsCarrier'] == 1) $model->id_user=CrugeUser2::getUserTicket($_POST['idTicket'],true)->iduser;
+            else $model->id_user=Yii::app()->user->id;
+
+            $model->response_by=Yii::app()->user->id;
                 
     		if($model->save())
     		{
@@ -225,7 +224,7 @@ class DescriptionticketController extends Controller
                     if (isset($_POST['internalAsCarrier'])) $internalAsCarrier='Etelix';
                     
                     $asunto=new Subject;
-                    $subject=$asunto->subjectNewAnswer($ticketNumber, Carrier::getCarriers(true, $model->id_ticket), Utility::restarHoras($hour, date('H:i:s'), floor(Utility::getTime($date, $hour)/ (60 * 60 * 24))), $internalAsCarrier);
+                    $subject=$asunto->subjectNewAnswer($ticketNumber, $model->id_user, $model->response_by, Utility::restarHoras($hour, date('H:i:s'), floor(Utility::getTime($date, $hour)/ (60 * 60 * 24))));
                     $mailer->enviar(TicketController::getBodyMails($model->id_ticket, Mail::getNameMails($model->id_ticket), 'answer'), $mailsAll, '', $subject);
         	}
 	    	else
