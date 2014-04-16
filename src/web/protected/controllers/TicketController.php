@@ -455,33 +455,15 @@ class TicketController extends Controller
     {
         if (isset($_POST['ticketNumber']) && !empty($_POST['ticketNumber'])) {
             error_reporting(E_ALL & ~E_NOTICE); 
-//            $connection = array(
-//                'IMAP_HOST'=>'{imap.gmail.com:993/imap/ssl}INBOX',
-//                'IMAP_USER'=>'tsu.nelsonmarcano@gmail.com',
-//                'IMAP_PASS'=>'NayeskaMarcano123'
-//            );
+            $connection = array(
+                'IMAP_HOST'=>'{imap.gmail.com:993/imap/ssl}INBOX',
+                'IMAP_USER'=>'tsu.nelsonmarcano@gmail.com',
+                'IMAP_PASS'=>'NayeskaMarcano123'
+            );
             $imap = new Imap();
             $mails = $imap->messageByTicketNumber($_POST['ticketNumber']);
             if ($mails != false) {
-                $imap->deleteMessage($mails);
-                foreach ($mails as $value) {
-                    $model = new DescriptionTicket;
-                    $model->id_ticket=$_POST['idTicket'];
-                    $model->description=$value['body'];
-                    $model->date=new CDbExpression('NOW()');
-                    $model->hour=new CDbExpression('NOW()');
-                    if ($_POST['optionOpen'] == 'etelix_as_carrier') {
-                        $model->id_user=CrugeUser2::getUserTicket($_POST['idTicket'],true)->iduser;
-                        $etelixAsCarrier=true;
-                    } else {
-                        $model->id_user=Yii::app()->user->id;
-                    }
-                    $optionRead=DescriptionticketController::getUserNewDescription($etelixAsCarrier);
-                    $model->read_carrier=$optionRead['read_carrier'];
-                    $model->read_internal=$optionRead['read_internal'];
-                    $model->response_by=Yii::app()->user->id;
-                    $model->save();
-                }
+                $imap->deleteMessage($mails, $_POST['optionOpen'], $_POST['idTicket']);
                 $this->renderPartial('/ticket/_answer', array('datos' => Ticket::ticketsByUsers(Yii::app()->user->id, $_POST['idTicket'], false)));
             } else {
                 echo 'false';
