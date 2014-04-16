@@ -116,7 +116,9 @@
             </div> 
             <div class="span7">
                 Description <!--<a href="javascript:void(0);" onclick="show(this, '.mails-associates');">View mails associates </a>-->
-                <a href="javascript:void(0)" id="<?php echo $datos->ticket_number; ?>" class="see-email" title="Refresh messages"><i class="icon-loop"></i></a>
+                <?php if ($tipoUsuario !== 'C'): ?>
+                    <a href="javascript:void(0)" id="<?php echo $datos->ticket_number; ?>" class="see-email" title="Refresh messages"><i class="icon-loop"></i></a>
+                <?php endif; ?>
                 <div class="answer-ticket">
                     <?php $this->renderPartial('_answer', array('datos'=>$datos)); ?>
                     <div class="pre-loader"></div>

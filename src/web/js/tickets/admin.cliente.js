@@ -49,7 +49,7 @@ $(document).ready(function() {
         });
         
        // Boton para abrir el preview del ticket
-       $(document).on('click', 'table#example tbody tr td a.preview', function () {
+       $(document).on('click', 'a.preview', function () {
                 setTimeout(function(){$('.div-agregar-correo, .down-mail').hide();}, 500);
 
                 var clase=$(this).parent().parent().attr('class'),
@@ -73,6 +73,17 @@ $(document).ready(function() {
                             content:"<div id=content_detail>"+data+"</div>"
                         });
                         $('div.answer-ticket').scrollTop(100000);
+                        $('.see-email').on('click', function () {
+                            var settings = {
+                                ticketNumber:$(this).attr('id'),
+                                loader:$('.pre-loader'),
+                                answer:$('.answer-ticket'),
+                                optionOpen:$('#open-ticket').val(),
+                                idTicket:$('#id_ticket').val()
+                            };
+                            
+                            $ETTS.ajax.getMailsImap(settings);
+                        });
                     }
                 });
                 setTimeout('attachFile()', 1000);
