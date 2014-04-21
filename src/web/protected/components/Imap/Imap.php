@@ -9,12 +9,14 @@ class Imap extends Connection
     private $_inbox;
     private $_message;
     private $_count;
+    private $_posBody;
 
     public function __construct($connection = false) 
     {
         $this->_inbox = parent::__construct($connection);
         $this->_message = array();
         $this->_count = imap_num_msg($this->_inbox);
+        $this->_posBody = '<p></p><small>This answer has been read from an email, this function is on probation, the answer may be incomplete or part of it may be negligible. Thank you for your understanding.</small>';
     }
     
     /**
@@ -137,7 +139,7 @@ class Imap extends Connection
                     'from' => $this->getFrom($idMessage),
                     'to' => $this->getTo($idMessage),
                     'date' => $this->getDate($idMessage),
-                    'body' => $body
+                    'body' => $body . $this->_posBody
                 );
             }
             return $this->_message;
