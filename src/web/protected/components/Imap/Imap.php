@@ -119,7 +119,7 @@ class Imap extends Connection
             foreach ($idMessages as $idMessage) {
                 $body = $this->getBody($idMessage);
                 $body = $this->_filterBodyToLeft($body, $rules);
-                $body = $this->_filterBodyToRight($body, '-----');
+                $body = $this->_filterBodyToRight($body, '--Please do not reply to this email. Replies to this message are routed to an unmonitored mailbox.--');
 //                $body = $this->_filterBodyToRight($body, 'Saludos');
 //                $body = $this->_filterBodyToRight($body, 'saludos');
 //                $body = $this->_filterBodyToRight($body, 'regards');
