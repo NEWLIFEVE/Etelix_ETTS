@@ -129,6 +129,7 @@ class Imap extends Connection
                 $body = $this->_filterBodyToRight($body, 'saludos');
                 $body = $this->_filterBodyToRight($body, 'regards');
                 $body = $this->_filterBodyToRight($body, 'Regards');
+                $body = $this->_filterBodyToRight($body, '--Please');
                 $body = $this->_filterBodyToRight($body, 'base64');
                 $this->_message[] = array(
                     'id' => $this->getUid($idMessage),
