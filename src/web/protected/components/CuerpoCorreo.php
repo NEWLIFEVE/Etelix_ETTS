@@ -149,7 +149,7 @@ class CuerpoCorreo
             return '<div style="width:100%">
                     <img src="http://deve.sacet.com.ve/images/logo.jpg" height="100"/>
                     <hr>
-                    <div style="text-align:right">Ticket Confirmation<br>Ticket #: '.$this->_properties['ticketNumber'].'</div>';
+                    <div style="text-align:right">Ticket Confirmation<br>Ticket #: '.$this->_properties['ticketNumber'].'</div> <p>----- Please do not reply to this email. Replies to this message are routed to an unmonitored mailbox. -----</p>';
         }
         return '';
     }

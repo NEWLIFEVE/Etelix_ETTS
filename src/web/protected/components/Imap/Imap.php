@@ -119,10 +119,11 @@ class Imap extends Connection
             foreach ($idMessages as $idMessage) {
                 $body = $this->getBody($idMessage);
                 $body = $this->_filterBodyToLeft($body, $rules);
-                $body = $this->_filterBodyToRight($body, 'Saludos');
-                $body = $this->_filterBodyToRight($body, 'saludos');
-                $body = $this->_filterBodyToRight($body, 'regards');
-                $body = $this->_filterBodyToRight($body, 'Regards');
+                $body = $this->_filterBodyToRight($body, '-----');
+//                $body = $this->_filterBodyToRight($body, 'Saludos');
+//                $body = $this->_filterBodyToRight($body, 'saludos');
+//                $body = $this->_filterBodyToRight($body, 'regards');
+//                $body = $this->_filterBodyToRight($body, 'Regards');
                 $body = $this->_filterBodyToRight($body, 'base64');
                 $this->_message[] = array(
                     'id' => $this->getUid($idMessage),
@@ -257,11 +258,12 @@ class Imap extends Connection
         }
     }
     
-    /**
-     * Borra los mensajes por su id
-     * @param array $mails
-     * @return void
-     */
+   /**
+    * Borra los mensajes por su id
+    * @param array $mails
+    * @param string $optionOpen
+    * @param int $idTicket
+    */
     public function deleteMessage($mails, $optionOpen = false, $idTicket = false)
     {
         foreach ($mails as $value) {
