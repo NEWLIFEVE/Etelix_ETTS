@@ -3,6 +3,9 @@ Etelix_ETTS
 
 Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
 
+21/04/2014
+    - Cambio de colores de los tickets en datatable. Tickets de 24 horas son blancos, 48 horas son amarillos, mas de 48 horas son rojos, cerrados siguen en verde
+
 15/04/2014
     - Se amplió la interfaz del detalle delticket.
     - Se colocó un botón de refresh(para el chat) en el detalle del ticket.
