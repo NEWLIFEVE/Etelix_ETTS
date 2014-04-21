@@ -122,7 +122,8 @@ class UiController extends Controller
 
     public function actionLogin()
     {
-
+        if (!Yii::app()->user->isGuest) $this->redirect('/ticket/admin');
+        
         $this->layout = CrugeUtil::config()->loginLayout;
 
         $model = Yii::app()->user->um->getNewCrugeLogon('login');

@@ -32,10 +32,15 @@
                             $carrier=Carrier::getCarriers(true, $ticket->id);
                             switch ($ticket->idStatus->id) {
                                 case '1':
-                                    if($timeTicket > 86400 )
+                                    // Si es el dia de hoy
+                                    if ($timeTicket <= 86400) {
+                                        echo 'class="open today '.$read.'"'; 
+                                    // Si es el dia de ayer
+                                    } elseif ($timeTicket > 86400 && $timeTicket <= 172800) {
+                                        echo 'class="open yesterday '.$read.'"'; 
+                                    } else {
                                         echo 'class="late '.$read.'"';
-                                    else
-                                        echo 'class="open '.$read.'"'; 
+                                    }
                                     break;
                                 case '2':
                                     echo 'class="close '.$read.'"';
@@ -80,8 +85,8 @@
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/plugins/jquery/jquery.uploadfile.js',CClientScript::POS_END); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/modules/etts.ajax.js',CClientScript::POS_END); ?>
 <?php if ($tipoUsuario === "C"): ?>
-    <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/admin.cliente.js',CClientScript::POS_END); ?>
+    <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/dtable.carriers.js',CClientScript::POS_END); ?>
 <?php else: ?>
-    <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/admin.js',CClientScript::POS_END); ?>
+    <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/dtable.etelix.js',CClientScript::POS_END); ?>
 <?php endif; ?>
-<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/save.message.js',CClientScript::POS_END); ?>
+<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/admin.js',CClientScript::POS_END); ?>

@@ -272,16 +272,35 @@ table.display tr.even.close {
 	/*background-color: #ddffdd;*/
 	/*background-color: #eeffee;*/
 }
-table.display tr.odd.open{
+
+/* OPEN TICKET TODAY */
+table.display tr.odd.open.today{
+	background-color: #FFF;
+	/*background-color: #FFDC51;*/
+	/*background-color: #FDFFDF;*/
+	/*background-color: #FAFFBE;*/
+}
+
+table.display tr.even.open.today {
+	background-color: #FFF;
+	/*background-color: #FFDC51;*/
+	/*background-color: #FDFFDF;*/
+}
+/* END OPEN TODAY */
+
+/* OPEN TICKET YESTERDAY */
+table.display tr.odd.open.yesterday{
 	background-color: #FFDC51;
 	/*background-color: #FDFFDF;*/
 	/*background-color: #FAFFBE;*/
 }
 
-table.display tr.even.open {
+table.display tr.even.open.yesterday{
 	background-color: #FFDC51;
 	/*background-color: #FDFFDF;*/
 }
+/* END OPEN YESTERDAY */
+
 table.display tr.odd.late{
 	background-color: #EEB8B8;
 	/*background-color: #ffeeee;*/
@@ -468,32 +487,65 @@ tr.even td.sorting_3 {
 	  ee > e2
  */
  
-tr.odd.open td.sorting_1 {
+/************ OPEN TODAY ****************/ 
+tr.odd.open.today td.sorting_1 {
+	background-color: #FDFFDF;
+	/*background-color: #FFCC00*/
+	/*background-color: #FAFFBE*/
+	/*background-color: rgba(248, 248, 119, 0.75);*/
+}
+
+tr.odd.open.today td.sorting_2 {
+	background-color: #d1d1ff;
+}
+
+tr.odd.open.today td.sorting_3 {
+	background-color: #d1d1ff;
+}
+
+tr.even.open.today td.sorting_1 {
+	background-color: #FFCC00;
+	/*background-color: #FAFFBE;*/
+}
+
+tr.even.open.today td.sorting_2 {
+	background-color: #e2e2ff;
+}
+
+tr.even.open.today td.sorting_3 {
+	background-color: #e2e2ff;
+}
+/*end open today*/
+
+/************ OPEN YESTERDAY ****************/ 
+tr.odd.open.yesterday td.sorting_1 {
 	background-color: #FFCC00
 	/*background-color: #FAFFBE*/
 	/*background-color: rgba(248, 248, 119, 0.75);*/
 }
 
-tr.odd.open td.sorting_2 {
+tr.odd.open.yesterday td.sorting_2 {
 	background-color: #d1d1ff;
 }
 
-tr.odd.open td.sorting_3 {
+tr.odd.open.yesterday td.sorting_3 {
 	background-color: #d1d1ff;
 }
 
-tr.even.open td.sorting_1 {
+tr.even.open.yesterday td.sorting_1 {
 	background-color: #FFCC00;
 	/*background-color: #FAFFBE;*/
 }
 
-tr.even.open td.sorting_2 {
+tr.even.open.yesterday td.sorting_2 {
 	background-color: #e2e2ff;
 }
 
-tr.even.open td.sorting_3 {
+tr.even.open.yesterday td.sorting_3 {
 	background-color: #e2e2ff;
 }
+/*end open yesterday*/
+
 tr.odd.late td.sorting_1 {
 	background-color: rgba(224, 91, 91, 0.8);
 	/*background-color: #ffc4c4;*/
