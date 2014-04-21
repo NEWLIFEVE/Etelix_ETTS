@@ -257,11 +257,12 @@ class Imap extends Connection
         }
     }
     
-    /**
-     * Borra los mensajes por su id
-     * @param array $mails
-     * @return void
-     */
+   /**
+    * Borra los mensajes por su id
+    * @param array $mails
+    * @param string $optionOpen
+    * @param int $idTicket
+    */
     public function deleteMessage($mails, $optionOpen = false, $idTicket = false)
     {
         foreach ($mails as $value) {
