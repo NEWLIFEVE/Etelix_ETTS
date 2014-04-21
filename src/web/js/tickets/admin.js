@@ -216,6 +216,17 @@ var refreshInterval = setInterval(function(){
             }, 300000);
             
 $(document).on('ready', function() {
+    // Leyenda de colores
+    $('.botones-sociales .social').mouseenter(function(){
+        $(this).stop();
+        $(this).animate({width:'240'}, 500, 'easeOutBounce',function(){}); 
+    });
+
+    $('.botones-sociales .social').mouseleave(function(){
+        $(this).stop();
+        $(this).animate({width:'43'}, 500, 'easeOutBounce',function(){});
+    });
+    
     // Llamado de refresh
     refreshInterval;
 

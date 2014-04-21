@@ -78,9 +78,25 @@
 	</tbody>
 </table>
 </div>
+<div class='botones-sociales izquierda hidden-phone hidden-tablet'>
+    <a class='itemsocial' href='javascript:void(0)' id='facebook-btn'>
+        <span class='social'><span class='texto'>TT's abiertos con 24 horas</span></span>
+    </a>
+    <a class='itemsocial' href='javascript:void(0)'id='twitter-btn'>
+        <span class='social'><span class='texto'>TT's abiertos con 48 horas</span></span>
+    </a>
+    <a class='itemsocial' href='javascript:void(0)' id='google-btn'>
+        <span class='social'><span class='texto'>TT's abiertos con mas de 48 horas</span></span>
+    </a>
+    <a class='itemsocial' href='javascript:void(0)' id='pinterest-btn'>
+        <span class='social'>
+        <span class='texto'>TT's cerrados</span></span>
+    </a>
+</div>
 <?php Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl . '/css/datatable.css'); ?>
 <?php Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl . '/css/demo_table_jui.css'); ?>
 <?php Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl . '/css/uploadfile.css'); ?>
+<?php Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl . '/css/leyenda.css'); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/plugins/jquery/jquery.dataTables.min.js',CClientScript::POS_END); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/plugins/jquery/jquery.uploadfile.js',CClientScript::POS_END); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/modules/etts.ajax.js',CClientScript::POS_END); ?>
