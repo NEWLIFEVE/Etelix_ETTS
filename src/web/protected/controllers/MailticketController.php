@@ -113,13 +113,23 @@ class MailticketController extends Controller
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.
 	 * @param integer $id the ID of the model to be deleted
 	 */
-	public function actionDelete($id)
-	{
-		$this->loadModel($id)->delete();
-
-		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-		if(!isset($_GET['ajax']))
-			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+	public function actionDelete()
+	{   
+            if (isset($_POST['idMailTicket']) && $_POST['idMailTicket'] != null)
+            {
+                if (!is_array($_POST['idMailTicket']))
+                {
+                    $this->loadModel($_POST['idMailTicket'])->delete();
+                }
+                else
+                {
+                    $count=count($_POST['idMailTicket']);
+                    for ($i=0; $i<$count; $i++) 
+                    {
+                        $this->loadModel($_POST['idMailTicket'][$i])->delete();
+                    }
+                }
+            }   
 	}
 
 	/**
@@ -175,4 +185,13 @@ class MailticketController extends Controller
 			Yii::app()->end();
 		}
 	}
+        
+        public function actionSavemailticket()
+        {   
+            $attributes=array('id_ticket'=>$_POST['idTicket'], 'responseTo'=>$_POST['mail']);
+            if (!MailTicket::saveMailTicket($attributes, 1)) 
+                echo 'false';
+            else
+                echo CJSON::encode(Mail::getMailsTicket($_POST['idTicket']));
+        }
 }

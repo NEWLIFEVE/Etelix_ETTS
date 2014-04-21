@@ -14,6 +14,7 @@
  * The followings are the available model relations:
  * @property Language $idLanguage
  * @property DescriptionTicket[] $descriptionTickets
+ * @property FailureSpeech[] $failureSpeeches
  */
 class Speech extends CActiveRecord
 {
@@ -52,6 +53,8 @@ class Speech extends CActiveRecord
 		return array(
 			'idLanguage' => array(self::BELONGS_TO, 'Language', 'id_language'),
 			'descriptionTickets' => array(self::HAS_MANY, 'DescriptionTicket', 'id_speech'),
+                        'failureSpeeches' => array(self::HAS_MANY, 'FailureSpeech', 'id_speech'),
+                        
 		);
 	}
 
@@ -113,9 +116,34 @@ class Speech extends CActiveRecord
          * Método para retornar una lista de los speech
          * @return array
          */
-        public static function getSpeech()
+        public static function getSpeech($ticketNumber = false)
         {
-            return self::model()->findAll(array('order' => 'id ASC'));
+            if ($ticketNumber)
+            {
+                if (Utility::formatTicketNumber($ticketNumber) == 'Customer')
+                    return self::model()->findAllBySql("SELECT * FROM speech WHERE code LIKE 'C%' AND id_language = 1 ORDER BY id ASC");
+                else
+                    return self::model()->findAllBySql("SELECT * FROM speech WHERE code LIKE 'S%' AND id_language = 1 ORDER BY id ASC");
+            }
+            else
+            {
+                return self::model()->findAll(array('order' => 'id ASC'));
+            }
+        }
+        
+        public static function getSpeechSpanish($ticketNumber = false)
+        {
+            if ($ticketNumber)
+            {
+                if (Utility::formatTicketNumber($ticketNumber) == 'Customer')
+                    return self::model()->findAllBySql("SELECT * FROM speech WHERE code LIKE 'C%' AND id_language = 2 ORDER BY id ASC");
+                else
+                    return self::model()->findAllBySql("SELECT * FROM speech WHERE code LIKE 'S%' AND id_language = 2 ORDER BY id ASC");
+            }
+            else
+            {
+                return self::model()->findAll(array('order' => 'id ASC'));
+            }
         }
         
 }

@@ -11,6 +11,9 @@ header {
   margin: 0 auto;
   padding: 0 20px;
 }
+.navigation-bar.dark.fixed-top.opacity.shadow {
+    z-index: 1045 !important;
+}
 
 .description {
   margin: 10px 0;
@@ -30,6 +33,11 @@ header {
     width: 500px;
     margin: auto !important;
 }
+
+.metro .ticket-information {
+    line-height: 0 !important;
+}
+
 .example > img {
   margin: 5px;
   display: inline-block;
@@ -307,7 +315,8 @@ div.input-control.select.block strong {
     padding: 10px
 }
 #content_detail { 
-    max-width: 508px !important;
+    width: 100% !important;
+    height: 540px !important;
 }
 #preview_buttons {
     width: 100% !important;
@@ -350,19 +359,11 @@ table#tabla_preview td, table#tabla_preview th {
 }
 
 table#tabla_preview th {
-    /*background-color: #dce9f9;*/
     background-color: #16499a !important;
-/*    background-image: -webkit-gradient(linear, left top, left bottom, from(#ebf3fc), to(#dce9f9));
-    background-image: -webkit-linear-gradient(top, #ebf3fc, #dce9f9);
-    background-image:    -moz-linear-gradient(top, #ebf3fc, #dce9f9);
-    background-image:     -ms-linear-gradient(top, #ebf3fc, #dce9f9);
-    background-image:      -o-linear-gradient(top, #ebf3fc, #dce9f9);
-    background-image:         linear-gradient(top, #ebf3fc, #dce9f9);*/
     -webkit-box-shadow: 0 1px 0 rgba(255,255,255,.8) inset; 
     -moz-box-shadow:0 1px 0 rgba(255,255,255,.8) inset;  
     box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;        
     border-top: none;
-    /*text-shadow: 0 1px 0 rgba(255,255,255,.5);*/ 
     color: #ffffff !important;
     font-family: 'Segoe UI Light_', 'Open Sans Light', Verdana, Arial, Helvetica, sans-serif !important;
     font-size: 14px;
@@ -550,13 +551,14 @@ select#status {
 
 textarea#answer {
     border-bottom: none;
+    height: 160px !important;
 }
 
-div.answer-ticket {
+div.answer-ticket, div.load-mails {
     border-top:1px #d9d9d9 solid;
     border-bottom:1px #d9d9d9 solid;
     border-left:1px #d9d9d9 solid;
-    min-height: 60px !important;
+    min-height: 140px !important;
     max-height: 210px !important;
     overflow: auto;
     overflow-y:scroll;
@@ -567,9 +569,6 @@ div.answer-ticket {
 }
 
 div.answer-ticket div.msg-ticket {
-    /*border: 1px solid #dfdfdf;
-    border: 1px solid rgba(0, 0, 0, .18);
-    border-bottom-color: rgba(0, 0, 0, .29);*/
     -webkit-box-shadow: 0 1px 0 #dce0e6;
     line-height: 1.28;
     margin: 5px 5px 8px 0;
@@ -596,6 +595,10 @@ div.answer-ticket div.msg-ticket.right {
     background: #6badf6;
 }
 
+div.window.flat.shadow {
+    max-width: 80% !important;
+}
+
 div.font-small {
     font-size: 12px !important;
     line-height: 1 !important;
@@ -617,7 +620,6 @@ div.input-control.select.medium select {
 div.panel-down-textarea {
     width: 100%;
     min-height: 35px;
-    /*border-top: 1px #E4E4E4 solid;*/
     border-bottom: 1px #d9d9d9 solid;
     border-left: 1px #d9d9d9 solid;
     border-right: 1px #d9d9d9 solid;
@@ -628,23 +630,26 @@ div.option-panel {
     padding: 0px 0px 0px 8px;
     width: 120px;
     height: 35px;
-    /*border: 1px solid red;*/
 }
 div.option-panel.left {
-    padding: 0px 8px 0px 0px;
+    padding: 0px 7px 0px 0px;
     text-align: left;
     float: left;
 }
 
 div.option-panel.right {
-    padding: 0px 8px 0px 0px;
+    padding: 0px 7px 0px 0px;
     text-align: right;
     float: right;
 }
 
 div.option-panel.left.confirmation {
-    width: 185px;
-    padding: 0px 8px 0px 8px;
+    width: 233px;
+    padding: 0px 7px 0px 7px;
+}
+
+div.option-panel.left.confirmation div.input-control.checkbox label {
+    display: inline !important;
 }
 
 a.edit-status {

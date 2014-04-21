@@ -3,7 +3,7 @@
  */
 $ETTS.ajax=(function(){
    
-   function _limpiarForm(miForm) {
+   function _limpiarForm(miForm, optionOpen) {
         // recorremos todos los campos que tiene el formulario
         $(':input', miForm).each(function() {
             var type = this.type;
@@ -20,12 +20,16 @@ $ETTS.ajax=(function(){
                 this.selectedIndex = -1;
         });
         
-        $('select#mails, select#Ticket_mail, select#cc, select#bbc, div.nicEdit-main, #content_attached_file').empty();
+        if (optionOpen != 'carrier_to_etelix') $('select#mails').empty();
+        $('select#Ticket_mail, select#cc, select#bbc, div.nicEdit-main, #content_attached_file').empty();
         $('#uploadFile').find('ul').empty();
     }
     
-    function _getMailUser(mails, user){
-        $.post('/mailuser/getmailuser', 'iduser='+user, function(data){
+    function _getMailUser(mails, user, _etelixAsCarrier, idTicket){
+        
+        if (!idTicket) idTicket = null;
+            
+        $.post('/mailuser/getmailuser', 'iduser='+user+'&etelixAsCarrier='+_etelixAsCarrier+'&idTicket='+idTicket, function(data){
             mails.html('');
             for (var i = 0; i < data.length; i++) 
             {
@@ -40,16 +44,89 @@ $ETTS.ajax=(function(){
 	 * @param int idSpeech
          * @param obj append
          */
-        getSpeech:function(idSpeech, append){
+        getSpeech:function(idSpeech, append, settings){
+            var _country = settings.country.find('option:selected').text(),
+            _failure = settings.failure.find('option:selected').text();
+            
+            if (_country == '') _country = settings.country.first().text();
+            if (_failure == '') _failure = settings.failure.val();
+            
             $.ajax({
                 type:'POST',
                 url:'/speech/gettextspeech',
                 data: {
-                  _idSpeech:idSpeech   
+                  _idSpeech:idSpeech,
+                  failure:_failure,
+                  country:_country
                 },
                 success:function(data) {
-                   $(append).text(data);
                    $(append).val(data);
+                }
+             });
+        },
+        getSpeechSupplier:function(settings){
+            $.ajax({
+                type:'POST',
+                url:'/speech/getspeechsupplier',
+                data: {
+                  idFailure:settings.failure.val(),
+                  failure:settings.failure.find('option:selected').text(),
+                  country:settings.country.find('option:selected').text()
+                },
+                dataType:'json',
+                success:function(data) {
+                    if (data.x != 'false') 
+                    {
+                        var count = data.length;
+                        settings.speech.html('<option value=""></option>');
+                        settings.append.val('');
+                        
+                        settings.speech.append('<optgroup label="English">');
+                        for (var i = 0; i < count; i++)
+                        {
+                            if (data[i].idLanguage == '1') 
+                                settings.speech.append('<option value="'+data[i].idSpeech+'">'+data[i].title+'</option>');
+                        } 
+                        settings.speech.append('</optgroup>');
+                        settings.speech.append('<optgroup label="Spanish">');
+                        for (var i = 0; i < count; i++)
+                        {
+                            if (data[i].idLanguage == '2') 
+                                settings.speech.append('<option value="'+data[i].idSpeech+'">'+data[i].title+'</option>');
+                        }  
+                        settings.speech.append('</optgroup>');
+                    }
+                    else
+                    {
+                        settings.append.val('');
+                        settings.speech.html('');
+                    }
+                }
+             });
+        },
+        getSpeechCustomer:function(speech){
+            $.ajax({
+                type:'POST',
+                url:'/speech/getspeechcustomer',
+                dataType:'json',
+                success:function(data) {
+                    var count = data.length;
+                    speech.html('<option value=""></option>');
+                    
+                    speech.append('<optgroup label="English">');
+                    for (var i = 0; i < count; i++)
+                    {
+                        if (data[i].id_language == '1') 
+                            speech.append('<option value="'+data[i].id+'">'+data[i].title+'</option>');
+                    } 
+                    speech.append('</optgroup>');
+                    speech.append('<optgroup label="Spanish">');
+                    for (var i = 0; i < count; i++)
+                    {
+                        if (data[i].id_language == '2') 
+                            speech.append('<option value="'+data[i].id+'">'+data[i].title+'</option>');
+                    }  
+                    speech.append('</optgroup>');
                 }
              });
         },
@@ -105,7 +182,7 @@ $ETTS.ajax=(function(){
          * @param int id
          * @param obj selectMail
          */
-        getMailsByUser:function(id, selectMail, clear){
+        getMailsByUser:function(id, selectMail, clear, _etelixAsCarrier){
             $(clear).empty();
             if (id.length > 0) 
             {
@@ -113,7 +190,8 @@ $ETTS.ajax=(function(){
                        type: 'POST',
                        url: '/mailuser/getmailuser',
                        data:{
-                           iduser:id
+                           iduser:id,
+                           etelixAsCarrier:_etelixAsCarrier
                        },
                        dataType:'json',
                        success:function(data){
@@ -300,7 +378,7 @@ $ETTS.ajax=(function(){
                                 content: '<center><h2>Success<h2></center>'
                           });
                           
-                          _limpiarForm(formulario);
+                          _limpiarForm(formulario, _optionOpen);
                           
                        } else {
                            $.Dialog.close();
@@ -318,37 +396,29 @@ $ETTS.ajax=(function(){
              });
         },
         
-        saveMail:function(_newMail,_typeUser, _user, contentMail, to, _option){
+        /**
+         * Este método guarda los mails desde la interfaz crear ticket(Todos los casos),
+         * también lo hace en la interfaz del detalle del ticket pero a diferencia de las
+         * demas vistas, en el detalle también guarda en la tabla mail_ticket
+         */
+        saveMail:function(_newMail,_typeUser,_user,contentMail,to,_option,_idTicket){
+            
+            var _etelixAsCarrier = false;
+            if (_option.val() == 'etelix_as_carrier') _etelixAsCarrier = true;
+            
             if (_user.val())
             {
-                
-                if (_typeUser=='customer')
-                    _typeUser=1;
-                else if (_typeUser=='supplier')
-                    _typeUser=0;
-                else
-                    _typeUser=_typeUser;
-                
                 $.ajax({
                    type:'POST',
                    url:'/mail/setmail',
                    data:{
                        mail: _newMail.val(),
-                       typeUser:_typeUser,
                        user:_user.val(),
-                       option:_option
+                       option:_option.val(),
+                       idTicket:_idTicket
                    },
                    success:function(data){
-                       if (data == 'true') 
-                       {    
-                           _newMail.val('');
-                           _getMailUser(contentMail, _user.val());
-                           setTimeout(function(){
-                               var option = contentMail.find('option:last-child');
-                               to.append('<option value="'+option.val()+'" >'+option.text()+'</option>');
-                           },500);
-                       } 
-                       else if(data == 'tope alcanzado') 
+                       if(data == 'tope alcanzado') 
                        {
                             $.Dialog({
                                 shadow: true,
@@ -359,13 +429,13 @@ $ETTS.ajax=(function(){
                                 padding: 10,
                                 content: '<center><h2>Only five emails allowed<h2></center>'
                           });
-
                        } 
                        else if (data == 'existe correo') 
                        {
                             $.Dialog({
                                     shadow: true,
                                     overlay: false,
+                                    overlayClickClose: false,
                                     icon: '<span class="icon-rocket"></span>',
                                     title: 'Error',
                                     width: 500,
@@ -384,17 +454,115 @@ $ETTS.ajax=(function(){
                                 padding: 10,
                                 content: '<center><h2>Error<h2></center>'
                             });
+                       } 
+                       else 
+                       {
+                           if (contentMail != null)
+                           {
+                                _getMailUser(contentMail, _user.val(), _etelixAsCarrier);
+                                setTimeout(function(){
+                                    var option = contentMail.find('option:last-child');
+                                    to.append('<option value="'+option.val()+'" >'+option.text()+'</option>');
+                                },500);
+                           }
+                           else
+                           {
+                               if (to != null)
+                               {
+                                   to.html('');
+                                   for (var i = 0; i < data.length; i++)
+                                   {
+                                       to.append('<option value="'+data[i].id+'">'+data[i].mail+'</option>');
+                                   }
+                               }
+                           }
+                           _newMail.val('');
                        }
                    }
                 });
             }
         },
+        
         removeBlink:function(_idTicket){
             $.ajax({
                type:'POST',
                url:'/descriptionticket/read',
                data:{
                    idTicket:_idTicket
+               }
+            });
+        },
+        
+        
+        /**
+         * Este método guardará uno o varios correos en la tabal mail_ticket 
+         * asociados a un usuario. Para esto ya debe existir el mail más no debe
+         * estar en mail_ticket
+         * @param {object} settings
+         */
+        saveMailTicket:function(settings){
+            $.ajax({
+               type:'POST',
+               url:'/mailticket/savemailticket',
+               data:{
+                   idTicket:settings.idTicket.val(),
+                   mail:settings.mail
+               },
+               dataType:'json',
+               success:function(data){
+                   if (data != 'false')
+                   {
+                       settings.select.html('');
+                       for (var i = 0; i < data.length; i++)
+                       {
+                           settings.select.append('<option value="'+data[i].id+'">'+data[i].mail+'</option>');
+                       }
+                   }
+               }
+            });
+        },
+        /**
+         * Borrará uno o varios mails de mail_ticket
+         */
+        deleteMailTicket:function(settigns){
+            $.ajax({
+               type:'POST',
+               url:'/mailticket/delete',
+               data:{
+                   idMailTicket:settigns.idMailTicket
+               },
+               success:function(data){
+                   settigns.select2.find('option:selected').remove();
+                    _getMailUser(settigns.select, settigns.idUser.val(), 'false', settigns.idTicket.val());
+               }
+            });
+        },
+        getMailsImap:function(settings){
+            $.ajax({
+               type:'POST',
+               url:'/ticket/getmailsimap',
+               data:{
+                   ticketNumber:settings.ticketNumber,
+                   optionOpen:settings.optionOpen,
+                   idTicket:settings.idTicket
+               },
+               success:function(data){
+                   if (data !== 'false') {
+                       settings.answer.empty();
+                       settings.loader.empty();
+                       settings.answer.html(data);
+                       settings.answer.append('<div class="pre-loader"></div>');
+                       settings.answer.scrollTop(100000);
+                   } else {
+                       settings.loader.empty();
+                   }
+               },
+               beforeSend:function(){
+                   settings.loader.html(
+                        '<div style="width:100% !important; text-align:center !important;">' +
+                            '<div style="margin:auto;"><img src="/images/preloader.GIF"></div>' +
+                        '</div>'
+                    );
                }
             });
         }

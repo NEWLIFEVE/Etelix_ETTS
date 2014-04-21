@@ -2,6 +2,85 @@ Etelix_ETTS
 ===========
 
 Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
+
+15/04/2014
+    - Se amplió la interfaz del detalle delticket.
+    - Se colocó un botón de refresh(para el chat) en el detalle del ticket.
+    - Descarga manual de correos asociados a un número de ticket
+
+07/04/2014
+    - Ahora los usuarios internos tienen la posibilidad de agregar mas correos en la interfaz del detalle del ticket(Solo cuando el ticket es abierto etelix_to_carrier)
+
+04/04/2014
+    - Se modificó el método saveMailTicket en el modelo MailTicket, ahora si los atributos pueden llegar tanto como array o como un solo atributo
+
+03/04/2014
+    - Corrección en adminclose, antes se mostraban todos los tickets cerrados a los carriers, ahora solo se muestran los tickets asociados a ellos.
+    - Se agregó un nuevo action en MailticketController(actionSavemailticket), el cual servirá para guardar los mails(ya registrados en mail_user) al dar una nueva respuesta.
+    - Nuevos métodos en admin.js: seeOptions(), hideOptions() los cuales muestran u ocultan la opción de agregar un correo.
+    - Nuevo método en admin.js: bajarCorreo() el cual al bajar el correo guardará de una vez el mail en la tabla mail_ticket.
+    
+
+02/04/2014
+    - Corrección en los speech del preview del ticket. No se concatenaba la falla y el pais, ahora ya lo hace.
+
+01/04/2014
+    - Ahora el usuario interno tiene la lista de speech en ingles y español
+    - Se creo un action nuevo en SpeechController(actionGetspeechsupplier) para obtener los speech de los suppliers y se borro actionGetspeechsupplier en FailureController
+    - Se borró el campo id_speech de la tabla failure
+    - Se creó una nueva tabla llamada failure_speech
+    - Al abrirle un ticket a un supplier, estando seleccionado la falla y el pais, se cargará el speech correspondiente pudiendo seleccionar si setea en ingles o en español
+    - Ordenados speech's en preview ticket por idioma. También dependen si es customer o supplier
+
+31/03/2014
+    - Se creo un campo nuevo en la tabla failure llamado id_speech que se relaciona con speech. Se agregó en el metodo relations dichas relaciones por cada modelo afectado por el campo agregado
+    - Se creó un action nuevo en FailureController (actionGetspeechsupplier) para obtener los speech de los suppliers
+    - Se creó un action nuevo en SpeechController (actionGetspeechcustomer) para obtener los speech de los customers
+
+Release 1.1.8.1
+28/03/2014(Corrección en master)
+	- Corrección en creacion de tickets, comprobacion de option open, cuando es etelix_to_carrier comprueba que exista el correo, si es etelis_as_carrier o carrier_to_etelix, comprueba que exista y que asign_by sea 1
+    - En la interfaz "createtocarrier", en el label "Destination IP (Customer IP)", se cambió por "Destination IP (Carrier IP)"
+    - Se agrego tested number en la interfaz de etelix to carrier
+    - La columna user debe decir el nombre del usuario que abre el ticket (Ya lo hace).
+
+27/03/2014(Correcciones en master)
+    - Corrección en el subject de nueva respuesta, se colocó una coma y la palabra "status" después del usuario que 
+      escribió la respuesta. También se colocó si es etelix que responde por el carrier si el option_open es "carrier_to_etelix".
+    - Ahora el carrier tiene la opción de ver tickets cerrados.
+    - Invertido el nombre de las ip en la interfaz tickets etelix a carrier
+    - Interfaz "carrier to etelix", si el carrier es supplier/customer, podrá seleccionar alguna de las 2 opciones,
+      Sí solo es supplier o solo customer, vendrá seteado por defecto y no podrá cambiar el tipo de carrier
+
+Release 1.1.8 26/03/2014
+    - Corrección al cerrar tickets viejos desde el preview del ticket.
+    - Ahora desde adminclose se ve la columna country
+    - Corregido bug al guardar mails. Ahora los carriers y etelix como
+      el carrier solo pueden agregar 5 correos, cuando es etelix al 
+      carrier puede agregar los correos que deseen
+    - Corregido bug al guardar varios correos, tested number y archivos
+    - De la interfaz crear ticket(carrier to etelix), ahora se le permite al carrier seleccionar si abrirá el ticket como customer o supplier.
+
+24/03/2014
+    - Corrección en refresh. Ahora al abrir el chat se cancela el refresh y al cerrarlo se continua con el mismo. Siguiendo el mismo flujo cada vez que se abra y cierre el chat.
+    - En preview del ticket ahora permite cerrar el ticket
+    -Correccion al guardar email en interfaz de crear tickets. Los usuarios internos
+     pueden agregar tantos correos deseen, los carriers solo pueden agregar 5. Los correos 
+     que sean agregados por usuarios internos, no se veran a la hora de que un carrier
+     abra la interfaz de abrir ticket.
+    
+
+Release 1.1.7 21/03/2014
+	- En la interfaz de administracion de tickets, agregado el pais con mayor incidencia entre los tested number del ticket
+    - Cambio del subject al abrir, cerrar o dar una respuesta al ticket.
+    - Refresh cada 5 minutos de vista admin
+    - Cambio del menu ticket.
+    - Corregido error(Aparrecia la validación) al seleccionar date en abrir ticket(Todos los casos) 
+    -Cambio en el menu de ticket para usuarios internos
+    -Ticket Information - Open TT from Carrier by Etelix, Ticket Information - Open TT to Carrier
+    -Corrección en el datepicker del tested number
+
+
 Release 1.1.6
 	- Modificacion de asunto de nueva respuesta, TT from/for Customer/Supplier Carrier, New Etelix/Carrier Status (By Etelix on ETTS), ticket_number (tiempo)
 	- Usuarios Internos, pueden abrir tickets a Customers/Suppliers
@@ -9,22 +88,6 @@ Release 1.1.6
 	- Colores diferentes para las respuestas en el chat de mensajes
 	- Modificada clase de blink para los tickets con nuevas respuestas
 	- Cambio de asunto de correos al crear/nueva respuesta/cerrar tickets
-
-21/03/2014
-        - Cambio del subject al abrir, cerrar o dar una respuesta al ticket.
-        - Refresh cada 5 minutos de vista admin
-        - Cambio del menu ticket.
-        - Corregido error(Aparrecia la validación) al seleccionar date en abrir ticket(Todos los casos)
-
-17/03/2014
-        -Correccion al guardar email en interfaz de crear tickets. Los usuarios internos
-         pueden agregar tantos correos deseen, los carriers solo pueden agregar 5. Los correos 
-         que sean agregados por usuarios internos, no se veran a la hora de que un carrier
-         abra la interfaz de abrir ticket.
-        -Cambio en el menu de ticket para usuarios internos
-        -Ticket Information - Open TT from Carrier by Etelix, Ticket Information - Open TT to Carrier
-        -Corrección en el datepicker del tested number
-
 
 Release 1.1.5
 	-Modificada la tabla description_ticket creando los campos: 

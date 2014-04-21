@@ -186,6 +186,65 @@ class SpeechController extends Controller
     {
         $model=new Speech;
         $idSpeech=$_POST['_idSpeech'];
-        if ($idSpeech != null) echo $model::model()->find("id = '$idSpeech'")->speech;
+        if ($idSpeech != null)
+        {
+            $speech=$model::model()->find("id = '$idSpeech'")->speech;
+            if ($speech != null)
+            {
+                if (isset($_POST['failure']) && !empty($_POST['failure'])) 
+                    $speech=preg_replace('/FAILURE/', $_POST['failure'], $speech);
+                if (isset($_POST['country']) && !empty($_POST['country'])) 
+                    $speech=preg_replace('/COUNTRY/', $_POST['country'], $speech);
+                
+                echo $speech;
+            }
+        }
+    }
+    
+    /**
+     *
+     */
+    public function actionGetspeechcustomer()
+    {
+        $model=new Speech;
+        $data = $model::model()->findAllBySql("SELECT * FROM speech WHERE code LIKE 'C%' ORDER BY id ASC");
+        if ($data !== null) echo CJSON::encode($data);
+    }
+    
+    /**
+     *
+     */
+    public function actionGetspeechsupplier()
+    {
+            $model=new Speech;
+            $idFailure=$_POST['idFailure'];
+            $json=array();
+            if ($idFailure != null) 
+            {
+                $data=$model::model()->findAllBySql(
+                        "SELECT s.* FROM speech s, failure f, failure_speech fs
+                        WHERE 
+                        s.id = fs.id_speech AND 
+                        f.id = fs.id_failure AND
+                        f.id = $idFailure
+                        ORDER BY s.id, f.id ASC");
+                if ($data != null)
+                {
+                    foreach ($data as $value) {
+                        $json[]=array(
+                            'idSpeech'=>$value->id,
+                            'speech'=>$value->speech,
+                            'title'=>$value->title,
+                            'idLanguage'=>$value->id_language,
+                            'x'=>'true'
+                        );
+                    }
+                    echo CJSON::encode($json);
+                }
+                else
+                {
+                    echo CJSON::encode(array('x'=>'false'));
+                }
+            }
     }
 }

@@ -5,14 +5,29 @@
 ?>
 <div id="content_attached_file"></div>
 <input type="hidden" id="open-ticket" value="carrier_to_etelix">
+<input type="hidden" id="user" value="<?php echo Yii::app()->user->id; ?>">
 <fieldset>
         <legend>Use this form to submit a ticket.</legend>
-<?php echo $form->errorSummary($model); ?>       
+<?php echo $form->errorSummary($model); ?>   
+
+<?php if ($typeCarrier == 'CS'): ?>
+<div class="input-control select block">
+        Open ticket as<small class="text-muted "><em> (required)</em></small>
+        <select id="class" class="validate[required]">
+            <option value=""></option>
+            <option value="customer">Customer</option>            
+            <option value="supplier">Supplier</option>
+        </select>
+</div>
+<?php elseif($typeCarrier == 'C'): ?>
+        <input type="hidden" id="class" value="customer">
+<?php elseif($typeCarrier == 'S'): ?>
+        <input type="hidden" id="class" value="supplier">
+<?php endif; ?>      
 <div class="input-control select block">
         Select the recipients emails that will received the ticket confirmation
-
         <small class="text-muted "><em> (maximum 5 emails)</em></small>
-        <select id="cargar_mails" multiple>
+        <select id="mails" multiple>
             <?php foreach (MailUser::getMails(Yii::app()->user->id) as $mails): ?>
                 <option value="<?php echo $mails['id']; ?>"><?php echo $mails['mail']; ?></option>
             <?php endforeach; ?>
@@ -21,14 +36,14 @@
       
 <div class="input-control select block">
     Response to <small class="text-muted "><em>(required)</em></small>&nbsp;&nbsp;
-    <a href="javascript:void(0)" class="a-agregar_correo"><i class="icon-plus-2"></i></a>
+    <a href="javascript:void(0)" class="a-agregar-correo"><i class="icon-plus-2"></i></a>
     &nbsp;
-    <a href="javascript:void(0)" class="a-bajar_correo"><i class="icon-arrow-down"></i></a>
+    <a href="javascript:void(0)" class="a-bajar-correo"><i class="icon-arrow-down"></i></a>
     &nbsp;
-    <a href="javascript:void(0)" class="a-borrar_correo" ><i class="icon-cancel-2 fg-red "></i></a>
+    <a href="javascript:void(0)" class="a-borrar-correo" ><i class="icon-cancel-2 fg-red "></i></a>
     &nbsp;
-    <a href="javascript:void(0)" id="add_all_email" >Add all emails</a>
-    <div class="div-agregar_correo">
+    <a href="javascript:void(0)" class="add-all-email" >Add all emails</a>
+    <div class="div-agregar-correo">
         <div class="input-control text span3"  data-role="input-control">
             <input type="text" id="new_mail" class="validate[custom[email]]" name="new_mail" placeholder="example@example.com" />
         </div>
@@ -82,9 +97,9 @@
 
 <!--Preview tested number-->
 <div id="preview_tested_number"> 
-<div class="grid" >
+<div id="elemento" class="grid" >
         <div class="input-control text span3" >
-            Tested numbers<small class="text-muted "><em> (required)</em></small>
+            <span>Tested numbers<small class="text-muted "><em> (required)</em></small></span>
             <?php echo $form->textField($model,'tested_numbers[]',array('placeholder' => 'Without prefix', 'class' => 'validate[required,custom[integer]]')); ?>
             <?php echo $form->error($model,'tested_numbers[]'); ?>
         </div>
@@ -112,7 +127,7 @@
 
         <div class="input-control text span1" style="margin-left: 5px; padding-top: 5px; width: 10px !important;">
             <br>
-            <a href="javascript:void(0)" class="_agregar"><i class="icon-plus-2"></i></a>
+            <a href="javascript:void(0)" class="agregar-tested-number"><i class="icon-plus-2"></i></a>
         </div>
 </div>
         
@@ -134,3 +149,7 @@
 
 </fieldset>
 
+<?php
+//$usuario = Yii::app()->user->um->loadUserById(Yii::app()->user->id,true) ;
+//echo $usuario->username;
+?>

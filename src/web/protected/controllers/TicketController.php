@@ -63,8 +63,13 @@ class TicketController extends Controller
     public function actionCreate()
     {
         $model=new Ticket;
+        $typeCarrier='';
+        if (Carrier::getTypeCarrier(Yii::app()->user->id) !== false) 
+            $typeCarrier=Carrier::getTypeCarrier(Yii::app()->user->id);
+        
         $this->render('create',array(
-            'model'=>$model
+            'model'=>$model,
+            'typeCarrier'=>$typeCarrier
         ));
     }
 
@@ -209,7 +214,7 @@ class TicketController extends Controller
         $modelTicket->id_user=Yii::app()->user->id;
         $modelTicket->id_status=1;
         $modelTicket->option_open=$_POST['optionOpen'];
-        if(isset($_POST['isInternal']) && $_POST['isInternal'] == '1')
+        if($modelTicket->option_open == 'etelix_to_carrier')
         {
             $modelTicket->id_gmt=null;
             if (!$modelTicket->save()) $isOk=false;
@@ -218,18 +223,18 @@ class TicketController extends Controller
         {
             $modelTicket->id_gmt=$_POST['gmt'];
             if (!$modelTicket->save()) $isOk=false;
-            
-            // Guardando number
-            $attributes=array(
-                'id_ticket'=>$modelTicket->id, 
-                '_country'=>$_POST['_country'],
-                'testedNumber'=>$_POST['testedNumber'],
-                '_date'=>$_POST['_date'],
-                '_hour'=>$_POST['_hour']
-                );
-            if (!TestedNumber::saveTestedNumbers($attributes)) $isOk=false;
         }
-
+        
+        // Guardando number
+        $attributes=array(
+            'id_ticket'=>$modelTicket->id, 
+            '_country'=>$_POST['_country'],
+            'testedNumber'=>$_POST['testedNumber'],
+            '_date'=>$_POST['_date'],
+            '_hour'=>$_POST['_hour']
+            );
+        if (!TestedNumber::saveTestedNumbers($attributes)) $isOk=false;
+        
         // Guardando los mails (to)
         if (isset($_POST['responseTo']) && $_POST['responseTo'] != null)
         {
@@ -247,7 +252,7 @@ class TicketController extends Controller
         // Guardando los mails (bbc)
         if (isset($_POST['bbc']) && $_POST['bbc'] != null)
         {
-            $attributes=array('id_ticket'=>$modelTicket->id, 'responseTo'=>$_POST['cc']);
+            $attributes=array('id_ticket'=>$modelTicket->id, 'responseTo'=>$_POST['bbc']);
             if (!MailTicket::saveMailTicket($attributes, 3)) $isOk=false;
         }
 
@@ -352,18 +357,41 @@ class TicketController extends Controller
             $ticketModel::model()->updateByPk($id,array('id_status'=>$_POST['idStatus']));
         }
         
+        $rutaAttachFile=array();        
+        if (isset($_POST['message']) && $_POST['message'] != null) {
+            // Guardando descripcion
+            $attributes=array('id_ticket'=>$id, 'description'=>$_POST['message']);
+            $attributtesFile=null;
+            
+            if(isset($_POST['files']) && count($_POST['files'])){
+                $attributtesFile=array(
+                    'id_ticket'=>$id,
+                    '_attachFileSave'=>$_POST['fileServer'],
+                    '_attachFile'=>$_POST['files'],
+                    '_attachFileSize'=>'0.0'
+                );
+                $sizeof=count($_POST['files']);
+                for($i=0; $i<$sizeof; $i++) $rutaAttachFile[]='uploads/'.$_POST['fileServer'][$i];
+            }
+            
+            $internalAsCarrier=null;
+            if (isset($_POST['internalAsCarrier']) && $_POST['internalAsCarrier'] != null) $internalAsCarrier='etelix_as_carrier';
+            
+            DescriptionTicket::saveDescription($attributes,$internalAsCarrier,$attributtesFile);
+        }
+        
         $asunto=new Subject;
         $cuerpoCorreo=new CuerpoCorreo(self::getTicketAsArray($id));
         
         $body=$cuerpoCorreo->getBodyCloseTicket($statuName);
         $subject=$asunto->subjectCloseTicket($ticketNumber, Carrier::getCarriers(true, $id), Utility::restarHoras($hour, date('H:i:s'), floor(Utility::getTime($date, $hour)/ (60 * 60 * 24))));
         
-        $envioMail=$mailer->enviar($body,$mailModel::getNameMails($id),'',$subject,null);
+        $envioMail=$mailer->enviar($body,$mailModel::getNameMails($id),'',$subject,$rutaAttachFile);
 
         if($envioMail===true)
-            echo 'true';
+            $this->renderPartial('/ticket/_answer', array('datos' => Ticket::ticketsByUsers(CrugeUser2::getUserTicket($id, true)->iduser, $id, false, false, true)));
         else
-            echo 'Error al enviar el correo: ' . $envioMail;
+            echo 'false';
     }
 
 
@@ -423,6 +451,25 @@ class TicketController extends Controller
         $this->render('adminclose');
     }
     
+    public function actionGetmailsimap()
+    {
+        if (isset($_POST['ticketNumber']) && !empty($_POST['ticketNumber'])) {
+            error_reporting(E_ALL & ~E_NOTICE); 
+            $imap = new Imap();
+            $mails = $imap->messageByTicketNumber($_POST['ticketNumber']);
+            if ($mails != false) {
+                $imap->deleteMessage($mails, $_POST['optionOpen'], $_POST['idTicket']);
+                $this->renderPartial('/ticket/_answer', array('datos' => Ticket::ticketsByUsers(Yii::app()->user->id, $_POST['idTicket'], false)));
+            } else {
+                echo 'false';
+            }
+            $imap->close();
+        } else {
+            echo 'false';
+        }
+    }
+    
+    
     /**
      * Método para retornar los datos del ticket que se mostrarán al mandar un correo
      * @param integer $idTicket
@@ -472,4 +519,22 @@ class TicketController extends Controller
         
         return $datos;
     }
+    
+    public function actionTestimap()
+    {
+        error_reporting(E_ALL & ~E_NOTICE); 
+       
+        $connection = array(
+            'IMAP_HOST'=>'{imap.gmail.com:993/imap/ssl}INBOX',
+            'IMAP_USER'=>'tsu.nelsonmarcano@gmail.com',
+            'IMAP_PASS'=>'NayeskaMarcano123'
+        );
+        
+        $imap = new Imap();
+        $mails = $imap->getMessagesByQuantity(3);
+        $imap->close();
+        
+        $this->render('imap', array('mails'=>$mails));
+    }
+    
 }

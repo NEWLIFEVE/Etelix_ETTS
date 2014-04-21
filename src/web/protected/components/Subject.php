@@ -89,23 +89,25 @@ class Subject
         $this->_setCarrier($ticketNumber);
         
         $this->_subject = 'TT '. $this->_formatTicketNumber($ticketNumber) .' '.$this->_carrier.' to Etelix, New ';
-        $lastStringSubject = ' Status, '.$ticketNumber.' ('.$timeTicket.')';
+        $lastStringSubject = $ticketNumber.' ('.$timeTicket.')';
         $user = 'Etelix';
+        $byEtelix = '';
         
         if (CrugeAuthassignment::getRoleUser() == 'C') {
             $user = $this->_carrier;
         } else {
-            if ($internalAsCarrier != null ) $user = $this->_carrier;
+            if ($internalAsCarrier != null ) {
+                $user = $this->_carrier;
+                $byEtelix = '(by Etelix on ETTS)';
+            }
         }
         
-        if ($optionOpen == 'etelix_as_carrier' || $internalAsCarrier != null) 
-            $this->_subject .= $user . ' (by Etelix on ETTS)' . $lastStringSubject;
+        if ($optionOpen == 'etelix_as_carrier' || $optionOpen == 'carrier_to_etelix') 
+            $this->_subject .= $user . ' Status '.$byEtelix.', ' . $lastStringSubject;
         if ($optionOpen == 'etelix_to_carrier') 
             $this->_subject = 'TT Etelix to '. $this->_formatTicketNumber($ticketNumber) .' '.$this->_carrier.', New '.$user.' ' . $lastStringSubject;
-        if ($optionOpen == 'carrier_to_etelix')
-            $this->_subject .= $user . $lastStringSubject;
         if ($optionOpen == '')
-            $this->_subject .= $user . $lastStringSubject;
+            $this->_subject = $this->_formatTicketNumber($ticketNumber) . ' New '  . $this->_carrier . $lastStringSubject;
         
         return $this->_subject;
     }

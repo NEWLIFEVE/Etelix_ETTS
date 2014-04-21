@@ -2,9 +2,9 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.2.4
--- Dumped by pg_dump version 9.2.4
--- Started on 2014-04-02 14:07:13
+-- Dumped from database version 9.1.9
+-- Dumped by pg_dump version 9.1.12
+-- Started on 2014-03-21 18:47:13 VET
 
 SET statement_timeout = 0;
 SET client_encoding = 'UTF8';
@@ -13,7 +13,7 @@ SET check_function_bodies = false;
 SET client_min_messages = warning;
 
 --
--- TOC entry 216 (class 3079 OID 11727)
+-- TOC entry 211 (class 3079 OID 11677)
 -- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
 --
 
@@ -21,8 +21,8 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 
 
 --
--- TOC entry 2237 (class 0 OID 0)
--- Dependencies: 216
+-- TOC entry 2216 (class 0 OID 0)
+-- Dependencies: 211
 -- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
 --
 
@@ -30,7 +30,8 @@ COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 
 --
--- TOC entry 217 (class 3079 OID 8669639)
+-- TOC entry 212 (class 3079 OID 4061844)
+-- Dependencies: 6
 -- Name: dblink; Type: EXTENSION; Schema: -; Owner: 
 --
 
@@ -38,8 +39,8 @@ CREATE EXTENSION IF NOT EXISTS dblink WITH SCHEMA public;
 
 
 --
--- TOC entry 2238 (class 0 OID 0)
--- Dependencies: 217
+-- TOC entry 2217 (class 0 OID 0)
+-- Dependencies: 212
 -- Name: EXTENSION dblink; Type: COMMENT; Schema: -; Owner: 
 --
 
@@ -53,7 +54,8 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- TOC entry 168 (class 1259 OID 8454186)
+-- TOC entry 162 (class 1259 OID 4061895)
+-- Dependencies: 6
 -- Name: file; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -71,7 +73,8 @@ CREATE TABLE file (
 ALTER TABLE public.file OWNER TO postgres;
 
 --
--- TOC entry 169 (class 1259 OID 8454189)
+-- TOC entry 163 (class 1259 OID 4061898)
+-- Dependencies: 162 6
 -- Name: archivos_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -86,8 +89,8 @@ CREATE SEQUENCE archivos_id_seq
 ALTER TABLE public.archivos_id_seq OWNER TO postgres;
 
 --
--- TOC entry 2239 (class 0 OID 0)
--- Dependencies: 169
+-- TOC entry 2218 (class 0 OID 0)
+-- Dependencies: 163
 -- Name: archivos_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -95,7 +98,8 @@ ALTER SEQUENCE archivos_id_seq OWNED BY file.id;
 
 
 --
--- TOC entry 170 (class 1259 OID 8454191)
+-- TOC entry 164 (class 1259 OID 4061901)
+-- Dependencies: 6
 -- Name: class; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -108,7 +112,8 @@ CREATE TABLE class (
 ALTER TABLE public.class OWNER TO postgres;
 
 --
--- TOC entry 171 (class 1259 OID 8454194)
+-- TOC entry 165 (class 1259 OID 4061904)
+-- Dependencies: 164 6
 -- Name: clase_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -123,8 +128,8 @@ CREATE SEQUENCE clase_id_seq
 ALTER TABLE public.clase_id_seq OWNER TO postgres;
 
 --
--- TOC entry 2240 (class 0 OID 0)
--- Dependencies: 171
+-- TOC entry 2219 (class 0 OID 0)
+-- Dependencies: 165
 -- Name: clase_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -132,7 +137,8 @@ ALTER SEQUENCE clase_id_seq OWNED BY class.id;
 
 
 --
--- TOC entry 174 (class 1259 OID 8454204)
+-- TOC entry 166 (class 1259 OID 4061907)
+-- Dependencies: 6
 -- Name: country; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -145,7 +151,8 @@ CREATE TABLE country (
 ALTER TABLE public.country OWNER TO postgres;
 
 --
--- TOC entry 205 (class 1259 OID 8470854)
+-- TOC entry 167 (class 1259 OID 4061910)
+-- Dependencies: 6
 -- Name: cruge_authassignment; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -160,7 +167,8 @@ CREATE TABLE cruge_authassignment (
 ALTER TABLE public.cruge_authassignment OWNER TO postgres;
 
 --
--- TOC entry 204 (class 1259 OID 8470846)
+-- TOC entry 168 (class 1259 OID 4061916)
+-- Dependencies: 6
 -- Name: cruge_authitem; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -176,7 +184,8 @@ CREATE TABLE cruge_authitem (
 ALTER TABLE public.cruge_authitem OWNER TO postgres;
 
 --
--- TOC entry 206 (class 1259 OID 8470872)
+-- TOC entry 169 (class 1259 OID 4061923)
+-- Dependencies: 6
 -- Name: cruge_authitemchild; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -189,7 +198,8 @@ CREATE TABLE cruge_authitemchild (
 ALTER TABLE public.cruge_authitemchild OWNER TO postgres;
 
 --
--- TOC entry 201 (class 1259 OID 8470809)
+-- TOC entry 170 (class 1259 OID 4061926)
+-- Dependencies: 1982 1983 1984 1985 1986 1987 6
 -- Name: cruge_field; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -212,7 +222,8 @@ CREATE TABLE cruge_field (
 ALTER TABLE public.cruge_field OWNER TO postgres;
 
 --
--- TOC entry 200 (class 1259 OID 8470807)
+-- TOC entry 171 (class 1259 OID 4061938)
+-- Dependencies: 6 170
 -- Name: cruge_field_idfield_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -227,8 +238,8 @@ CREATE SEQUENCE cruge_field_idfield_seq
 ALTER TABLE public.cruge_field_idfield_seq OWNER TO postgres;
 
 --
--- TOC entry 2241 (class 0 OID 0)
--- Dependencies: 200
+-- TOC entry 2220 (class 0 OID 0)
+-- Dependencies: 171
 -- Name: cruge_field_idfield_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -236,7 +247,8 @@ ALTER SEQUENCE cruge_field_idfield_seq OWNED BY cruge_field.idfield;
 
 
 --
--- TOC entry 203 (class 1259 OID 8470826)
+-- TOC entry 172 (class 1259 OID 4061941)
+-- Dependencies: 6
 -- Name: cruge_fieldvalue; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -251,7 +263,8 @@ CREATE TABLE cruge_fieldvalue (
 ALTER TABLE public.cruge_fieldvalue OWNER TO postgres;
 
 --
--- TOC entry 202 (class 1259 OID 8470824)
+-- TOC entry 173 (class 1259 OID 4061947)
+-- Dependencies: 172 6
 -- Name: cruge_fieldvalue_idfieldvalue_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -266,8 +279,8 @@ CREATE SEQUENCE cruge_fieldvalue_idfieldvalue_seq
 ALTER TABLE public.cruge_fieldvalue_idfieldvalue_seq OWNER TO postgres;
 
 --
--- TOC entry 2242 (class 0 OID 0)
--- Dependencies: 202
+-- TOC entry 2221 (class 0 OID 0)
+-- Dependencies: 173
 -- Name: cruge_fieldvalue_idfieldvalue_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -275,7 +288,8 @@ ALTER SEQUENCE cruge_fieldvalue_idfieldvalue_seq OWNED BY cruge_fieldvalue.idfie
 
 
 --
--- TOC entry 197 (class 1259 OID 8470788)
+-- TOC entry 174 (class 1259 OID 4061950)
+-- Dependencies: 1990 1991 6
 -- Name: cruge_session; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -296,7 +310,8 @@ CREATE TABLE cruge_session (
 ALTER TABLE public.cruge_session OWNER TO postgres;
 
 --
--- TOC entry 196 (class 1259 OID 8470786)
+-- TOC entry 175 (class 1259 OID 4061955)
+-- Dependencies: 174 6
 -- Name: cruge_session_idsession_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -311,8 +326,8 @@ CREATE SEQUENCE cruge_session_idsession_seq
 ALTER TABLE public.cruge_session_idsession_seq OWNER TO postgres;
 
 --
--- TOC entry 2243 (class 0 OID 0)
--- Dependencies: 196
+-- TOC entry 2222 (class 0 OID 0)
+-- Dependencies: 175
 -- Name: cruge_session_idsession_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -320,7 +335,8 @@ ALTER SEQUENCE cruge_session_idsession_seq OWNED BY cruge_session.idsession;
 
 
 --
--- TOC entry 195 (class 1259 OID 8470765)
+-- TOC entry 176 (class 1259 OID 4061957)
+-- Dependencies: 1993 1994 1995 1996 1997 1998 1999 2000 2001 2002 2003 6
 -- Name: cruge_system; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -348,7 +364,8 @@ CREATE TABLE cruge_system (
 ALTER TABLE public.cruge_system OWNER TO postgres;
 
 --
--- TOC entry 194 (class 1259 OID 8470763)
+-- TOC entry 177 (class 1259 OID 4061974)
+-- Dependencies: 6 176
 -- Name: cruge_system_idsystem_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -363,8 +380,8 @@ CREATE SEQUENCE cruge_system_idsystem_seq
 ALTER TABLE public.cruge_system_idsystem_seq OWNER TO postgres;
 
 --
--- TOC entry 2244 (class 0 OID 0)
--- Dependencies: 194
+-- TOC entry 2223 (class 0 OID 0)
+-- Dependencies: 177
 -- Name: cruge_system_idsystem_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -372,7 +389,8 @@ ALTER SEQUENCE cruge_system_idsystem_seq OWNED BY cruge_system.idsystem;
 
 
 --
--- TOC entry 199 (class 1259 OID 8470798)
+-- TOC entry 178 (class 1259 OID 4061977)
+-- Dependencies: 2005 2006 2007 6
 -- Name: cruge_user; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -395,7 +413,8 @@ CREATE TABLE cruge_user (
 ALTER TABLE public.cruge_user OWNER TO postgres;
 
 --
--- TOC entry 198 (class 1259 OID 8470796)
+-- TOC entry 179 (class 1259 OID 4061983)
+-- Dependencies: 6 178
 -- Name: cruge_user_iduser_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -410,8 +429,8 @@ CREATE SEQUENCE cruge_user_iduser_seq
 ALTER TABLE public.cruge_user_iduser_seq OWNER TO postgres;
 
 --
--- TOC entry 2245 (class 0 OID 0)
--- Dependencies: 198
+-- TOC entry 2224 (class 0 OID 0)
+-- Dependencies: 179
 -- Name: cruge_user_iduser_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -419,7 +438,8 @@ ALTER SEQUENCE cruge_user_iduser_seq OWNED BY cruge_user.iduser;
 
 
 --
--- TOC entry 172 (class 1259 OID 8454196)
+-- TOC entry 180 (class 1259 OID 4061985)
+-- Dependencies: 2010 2011 2012 6
 -- Name: description_ticket; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -440,7 +460,8 @@ CREATE TABLE description_ticket (
 ALTER TABLE public.description_ticket OWNER TO postgres;
 
 --
--- TOC entry 173 (class 1259 OID 8454202)
+-- TOC entry 181 (class 1259 OID 4061992)
+-- Dependencies: 180 6
 -- Name: descripcion_ticket_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -455,8 +476,8 @@ CREATE SEQUENCE descripcion_ticket_id_seq
 ALTER TABLE public.descripcion_ticket_id_seq OWNER TO postgres;
 
 --
--- TOC entry 2246 (class 0 OID 0)
--- Dependencies: 173
+-- TOC entry 2225 (class 0 OID 0)
+-- Dependencies: 181
 -- Name: descripcion_ticket_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -464,7 +485,8 @@ ALTER SEQUENCE descripcion_ticket_id_seq OWNED BY description_ticket.id;
 
 
 --
--- TOC entry 175 (class 1259 OID 8454207)
+-- TOC entry 182 (class 1259 OID 4061994)
+-- Dependencies: 6 166
 -- Name: destinos_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -479,8 +501,8 @@ CREATE SEQUENCE destinos_id_seq
 ALTER TABLE public.destinos_id_seq OWNER TO postgres;
 
 --
--- TOC entry 2247 (class 0 OID 0)
--- Dependencies: 175
+-- TOC entry 2226 (class 0 OID 0)
+-- Dependencies: 182
 -- Name: destinos_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -488,7 +510,8 @@ ALTER SEQUENCE destinos_id_seq OWNED BY country.id;
 
 
 --
--- TOC entry 176 (class 1259 OID 8454209)
+-- TOC entry 183 (class 1259 OID 4061996)
+-- Dependencies: 6
 -- Name: failure; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -501,45 +524,8 @@ CREATE TABLE failure (
 ALTER TABLE public.failure OWNER TO postgres;
 
 --
--- TOC entry 215 (class 1259 OID 27295229)
--- Name: failure_speech; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
---
-
-CREATE TABLE failure_speech (
-    id integer NOT NULL,
-    id_failure integer NOT NULL,
-    id_speech integer NOT NULL
-);
-
-
-ALTER TABLE public.failure_speech OWNER TO postgres;
-
---
--- TOC entry 214 (class 1259 OID 27295227)
--- Name: failure_speech_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE failure_speech_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.failure_speech_id_seq OWNER TO postgres;
-
---
--- TOC entry 2248 (class 0 OID 0)
--- Dependencies: 214
--- Name: failure_speech_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE failure_speech_id_seq OWNED BY failure_speech.id;
-
-
---
--- TOC entry 177 (class 1259 OID 8454212)
+-- TOC entry 184 (class 1259 OID 4061999)
+-- Dependencies: 183 6
 -- Name: fallas_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -554,8 +540,8 @@ CREATE SEQUENCE fallas_id_seq
 ALTER TABLE public.fallas_id_seq OWNER TO postgres;
 
 --
--- TOC entry 2249 (class 0 OID 0)
--- Dependencies: 177
+-- TOC entry 2227 (class 0 OID 0)
+-- Dependencies: 184
 -- Name: fallas_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -565,7 +551,8 @@ ALTER SEQUENCE fallas_id_seq OWNED BY failure.id;
 SET default_with_oids = true;
 
 --
--- TOC entry 191 (class 1259 OID 8463904)
+-- TOC entry 185 (class 1259 OID 4062002)
+-- Dependencies: 6
 -- Name: gmt; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -580,7 +567,8 @@ CREATE TABLE gmt (
 ALTER TABLE public.gmt OWNER TO postgres;
 
 --
--- TOC entry 190 (class 1259 OID 8463902)
+-- TOC entry 186 (class 1259 OID 4062005)
+-- Dependencies: 185 6
 -- Name: gmt_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -595,8 +583,8 @@ CREATE SEQUENCE gmt_id_seq
 ALTER TABLE public.gmt_id_seq OWNER TO postgres;
 
 --
--- TOC entry 2250 (class 0 OID 0)
--- Dependencies: 190
+-- TOC entry 2228 (class 0 OID 0)
+-- Dependencies: 186
 -- Name: gmt_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -606,7 +594,8 @@ ALTER SEQUENCE gmt_id_seq OWNED BY gmt.id;
 SET default_with_oids = false;
 
 --
--- TOC entry 211 (class 1259 OID 14723845)
+-- TOC entry 206 (class 1259 OID 12645944)
+-- Dependencies: 6
 -- Name: language; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -619,7 +608,8 @@ CREATE TABLE language (
 ALTER TABLE public.language OWNER TO postgres;
 
 --
--- TOC entry 210 (class 1259 OID 14723843)
+-- TOC entry 205 (class 1259 OID 12645942)
+-- Dependencies: 6 206
 -- Name: language_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -634,8 +624,8 @@ CREATE SEQUENCE language_id_seq
 ALTER TABLE public.language_id_seq OWNER TO postgres;
 
 --
--- TOC entry 2251 (class 0 OID 0)
--- Dependencies: 210
+-- TOC entry 2229 (class 0 OID 0)
+-- Dependencies: 205
 -- Name: language_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -643,7 +633,8 @@ ALTER SEQUENCE language_id_seq OWNED BY language.id;
 
 
 --
--- TOC entry 178 (class 1259 OID 8454214)
+-- TOC entry 187 (class 1259 OID 4062008)
+-- Dependencies: 6
 -- Name: mail; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -656,7 +647,8 @@ CREATE TABLE mail (
 ALTER TABLE public.mail OWNER TO postgres;
 
 --
--- TOC entry 179 (class 1259 OID 8454217)
+-- TOC entry 188 (class 1259 OID 4062011)
+-- Dependencies: 187 6
 -- Name: mail_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -671,23 +663,26 @@ CREATE SEQUENCE mail_id_seq
 ALTER TABLE public.mail_id_seq OWNER TO postgres;
 
 --
--- TOC entry 2252 (class 0 OID 0)
--- Dependencies: 179
+-- TOC entry 2230 (class 0 OID 0)
+-- Dependencies: 188
 -- Name: mail_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
 ALTER SEQUENCE mail_id_seq OWNED BY mail.id;
 
 
+SET default_with_oids = true;
+
 --
--- TOC entry 180 (class 1259 OID 8454219)
+-- TOC entry 202 (class 1259 OID 9286452)
+-- Dependencies: 6
 -- Name: mail_ticket; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE TABLE mail_ticket (
+    id integer NOT NULL,
     id_mail_user integer NOT NULL,
     id_ticket integer NOT NULL,
-    id integer NOT NULL,
     id_type_mailing integer NOT NULL
 );
 
@@ -695,11 +690,12 @@ CREATE TABLE mail_ticket (
 ALTER TABLE public.mail_ticket OWNER TO postgres;
 
 --
--- TOC entry 189 (class 1259 OID 8456010)
--- Name: mail_tickets_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- TOC entry 201 (class 1259 OID 9286450)
+-- Dependencies: 6 202
+-- Name: mail_ticket_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
-CREATE SEQUENCE mail_tickets_id_seq
+CREATE SEQUENCE mail_ticket_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -707,21 +703,20 @@ CREATE SEQUENCE mail_tickets_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.mail_tickets_id_seq OWNER TO postgres;
+ALTER TABLE public.mail_ticket_id_seq OWNER TO postgres;
 
 --
--- TOC entry 2253 (class 0 OID 0)
--- Dependencies: 189
--- Name: mail_tickets_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- TOC entry 2231 (class 0 OID 0)
+-- Dependencies: 201
+-- Name: mail_ticket_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
-ALTER SEQUENCE mail_tickets_id_seq OWNED BY mail_ticket.id;
+ALTER SEQUENCE mail_ticket_id_seq OWNED BY mail_ticket.id;
 
-
-SET default_with_oids = true;
 
 --
--- TOC entry 193 (class 1259 OID 8465275)
+-- TOC entry 189 (class 1259 OID 4062019)
+-- Dependencies: 6
 -- Name: mail_user; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -737,7 +732,8 @@ CREATE TABLE mail_user (
 ALTER TABLE public.mail_user OWNER TO postgres;
 
 --
--- TOC entry 192 (class 1259 OID 8465273)
+-- TOC entry 190 (class 1259 OID 4062022)
+-- Dependencies: 189 6
 -- Name: mail_user_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -752,8 +748,8 @@ CREATE SEQUENCE mail_user_id_seq
 ALTER TABLE public.mail_user_id_seq OWNER TO postgres;
 
 --
--- TOC entry 2254 (class 0 OID 0)
--- Dependencies: 192
+-- TOC entry 2232 (class 0 OID 0)
+-- Dependencies: 190
 -- Name: mail_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -761,7 +757,8 @@ ALTER SEQUENCE mail_user_id_seq OWNED BY mail_user.id;
 
 
 --
--- TOC entry 181 (class 1259 OID 8454222)
+-- TOC entry 207 (class 1259 OID 12645950)
+-- Dependencies: 6
 -- Name: speech; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -777,8 +774,8 @@ CREATE TABLE speech (
 ALTER TABLE public.speech OWNER TO postgres;
 
 --
--- TOC entry 2255 (class 0 OID 0)
--- Dependencies: 181
+-- TOC entry 2233 (class 0 OID 0)
+-- Dependencies: 207
 -- Name: TABLE speech; Type: COMMENT; Schema: public; Owner: postgres
 --
 
@@ -786,7 +783,8 @@ COMMENT ON TABLE speech IS 'respuestas rapidas predeterminadas';
 
 
 --
--- TOC entry 182 (class 1259 OID 8454225)
+-- TOC entry 208 (class 1259 OID 12645956)
+-- Dependencies: 6 207
 -- Name: respuesta_rapida_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -801,8 +799,8 @@ CREATE SEQUENCE respuesta_rapida_id_seq
 ALTER TABLE public.respuesta_rapida_id_seq OWNER TO postgres;
 
 --
--- TOC entry 2256 (class 0 OID 0)
--- Dependencies: 182
+-- TOC entry 2234 (class 0 OID 0)
+-- Dependencies: 208
 -- Name: respuesta_rapida_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -812,21 +810,61 @@ ALTER SEQUENCE respuesta_rapida_id_seq OWNED BY speech.id;
 SET default_with_oids = false;
 
 --
--- TOC entry 183 (class 1259 OID 8454240)
+-- TOC entry 191 (class 1259 OID 4062032)
+-- Dependencies: 6
+-- Name: type_of_user; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE type_of_user (
+    id integer NOT NULL,
+    name character varying(40) NOT NULL
+);
+
+
+ALTER TABLE public.type_of_user OWNER TO postgres;
+
+--
+-- TOC entry 192 (class 1259 OID 4062036)
+-- Dependencies: 6 191
+-- Name: rol_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE rol_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.rol_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2235 (class 0 OID 0)
+-- Dependencies: 192
+-- Name: rol_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE rol_id_seq OWNED BY type_of_user.id;
+
+
+--
+-- TOC entry 193 (class 1259 OID 4062038)
+-- Dependencies: 6
 -- Name: status; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE TABLE status (
     id integer NOT NULL,
-    name character varying(100) NOT NULL,
-    color character varying(50)
+    name character varying(100) NOT NULL
 );
 
 
 ALTER TABLE public.status OWNER TO postgres;
 
 --
--- TOC entry 184 (class 1259 OID 8454243)
+-- TOC entry 194 (class 1259 OID 4062041)
+-- Dependencies: 6 193
 -- Name: statu_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -841,8 +879,8 @@ CREATE SEQUENCE statu_id_seq
 ALTER TABLE public.statu_id_seq OWNER TO postgres;
 
 --
--- TOC entry 2257 (class 0 OID 0)
--- Dependencies: 184
+-- TOC entry 2236 (class 0 OID 0)
+-- Dependencies: 194
 -- Name: statu_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -850,7 +888,8 @@ ALTER SEQUENCE statu_id_seq OWNED BY status.id;
 
 
 --
--- TOC entry 185 (class 1259 OID 8454245)
+-- TOC entry 195 (class 1259 OID 4062043)
+-- Dependencies: 6
 -- Name: tested_number; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -858,16 +897,17 @@ CREATE TABLE tested_number (
     id integer NOT NULL,
     id_ticket integer NOT NULL,
     id_country integer NOT NULL,
-    numero integer NOT NULL,
     date date NOT NULL,
-    hour time without time zone
+    hour time without time zone NOT NULL,
+    numero character varying(25) NOT NULL
 );
 
 
 ALTER TABLE public.tested_number OWNER TO postgres;
 
 --
--- TOC entry 186 (class 1259 OID 8454248)
+-- TOC entry 196 (class 1259 OID 4062047)
+-- Dependencies: 195 6
 -- Name: tested_numbers_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -882,8 +922,8 @@ CREATE SEQUENCE tested_numbers_id_seq
 ALTER TABLE public.tested_numbers_id_seq OWNER TO postgres;
 
 --
--- TOC entry 2258 (class 0 OID 0)
--- Dependencies: 186
+-- TOC entry 2237 (class 0 OID 0)
+-- Dependencies: 196
 -- Name: tested_numbers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -891,7 +931,8 @@ ALTER SEQUENCE tested_numbers_id_seq OWNED BY tested_number.id;
 
 
 --
--- TOC entry 187 (class 1259 OID 8454250)
+-- TOC entry 197 (class 1259 OID 4062049)
+-- Dependencies: 6
 -- Name: ticket; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -899,16 +940,15 @@ CREATE TABLE ticket (
     id integer NOT NULL,
     id_failure integer NOT NULL,
     id_status integer NOT NULL,
-    origination_ip character varying(64),
-    destination_ip character varying(64),
+    origination_ip character varying(64) NOT NULL,
+    destination_ip character varying(64) NOT NULL,
     date date NOT NULL,
     machine_ip character varying(64) NOT NULL,
     hour time without time zone,
     id_gmt integer,
     ticket_number character varying(50),
-    prefix integer,
-    id_user integer,
-    option_open character varying(50)
+    prefix character varying(25) NOT NULL,
+    id_user integer
 );
 
 
@@ -917,7 +957,8 @@ ALTER TABLE public.ticket OWNER TO postgres;
 SET default_with_oids = true;
 
 --
--- TOC entry 209 (class 1259 OID 8773491)
+-- TOC entry 204 (class 1259 OID 9288172)
+-- Dependencies: 6
 -- Name: ticket_relation; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -931,7 +972,8 @@ CREATE TABLE ticket_relation (
 ALTER TABLE public.ticket_relation OWNER TO postgres;
 
 --
--- TOC entry 208 (class 1259 OID 8773489)
+-- TOC entry 203 (class 1259 OID 9288170)
+-- Dependencies: 204 6
 -- Name: ticket_relation_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -946,8 +988,8 @@ CREATE SEQUENCE ticket_relation_id_seq
 ALTER TABLE public.ticket_relation_id_seq OWNER TO postgres;
 
 --
--- TOC entry 2259 (class 0 OID 0)
--- Dependencies: 208
+-- TOC entry 2238 (class 0 OID 0)
+-- Dependencies: 203
 -- Name: ticket_relation_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -955,7 +997,8 @@ ALTER SEQUENCE ticket_relation_id_seq OWNED BY ticket_relation.id;
 
 
 --
--- TOC entry 188 (class 1259 OID 8454253)
+-- TOC entry 198 (class 1259 OID 4062052)
+-- Dependencies: 197 6
 -- Name: tickets_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -970,8 +1013,8 @@ CREATE SEQUENCE tickets_id_seq
 ALTER TABLE public.tickets_id_seq OWNER TO postgres;
 
 --
--- TOC entry 2260 (class 0 OID 0)
--- Dependencies: 188
+-- TOC entry 2239 (class 0 OID 0)
+-- Dependencies: 198
 -- Name: tickets_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -981,7 +1024,8 @@ ALTER SEQUENCE tickets_id_seq OWNED BY ticket.id;
 SET default_with_oids = false;
 
 --
--- TOC entry 213 (class 1259 OID 14728363)
+-- TOC entry 210 (class 1259 OID 13316726)
+-- Dependencies: 6
 -- Name: type_mailing; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -994,7 +1038,8 @@ CREATE TABLE type_mailing (
 ALTER TABLE public.type_mailing OWNER TO postgres;
 
 --
--- TOC entry 212 (class 1259 OID 14728361)
+-- TOC entry 209 (class 1259 OID 13316724)
+-- Dependencies: 6 210
 -- Name: type_mailing_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1009,8 +1054,8 @@ CREATE SEQUENCE type_mailing_id_seq
 ALTER TABLE public.type_mailing_id_seq OWNER TO postgres;
 
 --
--- TOC entry 2261 (class 0 OID 0)
--- Dependencies: 212
+-- TOC entry 2240 (class 0 OID 0)
+-- Dependencies: 209
 -- Name: type_mailing_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -1018,7 +1063,50 @@ ALTER SEQUENCE type_mailing_id_seq OWNED BY type_mailing.id;
 
 
 --
--- TOC entry 2107 (class 2604 OID 8454261)
+-- TOC entry 199 (class 1259 OID 4062055)
+-- Dependencies: 6
+-- Name: user; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE "user" (
+    id integer NOT NULL,
+    id_type_of_user integer NOT NULL,
+    username character varying(40) NOT NULL,
+    password character varying(64) NOT NULL,
+    estatus integer NOT NULL
+);
+
+
+ALTER TABLE public."user" OWNER TO postgres;
+
+--
+-- TOC entry 200 (class 1259 OID 4062058)
+-- Dependencies: 199 6
+-- Name: usuarios_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE usuarios_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.usuarios_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2241 (class 0 OID 0)
+-- Dependencies: 200
+-- Name: usuarios_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE usuarios_id_seq OWNED BY "user".id;
+
+
+--
+-- TOC entry 1980 (class 2604 OID 4062061)
+-- Dependencies: 165 164
 -- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1026,7 +1114,8 @@ ALTER TABLE ONLY class ALTER COLUMN id SET DEFAULT nextval('clase_id_seq'::regcl
 
 
 --
--- TOC entry 2112 (class 2604 OID 8454263)
+-- TOC entry 1981 (class 2604 OID 4062063)
+-- Dependencies: 182 166
 -- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1034,7 +1123,8 @@ ALTER TABLE ONLY country ALTER COLUMN id SET DEFAULT nextval('destinos_id_seq'::
 
 
 --
--- TOC entry 2141 (class 2604 OID 8470812)
+-- TOC entry 1988 (class 2604 OID 4062064)
+-- Dependencies: 171 170
 -- Name: idfield; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1042,7 +1132,8 @@ ALTER TABLE ONLY cruge_field ALTER COLUMN idfield SET DEFAULT nextval('cruge_fie
 
 
 --
--- TOC entry 2148 (class 2604 OID 8470829)
+-- TOC entry 1989 (class 2604 OID 4062065)
+-- Dependencies: 173 172
 -- Name: idfieldvalue; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1050,7 +1141,8 @@ ALTER TABLE ONLY cruge_fieldvalue ALTER COLUMN idfieldvalue SET DEFAULT nextval(
 
 
 --
--- TOC entry 2134 (class 2604 OID 8470791)
+-- TOC entry 1992 (class 2604 OID 4062066)
+-- Dependencies: 175 174
 -- Name: idsession; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1058,7 +1150,8 @@ ALTER TABLE ONLY cruge_session ALTER COLUMN idsession SET DEFAULT nextval('cruge
 
 
 --
--- TOC entry 2122 (class 2604 OID 8470768)
+-- TOC entry 2004 (class 2604 OID 4062067)
+-- Dependencies: 177 176
 -- Name: idsystem; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1066,7 +1159,8 @@ ALTER TABLE ONLY cruge_system ALTER COLUMN idsystem SET DEFAULT nextval('cruge_s
 
 
 --
--- TOC entry 2137 (class 2604 OID 8470801)
+-- TOC entry 2008 (class 2604 OID 4062069)
+-- Dependencies: 179 178
 -- Name: iduser; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1074,7 +1168,8 @@ ALTER TABLE ONLY cruge_user ALTER COLUMN iduser SET DEFAULT nextval('cruge_user_
 
 
 --
--- TOC entry 2108 (class 2604 OID 8454262)
+-- TOC entry 2009 (class 2604 OID 4062070)
+-- Dependencies: 181 180
 -- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1082,7 +1177,8 @@ ALTER TABLE ONLY description_ticket ALTER COLUMN id SET DEFAULT nextval('descrip
 
 
 --
--- TOC entry 2113 (class 2604 OID 8454264)
+-- TOC entry 2013 (class 2604 OID 4062071)
+-- Dependencies: 184 183
 -- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1090,15 +1186,8 @@ ALTER TABLE ONLY failure ALTER COLUMN id SET DEFAULT nextval('fallas_id_seq'::re
 
 
 --
--- TOC entry 2152 (class 2604 OID 27295232)
--- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY failure_speech ALTER COLUMN id SET DEFAULT nextval('failure_speech_id_seq'::regclass);
-
-
---
--- TOC entry 2106 (class 2604 OID 8454260)
+-- TOC entry 1979 (class 2604 OID 4062072)
+-- Dependencies: 163 162
 -- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1106,7 +1195,8 @@ ALTER TABLE ONLY file ALTER COLUMN id SET DEFAULT nextval('archivos_id_seq'::reg
 
 
 --
--- TOC entry 2120 (class 2604 OID 8463907)
+-- TOC entry 2014 (class 2604 OID 4062073)
+-- Dependencies: 186 185
 -- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1114,7 +1204,8 @@ ALTER TABLE ONLY gmt ALTER COLUMN id SET DEFAULT nextval('gmt_id_seq'::regclass)
 
 
 --
--- TOC entry 2150 (class 2604 OID 14723848)
+-- TOC entry 2024 (class 2604 OID 12645947)
+-- Dependencies: 206 205 206
 -- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1122,7 +1213,8 @@ ALTER TABLE ONLY language ALTER COLUMN id SET DEFAULT nextval('language_id_seq':
 
 
 --
--- TOC entry 2114 (class 2604 OID 8454265)
+-- TOC entry 2015 (class 2604 OID 4062075)
+-- Dependencies: 188 187
 -- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1130,15 +1222,17 @@ ALTER TABLE ONLY mail ALTER COLUMN id SET DEFAULT nextval('mail_id_seq'::regclas
 
 
 --
--- TOC entry 2115 (class 2604 OID 8456012)
+-- TOC entry 2022 (class 2604 OID 9286455)
+-- Dependencies: 202 201 202
 -- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY mail_ticket ALTER COLUMN id SET DEFAULT nextval('mail_tickets_id_seq'::regclass);
+ALTER TABLE ONLY mail_ticket ALTER COLUMN id SET DEFAULT nextval('mail_ticket_id_seq'::regclass);
 
 
 --
--- TOC entry 2121 (class 2604 OID 8465278)
+-- TOC entry 2016 (class 2604 OID 4062077)
+-- Dependencies: 190 189
 -- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1146,7 +1240,8 @@ ALTER TABLE ONLY mail_user ALTER COLUMN id SET DEFAULT nextval('mail_user_id_seq
 
 
 --
--- TOC entry 2116 (class 2604 OID 8454266)
+-- TOC entry 2025 (class 2604 OID 12645958)
+-- Dependencies: 208 207
 -- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1154,7 +1249,8 @@ ALTER TABLE ONLY speech ALTER COLUMN id SET DEFAULT nextval('respuesta_rapida_id
 
 
 --
--- TOC entry 2117 (class 2604 OID 8454269)
+-- TOC entry 2018 (class 2604 OID 4062079)
+-- Dependencies: 194 193
 -- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1162,7 +1258,8 @@ ALTER TABLE ONLY status ALTER COLUMN id SET DEFAULT nextval('statu_id_seq'::regc
 
 
 --
--- TOC entry 2118 (class 2604 OID 8454270)
+-- TOC entry 2019 (class 2604 OID 4062080)
+-- Dependencies: 196 195
 -- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1170,7 +1267,8 @@ ALTER TABLE ONLY tested_number ALTER COLUMN id SET DEFAULT nextval('tested_numbe
 
 
 --
--- TOC entry 2119 (class 2604 OID 8454271)
+-- TOC entry 2020 (class 2604 OID 4062081)
+-- Dependencies: 198 197
 -- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1178,7 +1276,8 @@ ALTER TABLE ONLY ticket ALTER COLUMN id SET DEFAULT nextval('tickets_id_seq'::re
 
 
 --
--- TOC entry 2149 (class 2604 OID 8773494)
+-- TOC entry 2023 (class 2604 OID 9288175)
+-- Dependencies: 204 203 204
 -- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1186,7 +1285,8 @@ ALTER TABLE ONLY ticket_relation ALTER COLUMN id SET DEFAULT nextval('ticket_rel
 
 
 --
--- TOC entry 2151 (class 2604 OID 14728366)
+-- TOC entry 2026 (class 2604 OID 13316729)
+-- Dependencies: 209 210 210
 -- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1194,7 +1294,26 @@ ALTER TABLE ONLY type_mailing ALTER COLUMN id SET DEFAULT nextval('type_mailing_
 
 
 --
--- TOC entry 2156 (class 2606 OID 8461519)
+-- TOC entry 2017 (class 2604 OID 4062082)
+-- Dependencies: 192 191
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY type_of_user ALTER COLUMN id SET DEFAULT nextval('rol_id_seq'::regclass);
+
+
+--
+-- TOC entry 2021 (class 2604 OID 4062084)
+-- Dependencies: 200 199
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "user" ALTER COLUMN id SET DEFAULT nextval('usuarios_id_seq'::regclass);
+
+
+--
+-- TOC entry 2030 (class 2606 OID 4062214)
+-- Dependencies: 164 164 2210
 -- Name: class_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1203,7 +1322,8 @@ ALTER TABLE ONLY class
 
 
 --
--- TOC entry 2160 (class 2606 OID 8461559)
+-- TOC entry 2032 (class 2606 OID 4062216)
+-- Dependencies: 166 166 2210
 -- Name: country_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1212,7 +1332,8 @@ ALTER TABLE ONLY country
 
 
 --
--- TOC entry 2194 (class 2606 OID 8470861)
+-- TOC entry 2034 (class 2606 OID 4062218)
+-- Dependencies: 167 167 167 2210
 -- Name: cruge_authassignment_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1221,7 +1342,8 @@ ALTER TABLE ONLY cruge_authassignment
 
 
 --
--- TOC entry 2192 (class 2606 OID 8470853)
+-- TOC entry 2036 (class 2606 OID 4062221)
+-- Dependencies: 168 168 2210
 -- Name: cruge_authitem_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1230,7 +1352,8 @@ ALTER TABLE ONLY cruge_authitem
 
 
 --
--- TOC entry 2196 (class 2606 OID 8470876)
+-- TOC entry 2038 (class 2606 OID 4062223)
+-- Dependencies: 169 169 169 2210
 -- Name: cruge_authitemchild_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1239,7 +1362,8 @@ ALTER TABLE ONLY cruge_authitemchild
 
 
 --
--- TOC entry 2188 (class 2606 OID 8470823)
+-- TOC entry 2040 (class 2606 OID 4062225)
+-- Dependencies: 170 170 2210
 -- Name: cruge_field_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1248,7 +1372,8 @@ ALTER TABLE ONLY cruge_field
 
 
 --
--- TOC entry 2190 (class 2606 OID 8470834)
+-- TOC entry 2042 (class 2606 OID 4062227)
+-- Dependencies: 172 172 2210
 -- Name: cruge_fieldvalue_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1257,7 +1382,8 @@ ALTER TABLE ONLY cruge_fieldvalue
 
 
 --
--- TOC entry 2184 (class 2606 OID 8470795)
+-- TOC entry 2044 (class 2606 OID 4062230)
+-- Dependencies: 174 174 2210
 -- Name: cruge_session_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1266,7 +1392,8 @@ ALTER TABLE ONLY cruge_session
 
 
 --
--- TOC entry 2182 (class 2606 OID 8470784)
+-- TOC entry 2046 (class 2606 OID 4062232)
+-- Dependencies: 176 176 2210
 -- Name: cruge_system_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1275,7 +1402,8 @@ ALTER TABLE ONLY cruge_system
 
 
 --
--- TOC entry 2186 (class 2606 OID 8470806)
+-- TOC entry 2048 (class 2606 OID 4062234)
+-- Dependencies: 178 178 2210
 -- Name: cruge_user_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1284,7 +1412,8 @@ ALTER TABLE ONLY cruge_user
 
 
 --
--- TOC entry 2158 (class 2606 OID 8465354)
+-- TOC entry 2050 (class 2606 OID 4062236)
+-- Dependencies: 180 180 2210
 -- Name: description_ticket_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1293,7 +1422,8 @@ ALTER TABLE ONLY description_ticket
 
 
 --
--- TOC entry 2162 (class 2606 OID 8461595)
+-- TOC entry 2052 (class 2606 OID 4062239)
+-- Dependencies: 183 183 2210
 -- Name: failure_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1302,16 +1432,8 @@ ALTER TABLE ONLY failure
 
 
 --
--- TOC entry 2204 (class 2606 OID 27295234)
--- Name: failure_speech_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
---
-
-ALTER TABLE ONLY failure_speech
-    ADD CONSTRAINT failure_speech_pk PRIMARY KEY (id);
-
-
---
--- TOC entry 2154 (class 2606 OID 8461633)
+-- TOC entry 2028 (class 2606 OID 4062241)
+-- Dependencies: 162 162 2210
 -- Name: file_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1320,7 +1442,8 @@ ALTER TABLE ONLY file
 
 
 --
--- TOC entry 2178 (class 2606 OID 8463909)
+-- TOC entry 2054 (class 2606 OID 4062243)
+-- Dependencies: 185 185 2210
 -- Name: gmt_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1329,7 +1452,8 @@ ALTER TABLE ONLY gmt
 
 
 --
--- TOC entry 2202 (class 2606 OID 14728368)
+-- TOC entry 2082 (class 2606 OID 13316731)
+-- Dependencies: 210 210 2210
 -- Name: id_type_mailing; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1338,7 +1462,18 @@ ALTER TABLE ONLY type_mailing
 
 
 --
--- TOC entry 2200 (class 2606 OID 14723850)
+-- TOC entry 2062 (class 2606 OID 4062245)
+-- Dependencies: 191 191 2210
+-- Name: id_type_of_user; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY type_of_user
+    ADD CONSTRAINT id_type_of_user PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2078 (class 2606 OID 12645949)
+-- Dependencies: 206 206 2210
 -- Name: language_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1347,7 +1482,8 @@ ALTER TABLE ONLY language
 
 
 --
--- TOC entry 2164 (class 2606 OID 8461674)
+-- TOC entry 2056 (class 2606 OID 4062247)
+-- Dependencies: 187 187 2210
 -- Name: mail_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1356,7 +1492,8 @@ ALTER TABLE ONLY mail
 
 
 --
--- TOC entry 2168 (class 2606 OID 8461775)
+-- TOC entry 2074 (class 2606 OID 9286457)
+-- Dependencies: 202 202 2210
 -- Name: mail_ticket_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1365,7 +1502,8 @@ ALTER TABLE ONLY mail_ticket
 
 
 --
--- TOC entry 2166 (class 2606 OID 8460683)
+-- TOC entry 2058 (class 2606 OID 4062252)
+-- Dependencies: 187 187 2210
 -- Name: mail_unique; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1374,7 +1512,8 @@ ALTER TABLE ONLY mail
 
 
 --
--- TOC entry 2180 (class 2606 OID 8465280)
+-- TOC entry 2060 (class 2606 OID 4062254)
+-- Dependencies: 189 189 2210
 -- Name: mail_user_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1383,16 +1522,8 @@ ALTER TABLE ONLY mail_user
 
 
 --
--- TOC entry 2198 (class 2606 OID 8773496)
--- Name: pk_ticket_relation; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
---
-
-ALTER TABLE ONLY ticket_relation
-    ADD CONSTRAINT pk_ticket_relation PRIMARY KEY (id);
-
-
---
--- TOC entry 2170 (class 2606 OID 12396358)
+-- TOC entry 2080 (class 2606 OID 12645971)
+-- Dependencies: 207 207 2210
 -- Name: speech_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1401,7 +1532,8 @@ ALTER TABLE ONLY speech
 
 
 --
--- TOC entry 2172 (class 2606 OID 8462017)
+-- TOC entry 2064 (class 2606 OID 4062258)
+-- Dependencies: 193 193 2210
 -- Name: status_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1410,7 +1542,8 @@ ALTER TABLE ONLY status
 
 
 --
--- TOC entry 2174 (class 2606 OID 8465241)
+-- TOC entry 2066 (class 2606 OID 4062260)
+-- Dependencies: 195 195 2210
 -- Name: tested_number_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1419,7 +1552,8 @@ ALTER TABLE ONLY tested_number
 
 
 --
--- TOC entry 2176 (class 2606 OID 8465312)
+-- TOC entry 2068 (class 2606 OID 4062262)
+-- Dependencies: 197 197 2210
 -- Name: ticket_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1428,7 +1562,38 @@ ALTER TABLE ONLY ticket
 
 
 --
--- TOC entry 2213 (class 2606 OID 8465328)
+-- TOC entry 2076 (class 2606 OID 9288177)
+-- Dependencies: 204 204 2210
+-- Name: ticket_relation_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY ticket_relation
+    ADD CONSTRAINT ticket_relation_pk PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2070 (class 2606 OID 4062264)
+-- Dependencies: 199 199 2210
+-- Name: user_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY "user"
+    ADD CONSTRAINT user_pk PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2072 (class 2606 OID 4062267)
+-- Dependencies: 199 199 2210
+-- Name: username_unique; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY "user"
+    ADD CONSTRAINT username_unique UNIQUE (username);
+
+
+--
+-- TOC entry 2096 (class 2606 OID 9286400)
+-- Dependencies: 2031 195 166 2210
 -- Name: country_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1437,7 +1602,8 @@ ALTER TABLE ONLY tested_number
 
 
 --
--- TOC entry 2209 (class 2606 OID 12396364)
+-- TOC entry 2091 (class 2606 OID 16770106)
+-- Dependencies: 178 2047 180 2210
 -- Name: cruge_user_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1446,7 +1612,8 @@ ALTER TABLE ONLY description_ticket
 
 
 --
--- TOC entry 2224 (class 2606 OID 8470877)
+-- TOC entry 2087 (class 2606 OID 4062273)
+-- Dependencies: 2035 168 169 2210
 -- Name: crugeauthitemchild_ibfk_1; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1455,7 +1622,8 @@ ALTER TABLE ONLY cruge_authitemchild
 
 
 --
--- TOC entry 2225 (class 2606 OID 8470882)
+-- TOC entry 2088 (class 2606 OID 4062278)
+-- Dependencies: 168 169 2035 2210
 -- Name: crugeauthitemchild_ibfk_2; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1464,7 +1632,8 @@ ALTER TABLE ONLY cruge_authitemchild
 
 
 --
--- TOC entry 2206 (class 2606 OID 19009105)
+-- TOC entry 2084 (class 2606 OID 13316774)
+-- Dependencies: 2049 180 162 2210
 -- Name: description_ticket_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1473,7 +1642,8 @@ ALTER TABLE ONLY file
 
 
 --
--- TOC entry 2215 (class 2606 OID 14724015)
+-- TOC entry 2098 (class 2606 OID 13316824)
+-- Dependencies: 197 2051 183 2210
 -- Name: failure_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1482,16 +1652,8 @@ ALTER TABLE ONLY ticket
 
 
 --
--- TOC entry 2228 (class 2606 OID 27295235)
--- Name: failure_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY failure_speech
-    ADD CONSTRAINT failure_fk FOREIGN KEY (id_failure) REFERENCES failure(id);
-
-
---
--- TOC entry 2222 (class 2606 OID 8470862)
+-- TOC entry 2085 (class 2606 OID 4062288)
+-- Dependencies: 168 167 2035 2210
 -- Name: fk_cruge_authassignment_cruge_authitem1; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1500,7 +1662,8 @@ ALTER TABLE ONLY cruge_authassignment
 
 
 --
--- TOC entry 2223 (class 2606 OID 8470867)
+-- TOC entry 2086 (class 2606 OID 4062293)
+-- Dependencies: 2047 167 178 2210
 -- Name: fk_cruge_authassignment_user; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1509,7 +1672,8 @@ ALTER TABLE ONLY cruge_authassignment
 
 
 --
--- TOC entry 2221 (class 2606 OID 8470841)
+-- TOC entry 2089 (class 2606 OID 4062298)
+-- Dependencies: 172 170 2039 2210
 -- Name: fk_cruge_fieldvalue_cruge_field1; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1518,7 +1682,8 @@ ALTER TABLE ONLY cruge_fieldvalue
 
 
 --
--- TOC entry 2220 (class 2606 OID 8470835)
+-- TOC entry 2090 (class 2606 OID 4062304)
+-- Dependencies: 178 2047 172 2210
 -- Name: fk_cruge_fieldvalue_cruge_user1; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1527,25 +1692,8 @@ ALTER TABLE ONLY cruge_fieldvalue
 
 
 --
--- TOC entry 2226 (class 2606 OID 12396003)
--- Name: fk_ticket_id_ticket_pather; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY ticket_relation
-    ADD CONSTRAINT fk_ticket_id_ticket_pather FOREIGN KEY (id_ticket_father) REFERENCES ticket(id);
-
-
---
--- TOC entry 2227 (class 2606 OID 12396008)
--- Name: fk_ticket_id_ticket_son; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY ticket_relation
-    ADD CONSTRAINT fk_ticket_id_ticket_son FOREIGN KEY (id_ticket_son) REFERENCES ticket(id);
-
-
---
--- TOC entry 2216 (class 2606 OID 14724020)
+-- TOC entry 2099 (class 2606 OID 13316829)
+-- Dependencies: 197 2053 185 2210
 -- Name: gmt_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1554,7 +1702,18 @@ ALTER TABLE ONLY ticket
 
 
 --
--- TOC entry 2218 (class 2606 OID 8465281)
+-- TOC entry 2107 (class 2606 OID 12645972)
+-- Dependencies: 2077 206 207 2210
+-- Name: language_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY speech
+    ADD CONSTRAINT language_fk FOREIGN KEY (id_language) REFERENCES language(id);
+
+
+--
+-- TOC entry 2094 (class 2606 OID 13316814)
+-- Dependencies: 2055 189 187 2210
 -- Name: mail_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1563,7 +1722,8 @@ ALTER TABLE ONLY mail_user
 
 
 --
--- TOC entry 2210 (class 2606 OID 12395976)
+-- TOC entry 2102 (class 2606 OID 13316799)
+-- Dependencies: 2059 202 189 2210
 -- Name: mail_user_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1572,7 +1732,8 @@ ALTER TABLE ONLY mail_ticket
 
 
 --
--- TOC entry 2208 (class 2606 OID 12396359)
+-- TOC entry 2092 (class 2606 OID 16770111)
+-- Dependencies: 180 2079 207 2210
 -- Name: speech_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1581,16 +1742,8 @@ ALTER TABLE ONLY description_ticket
 
 
 --
--- TOC entry 2229 (class 2606 OID 27295240)
--- Name: speech_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY failure_speech
-    ADD CONSTRAINT speech_fk FOREIGN KEY (id_speech) REFERENCES speech(id);
-
-
---
--- TOC entry 2217 (class 2606 OID 14724025)
+-- TOC entry 2100 (class 2606 OID 13316834)
+-- Dependencies: 193 2063 197 2210
 -- Name: status_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1599,16 +1752,18 @@ ALTER TABLE ONLY ticket
 
 
 --
--- TOC entry 2205 (class 2606 OID 8465313)
--- Name: ticket_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- TOC entry 2105 (class 2606 OID 9288178)
+-- Dependencies: 197 2067 204 2210
+-- Name: ticket_father_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY file
-    ADD CONSTRAINT ticket_fk FOREIGN KEY (id_ticket) REFERENCES ticket(id) ON UPDATE CASCADE ON DELETE SET NULL;
+ALTER TABLE ONLY ticket_relation
+    ADD CONSTRAINT ticket_father_fk FOREIGN KEY (id_ticket_father) REFERENCES ticket(id) ON UPDATE CASCADE ON DELETE SET NULL;
 
 
 --
--- TOC entry 2214 (class 2606 OID 8465333)
+-- TOC entry 2097 (class 2606 OID 9286405)
+-- Dependencies: 195 2067 197 2210
 -- Name: ticket_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1617,7 +1772,28 @@ ALTER TABLE ONLY tested_number
 
 
 --
--- TOC entry 2207 (class 2606 OID 8465355)
+-- TOC entry 2083 (class 2606 OID 13316769)
+-- Dependencies: 162 2067 197 2210
+-- Name: ticket_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY file
+    ADD CONSTRAINT ticket_fk FOREIGN KEY (id_ticket) REFERENCES ticket(id) ON UPDATE CASCADE ON DELETE SET NULL;
+
+
+--
+-- TOC entry 2103 (class 2606 OID 13316804)
+-- Dependencies: 197 202 2067 2210
+-- Name: ticket_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY mail_ticket
+    ADD CONSTRAINT ticket_fk FOREIGN KEY (id_ticket) REFERENCES ticket(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- TOC entry 2093 (class 2606 OID 16770116)
+-- Dependencies: 2067 180 197 2210
 -- Name: ticket_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1626,16 +1802,18 @@ ALTER TABLE ONLY description_ticket
 
 
 --
--- TOC entry 2211 (class 2606 OID 12395981)
--- Name: ticket_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- TOC entry 2106 (class 2606 OID 9288183)
+-- Dependencies: 204 197 2067 2210
+-- Name: ticket_son_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY mail_ticket
-    ADD CONSTRAINT ticket_fk FOREIGN KEY (id_ticket) REFERENCES ticket(id) ON UPDATE CASCADE ON DELETE SET NULL;
+ALTER TABLE ONLY ticket_relation
+    ADD CONSTRAINT ticket_son_fk FOREIGN KEY (id_ticket_son) REFERENCES ticket(id) ON UPDATE CASCADE ON DELETE SET NULL;
 
 
 --
--- TOC entry 2212 (class 2606 OID 14728369)
+-- TOC entry 2104 (class 2606 OID 13316809)
+-- Dependencies: 2081 210 202 2210
 -- Name: type_mailing_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1644,7 +1822,18 @@ ALTER TABLE ONLY mail_ticket
 
 
 --
--- TOC entry 2219 (class 2606 OID 8502048)
+-- TOC entry 2101 (class 2606 OID 4062355)
+-- Dependencies: 2061 199 191 2210
+-- Name: type_of_user_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "user"
+    ADD CONSTRAINT type_of_user_fk FOREIGN KEY (id_type_of_user) REFERENCES type_of_user(id) ON UPDATE CASCADE ON DELETE SET NULL;
+
+
+--
+-- TOC entry 2095 (class 2606 OID 13316819)
+-- Dependencies: 2047 178 189 2210
 -- Name: user_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1653,7 +1842,7 @@ ALTER TABLE ONLY mail_user
 
 
 --
--- TOC entry 2236 (class 0 OID 0)
+-- TOC entry 2215 (class 0 OID 0)
 -- Dependencies: 6
 -- Name: public; Type: ACL; Schema: -; Owner: postgres
 --
@@ -1664,7 +1853,7 @@ GRANT ALL ON SCHEMA public TO postgres;
 GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
--- Completed on 2014-04-02 14:07:14
+-- Completed on 2014-03-21 18:47:27 VET
 
 --
 -- PostgreSQL database dump complete

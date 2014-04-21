@@ -160,15 +160,15 @@ class Ticket extends CActiveRecord
     /**
      *
      */
-    public static function ticketsByUsers($idUser,$idTicket=false,$returnArray=true,$allTickets=false,$current=false)
+    public static function ticketsByUsers($idUser,$idTicket=false,$returnArray=true,$allTickets=false,$sendMail=false)
     {
         $tipoUsuario=CrugeAuthassignment::getRoleUser();
         $conditionUser='';
         $conditionTicket='';
         $order='ASC';
         $sql='';
-        $currentDate="AND date>=CURRENT_DATE - interval '1 day'";
-        if ($current) $currentDate='';
+        $onlyOpen="id_status=(SELECT id FROM status WHERE name='open') AND";
+        if ($sendMail) $onlyOpen='';
         
         /**
          * Si el tipo de usuario es cliente, se muestran sus tickets, de lo
@@ -213,12 +213,9 @@ class Ticket extends CActiveRecord
             $sql="SELECT t.*, t.id AS id
                   FROM (SELECT * 
                         FROM ticket 
-                        WHERE id_status=(SELECT id FROM status WHERE name='open') AND id IN (SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user $conditionUser)) $conditionTicket
-                        UNION
-                        SELECT * 
-                        FROM ticket 
-                        WHERE id_status=(SELECT id FROM status WHERE name='close') AND id IN (SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user $conditionUser)) $conditionTicket $currentDate) t
-                  ORDER BY date $order, id_status $order";
+                        WHERE $onlyOpen id IN (SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user $conditionUser)) $conditionTicket
+                        ) t
+                  ORDER BY date $order";
 
             // Si $returnArray esta en true, retorna un array con los datos del ticket
             if($returnArray)
@@ -239,9 +236,12 @@ class Ticket extends CActiveRecord
      */
     public static function ticketsClosed()
     {
+        $conditionUser='';
+        if(CrugeAuthassignment::getRoleUser()=="C") $conditionUser=' WHERE id_user='.Yii::app()->user->id;
+        
         return self::model()->findAllBySql("SELECT *
                                             FROM ticket
-                                            WHERE id IN (SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user)) AND id_status=2
+                                            WHERE id IN (SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user $conditionUser)) AND id_status=2
                                             ORDER BY id_status, id  ASC");
     }
 
