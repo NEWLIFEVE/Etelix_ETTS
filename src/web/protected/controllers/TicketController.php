@@ -443,12 +443,7 @@ class TicketController extends Controller
     public function actionAdminclose()
     {
         $colors=$this->_countColorsTicket();
-        $this->render('adminclose',array(
-            'white'=>$colors['white'],
-            'yellow'=>$colors['yellow'],
-            'green'=>$colors['green'],
-            'red'=>$colors['red'],
-        ));
+        $this->render('adminclose',array('colors'=>$colors));
     }
     
     public function actionGetmailsimap()
