@@ -150,14 +150,8 @@ class TicketController extends Controller
      */
     public function actionAdmin()
     {
-        $model=new Ticket('search');
-        $model->unsetAttributes();  // clear any default values
-        if(isset($_GET['Ticket']))
-            $model->attributes=$_GET['Ticket'];
-
-        $this->render('admin',array(
-            'model'=>$model,
-        ));
+        $colors=$this->_countColorsTicket();
+        $this->render('admin',array('colors'=>$colors));
     }
 
     /**
@@ -448,7 +442,13 @@ class TicketController extends Controller
     
     public function actionAdminclose()
     {
-        $this->render('adminclose');
+        $colors=$this->_countColorsTicket();
+        $this->render('adminclose',array(
+            'white'=>$colors['white'],
+            'yellow'=>$colors['yellow'],
+            'green'=>$colors['green'],
+            'red'=>$colors['red'],
+        ));
     }
     
     public function actionGetmailsimap()
@@ -540,4 +540,39 @@ class TicketController extends Controller
         $this->render('imap', array('mails'=>$mails));
     }
     
+    /**
+     * Retorna la cantidad de tickets dependiendo del color del mismo
+     * @return int
+     */
+    private function _countColorsTicket()
+    {
+        $model=new Ticket;
+        $white = 0;
+        $yellow = 0;
+        $red = 0; 
+        foreach ($model::ticketsByUsers(Yii::app()->user->id, false) as $ticket) {          
+            $timeTicket = Utility::getTime($ticket->date, $ticket->hour);
+            
+            if ($timeTicket <= 86400)
+                $white += 1;
+            elseif ($timeTicket > 86400 && $timeTicket <= 172800) 
+                $yellow += 1;
+            else 
+                $red += 1;
+        }
+        
+        $green = $model::countTicketClosed();
+        $totalTickets=$white+$yellow+$green+$red;
+        
+        return array(
+            'white'=>$white,
+            'yellow'=>$yellow,
+            'green'=>$green,
+            'red'=>$red,
+            'percentageWhite'=>round(($white/$totalTickets) * 100, 1),
+            'percentageYellow'=>round(($yellow/$totalTickets) * 100, 1),
+            'percentageGreen'=>round(($green/$totalTickets) * 100, 1),
+            'percentageRed'=>round(($green/$totalTickets) * 100, 1),
+        );
+    }
 }
