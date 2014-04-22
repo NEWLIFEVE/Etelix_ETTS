@@ -572,7 +572,7 @@ class TicketController extends Controller
             'percentageWhite'=>round(($white/$totalTickets) * 100, 1),
             'percentageYellow'=>round(($yellow/$totalTickets) * 100, 1),
             'percentageGreen'=>round(($green/$totalTickets) * 100, 1),
-            'percentageRed'=>round(($green/$totalTickets) * 100, 1),
+            'percentageRed'=>round(($red/$totalTickets) * 100, 1),
         );
     }
 }
