@@ -81,26 +81,26 @@
 <div class='botones-sociales izquierda hidden-phone hidden-tablet'>
     <a class='itemsocial' href='javascript:void(0)' id='facebook-btn'>
         <span class='social'>
-            <span class="total-tickets"><?php echo $white; ?> TT's</span>
-            <span class='texto'>TT's abiertos con 24 horas (<?php echo $white; ?> en total)</span>
+            <span class="total-tickets"><?php echo $colors['white']; ?> TT's <br>(<?php echo $colors['percentageWhite']; ?>%)</span>
+            <span class='texto'>TT's abiertos con 24 horas (<?php echo $colors['white']; ?> en total)</span>
         </span>
     </a>
     <a class='itemsocial' href='javascript:void(0)'id='twitter-btn'>
         <span class='social'>
-            <span class="total-tickets"><?php echo $yellow; ?> TT's</span>
-            <span class='texto'>TT's abiertos con 48 horas (<?php echo $yellow; ?> en total)</span>
+            <span class="total-tickets"><?php echo $colors['yellow']; ?> TT's <br>(<?php echo $colors['percentageYellow']; ?>%)</span>
+            <span class='texto'>TT's abiertos con 48 horas (<?php echo $colors['yellow']; ?> en total)</span>
         </span>
     </a>
     <a class='itemsocial' href='javascript:void(0)' id='google-btn'>
         <span class='social'>
-            <span class="total-tickets"><?php echo $red; ?> TT's</span>
-            <span class='texto'>TT's abiertos con mas de 48 horas (<?php echo $red; ?> en total)</span>
+            <span class="total-tickets"><?php echo $colors['red']; ?> TT's <br>(<?php echo $colors['percentageRed']; ?>%)</span>
+            <span class='texto'>TT's abiertos con mas de 48 horas (<?php echo $colors['red']; ?> en total)</span>
         </span>
     </a>
     <a class='itemsocial' href='javascript:void(0)' id='pinterest-btn'>
         <span class='social'>
-            <span class="total-tickets"><?php echo $green; ?> TT's</span>
-            <span class='texto'>TT's cerrados (<?php echo $green; ?> en total)</span>
+            <span class="total-tickets"><?php echo $colors['green']; ?> TT's <br>(<?php echo $colors['percentageGreen']; ?>%)</span>
+            <span class='texto'>TT's cerrados (<?php echo $colors['green']; ?> en total)</span>
         </span>
     </a>
 </div>
