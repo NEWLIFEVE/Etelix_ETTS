@@ -1,0 +1,154 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 21/04/2014, 06:02:38 PM
+    Author     : Nelson Marcano
+*/
+
+.botones-sociales {
+    position: fixed;
+    top: 36%;
+    width: 60px;
+    z-index: 999;
+}
+.izquierda {
+    left: 0;
+}
+.derecha{
+    right: 0;
+}
+
+.botones-sociales #twitter-btn .social,
+.botones-sociales #facebook-btn .social,
+.botones-sociales #google-btn .social,
+.botones-sociales #rss-btn .social,
+.botones-sociales #pinterest-btn .social,
+.botones-sociales #youtube-btn .social {
+    /*border: 1px solid silver;*/
+}
+
+
+.botones-sociales #facebook-btn .social {
+    background-color: #FFF;
+    border: 1px solid silver;
+}
+
+.botones-sociales #twitter-btn .social {
+    background-color: #FFDC51;
+}
+
+.botones-sociales #google-btn .social {
+    background-color: #EEB8B8;
+}
+
+.botones-sociales #pinterest-btn .social {
+    background-color: #61CF61;
+}
+
+
+.izquierda #facebook-btn span {
+    background-position: right 10px;
+}
+.izquierda #twitter-btn span {
+    background-position: right -35px;
+}
+.izquierda #google-btn span {
+    background-position: right -127px;
+}
+.izquierda #rss-btn span {
+    background-position: right -80px;
+}
+.izquierda #pinterest-btn span {
+    background-position: 11px -177px;
+}
+.izquierda #youtube-btn span {
+    background-position: 11px -223px;
+}
+.derecha #facebook-btn span {
+    background-position: 12px 10px;
+}
+.derecha #twitter-btn span {
+    background-position: 11px -35px;
+}
+.derecha #google-btn span {
+background-position: 10px -127px;
+}
+.derecha #rss-btn span {
+    background-position: 11px -80px;
+}
+.derecha #pinterest-btn span {
+    background-position: 11px -177px;
+}
+
+.botones-sociales #facebook-btn:hover .social {
+    background-color: #FFF;
+}
+
+.botones-sociales #twitter-btn:hover .social {
+    background-color: #FFDC51;
+}
+.botones-sociales #google-btn:hover .social {
+    background-color: #EEB8B8;
+}
+.botones-sociales #pinterest-btn:hover .social {
+    background-color: #61CF61;
+}
+
+.botones-sociales a:hover .texto{
+    display: block;
+}
+.izquierda .social {
+    -moz-transition: background-color 0.4s ease-in 0s;
+    -webkit-transition: background-color 0.4s ease-in 0s;
+    background-repeat: no-repeat;
+    display: block;
+    float: left;
+    height: 43px;
+    margin-bottom: 2px;
+    width: 58px;
+}
+
+.izquierda .texto{
+    display: none;
+    float: right;
+    font-size: 0.8em;
+    margin: 11px 10px 11px 10px;
+    white-space: nowrap;
+    word-wrap: break-word;
+}
+
+.izquierda .total-tickets{
+    display: block;
+    text-align: center;
+    font-size: 0.8em;
+    margin: 5px 10px 5px 10px;
+    white-space: nowrap;
+    word-wrap: break-word;
+    color: rgb(90, 90, 90);
+}
+
+.derecha .social {
+    -moz-transition: background-color 0.4s ease-in 0s;
+    -webkit-transition: background-color 0.4s ease-in 0s;
+    background-repeat: no-repeat;
+    display: block;
+    float: right;
+    height: 43px;
+    margin-bottom: 2px;
+    width: 43px;
+}
+
+.derecha .texto {
+    display: none;
+    float: left;
+    font-size: 80%;
+    font-weight: bold;
+    margin: 11px 0 11px 40px;
+    white-space: nowrap;
+}
+.botones-sociales .texto{
+    color: rgb(90, 90, 90);
+}

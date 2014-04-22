@@ -9,12 +9,14 @@ class Imap extends Connection
     private $_inbox;
     private $_message;
     private $_count;
+    private $_posBody;
 
     public function __construct($connection = false) 
     {
         $this->_inbox = parent::__construct($connection);
         $this->_message = array();
         $this->_count = imap_num_msg($this->_inbox);
+        $this->_posBody = '<p></p><small>This answer has been read from an email, this function is on probation, the answer may be incomplete or part of it may be negligible. Thank you for your understanding.</small>';
     }
     
     /**
@@ -119,10 +121,17 @@ class Imap extends Connection
             foreach ($idMessages as $idMessage) {
                 $body = $this->getBody($idMessage);
                 $body = $this->_filterBodyToLeft($body, $rules);
+                $body = $this->_filterBodyToRight($body, '---');
+                $body = $this->_filterBodyToRight($body, '> -');
+                $body = $this->_filterBodyToRight($body, 'De:');
+                $body = $this->_filterBodyToRight($body, 'From:');
+                $body = $this->_filterBodyToRight($body, 'de:');
+                $body = $this->_filterBodyToRight($body, 'from:');
                 $body = $this->_filterBodyToRight($body, 'Saludos');
                 $body = $this->_filterBodyToRight($body, 'saludos');
                 $body = $this->_filterBodyToRight($body, 'regards');
                 $body = $this->_filterBodyToRight($body, 'Regards');
+                $body = $this->_filterBodyToRight($body, '--Please');
                 $body = $this->_filterBodyToRight($body, 'base64');
                 $this->_message[] = array(
                     'id' => $this->getUid($idMessage),
@@ -130,7 +139,7 @@ class Imap extends Connection
                     'from' => $this->getFrom($idMessage),
                     'to' => $this->getTo($idMessage),
                     'date' => $this->getDate($idMessage),
-                    'body' => $body
+                    'body' => $body . $this->_posBody
                 );
             }
             return $this->_message;
@@ -257,11 +266,12 @@ class Imap extends Connection
         }
     }
     
-    /**
-     * Borra los mensajes por su id
-     * @param array $mails
-     * @return void
-     */
+   /**
+    * Borra los mensajes por su id
+    * @param array $mails
+    * @param string $optionOpen
+    * @param int $idTicket
+    */
     public function deleteMessage($mails, $optionOpen = false, $idTicket = false)
     {
         foreach ($mails as $value) {

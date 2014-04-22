@@ -156,6 +156,7 @@ class MailController extends Controller
 	{
             $model=new Mail;
             $modelMailUser=new MailUser;
+
             $idUser=$_POST['user'];
             $option=$_POST['option'];
             
