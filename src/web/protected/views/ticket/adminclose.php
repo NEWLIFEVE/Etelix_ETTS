@@ -100,7 +100,7 @@
     <a class='itemsocial' href='javascript:void(0)' id='pinterest-btn'>
         <span class='social'>
             <span class="total-tickets"><?php echo $colors['green']; ?> TT's <br>(<?php echo $colors['percentageGreen']; ?>%)</span>
-            <span class='texto'>TT's cerrados (<?php echo $colors['green']; ?> en total)</span>
+            <span class='texto'>TT's cerrados de la semana (<?php echo $colors['green']; ?> en total)</span>
         </span>
     </a>
 </div>

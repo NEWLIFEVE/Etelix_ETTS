@@ -47,21 +47,16 @@ class Imap extends Connection
         if($key === false)  $key = 1;
         if ($key >= $this->_count) $key = 1;
         $resta = $this->_count - $key;
-        $rules = array('quoted-printable');
+        $rigthRules = array('---', '> -', 'de:', 'from:', 'saludos', 'regards', '--Please', 'base64');
+        $leftRules = array('quoted-printable');
         for ($i = $this->_count; $i > $resta; $i--) {
             if (!strpos($this->getSubject($i), 'delivery')) {
-                $body = $this->getBody($i);
-                $body = $this->_filterBodyToLeft($body, $rules);
-                $body = $this->_filterBodyToRight($body, 'Saludos');
-                $body = $this->_filterBodyToRight($body, 'regards');
-                $body = $this->_filterBodyToRight($body, 'Regards');
-                $body = $this->_filterBodyToRight($body, 'base64');
                 $this->_message[] = array(
                     'subject' => $this->getSubject($i),
                     'from' => $this->getFrom($i),
                     'to' => $this->getTo($i),
                     'date' => $this->getDate($i),
-                    'body' => $body,
+                    'body' => $this->getBody($i, $rigthRules, $leftRules),
                 );
             }
         }
@@ -76,15 +71,12 @@ class Imap extends Connection
      * @param array $rules
      * @return string
      */
-    private function _filterBodyToLeft($body, $rules = array())
+    private function _filterBodyToLeft($body, $rules)
     {
-        $count = count($rules);
         $result = '';
-        for ($i = 0; $i < $count; $i++) {
-            $positionSubString = strpos ($body, $rules[$i]); 
-            $result .= substr ($body, ($positionSubString));
-            $result = preg_replace('/' . $rules[$i] . '/', '', $result);
-        }
+        $positionSubString = stripos($body, $rules); 
+        $result .= substr ($body, ($positionSubString));
+        $result = preg_replace('/' . $rules . '/', '', $result);
         return $result;
     }
     
@@ -99,8 +91,8 @@ class Imap extends Connection
     private function _filterBodyToRight($body, $rules)
     {
         $result = '';
-        if (strpos($body, $rules)) {
-            $positionSubString = strpos($body, $rules); 
+        if (stripos($body, $rules)) {
+            $positionSubString = stripos($body, $rules); 
             $result = substr($body, 0, ($positionSubString + strlen($rules)));
         } else {
             $result = $body;
@@ -116,30 +108,17 @@ class Imap extends Connection
     public function messageByTicketNumber($ticketNumber)
     {
         $idMessages = $this->getIdMessage($ticketNumber);
-        $rules = array('quoted-printable');
         if ($idMessages != false) {
+            $rigthRules = array('---', '> -', 'de:', 'from:', 'saludos', 'regards', '--Please', 'base64');
+            $leftRules = array('quoted-printable');
             foreach ($idMessages as $idMessage) {
-                $body = $this->getBody($idMessage);
-                $body = $this->_filterBodyToLeft($body, $rules);
-                $body = $this->_filterBodyToRight($body, '---');
-                $body = $this->_filterBodyToRight($body, '> -');
-                $body = $this->_filterBodyToRight($body, 'De:');
-                $body = $this->_filterBodyToRight($body, 'From:');
-                $body = $this->_filterBodyToRight($body, 'de:');
-                $body = $this->_filterBodyToRight($body, 'from:');
-                $body = $this->_filterBodyToRight($body, 'Saludos');
-                $body = $this->_filterBodyToRight($body, 'saludos');
-                $body = $this->_filterBodyToRight($body, 'regards');
-                $body = $this->_filterBodyToRight($body, 'Regards');
-                $body = $this->_filterBodyToRight($body, '--Please');
-                $body = $this->_filterBodyToRight($body, 'base64');
                 $this->_message[] = array(
                     'id' => $this->getUid($idMessage),
                     'subject' => $this->getSubject($idMessage),
                     'from' => $this->getFrom($idMessage),
                     'to' => $this->getTo($idMessage),
                     'date' => $this->getDate($idMessage),
-                    'body' => $body . $this->_posBody
+                    'body' => $this->getBody($idMessage, $rigthRules, $leftRules) . $this->_posBody
                 );
             }
             return $this->_message;
@@ -254,13 +233,30 @@ class Imap extends Connection
     
     /**
      * Retorna el cuerpo del mensaje
-     * @param integer $messageID
+     * @param int $messageID Recibe el número del mensaje
+     * @param array $filterRigth Reglas de filtrado que se aplican a la izquierda del cuerpo del mensaje
+     * @param array $filterLeft Reglas de filtrado que se aplican a la derecha del cuerpo del mensaje
      * @return string
      */
-    public function getBody($messageID)
+    public function getBody($messageID, $filterRigth = false, $filterLeft = false)
     {
         try {
-            return utf8_decode(imap_utf8(imap_qprint(imap_fetchbody($this->_inbox, $messageID, 1))));
+            $body =  utf8_decode(imap_utf8(imap_qprint(imap_fetchbody($this->_inbox, $messageID, 1))));
+            if ($filterLeft) {
+                if (is_array($filterLeft)) {
+                    for ($i = 0; $i < count($filterLeft); $i++) {
+                        $body = $this->_filterBodyToLeft($body, $filterLeft[$i]);
+                    }
+                }
+            }
+            if ($filterRigth) {
+                if (is_array($filterRigth)) {
+                    for ($i = 0; $i < count($filterRigth); $i++) {
+                        $body = $this->_filterBodyToRight($body, $filterRigth[$i]);
+                    }
+                }
+            }
+            return $body;
         } catch (Exception $exc) {
             return $exc->getMessage();
         }
