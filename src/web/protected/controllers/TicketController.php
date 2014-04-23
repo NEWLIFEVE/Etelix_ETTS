@@ -451,20 +451,29 @@ class TicketController extends Controller
         $this->render('adminclose');
     }
     
+    /**
+     *
+     */
     public function actionGetmailsimap()
     {
-        if (isset($_POST['ticketNumber']) && !empty($_POST['ticketNumber'])) {
+        if(isset($_POST['ticketNumber']) && !empty($_POST['ticketNumber']))
+        {
             error_reporting(E_ALL & ~E_NOTICE); 
-            $imap = new Imap();
-            $mails = $imap->messageByTicketNumber($_POST['ticketNumber']);
-            if ($mails != false) {
+            $imap=new Imap();
+            $mails=$imap->messageByTicketNumber($_POST['ticketNumber']);
+            if($mails != false)
+            {
                 $imap->deleteMessage($mails, $_POST['optionOpen'], $_POST['idTicket']);
                 $this->renderPartial('/ticket/_answer', array('datos' => Ticket::ticketsByUsers(Yii::app()->user->id, $_POST['idTicket'], false)));
-            } else {
+            }
+            else
+            {
                 echo 'false';
             }
             $imap->close();
-        } else {
+        }
+        else
+        {
             echo 'false';
         }
     }
