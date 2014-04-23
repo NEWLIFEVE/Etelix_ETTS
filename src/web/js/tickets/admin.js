@@ -219,12 +219,14 @@ $(document).on('ready', function() {
     // Leyenda de colores
     $('.botones-sociales .social').mouseenter(function(){
         $(this).stop();
-        $(this).animate({width:'240'}, 500, 'easeOutBounce',function(){}); 
+        $(this).find('span').first().css('display', 'none');
+        $(this).animate({width:'270'}, 500, 'easeOutBounce',function(){}); 
     });
 
     $('.botones-sociales .social').mouseleave(function(){
         $(this).stop();
-        $(this).animate({width:'43'}, 500, 'easeOutBounce',function(){});
+        $(this).find('span').first().css('display', 'block');
+        $(this).animate({width:'58'}, 500, 'easeOutBounce',function(){});
     });
     
     // Llamado de refresh

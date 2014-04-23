@@ -32,10 +32,15 @@
                             $carrier=Carrier::getCarriers(true, $ticket->id);
                             switch ($ticket->idStatus->id) {
                                 case '1':
-                                    if($timeTicket > 86400 )
+                                    // Si es el dia de hoy
+                                    if ($timeTicket <= 86400) {
+                                        echo 'class="open today '.$read.'"'; 
+                                    // Si es el dia de ayer
+                                    } elseif ($timeTicket > 86400 && $timeTicket <= 172800) {
+                                        echo 'class="open yesterday '.$read.'"'; 
+                                    } else {
                                         echo 'class="late '.$read.'"';
-                                    else
-                                        echo 'class="open '.$read.'"'; 
+                                    }
                                     break;
                                 case '2':
                                     echo 'class="close '.$read.'"';
@@ -75,17 +80,28 @@
 </div>
 <div class='botones-sociales izquierda hidden-phone hidden-tablet'>
     <a class='itemsocial' href='javascript:void(0)' id='facebook-btn'>
-        <span class='social'><span class='texto'>TT's abiertos con 24 horas</span></span>
+        <span class='social'>
+            <span class="total-tickets"><?php echo $colors['white']; ?> TT's <br>(<?php echo $colors['percentageWhite']; ?>%)</span>
+            <span class='texto'>TT's abiertos con 24 horas (<?php echo $colors['white']; ?> en total)</span>
+        </span>
     </a>
     <a class='itemsocial' href='javascript:void(0)'id='twitter-btn'>
-        <span class='social'><span class='texto'>TT's abiertos con 48 horas</span></span>
+        <span class='social'>
+            <span class="total-tickets"><?php echo $colors['yellow']; ?> TT's <br>(<?php echo $colors['percentageYellow']; ?>%)</span>
+            <span class='texto'>TT's abiertos con 48 horas (<?php echo $colors['yellow']; ?> en total)</span>
+        </span>
     </a>
     <a class='itemsocial' href='javascript:void(0)' id='google-btn'>
-        <span class='social'><span class='texto'>TT's abiertos con mas de 48 horas</span></span>
+        <span class='social'>
+            <span class="total-tickets"><?php echo $colors['red']; ?> TT's <br>(<?php echo $colors['percentageRed']; ?>%)</span>
+            <span class='texto'>TT's abiertos con mas de 48 horas (<?php echo $colors['red']; ?> en total)</span>
+        </span>
     </a>
     <a class='itemsocial' href='javascript:void(0)' id='pinterest-btn'>
         <span class='social'>
-        <span class='texto'>TT's cerrados</span></span>
+            <span class="total-tickets"><?php echo $colors['green']; ?> TT's <br>(<?php echo $colors['percentageGreen']; ?>%)</span>
+            <span class='texto'>TT's cerrados (<?php echo $colors['green']; ?> en total)</span>
+        </span>
     </a>
 </div>
 <?php Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl . '/css/datatable.css'); ?>

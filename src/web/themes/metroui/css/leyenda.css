@@ -10,8 +10,8 @@ and open the template in the editor.
 
 .botones-sociales {
     position: fixed;
-    top: 130px;
-    width: 45px;
+    top: 36%;
+    width: 60px;
     z-index: 999;
 }
 .izquierda {
@@ -27,12 +27,13 @@ and open the template in the editor.
 .botones-sociales #rss-btn .social,
 .botones-sociales #pinterest-btn .social,
 .botones-sociales #youtube-btn .social {
-    border: 1px solid silver;
+    /*border: 1px solid silver;*/
 }
 
 
 .botones-sociales #facebook-btn .social {
     background-color: #FFF;
+    border: 1px solid silver;
 }
 
 .botones-sociales #twitter-btn .social {
@@ -107,17 +108,28 @@ background-position: 10px -127px;
     float: left;
     height: 43px;
     margin-bottom: 2px;
-    width: 43px;
+    width: 58px;
 }
 
 .izquierda .texto{
     display: none;
     float: right;
-    font-size: 1em;
-    margin: 11px 10px 11px 5px;
+    font-size: 0.8em;
+    margin: 11px 10px 11px 10px;
     white-space: nowrap;
     word-wrap: break-word;
 }
+
+.izquierda .total-tickets{
+    display: block;
+    text-align: center;
+    font-size: 0.8em;
+    margin: 5px 10px 5px 10px;
+    white-space: nowrap;
+    word-wrap: break-word;
+    color: rgb(90, 90, 90);
+}
+
 .derecha .social {
     -moz-transition: background-color 0.4s ease-in 0s;
     -webkit-transition: background-color 0.4s ease-in 0s;
