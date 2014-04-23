@@ -251,7 +251,11 @@ class Ticket extends CActiveRecord
         if (CrugeAuthassignment::getRoleUser() == "C") {
             $conditionUser = ' WHERE id_user=' . Yii::app()->user->id;
         }
-        return self::model()->count("id IN(SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user $conditionUser)) AND id_status = 2");
+        return self::model()->count(
+                "id IN(SELECT DISTINCT(id_ticket) "
+                . "FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user $conditionUser)) AND "
+                . "id_status = 2 AND "
+                . "date >= NOW()-'1 week'::interval");
     }
 
     /**
