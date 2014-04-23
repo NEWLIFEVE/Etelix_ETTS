@@ -115,11 +115,12 @@ class MailController extends Controller
 	 */
 	public function actionDelete($id)
 	{
-		$this->loadModel($id)->delete();
-
-		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-		if(!isset($_GET['ajax']))
-			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+            echo $id;
+//		$this->loadModel($id)->delete();
+//
+//		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+//		if(!isset($_GET['ajax']))
+//			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
 	}
 
 	/**
@@ -149,12 +150,13 @@ class MailController extends Controller
 	}
 
 	/**
-	 *
+	 *Guarda los mail relacionados a usuarios y también los mails de los tickets
 	 */
 	public function actionSetMail()
 	{
             $model=new Mail;
             $modelMailUser=new MailUser;
+
             $idUser=$_POST['user'];
             $option=$_POST['option'];
             
@@ -222,9 +224,28 @@ class MailController extends Controller
                         $modelMailUser->status=1;
                         $modelMailUser->assign_by=$this->_assignBy($option);
                         if($modelMailUser->save())
-                                echo 'true';
+                        {
+                                if (isset($_POST['idTicket']) && $_POST['idTicket'] != null)
+                                { 
+                                    if  ($this->_saveMailTicket($_POST['idTicket'], $modelMailUser->id)) 
+                                    {
+                                        header('Content-type: application/json');
+                                        echo CJSON::encode(Mail::getMailsTicket($_POST['idTicket']));
+                                    }
+                                    else 
+                                    {
+                                        echo 'false';
+                                    }
+                                }
+                                else
+                                {
+                                    echo 'true';
+                                }
+                        }
                         else
+                        {
                                 echo 'false';
+                        }
                     }
                 }
             }
@@ -239,12 +260,47 @@ class MailController extends Controller
                     $modelMailUser->assign_by=$this->_assignBy($option);
 
                     if($modelMailUser->save())
-                            echo 'true';
+                    {
+                            if (isset($_POST['idTicket']) && $_POST['idTicket'] != null)
+                            { 
+                                if  ($this->_saveMailTicket($_POST['idTicket'], $modelMailUser->id)) 
+                                {
+                                    header('Content-type: application/json');
+                                    echo CJSON::encode(Mail::getMailsTicket($_POST['idTicket']));
+                                }
+                                else 
+                                {
+                                    echo 'false';
+                                }
+                            }
+                            else
+                            {
+                                echo 'true';
+                            }
+                    }
                     else
+                    {
                             echo 'false';
+                    }
                 }
             }
+            
 	}
+        
+        /**
+         * Guardará en la tabla mail_ticket al guardar en mail y mail_user
+         * @param int $idticket
+         * @param int $idMailUser
+         * @return boolean
+         */
+        private function _saveMailTicket($idticket, $idMailUser)
+        {
+            $attributes=array('id_ticket'=>$idticket, 'responseTo'=>$idMailUser);
+                if (!MailTicket::saveMailTicket($attributes, 1)) 
+                    return false;
+                else
+                    return true;
+        }
 
     /**
      * 

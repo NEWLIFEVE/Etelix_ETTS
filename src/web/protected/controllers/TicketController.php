@@ -150,14 +150,8 @@ class TicketController extends Controller
      */
     public function actionAdmin()
     {
-        $model=new Ticket('search');
-        $model->unsetAttributes();  // clear any default values
-        if(isset($_GET['Ticket']))
-            $model->attributes=$_GET['Ticket'];
-
-        $this->render('admin',array(
-            'model'=>$model,
-        ));
+        $colors=$this->_countColorsTicket();
+        $this->render('admin',array('colors'=>$colors));
     }
 
     /**
@@ -448,8 +442,37 @@ class TicketController extends Controller
     
     public function actionAdminclose()
     {
-        $this->render('adminclose');
+        $colors=$this->_countColorsTicket();
+        $this->render('adminclose',array('colors'=>$colors));
     }
+    
+    /**
+     *
+     */
+    public function actionGetmailsimap()
+    {
+        if(isset($_POST['ticketNumber']) && !empty($_POST['ticketNumber']))
+        {
+            error_reporting(E_ALL & ~E_NOTICE); 
+            $imap=new Imap();
+            $mails=$imap->messageByTicketNumber($_POST['ticketNumber']);
+            if($mails != false)
+            {
+                $imap->deleteMessage($mails, $_POST['optionOpen'], $_POST['idTicket']);
+                $this->renderPartial('/ticket/_answer', array('datos' => Ticket::ticketsByUsers(Yii::app()->user->id, $_POST['idTicket'], false)));
+            }
+            else
+            {
+                echo 'false';
+            }
+            $imap->close();
+        }
+        else
+        {
+            echo 'false';
+        }
+    }
+    
     
     /**
      * Método para retornar los datos del ticket que se mostrarán al mandar un correo
@@ -499,5 +522,58 @@ class TicketController extends Controller
         }
         
         return $datos;
+    }
+    
+    public function actionTestimap()
+    {
+        error_reporting(E_ALL & ~E_NOTICE); 
+       
+        $connection = array(
+            'IMAP_HOST'=>'{imap.gmail.com:993/imap/ssl}INBOX',
+            'IMAP_USER'=>'tsu.nelsonmarcano@gmail.com',
+            'IMAP_PASS'=>'NayeskaMarcano123'
+        );
+        
+        $imap = new Imap();
+        $mails = $imap->getMessagesByQuantity(3);
+        $imap->close();
+        
+        $this->render('imap', array('mails'=>$mails));
+    }
+    
+    /**
+     * Retorna la cantidad de tickets dependiendo del color del mismo
+     * @return array
+     */
+    private function _countColorsTicket()
+    {
+        $model=new Ticket;
+        $white = 0;
+        $yellow = 0;
+        $red = 0; 
+        foreach ($model::ticketsByUsers(Yii::app()->user->id, false) as $ticket) {          
+            $timeTicket = Utility::getTime($ticket->date, $ticket->hour);
+            
+            if ($timeTicket <= 86400)
+                $white += 1;
+            elseif ($timeTicket > 86400 && $timeTicket <= 172800) 
+                $yellow += 1;
+            else 
+                $red += 1;
+        }
+        
+        $green = $model::countTicketClosed();
+        $totalTickets=$white+$yellow+$green+$red;
+        
+        return array(
+            'white'=>$white,
+            'yellow'=>$yellow,
+            'green'=>$green,
+            'red'=>$red,
+            'percentageWhite'=>round(($white/$totalTickets) * 100, 1),
+            'percentageYellow'=>round(($yellow/$totalTickets) * 100, 1),
+            'percentageGreen'=>round(($green/$totalTickets) * 100, 1),
+            'percentageRed'=>round(($red/$totalTickets) * 100, 1),
+        );
     }
 }

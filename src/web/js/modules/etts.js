@@ -336,9 +336,16 @@ $ETTS.UI=(function(){
                   _quitarValidacion(element);
               }
         },
-        appendOptions:function(boton, select, optionOpen){
-            
+        /**
+         * @param {obj} boton
+         * @param {obj} select
+         * @param {string} optionOpen
+         * @param {boolean} save
+         * @returns {Boolean}
+         */
+        appendOptions:function(boton, select, optionOpen, settings){
             var select2 = boton.parent().children('select');
+            if (select2.length === 0) select2 = boton.parent().parent().children('select');
             
             if(select.val()) 
             {
@@ -350,13 +357,22 @@ $ETTS.UI=(function(){
                         return false;
                     }
                 }
-                for (var i=0; i < longitud; i++)
-                {
-                    select2.append('<option value="'+option[i].value+'">'+option[i].text+'</option>');
-                }
                 
-                select.find('option:selected').attr('selected',false);
-                _quitarValidacion(select2);
+                if (!settings) 
+                {
+                    for (var i=0; i < longitud; i++) select2.append('<option value="'+option[i].value+'">'+option[i].text+'</option>');
+                    
+                    select.find('option:selected').attr('selected',false);
+                    _quitarValidacion(select2);
+                }
+                else
+                {
+                    if (settings.save === true) 
+                    {
+                        select.find('option:selected').remove()
+                        $ETTS.ajax.saveMailTicket(settings);
+                    }
+                }
             }
         },
         clearOptions:function(select){
