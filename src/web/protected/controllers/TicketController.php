@@ -537,7 +537,7 @@ class TicketController extends Controller
     
     /**
      * Retorna la cantidad de tickets dependiendo del color del mismo
-     * @return int
+     * @return array
      */
     private function _countColorsTicket()
     {
