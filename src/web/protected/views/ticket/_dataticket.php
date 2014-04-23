@@ -12,7 +12,7 @@
                 <input type="hidden" id="id_ticket" value="<?php echo $datos->id; ?>">
                 <input type="hidden" id="open-ticket" value="<?php echo $datos->option_open; ?>">
                 <input type="hidden" id="user-ticket" value="<?php echo CrugeUser2::getUserTicket($datos->id, true)->iduser; ?>">
-                <?php if ($datos->id_status != '2' && $tipoUsuario != 'C' && $datos->option_open == 'etelix_to_carrier'): ?>
+                <?php if ($datos->id_status != '2' && $tipoUsuario != 'C'): ?>
                 <div class="options-hide">
                     <div class="input-control select">
                         <select id="mails" multiple>
@@ -34,7 +34,7 @@
                 <?php endif; ?>
                 <div class="input-control select">
                     Response to&nbsp;  
-                    <?php if ($datos->id_status != '2' && $tipoUsuario != 'C' && $datos->option_open == 'etelix_to_carrier'): ?>
+                    <?php if ($datos->id_status != '2' && $tipoUsuario != 'C'): ?>
                     <a href="javascript:void(0)" class="a-agregar-correo" onclick="seeOptions(this)">Add more email's</a>&nbsp;&nbsp;
                     <span class="options-hide">
                         <a href="javascript:void(0)" class="a-bajar-correo" onclick="bajarCorreo(this)"><i class="icon-arrow-down"></i></a>
