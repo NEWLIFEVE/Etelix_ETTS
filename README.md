@@ -3,6 +3,10 @@ Etelix_ETTS
 
 Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
 
+23/04/2014
+    - Dependencia a php5 -imap
+    - El ícono lateral de los tickets cerrados, solo muestra los tickets de 1 semana (día actual hasta siete dias atrás)
+
 22/04/2014
     - Iconos laterales que muestran leyendas de colores de los tickets, cantidad de ticket por color y porcentaje
 

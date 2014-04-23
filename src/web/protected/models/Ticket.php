@@ -255,7 +255,8 @@ class Ticket extends CActiveRecord
                 "id IN(SELECT DISTINCT(id_ticket) "
                 . "FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user $conditionUser)) AND "
                 . "id_status = 2 AND "
-                . "date >= NOW()-'1 week'::interval");
+                . "date >= NOW()-'1 week'::interval"
+                );
     }
 
     /**
