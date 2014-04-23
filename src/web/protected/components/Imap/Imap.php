@@ -126,7 +126,6 @@ class Imap extends Connection
         return false;
     }
     
-    
     /**
      * Retorna el texto del ultimo mensaje enviado asociado a un ticketnumber
      * @param string $ticketNumber
@@ -289,7 +288,6 @@ class Imap extends Connection
         }
     }
     
-    
     /**
      * Cerrar la conexion imap
      */
@@ -297,5 +295,4 @@ class Imap extends Connection
     {
         parent::_disconnect();
     }
-    
 }
