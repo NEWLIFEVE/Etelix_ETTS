@@ -453,7 +453,7 @@ class TicketController extends Controller
             $imap = new Imap();
             $mails = $imap->messageByTicketNumber($_POST['ticketNumber']);
             if ($mails != false) {
-                $imap->deleteMessage($mails, $_POST['optionOpen'], $_POST['idTicket']);
+                $imap->deleteMessage($mails, true);
                 $this->renderPartial('/ticket/_answer', array('datos' => Ticket::ticketsByUsers(Yii::app()->user->id, $_POST['idTicket'], false)));
             } else {
                 echo 'false';
@@ -518,17 +518,10 @@ class TicketController extends Controller
     public function actionTestimap()
     {
         error_reporting(E_ALL & ~E_NOTICE); 
-       
-        $connection = array(
-            'IMAP_HOST'=>'{imap.gmail.com:993/imap/ssl}INBOX',
-            'IMAP_USER'=>'tsu.nelsonmarcano@gmail.com',
-            'IMAP_PASS'=>'NayeskaMarcano123'
-        );
-        
         $imap = new Imap();
-        $mails = $imap->getMessagesByQuantity(3);
+        $mails = $imap->getMessageAutomatic(2);
+        $imap->deleteMessage($mails, true);
         $imap->close();
-        
         $this->render('imap', array('mails'=>$mails));
     }
     

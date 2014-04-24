@@ -308,9 +308,13 @@ class Ticket extends CActiveRecord
      */
     public static function getId($ticketNumber)
     {
-        return self::model()->find('ticket_number=:number',array(':number'=>$ticketNumber))->id;
+        $id=self::model()->find('ticket_number=:number',array(':number'=>$ticketNumber))->id;
+        if ($id != null) {
+            return $id;
+        }
+        return null;
     }
-    
+        
     /**
      * Retorna el id del usuario filtrado por id_ticket
      * @param integer $idTicket

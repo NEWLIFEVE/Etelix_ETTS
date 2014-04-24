@@ -50,16 +50,52 @@ class Imap extends Connection
         $rigthRules = array('---', '> -', 'de:', 'from:', 'saludos', 'regards', '--Please', 'base64');
         $leftRules = array('quoted-printable');
         for ($i = $this->_count; $i > $resta; $i--) {
-            if (!strpos($this->getSubject($i), 'delivery')) {
+            if (!stripos($this->getSubject($i), 'delivery')) {
                 $this->_message[] = array(
                     'subject' => $this->getSubject($i),
                     'from' => $this->getFrom($i),
                     'to' => $this->getTo($i),
-                    'date' => $this->getDate($i),
+                    'date' => date('Y-m-d', $this->getDate($i)),
+                    'hour' => date('H:m:s', $this->getDate($i)),
                     'body' => $this->getBody($i, $rigthRules, $leftRules),
                 );
             }
         }
+        return $this->_message;
+    }
+    
+    /**
+     * Retorna los mensajes que esten asociados a algun numero de ticket, si no 
+     * encuentra, retornará un array vacío y borrará aquellos mensajes que no 
+     * tenga numero de ticekt asociado
+     * @param int $key El numero de mensajes a llamar, contando desde el último
+     * @return array
+     */
+    public function getMessageAutomatic($key = false)
+    {
+        if($key === false)  $key = 1;
+        if ($key >= $this->_count) $key = 1;
+        $resta = $this->_count - $key;
+        $rigthRules = array('---', '> -', 'de:', 'from:', 'saludos', 'regards', '--Please', 'base64');
+        $leftRules = array('quoted-printable');
+        for ($i = $this->_count; $i > $resta; $i--) {
+            if (!stripos($this->getSubject($i), 'delivery')) {
+                if ($this->filterSubjectTicketsNumbers($i) != false) {
+                    $idTicket = Ticket::getId(rtrim($this->filterSubjectTicketsNumbers($i)));
+                    $this->_message[] = array(
+                        'idTicket' => $idTicket,
+                        'id' => $this->getUid($i),
+                        'subject' => $this->filterSubjectTicketsNumbers($i),
+                        'from' => $this->getFrom($i),
+                        'to' => $this->getTo($i),
+                        'date' => date('Y-m-d', $this->getDate($i)),
+                        'hour' => date('H:m:s', $this->getDate($i)),
+                        'body' => $this->getBody($i, $rigthRules, $leftRules) . $this->_posBody,
+                    );
+                }
+            }
+        }
+                
         return $this->_message;
     }
     
@@ -111,13 +147,16 @@ class Imap extends Connection
         if ($idMessages != false) {
             $rigthRules = array('---', '> -', 'de:', 'from:', 'saludos', 'regards', '--Please', 'base64');
             $leftRules = array('quoted-printable');
+            $idTicket = Ticket::getId($ticketNumber);
             foreach ($idMessages as $idMessage) {
                 $this->_message[] = array(
+                    'idTicket' => $idTicket,
                     'id' => $this->getUid($idMessage),
                     'subject' => $this->getSubject($idMessage),
                     'from' => $this->getFrom($idMessage),
                     'to' => $this->getTo($idMessage),
-                    'date' => $this->getDate($idMessage),
+                    'date' => date('Y-m-d', $this->getDate($idMessage)),
+                    'hour' => date('H:m:s', $this->getDate($idMessage)),
                     'body' => $this->getBody($idMessage, $rigthRules, $leftRules) . $this->_posBody
                 );
             }
@@ -152,6 +191,30 @@ class Imap extends Connection
         try {
             $header = imap_header($this->_inbox, $messageID);
             return utf8_decode(imap_utf8(imap_qprint($header->subject)));
+        } catch (Exception $exc) {
+            return $exc->getMessage();
+        }
+    }
+    
+    /**
+     * Retorna el subject del mensaje si solo tiene un numero de ticket
+     * @param integer $messageID Debe ser el numero del mensaje
+     * @return string
+     */
+    public function filterSubjectTicketsNumbers($messageID)
+    {
+        try {
+            $header = imap_header($this->_inbox, $messageID);
+            $subject = utf8_decode(imap_utf8(imap_qprint($header->subject)));
+            if (strpos($subject, '<')) {
+                $subject = substr($subject,  strpos($subject, '<') + 1, 17);
+                $subject = preg_replace('/>/', '', $subject);
+                return $subject;
+            } else {
+                imap_delete($this->_inbox, $messageID);
+                imap_expunge($this->_inbox);
+                return false;
+            }
         } catch (Exception $exc) {
             return $exc->getMessage();
         }
@@ -224,7 +287,7 @@ class Imap extends Connection
     {
         try {
             $header = imap_header($this->_inbox, $messageID);
-            return utf8_decode(imap_utf8(imap_qprint($header->date)));
+            return utf8_decode(imap_utf8(imap_qprint($header->udate)));
         } catch (Exception $exc) {
             return $exc->getMessage();
         }
@@ -267,22 +330,22 @@ class Imap extends Connection
     * @param string $optionOpen
     * @param int $idTicket
     */
-    public function deleteMessage($mails, $optionOpen = false, $idTicket = false)
+    public function deleteMessage($mails, $save = false)
     {
         foreach ($mails as $value) {
             imap_delete($this->_inbox, $value['id'], FT_UID);
             imap_expunge($this->_inbox);
-            if ($optionOpen && $idTicket) {
+            if ($save) {
                 $model = new DescriptionTicket;
-                $model->id_ticket=$idTicket;
+                $model->id_ticket=$value['idTicket'];
                 $model->description=$value['body'];
-                $model->date=new CDbExpression('NOW()');
-                $model->hour=new CDbExpression('NOW()');
-                $model->id_user=CrugeUser2::getUserTicket($idTicket,true)->iduser;
+                $model->date=$value['date'];
+                $model->hour=$value['hour'];
+                $model->id_user=CrugeUser2::getUserTicket($value['idTicket'],true)->iduser;
                 $optionRead=DescriptionticketController::getUserNewDescription(false);
-                $model->read_carrier=$optionRead['read_carrier'];
-                $model->read_internal=$optionRead['read_internal'];
-                $model->response_by=CrugeUser2::getUserTicket($idTicket,true)->iduser;
+                $model->read_carrier=1;
+                $model->read_internal=0;
+                $model->response_by=CrugeUser2::getUserTicket($value['idTicket'],true)->iduser;
                 $model->save();
             }
         }
