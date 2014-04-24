@@ -193,7 +193,7 @@ class Ticket extends CActiveRecord
             $sql="SELECT *
                   FROM ticket
                   WHERE id IN (SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user $conditionUser)) $conditionTicket
-                  ORDER BY id_status, id  $order";
+                  ORDER BY id_status, id $order";
 
             
             // Si $returnArray esta en true, retorna un array con los datos del ticket
@@ -215,7 +215,7 @@ class Ticket extends CActiveRecord
                         FROM ticket 
                         WHERE $onlyOpen id IN (SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user $conditionUser)) $conditionTicket
                         ) t
-                  ORDER BY date $order";
+                  ORDER BY date $order, hour $order";
 
             // Si $returnArray esta en true, retorna un array con los datos del ticket
             if($returnArray)
