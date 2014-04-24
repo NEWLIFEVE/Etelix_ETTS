@@ -42,13 +42,13 @@ class Subject
         if (CrugeAuthassignment::getRoleUser() == 'C') $user = $nameCarrier;
         
         if ($optionOpen == 'etelix_as_carrier')
-            $this->_subject = 'TT '. $this->_formatTicketNumber($ticketNumber) .' '.$nameCarrier.' to Etelix, Closed TT (by '.$user.' on ETTS), '.$ticketNumber.' ('.$timeTicket.')';
+            $this->_subject = 'TT '. $this->_formatTicketNumber($ticketNumber) .' '.$nameCarrier.' to Etelix, Closed TT (by '.$user.' on ETTS), <'.$ticketNumber.'> ('.$timeTicket.')';
         if ($optionOpen == 'etelix_to_carrier')
-            $this->_subject = 'TT Etelix to '. $this->_formatTicketNumber($ticketNumber) .' '.$nameCarrier.', Closed TT (by '.$user.' on ETTS), '.$ticketNumber.' ('.$timeTicket.')';
+            $this->_subject = 'TT Etelix to '. $this->_formatTicketNumber($ticketNumber) .' '.$nameCarrier.', Closed TT (by '.$user.' on ETTS), <'.$ticketNumber.'> ('.$timeTicket.')';
         if ($optionOpen == 'carrier_to_etelix')
-            $this->_subject = 'TT '. $this->_formatTicketNumber($ticketNumber) .' '.$nameCarrier.' to Etelix, Closed TT (by '.$user.' on ETTS), '.$ticketNumber.' ('.$timeTicket.')';
+            $this->_subject = 'TT '. $this->_formatTicketNumber($ticketNumber) .' '.$nameCarrier.' to Etelix, Closed TT (by '.$user.' on ETTS), <'.$ticketNumber.'> ('.$timeTicket.')';
         if ($optionOpen == '')
-            $this->_subject = 'TT '. $this->_formatTicketNumber($ticketNumber) .' '.$nameCarrier.' to Etelix, Closed TT (by '.$user.' on ETTS), '.$ticketNumber.' ('.$timeTicket.')';
+            $this->_subject = 'TT '. $this->_formatTicketNumber($ticketNumber) .' '.$nameCarrier.' to Etelix, Closed TT (by '.$user.' on ETTS), <'.$ticketNumber.'> ('.$timeTicket.')';
         
         return $this->_subject;
     }
@@ -78,7 +78,6 @@ class Subject
     /**
      * Retorna el subject del correo al dar una nueva repuesta
      * @param string $ticketNumber
-     * @param string $nameCarrier
      * @param string $timeTicket
      * @return string
      */
@@ -89,7 +88,7 @@ class Subject
         $this->_setCarrier($ticketNumber);
         
         $this->_subject = 'TT '. $this->_formatTicketNumber($ticketNumber) .' '.$this->_carrier.' to Etelix, New ';
-        $lastStringSubject = $ticketNumber.' ('.$timeTicket.')';
+        $lastStringSubject = '<'.$ticketNumber.'> ('.$timeTicket.')';
         $user = 'Etelix';
         $byEtelix = '';
         
@@ -105,7 +104,7 @@ class Subject
         if ($optionOpen == 'etelix_as_carrier' || $optionOpen == 'carrier_to_etelix') 
             $this->_subject .= $user . ' Status '.$byEtelix.', ' . $lastStringSubject;
         if ($optionOpen == 'etelix_to_carrier') 
-            $this->_subject = 'TT Etelix to '. $this->_formatTicketNumber($ticketNumber) .' '.$this->_carrier.', New '.$user.' ' . $lastStringSubject;
+            $this->_subject = 'TT Etelix to '. $this->_formatTicketNumber($ticketNumber) .' '.$this->_carrier.', New '.$user.' Status ' . $lastStringSubject;
         if ($optionOpen == '')
             $this->_subject = $this->_formatTicketNumber($ticketNumber) . ' New '  . $this->_carrier . $lastStringSubject;
         
@@ -157,11 +156,11 @@ class Subject
     private function _firstElementSubject($optionOpen, $ticketNumber, $nameCarrier)
     {
         if ($optionOpen == 'etelix_as_carrier') 
-            return 'TT '.$this->_formatTicketNumber($ticketNumber).' '.$nameCarrier.' to Etelix (by Etelix on ETTS), New TT, '. $ticketNumber.' (00:00)';
+            return 'TT '.$this->_formatTicketNumber($ticketNumber).' '.$nameCarrier.' to Etelix (by Etelix on ETTS), New TT, <'. $ticketNumber.'> (00:00)';
         if ($optionOpen == 'etelix_to_carrier')
-            return 'TT Etelix to '.$this->_formatTicketNumber($ticketNumber).' '.$nameCarrier.', New TT, '.$ticketNumber.' (00:00)';
+            return 'TT Etelix to '.$this->_formatTicketNumber($ticketNumber).' '.$nameCarrier.', New TT, <'.$ticketNumber.'> (00:00)';
         if ($optionOpen == 'carrier_to_etelix') 
-           return 'TT '.$this->_formatTicketNumber($ticketNumber).' '.$nameCarrier.' to Etelix, New TT, '.$ticketNumber.' (00:00)';
+           return 'TT '.$this->_formatTicketNumber($ticketNumber).' '.$nameCarrier.' to Etelix, New TT, <'.$ticketNumber.'> (00:00)';
     }
 
 

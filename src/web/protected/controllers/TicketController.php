@@ -446,20 +446,29 @@ class TicketController extends Controller
         $this->render('adminclose',array('colors'=>$colors));
     }
     
+    /**
+     *
+     */
     public function actionGetmailsimap()
     {
-        if (isset($_POST['ticketNumber']) && !empty($_POST['ticketNumber'])) {
+        if(isset($_POST['ticketNumber']) && !empty($_POST['ticketNumber']))
+        {
             error_reporting(E_ALL & ~E_NOTICE); 
-            $imap = new Imap();
-            $mails = $imap->messageByTicketNumber($_POST['ticketNumber']);
-            if ($mails != false) {
+            $imap=new Imap();
+            $mails=$imap->messageByTicketNumber($_POST['ticketNumber']);
+            if($mails != false)
+            {
                 $imap->deleteMessage($mails, $_POST['optionOpen'], $_POST['idTicket']);
                 $this->renderPartial('/ticket/_answer', array('datos' => Ticket::ticketsByUsers(Yii::app()->user->id, $_POST['idTicket'], false)));
-            } else {
+            }
+            else
+            {
                 echo 'false';
             }
             $imap->close();
-        } else {
+        }
+        else
+        {
             echo 'false';
         }
     }
@@ -518,26 +527,16 @@ class TicketController extends Controller
     public function actionTestimap()
     {
         error_reporting(E_ALL & ~E_NOTICE); 
-       
-        $connection = array(
-//            'IMAP_HOST'=>'{imap.gmail.com:993/imap/ssl}INBOX',
-//            'IMAP_USER'=>'tsu.nelsonmarcano@gmail.com',
-//            'IMAP_PASS'=>'NayeskaMarcano123'
-                'IMAP_HOST'=>'{mail.etelix.com:995/pop3/ssl/novalidate-cert}INBOX',
-                'IMAP_USER'=>'etts@etelix.com',
-                'IMAP_PASS'=>'3t3l1x.etts'
-        );
-        
         $imap = new Imap();
-        $mails = $imap->getMessagesByQuantity(3);
+        $mails = $imap->getMessageAutomatic(2);
+        $imap->deleteMessage($mails, true);
         $imap->close();
-        
         $this->render('imap', array('mails'=>$mails));
     }
     
     /**
      * Retorna la cantidad de tickets dependiendo del color del mismo
-     * @return int
+     * @return array
      */
     private function _countColorsTicket()
     {
