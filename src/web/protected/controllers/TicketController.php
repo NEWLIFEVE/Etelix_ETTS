@@ -458,7 +458,7 @@ class TicketController extends Controller
             $mails=$imap->messageByTicketNumber($_POST['ticketNumber']);
             if($mails != false)
             {
-                $imap->deleteMessage($mails, $_POST['optionOpen'], $_POST['idTicket']);
+                $imap->deleteMessage($mails,true);
                 $this->renderPartial('/ticket/_answer', array('datos' => Ticket::ticketsByUsers(Yii::app()->user->id, $_POST['idTicket'], false)));
             }
             else
@@ -528,7 +528,7 @@ class TicketController extends Controller
     {
         error_reporting(E_ALL & ~E_NOTICE); 
         $imap = new Imap();
-        $mails = $imap->getMessageAutomatic(2);
+        $mails = $imap->runConsole(2);
         $imap->deleteMessage($mails, true);
         $imap->close();
         $this->render('imap', array('mails'=>$mails));
