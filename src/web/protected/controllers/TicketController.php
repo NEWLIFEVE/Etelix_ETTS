@@ -447,7 +447,11 @@ class TicketController extends Controller
     public function actionAdminclose()
     {
         $colors=$this->_countColorsTicket();
-        $this->render('adminclose',array('colors'=>$colors));
+        $color = '';
+        $this->render('adminclose',array(
+            'colors'=>$colors,
+            'color'=>$color,
+            ));
     }
     
     /**

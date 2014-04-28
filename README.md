@@ -3,9 +3,13 @@ Etelix_ETTS
 
 Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
 
+28/04/2014
+    - Select para filtrar los datos del datatable
+    - Filtrado por color(Haciendo click en los íconos laterales)
+
 23/04/2014
     - Dependencia a php5 -imap
-    - El ícono lateral de los tickets cerrados, solo muestra los tickets de 1 semana (día actual hasta siete dias atrás)
+    - El ícono lateral de los tickets cerrados, solo muestra los tickets de 2 semana (día actual hasta 14 dias atrás)
     - Todos los tipos de tickets se le pueden agregar mas correos
 
 22/04/2014

@@ -8,10 +8,28 @@ $(document).on('ready', function(){
         "bDestroy": true,
         "sPaginationType": "full_numbers",
         "aoColumnDefs": [
-                { "aDataSort": false, "aTargets": [ 0,6 ] },
-                { "bSortable": false, "aTargets": [ 6 ] }
+                { "aDataSort": false, "aTargets": [ 0,7] },
+                { "bSortable": false, "aTargets": [ 7 ] }
         ],
         "aaSorting": [[ 0, "desc" ]]
 
     }); 
+    
+    /* Add a select menu for each TH element in the table footer */
+    $(".test-select th").each( function ( i  ) {
+        this.innerHTML = fnCreateSelect( oTable.fnGetColumnData(i) );
+        $('select', this).change( function () {
+            oTable.fnFilter( $(this).val(), i );
+        } );
+    } );
+    
+    $('.test-select').find('th').last().html('');
+    
+    $(document).on('click', '.itemsocial', function(){
+        oTable.fnFilter( $(this).attr('rel') );
+    });
+    
+    $(document).on('dblclick', '.itemsocial', function(){
+        oTable.fnFilter('');
+    });
 });
