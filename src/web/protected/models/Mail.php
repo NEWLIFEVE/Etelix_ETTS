@@ -166,4 +166,20 @@ class Mail extends CActiveRecord
             return $correo;
         }
         
+        /**
+         * Método para mostrar los mails asociados a un ticket
+         * @param int $idTicket
+         * @return array
+         */
+        public static function getMailsTicket($idTicket)
+        {
+            return self::model()->findAllBySql("SELECT mt.id, m.mail FROM 
+                                          mail_ticket mt, mail_user mu, mail m
+                                          WHERE 
+                                          mt.id_ticket = $idTicket AND 
+                                          mt.id_type_mailing = 1 AND
+                                          mt.id_mail_user = mu.id AND
+                                          mu.id_mail = m.id");
+        }
+        
 }

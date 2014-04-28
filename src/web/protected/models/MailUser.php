@@ -64,7 +64,8 @@ class MailUser extends CActiveRecord
 		return array(
 			'idMail' => array(self::BELONGS_TO, 'Mail', 'id_mail'),
 			'idUser' => array(self::BELONGS_TO, 'User', 'id_user'),
-			'mailTickets' => array(self::HAS_MANY, 'MailTicket', 'id_mail_user'),
+//			'mailTickets' => array(self::HAS_MANY, 'MailTicket', 'id_mail_user'),
+			'mailTickets' => array(self::BELONGS_TO, 'MailTicket', 'id_mail_user'),
 		);
 	}
 
@@ -106,26 +107,27 @@ class MailUser extends CActiveRecord
          * @param boolean $json
          * @return array
          */
-        public static function getMails($user, $json = false, $etelixAsCarrier = false)
+        public static function getMails($user, $json = false, $etelixAsCarrier = false, $idTicket = false)
         {   
             $assignBy='';
+            $implode='';
             if (CrugeAuthassignment::getRoleUser() == 'C') { 
                 $assignBy=' AND assign_by = 0';
             } else {
                 if ($etelixAsCarrier == 'true') $assignBy=' AND assign_by = 0';
             }
             
-            if ($json == false) {        
-                return self::model()->findAllBySql("select mu.id as id, m.mail as mail
-                                                from mail m, mail_user mu
-                                                where mu.id_user = $user and mu.id_mail = m.id AND mu.status = 1 $assignBy");
-            } else {
-                if ($user != null) 
-                {
-                    echo CJSON::encode(Mail::model()->findAllBySql("select mu.id as id, m.mail as mail " .
-                                                "from mail m, mail_user mu " .
-                                                "where mu.id_user = $user and mu.id_mail = m.id AND mu.status = 1 $assignBy"));
-                }
+            if ($idTicket) $implode = ' and mu.id NOT IN (' . implode(",", self::idMailUser($idTicket)) . ')';
+
+            $sql="SELECT mu.id AS id, m.mail AS mail
+                      FROM mail m, mail_user mu
+                      WHERE mu.id_user = $user AND mu.id_mail = m.id AND mu.status = 1 $assignBy $implode";
+            if ($user!=null) 
+            {
+                if ($json == false)       
+                    return self::model()->findAllBySql($sql);
+                else 
+                    echo CJSON::encode(Mail::model()->findAllBySql($sql));
             }
         }
         
@@ -137,6 +139,19 @@ class MailUser extends CActiveRecord
         public static function getMailsByTicket($idTicket)
         {
             return self::model()->findAll("id in(select id_mail_user from mail_ticket where id_ticket = $idTicket)");
+        }
+        
+        public static function idMailUser($idTicket)
+        {
+            $id = array();
+            $data=self::getMailsByTicket($idTicket);
+            if ($idTicket != null)
+            {
+                foreach ($data as $value) {
+                    $id[]=$value->id;
+                }
+            }
+            return $id;
         }
 
         

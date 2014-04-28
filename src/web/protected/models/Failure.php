@@ -9,6 +9,7 @@
  *
  * The followings are the available model relations:
  * @property Ticket[] $tickets
+ * @property FailureSpeech[] $failureSpeeches
  */
 class Failure extends CActiveRecord
 {
@@ -55,6 +56,7 @@ class Failure extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'tickets' => array(self::HAS_MANY, 'Ticket', 'id_failure'),
+                        'failureSpeeches' => array(self::HAS_MANY, 'FailureSpeech', 'id_failure'),
 		);
 	}
 

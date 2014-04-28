@@ -133,14 +133,32 @@ class MailTicket extends CActiveRecord
             return null;
         }
         
+        /**
+         * Gurada los mails que apliquen a un ticket relacionado
+         * 
+         * @param array $attributes
+         * @param int $typeMail
+         * @return boolean
+         */
         public static function saveMailTicket($attributes, $typeMail)
         {
             $isOk=true;
-            $count=count($attributes['responseTo']);
-            for($i=0; $i<$count; $i++)
+            if (is_array($attributes['responseTo']))
+            {
+                $count=count($attributes['responseTo']);
+                for($i=0; $i<$count; $i++)
+                {
+                    $model=new MailTicket;
+                    $model->id_mail_user=$attributes['responseTo'][$i];
+                    $model->id_ticket=$attributes['id_ticket'];
+                    $model->id_type_mailing=$typeMail;
+                    if (!$model->save()) $isOk=false;
+                }
+            }
+            else
             {
                 $model=new MailTicket;
-                $model->id_mail_user=$attributes['responseTo'][$i];
+                $model->id_mail_user=$attributes['responseTo'];
                 $model->id_ticket=$attributes['id_ticket'];
                 $model->id_type_mailing=$typeMail;
                 if (!$model->save()) $isOk=false;

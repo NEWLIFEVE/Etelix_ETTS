@@ -1,6 +1,5 @@
 <?php
 /* @var $this TicketController */
-/* @var $model Ticket */
 ?>
 <!--<textarea name="pp" id="pp"></textarea>-->
 <div id="demo">
@@ -32,10 +31,13 @@
                             $carrier=Carrier::getCarriers(true, $ticket->id);
                             switch ($ticket->idStatus->id) {
                                 case '1':
-                                    if($timeTicket > 86400 )
+                                    if ($timeTicket <= 86400) {
+                                        echo 'class="open today '.$read.'"'; 
+                                    } elseif ($timeTicket > 86400 && $timeTicket <= 172800) {
+                                        echo 'class="open yesterday '.$read.'"'; 
+                                    } else {
                                         echo 'class="late '.$read.'"';
-                                    else
-                                        echo 'class="open '.$read.'"'; 
+                                    }
                                     break;
                                 case '2':
                                     echo 'class="close '.$read.'"';
@@ -73,15 +75,42 @@
 	</tbody>
 </table>
 </div>
+<div class='botones-sociales izquierda hidden-phone hidden-tablet'>
+    <a class='itemsocial' href='javascript:void(0)' id='facebook-btn'>
+        <span class='social'>
+            <span class="total-tickets"><?php echo $colors['white']; ?> TT's <br>(<?php echo $colors['percentageWhite']; ?>%)</span>
+            <span class='texto'>TT's abiertos con 24 horas (<?php echo $colors['white']; ?> en total)</span>
+        </span>
+    </a>
+    <a class='itemsocial' href='javascript:void(0)'id='twitter-btn'>
+        <span class='social'>
+            <span class="total-tickets"><?php echo $colors['yellow']; ?> TT's <br>(<?php echo $colors['percentageYellow']; ?>%)</span>
+            <span class='texto'>TT's abiertos con 48 horas (<?php echo $colors['yellow']; ?> en total)</span>
+        </span>
+    </a>
+    <a class='itemsocial' href='javascript:void(0)' id='google-btn'>
+        <span class='social'>
+            <span class="total-tickets"><?php echo $colors['red']; ?> TT's <br>(<?php echo $colors['percentageRed']; ?>%)</span>
+            <span class='texto'>TT's abiertos con mas de 48 horas (<?php echo $colors['red']; ?> en total)</span>
+        </span>
+    </a>
+    <a class='itemsocial' href='javascript:void(0)' id='pinterest-btn'>
+        <span class='social'>
+            <span class="total-tickets"><?php echo $colors['green']; ?> TT's <br>(<?php echo $colors['percentageGreen']; ?>%)</span>
+            <span class='texto'>TT's cerrados de la semana (<?php echo $colors['green']; ?> en total)</span>
+        </span>
+    </a>
+</div>
 <?php Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl . '/css/datatable.css'); ?>
 <?php Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl . '/css/demo_table_jui.css'); ?>
 <?php Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl . '/css/uploadfile.css'); ?>
+<?php Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl . '/css/leyenda.css'); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/plugins/jquery/jquery.dataTables.min.js',CClientScript::POS_END); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/plugins/jquery/jquery.uploadfile.js',CClientScript::POS_END); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/modules/etts.ajax.js',CClientScript::POS_END); ?>
 <?php if ($tipoUsuario === "C"): ?>
-    <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/admin_cliente.js',CClientScript::POS_END); ?>
+    <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/dtable.carriers.js',CClientScript::POS_END); ?>
 <?php else: ?>
-    <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/admin.js',CClientScript::POS_END); ?>
+    <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/dtable.etelix.js',CClientScript::POS_END); ?>
 <?php endif; ?>
-<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/save_message_ticket.js',CClientScript::POS_END); ?>
+<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/admin.js',CClientScript::POS_END); ?>

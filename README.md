@@ -3,6 +3,54 @@ Etelix_ETTS
 
 Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
 
+Release 1.2
+23/04/2014
+    - Dependencia a php5-imap
+    - El ícono lateral de los tickets cerrados, solo muestra los tickets de 1 semana (día actual hasta siete dias atrás)
+    - Todos los tipos de tickets se le pueden agregar mas correos
+
+22/04/2014
+    - Iconos laterales que muestran leyendas de colores de los tickets, cantidad de ticket por color y porcentaje
+
+21/04/2014
+    - Cambio de colores de los tickets en datatable. Tickets de 24 horas son blancos, 48 horas son amarillos, mas de 48 horas son rojos, cerrados siguen en verde.
+    - Se añadió texto de que puede llegar el mensaje incompleto al descargarlo desde el correo 
+
+15/04/2014
+    - Se amplió la interfaz del detalle delticket.
+    - Se colocó un botón de refresh(para el chat) en el detalle del ticket.
+    - Descarga manual de correos asociados a un número de ticket
+
+07/04/2014
+    - Ahora los usuarios internos tienen la posibilidad de agregar mas correos en la interfaz del detalle del ticket(Solo cuando el ticket es abierto etelix_to_carrier)
+
+04/04/2014
+    - Se modificó el método saveMailTicket en el modelo MailTicket, ahora si los atributos pueden llegar tanto como array o como un solo atributo
+
+03/04/2014
+    - Corrección en adminclose, antes se mostraban todos los tickets cerrados a los carriers, ahora solo se muestran los tickets asociados a ellos.
+    - Se agregó un nuevo action en MailticketController(actionSavemailticket), el cual servirá para guardar los mails(ya registrados en mail_user) al dar una nueva respuesta.
+    - Nuevos métodos en admin.js: seeOptions(), hideOptions() los cuales muestran u ocultan la opción de agregar un correo.
+    - Nuevo método en admin.js: bajarCorreo() el cual al bajar el correo guardará de una vez el mail en la tabla mail_ticket.
+    
+
+02/04/2014
+    - Corrección en los speech del preview del ticket. No se concatenaba la falla y el pais, ahora ya lo hace.
+
+Release 1.1.9
+01/04/2014
+    - Ahora el usuario interno tiene la lista de speech en ingles y español
+    - Se creo un action nuevo en SpeechController(actionGetspeechsupplier) para obtener los speech de los suppliers y se borro actionGetspeechsupplier en FailureController
+    - Se borró el campo id_speech de la tabla failure
+    - Se creó una nueva tabla llamada failure_speech
+    - Al abrirle un ticket a un supplier, estando seleccionado la falla y el pais, se cargará el speech correspondiente pudiendo seleccionar si setea en ingles o en español
+    - Ordenados speech's en preview ticket por idioma. También dependen si es customer o supplier
+
+31/03/2014
+    - Se creo un campo nuevo en la tabla failure llamado id_speech que se relaciona con speech. Se agregó en el metodo relations dichas relaciones por cada modelo afectado por el campo agregado
+    - Se creó un action nuevo en FailureController (actionGetspeechsupplier) para obtener los speech de los suppliers
+    - Se creó un action nuevo en SpeechController (actionGetspeechcustomer) para obtener los speech de los customers
+
 Release 1.1.8.1
 28/03/2014(Corrección en master)
 	- Corrección en creacion de tickets, comprobacion de option open, cuando es etelix_to_carrier comprueba que exista el correo, si es etelis_as_carrier o carrier_to_etelix, comprueba que exista y que asign_by sea 1
