@@ -24,6 +24,20 @@
                     <th id="th-preview">&nbsp;</th>
 		</tr>
 	</thead>
+        <thead>
+            <tr class="test-select">
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
 	<tbody>
                 <?php foreach (Ticket::ticketsClosed() as $ticket): ?>
                     <tr <?php
@@ -61,7 +75,7 @@
                                     <?php  echo  strlen($carrier) <= 9 ? $carrier : substr($carrier, 0, 9) .'...'; ?>
                                 <?php endif; ?>
                             </td>
-                            <td title="<?php echo $carrier; ?>">
+                            <td <?php echo strlen($carrier) <= 9 ? '' : 'title="'.$carrier.'"'; ?> >
                                 <?php  echo  strlen($carrier) <= 9 ? $carrier : substr($carrier, 0, 9) .'...'; ?>
                             </td>
                         <?php else: ?>

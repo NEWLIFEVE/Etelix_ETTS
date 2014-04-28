@@ -683,3 +683,18 @@ div.pre-loader {
     margin-top: -5px;
     margin-bottom: -5px;
 }
+
+.test-select {
+    background: #e6e6e6 url(images/ui-bg_glass_75_e6e6e6_1x400.png) 50% 50% repeat-x;
+    border-bottom: 1px solid #d3d3d3 !important;
+}
+
+.test-select th {
+    border-left: 1px solid #d3d3d3 !important;
+    padding: 2px 0 !important;
+    margin: 0 !important;
+}
+
+.test-select th select {
+    margin: auto;
+}

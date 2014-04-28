@@ -151,7 +151,11 @@ class TicketController extends Controller
     public function actionAdmin()
     {
         $colors=$this->_countColorsTicket();
-        $this->render('admin',array('colors'=>$colors));
+        $color = '';
+        $this->render('admin',array(
+            'colors'=>$colors,
+            'color'=>$color,
+            ));
     }
 
     /**
@@ -546,17 +550,18 @@ class TicketController extends Controller
         $red = 0; 
         foreach ($model::ticketsByUsers(Yii::app()->user->id, false) as $ticket) {          
             $timeTicket = Utility::getTime($ticket->date, $ticket->hour);
-            
-            if ($timeTicket <= 86400)
+            // Tickes a partir de las 6:00am
+            if ($timeTicket <= 64800)
                 $white += 1;
-            elseif ($timeTicket > 86400 && $timeTicket <= 172800) 
+            // Tickets de antes de las 6:00am hasta 6:00am del dia anterior
+            elseif ($timeTicket > 64800 && $timeTicket <= 151200) 
                 $yellow += 1;
             else 
                 $red += 1;
         }
         
         $green = $model::countTicketClosed();
-        $totalTickets=$white+$yellow+$green+$red;
+        $totalTickets = $white + $yellow + $green + $red;
         
         return array(
             'white'=>$white,
