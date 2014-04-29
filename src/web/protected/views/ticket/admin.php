@@ -99,6 +99,12 @@
 </table>
 </div>
 <div class='botones-sociales izquierda hidden-phone hidden-tablet'>
+    <a class='itemsocial' href='javascript:void(0)' id='youtube-btn' rel="">
+        <span class='social'>
+            <span class="total-tickets">Default</span>
+            <span class="texto">Haz click para ver todos los tickets</span>
+        </span>
+    </a>
     <a class='itemsocial' href='javascript:void(0)' id='facebook-btn' rel="only-white">
         <span class='social'>
             <span class="total-tickets"><?php echo $colors['white']; ?> TT's <br>(<?php echo $colors['percentageWhite']; ?>%)</span>

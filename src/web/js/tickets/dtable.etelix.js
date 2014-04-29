@@ -54,7 +54,7 @@ function getTicketsRelated(id, nTr, oTable)
          
 $(document).on('ready', function() {
     // Los usuarios que no sean clientes contendran esta clase en el div page
-    $('div.page').addClass('width-page');
+    $('div.page').css('width', '85%');
     
     /*
     * Initialse DataTables, with no sorting on the 'details' column

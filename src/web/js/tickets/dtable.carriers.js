@@ -1,4 +1,5 @@
 $(document).on('ready', function(){
+    $('div.page').css('width', '70%');
     /*
      * Initialse DataTables, with no sorting on the 'details' column
      */
