@@ -67,8 +67,8 @@ $(document).on('ready', function() {
            "bAutoWidth": false,
            "sPaginationType": "full_numbers",
            "aoColumnDefs": [
-                   { "aDataSort": false, "aTargets": [ 0,10 ] },
-                   { "bSortable": false, "aTargets": [ 0,10 ] }
+                   { "aDataSort": false, "aTargets": [ 0,11 ] },
+                   { "bSortable": false, "aTargets": [ 0,11 ] }
            ],
            "fnHeaderCallback": function( nHead, aData, iStart, iEnd, aiDisplay ) {
                $('#example_length label').append('<span id="pruebas"></span>');

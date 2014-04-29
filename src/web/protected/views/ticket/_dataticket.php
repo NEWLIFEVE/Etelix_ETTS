@@ -199,6 +199,10 @@
                 <div id="status"></div>
                 <div id="filename"></div>
                 </div>
+                <?php else: ?>
+                    <?php if ($datos->close_ticket != null): ?>
+                    <h3>Ticket closed in <?php echo Utility::getDayByDate(substr($datos->close_ticket, 0, 10)) . ' at ' . substr($datos->close_ticket, 11, 12); ?></h3>
+                    <?php endif; ?>
                 <?php endif; ?>
             </div>
         </div>

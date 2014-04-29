@@ -9,14 +9,15 @@ $(document).on('ready', function(){
         "bDestroy": true,
         "sPaginationType": "full_numbers",
         "aoColumnDefs": [
-                { "aDataSort": false, "aTargets": [ 0,7] },
-                { "bSortable": false, "aTargets": [ 7 ] }
+                { "aDataSort": false, "aTargets": [ 0,8] },
+                { "bSortable": false, "aTargets": [ 8 ] }
         ],
         "aaSorting": [[ 0, "desc" ]],
         "fnHeaderCallback": function( nHead, aData, iStart, iEnd, aiDisplay ) {
                $('#example_length label').append('<span id="pruebas"></span>');
                setTimeout(function(){$('#pruebas').html(', ' + $('#example_info').html())}, 300);
             }
+
     }); 
     
     /* Add a select menu for each TH element in the table footer */
