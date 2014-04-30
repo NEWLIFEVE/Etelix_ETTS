@@ -31,6 +31,14 @@ and open the template in the editor.
 }
 
 
+.botones-sociales #youtube-btn .social {
+    background-color: #2E62B4;
+}
+.botones-sociales #youtube-btn .social .texto, 
+.botones-sociales #youtube-btn .social .total-tickets {
+    color: white;
+}
+
 .botones-sociales #facebook-btn .social {
     background-color: #FFF;
     border: 1px solid silver;

@@ -17,6 +17,7 @@
  * @property string $ticket_number
  * @property integer $id_user
  * @property string $option_open
+ * @property string $close_ticket
  *
  * The followings are the available model relations:
  * @property TicketRelation[] $ticketRelations

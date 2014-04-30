@@ -662,8 +662,8 @@ span.text-span {
 }
 
 div.page.width-page {
-    width: 90% !important;
-    min-width: 950px !important;
+    width: 80% !important;
+    /*min-width: 950px !important;*/
 }
 
 
@@ -696,5 +696,5 @@ div.pre-loader {
 }
 
 .test-select th select {
-    margin: auto;
+    width: 80%;
 }
