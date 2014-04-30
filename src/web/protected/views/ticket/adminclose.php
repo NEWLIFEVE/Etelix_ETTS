@@ -95,7 +95,7 @@
                         <td><?php if (TestedNumber::getNumber($ticket->id) != false) echo TestedNumber::getNumber($ticket->id)->idCountry->name; ?></td>
                         <td><?php echo $ticket->date . ' / ' . $ticket->hour; ?></td>
                         <td><?php echo $ticket->close_ticket != null ? substr($ticket->close_ticket, 0, 10) . ' / ' . substr($ticket->close_ticket, 11, 12) : ''; ?></td>
-                        <td><?php  echo Utility::restarHoras($ticket->hour, date('H:i:s'), floor($timeTicket/ (60 * 60 * 24))); ?></td>
+                        <td><?php echo substr($ticket->lifetime, 0, -3); ?></td>
                          <td class="hidden"><?php echo $color; ?></td>
                         <td><a href="javascript:void(0)" class="preview" rel="<?php echo $ticket->id; ?>"><img width="12" height="12" src="<?php echo Yii::app()->request->baseUrl.'/images/view.gif'; ?>"></a></td>
                     </tr>
