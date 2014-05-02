@@ -102,31 +102,31 @@
     <a class='itemsocial' href='javascript:void(0)' id='youtube-btn' rel="">
         <span class='social'>
             <span class="total-tickets">Default</span>
-            <span class="texto">Haz click para ver todos los tickets</span>
+            <span class="texto">view all TT's</span>
         </span>
     </a>
     <a class='itemsocial' href='javascript:void(0)' id='facebook-btn' rel="only-white">
         <span class='social'>
             <span class="total-tickets"><?php echo $colors['white']; ?> TT's <br>(<?php echo $colors['percentageWhite']; ?>%)</span>
-            <span class='texto'>TT's abiertos con 24 horas (<?php echo $colors['white']; ?> en total)</span>
+            <span class='texto'>TT's within 24 hours (<?php echo $colors['white']; ?> total)</span>
         </span>
     </a>
     <a class='itemsocial' href='javascript:void(0)'id='twitter-btn' rel="only-yellow">
         <span class='social'>
             <span class="total-tickets"><?php echo $colors['yellow']; ?> TT's <br>(<?php echo $colors['percentageYellow']; ?>%)</span>
-            <span class='texto'>TT's abiertos con 48 horas (<?php echo $colors['yellow']; ?> en total)</span>
+            <span class='texto'>TT's within 48 hours (<?php echo $colors['yellow']; ?> total)</span>
         </span>
     </a>
     <a class='itemsocial' href='javascript:void(0)' id='google-btn' rel="only-red">
         <span class='social'>
             <span class="total-tickets"><?php echo $colors['red']; ?> TT's <br>(<?php echo $colors['percentageRed']; ?>%)</span>
-            <span class='texto'>TT's abiertos con mas de 48 horas (<?php echo $colors['red']; ?> en total)</span>
+            <span class='texto'>TT's with more than 48 hours (<?php echo $colors['red']; ?> total)</span>
         </span>
     </a>
     <a class='itemsocial' href='javascript:void(0)' id='pinterest-btn' rel="only-green">
         <span class='social'>
             <span class="total-tickets"><?php echo $colors['green']; ?> TT's <br>(<?php echo $colors['percentageGreen']; ?>%)</span>
-            <span class='texto'>TT's cerrados de la semana (<?php echo $colors['green']; ?> en total)</span>
+            <span class='texto'>TT's closed last 14 days (<?php echo $colors['green']; ?> total)</span>
         </span>
     </a>
 </div>
