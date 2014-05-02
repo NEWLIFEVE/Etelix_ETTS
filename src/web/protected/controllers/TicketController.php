@@ -212,6 +212,7 @@ class TicketController extends Controller
         $modelTicket->id_user=Yii::app()->user->id;
         $modelTicket->id_status=1;
         $modelTicket->option_open=$_POST['optionOpen'];
+        $modelTicket->close_ticket=null;
         if($modelTicket->option_open == 'etelix_to_carrier')
         {
             $modelTicket->id_gmt=null;
@@ -348,11 +349,11 @@ class TicketController extends Controller
         {
             $ticketSon=self::getTicketsSon($idTickets);
             $ticketSon[]=$id;
-            $ticketModel::model()->updateAll(array('id_status'=>$_POST['idStatus']),'id in('.implode(",",$ticketSon).')');
+            $ticketModel::model()->updateAll(array('id_status'=>$_POST['idStatus'], 'close_ticket'=>date('Y-m-d H:i:s')),'id in('.implode(",",$ticketSon).')');
         }
         else
         {
-            $ticketModel::model()->updateByPk($id,array('id_status'=>$_POST['idStatus']));
+            $ticketModel::model()->updateByPk($id,array('id_status'=>$_POST['idStatus'], 'close_ticket'=>date('Y-m-d H:i:s')));
         }
         
         $rutaAttachFile=array();        

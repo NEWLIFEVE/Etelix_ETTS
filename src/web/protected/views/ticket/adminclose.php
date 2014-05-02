@@ -20,6 +20,7 @@
                     <th id="th-failure">Failure</th>
                     <th id="th-oip">Country</th>
                     <th id="th-date">Created</th>
+                    <th id="th-date">Closed</th>
                     <th id="th-life">LT</th>
                     <th id="th-color" class="hidden">color</th>
                     <th id="th-preview">&nbsp;</th>
@@ -27,6 +28,7 @@
 	</thead>
         <thead>
             <tr class="test-select">
+                <th></th>
                 <th></th>
                 <th></th>
                 <th></th>
@@ -92,7 +94,8 @@
                         <td><?php echo  $failure = strlen($ticket->idFailure->name) <= 15 ? $ticket->idFailure->name : substr($ticket->idFailure->name, 0, 15) .'...';  ?></td>
                         <td><?php if (TestedNumber::getNumber($ticket->id) != false) echo TestedNumber::getNumber($ticket->id)->idCountry->name; ?></td>
                         <td><?php echo $ticket->date . ' / ' . $ticket->hour; ?></td>
-                        <td><?php  echo Utility::restarHoras($ticket->hour, date('H:i:s'), floor($timeTicket/ (60 * 60 * 24))); ?></td>
+                        <td><?php echo $ticket->close_ticket != null ? substr($ticket->close_ticket, 0, 10) . ' / ' . substr($ticket->close_ticket, 11, 12) : ''; ?></td>
+                        <td><?php echo substr($ticket->lifetime, 0, -3); ?></td>
                          <td class="hidden"><?php echo $color; ?></td>
                         <td><a href="javascript:void(0)" class="preview" rel="<?php echo $ticket->id; ?>"><img width="12" height="12" src="<?php echo Yii::app()->request->baseUrl.'/images/view.gif'; ?>"></a></td>
                     </tr>
@@ -141,8 +144,8 @@
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/modules/etts.ajax.js',CClientScript::POS_END); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/admin.js',CClientScript::POS_END); ?>
 <?php if ($tipoUsuario === "C"): ?>
-    <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/dtable.carriers.js',CClientScript::POS_END); ?>
+    <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/dtable.carriers.close.js',CClientScript::POS_END); ?>
 <?php else: ?>
-    <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/dtable.etelix.js',CClientScript::POS_END); ?>
+    <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/dtable.etelix.close.js',CClientScript::POS_END); ?>
 <?php endif; ?>
 
