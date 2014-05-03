@@ -9,8 +9,14 @@
  */
 class MailCommand extends CConsoleCommand
 {
-    public function run()
+    public function run($args)
     {
-        
+        error_reporting(E_ALL & ~E_NOTICE); 
+        $imap = new Imap();
+        $mails = $imap->runConsole(10);
+        if (!empty($mails)) {
+            $imap->deleteMessage($mails, true);
+        }
+        $imap->close();
     }
 }

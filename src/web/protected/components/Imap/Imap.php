@@ -18,52 +18,7 @@ class Imap extends Connection
         $this->_count = imap_num_msg($this->_inbox);
         $this->_posBody = '<p></p><small>This answer has been read from an email, this function is on probation, the answer may be incomplete or part of it may be negligible. Thank you for your understanding.</small>';
     }
-    
-    /**
-     * Retorna todos los mensajes
-     * @return array
-     */
-    public function getMessages()
-    {
-        for ($i = 1; $i <= $this->_count; $i++) {
-            $this->_message[] = array(
-                'subject' => $this->getSubject($i),
-                'from' => $this->getFrom($i),
-                'to' => $this->getTo($i),
-                'date' => $this->getDate($i),
-                'body' => $this->getBody($i),
-            );
-        }
-        return $this->_message;
-    }
-    
-    /**
-     * Retorna una cantidad de mensajes dependiendo del parametro que se le setee 
-     * @param int $key
-     * @return array
-     */
-    public function getMessagesByQuantity($key = false)
-    {
-        if($key === false)  $key = 1;
-        if ($key >= $this->_count) $key = 1;
-        $resta = $this->_count - $key;
-        $rigthRules = array('---', '> -', 'de:', 'from:', 'saludos', 'regards', '--Please', 'base64');
-        $leftRules = array('quoted-printable');
-        for ($i = $this->_count; $i > $resta; $i--) {
-            if (!stripos($this->getSubject($i), 'delivery')) {
-                $this->_message[] = array(
-                    'subject' => $this->getSubject($i),
-                    'from' => $this->getFrom($i),
-                    'to' => $this->getTo($i),
-                    'date' => date('Y-m-d', $this->getDate($i)),
-                    'hour' => date('H:m:s', $this->getDate($i)),
-                    'body' => $this->getBody($i, $rigthRules, $leftRules),
-                );
-            }
-        }
-        return $this->_message;
-    }
-    
+        
     /**
      * Retorna los mensajes que esten asociados a algun numero de ticket, si no 
      * encuentra, retornará un array vacío y borrará aquellos mensajes que no 
@@ -71,7 +26,7 @@ class Imap extends Connection
      * @param int $key El numero de mensajes a llamar, contando desde el último
      * @return array
      */
-    public function getMessageAutomatic($key = false)
+    public function runConsole($key = false)
     {
         if($key === false)  $key = 1;
         if ($key >= $this->_count) $key = 1;
@@ -82,20 +37,21 @@ class Imap extends Connection
             if (!stripos($this->getSubject($i), 'delivery')) {
                 if ($this->filterSubjectTicketsNumbers($i) != false) {
                     $idTicket = Ticket::getId(rtrim($this->filterSubjectTicketsNumbers($i)));
-                    $this->_message[] = array(
-                        'idTicket' => $idTicket,
-                        'id' => $this->getUid($i),
-                        'subject' => $this->filterSubjectTicketsNumbers($i),
-                        'from' => $this->getFrom($i),
-                        'to' => $this->getTo($i),
-                        'date' => date('Y-m-d', $this->getDate($i)),
-                        'hour' => date('H:m:s', $this->getDate($i)),
-                        'body' => $this->getBody($i, $rigthRules, $leftRules) . $this->_posBody,
-                    );
+                    if ($idTicket != null) {
+                        $this->_message[] = array(
+                            'idTicket' => $idTicket,
+                            'id' => $this->getUid($i),
+                            'subject' => $this->filterSubjectTicketsNumbers($i),
+                            'from' => $this->getFrom($i),
+                            'to' => $this->getTo($i),
+                            'date' => date('Y-m-d', $this->getDate($i)),
+                            'hour' => date('H:m:s', $this->getDate($i)),
+                            'body' => $this->getBody($i, $rigthRules, $leftRules) . $this->_posBody,
+                        );
+                    }
                 }
             }
-        }
-                
+        }    
         return $this->_message;
     }
     
@@ -164,23 +120,7 @@ class Imap extends Connection
         }
         return false;
     }
-    
-    /**
-     * Retorna el texto del ultimo mensaje enviado asociado a un ticketnumber
-     * @param string $ticketNumber
-     * @return string
-     */
-    public function lastBodyByTicketNumber($ticketNumber)
-    {
-        $idMail = $this->getIdMessage($ticketNumber);
-        $lastMail = end($idMail);
-        $body = $this->getBody($lastMail);
-        if ($body != null) {
-            return $body;
-        }
-        return false;
-    }
-    
+        
     /**
      * Retorna el subject del mensaje
      * @param integer $messageID
@@ -342,7 +282,6 @@ class Imap extends Connection
                 $model->date=$value['date'];
                 $model->hour=$value['hour'];
                 $model->id_user=CrugeUser2::getUserTicket($value['idTicket'],true)->iduser;
-                $optionRead=DescriptionticketController::getUserNewDescription(false);
                 $model->read_carrier=1;
                 $model->read_internal=0;
                 $model->response_by=CrugeUser2::getUserTicket($value['idTicket'],true)->iduser;

@@ -17,6 +17,7 @@
  * @property string $ticket_number
  * @property integer $id_user
  * @property string $option_open
+ * @property string $close_ticket
  *
  * The followings are the available model relations:
  * @property TicketRelation[] $ticketRelations
@@ -47,6 +48,7 @@ class Ticket extends CActiveRecord
     public $date_number=array();
     public $hour_number=array();
     public $number_of_the_day;
+    public $lifetime;
 
     /**
      *
@@ -239,9 +241,11 @@ class Ticket extends CActiveRecord
         $conditionUser='';
         if(CrugeAuthassignment::getRoleUser()=="C") $conditionUser=' WHERE id_user='.Yii::app()->user->id;
         
-        return self::model()->findAllBySql("SELECT *
+        return self::model()->findAllBySql("SELECT *, (close_ticket::timestamp - (to_char(date, 'YYYY-MM-DD') || ' ' || to_char(hour, 'HH24:MI:SS'))::timestamp) AS lifetime
                                             FROM ticket
-                                            WHERE id IN (SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user $conditionUser)) AND id_status=2
+                                            WHERE id IN (SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user $conditionUser)) AND 
+                                            id_status=2 AND 
+                                            date >= NOW()-'2 week'::interval
                                             ORDER BY id_status, id  ASC");
     }
     
@@ -255,7 +259,7 @@ class Ticket extends CActiveRecord
                 "id IN(SELECT DISTINCT(id_ticket) "
                 . "FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user $conditionUser)) AND "
                 . "id_status = 2 AND "
-                . "date >= NOW()-'1 week'::interval"
+                . "date >= NOW()-'2 week'::interval"
                 );
     }
 
@@ -337,5 +341,5 @@ class Ticket extends CActiveRecord
     {
         return self::model()->findByPk($idTicket)->option_open;
     }
-    
+       
 }
