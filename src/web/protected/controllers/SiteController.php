@@ -127,6 +127,62 @@ class SiteController extends Controller
 		Yii::app()->user->logout();
 		$this->redirect(Yii::app()->homeUrl);
 	}
+        
+        /**
+         * Exportable de imprimir
+         */
+        public function actionPrint()
+        {
+            $reports = new ReportTickets();
+            $table = $reports->table($_REQUEST['id']);
+            if ($table !== null) {
+                echo $table;
+            }
+        }
+        
+        /**
+         * Exportable excel
+         */
+        public function actionExcel()
+        { 
+            $reports = new ReportTickets();
+            $table = $reports->table($_REQUEST['id']);
+            $name = 'tickets-' . date('Y-m-d H-i-s');
+            header('Content-type: application/vnd.ms-excel');
+            header("Content-Disposition: attachment; filename={$name}.xls");
+            header("Pragma: cache");
+            header("Expires: 0");
+            $this->_writeFile($name, $table);
+            echo $table;
+        }
+        
+        public function actionMail()
+        {
+            $mail = new EnviarEmail();
+            $mail->enviar($html, Yii::app()->user->email, null, 'Prueba de exportable');
+        }
+        
+        /**
+         * Escribe el archivo excel
+         * @param string $name
+         * @param string $table
+         */
+        private function _writeFile($name, $table)
+        {
+            $ruta = Yii::getPathOfAlias('webroot.uploads') . DIRECTORY_SEPARATOR;
+            $fp = fopen($ruta . "$name.xls", "w+");
+            $cuerpo = "<!DOCTYPE html>
+                        <html>
+                            <head>
+                                <meta charset='utf-8'>
+                                <meta http-equiv='Content-Type' content='application/vnd.ms-excel charset=utf-8'>
+                            </head>
+                            <body>
+                            $table
+                            </body>
+                        </html>";
+            fwrite($fp, $cuerpo);
+        }
 
 	/**
 	 * @access public

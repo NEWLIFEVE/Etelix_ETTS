@@ -573,10 +573,10 @@ class TicketController extends Controller
             'yellow'=>$yellow,
             'green'=>$green,
             'red'=>$red,
-            'percentageWhite'=>round(($white/$totalTickets) * 100, 1),
-            'percentageYellow'=>round(($yellow/$totalTickets) * 100, 1),
-            'percentageGreen'=>round(($green/$totalTickets) * 100, 1),
-            'percentageRed'=>round(($red/$totalTickets) * 100, 1),
+            'percentageWhite'=>$totalTickets != 0 ? round(($white/$totalTickets) * 100, 1) : 0,
+            'percentageYellow'=>$totalTickets != 0 ? round(($yellow/$totalTickets) * 100, 1) : 0,
+            'percentageGreen'=>$totalTickets != 0 ? round(($green/$totalTickets) * 100, 1) : 0,
+            'percentageRed'=>$totalTickets != 0 ? round(($red/$totalTickets) * 100, 1) : 0,
         );
     }
 }

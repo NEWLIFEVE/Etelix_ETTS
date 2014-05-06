@@ -130,7 +130,25 @@
         </span>
     </a>
 </div>
-
+<div class="reportes-laterales derecha">
+    <a class='itemreporte' href='javascript:void(0)' id='print-btn' rel="/site/print">
+        <span class='reporte'>
+            <span class="text-visible">Print</span>
+        </span>
+    </a>
+    
+    <a class='itemreporte' href='javascript:void(0)' id='excel-btn' rel="/site/excel">
+        <span class='reporte'>
+            <span class="text-visible">Excel</span>
+        </span>
+    </a>
+    
+    <a class='itemreporte' href='javascript:void(0)' id='mail-btn' rel="/site/mail">
+        <span class='reporte'>
+            <span class="text-visible">Mail</span>
+        </span>
+    </a>
+</div>
 <?php Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl . '/css/datatable.css'); ?>
 <?php Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl . '/css/demo_table_jui.css'); ?>
 <?php Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl . '/css/uploadfile.css'); ?>
@@ -141,6 +159,7 @@
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/plugins/jquery/TableTools.min.js',CClientScript::POS_END); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/plugins/jquery/jquery.uploadfile.js',CClientScript::POS_END); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/modules/etts.ajax.js',CClientScript::POS_END); ?>
+<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/modules/etts.reports.js',CClientScript::POS_END); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/admin.js',CClientScript::POS_END); ?>
 <?php if ($tipoUsuario === "C"): ?>
     <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/dtable.carriers.js',CClientScript::POS_END); ?>

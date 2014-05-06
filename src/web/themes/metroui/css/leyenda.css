@@ -8,12 +8,16 @@ and open the template in the editor.
     Author     : Nelson Marcano
 */
 
-.botones-sociales {
+.botones-sociales, .reportes-laterales {
     position: fixed;
     top: 36%;
     width: 60px;
     z-index: 999;
 }
+.reportes-laterales {
+    top: 36%;
+}
+
 .izquierda {
     left: 0;
 }
@@ -55,7 +59,6 @@ and open the template in the editor.
 .botones-sociales #pinterest-btn .social {
     background-color: #61CF61;
 }
-
 
 .izquierda #facebook-btn span {
     background-position: right 10px;
