@@ -83,7 +83,7 @@ class ReportTickets
 
 
     /**
-     * Consulta sql para obtner los ticket dependiendo de los ids que se pasen como parametro
+     * Consulta sql para obtner los tickets dependiendo de los ids que se pasen como parametro
      * @param array $ids
      * @return array
      */

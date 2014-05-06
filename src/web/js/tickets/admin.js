@@ -286,7 +286,7 @@ $(document).on('ready', function() {
         } else if ($(this).prop('id') === 'excel-btn') {
             $ETTS.reports.excel($('.preview'), $(this).prop('rel'));
         } else {
-            $ETTS.reports.mail($('.preview'), $(this).prop('rel'), $('#email').val());
+            $ETTS.reports.mail($('.preview'), $(this).prop('rel'));
         }
     });
     
