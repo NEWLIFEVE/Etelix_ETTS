@@ -1,27 +1,4 @@
 <?php
-$server=$_SERVER['SERVER_NAME'];
-switch ($server)
-{
-	case SERVER_NAME_PROD:
-		$server_db='localhost';
-		$sori_db='sori';
-		$etts_db='etts';
-		$pass_db='Nsusfd8263';
-		break;
-	case SERVER_NAME_PRE_PROD:
-		$server_db='localhost';
-		$sori_db='dev_sori';
-		$etts_db='dev_etts';
-		$pass_db='Nsusfd8263';
-		break;
-	case SERVER_NAME_DEV:
-	default:
-		$server_db='172.16.17.190';
-		$sori_db='sori';
-		$etts_db='etts';
-		$pass_db='123';
-		break;
-}
 // uncomment the following to define a path alias
 // Yii::setPathOfAlias('local','path/to/local-folder');
 
@@ -31,7 +8,8 @@ return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 	'name'=>'ETTS',
 	//'language' => 'en',
-	'sourceLanguage'=>'en',
+	'language'=>'en',
+	'timeZone'=>'America/Caracas',
 	'charset'=>'utf-8',
 	'theme'=>'metroui',
 	// preloading 'log' component
@@ -39,20 +17,14 @@ return array(
 	// autoloading model and component classes
 	'import'=>array(
 		'application.models.*',
-                'application.controllers.*',
+        'application.controllers.*',
 		'application.components.*',
-                'application.components.Imap.*',
+        'application.components.Imap.*',
 		'application.modules.cruge.components.*',
 		'application.modules.cruge.extensions.crugemailer.*',
 		),
 	'modules'=>array(
 	// uncomment the following to enable the Gii tool
-		'gii'=>array(
-			'class'=>'system.gii.GiiModule',
-			'password'=>'123',
-			// If removed, Gii defaults to localhost only. Edit carefully to taste.
-			'ipFilters'=>array('127.0.0.1','::1'),
-			),
 		'cruge'=>array(
 			'tableprefix'=>'cruge_',
 			// para que utilice a protected.modules.cruge.models.auth.CrugeAuthDefault.php
@@ -128,20 +100,6 @@ return array(
 			'class'=>"application.components.Utility",
 			),
 			// uncomment the following to use a MySQL database
-		'db'=>array(
-			'connectionString'=>'pgsql:host='.$server_db.';port=5432;dbname='.$etts_db,
-			'emulatePrepare'=>true,
-			'username'=>'postgres',
-			'password'=>$pass_db,
-			'charset' => 'utf8',
-		),
-		'soriDB'=>array(
-			'class'=>'CDbConnection',
-			'connectionString'=>'pgsql:host='.$server_db.';port=5432;dbname='.$sori_db,
-			'username'=>'postgres',
-			'password'=>$pass_db,
-			'charset'=>'utf8',
-			),
 		'errorHandler'=>array(
 			// use 'site/error' action to display errors
 			'errorAction'=>'site/error',
@@ -150,9 +108,8 @@ return array(
 			'class'=>'CLogRouter',
 			'routes'=>array(
 				array(
-					'class'=>'CFileLogRoute',
-					'levels'=>'error, warning',
-					),
+                    'class'=>'ext.yii-debug-toolbar.YiiDebugToolbarRoute',
+                ),
 				// uncomment the following to show log messages on web pages
 				/*
 				array(
