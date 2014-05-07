@@ -76,7 +76,7 @@ $ETTS.reports=(function(){
         print:function(element, url) {
             var ids = _getIds(element);
             // Si hay datos en la tabla
-            if (ids !== '') {
+            if (ids.length > 0) {
                 var content = _head + _urlReport(url, ids, false, null, null, true) + _footer,
                 newIframe = document.createElement('iframe');
                 newIframe.width = '0';
@@ -98,9 +98,22 @@ $ETTS.reports=(function(){
          */
         excel:function(element, url) {
             var ids = _getIds(element);
-            if (ids !== '') {
+            if (ids.length > 0) {
                 _window('Generating excel');
-                setTimeout("window.open('"+url+"?id="+ids+"','_top');", 500);
+                window.open(url + '?id=' + ids, '_top');
+                setTimeout(function(){_window('The file has been generated');}, 3500);
+            }
+        },
+        /**
+         * Método para exportar a excel usando formulario
+         * @param {obj} form
+         * @param {obj} input
+         * @returns {void}
+         */
+        excelForm:function(form, input) {
+            if (input.length > 0) {
+                _window('Generating excel');
+                form.submit();
                 setTimeout(function(){_window('The file has been generated');}, 3500);
             }
         },
@@ -112,7 +125,7 @@ $ETTS.reports=(function(){
          */
         mail:function(element, url) {
             var ids = _getIds(element);
-            if (ids !== '') {
+            if (ids.length > 0) {
                 _urlReport(url, ids, true, 
                 function(data){_window('Success');}, 
                 function(data){_window('Wait a few seconds...');});

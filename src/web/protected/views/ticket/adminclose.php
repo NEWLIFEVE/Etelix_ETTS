@@ -3,6 +3,7 @@
 /* @var $model Ticket */
 ?>
 <!--<textarea name="pp" id="pp"></textarea>-->
+<form id="form-excel" method="post" action="/site/excel">
 <div id="demo">
 <table cellpadding="0" cellspacing="0" border="0" class="display" id="example">
 	<thead>
@@ -97,7 +98,7 @@
                         <td><?php echo $ticket->close_ticket != null ? substr($ticket->close_ticket, 0, 10) . ' / ' . substr($ticket->close_ticket, 11, 12) : ''; ?></td>
                         <td><?php echo substr($ticket->lifetime, 0, -3); ?></td>
                          <td class="hidden"><?php echo $color; ?></td>
-                        <td><a href="javascript:void(0)" class="preview" rel="<?php echo $ticket->id; ?>"><img width="12" height="12" src="<?php echo Yii::app()->request->baseUrl.'/images/view.gif'; ?>"></a></td>
+                        <td><input type="hidden" value="<?php echo $ticket->id; ?>" id="id[]" name="id[]"><a href="javascript:void(0)" class="preview" rel="<?php echo $ticket->id; ?>"><img width="12" height="12" src="<?php echo Yii::app()->request->baseUrl.'/images/view.gif'; ?>"></a></td>
                     </tr>
                 <?php endforeach; ?>
 	</tbody>
@@ -138,22 +139,23 @@
 <div class="reportes-laterales derecha">
     <a class='itemreporte' href='javascript:void(0)' id='print-btn' rel="/site/print">
         <span class='reporte'>
-            <span class="text-visible">Print</span>
+            <span class="text-visible"><img src="/images/print.png" width="40" height="43"></span>
         </span>
     </a>
     
     <a class='itemreporte' href='javascript:void(0)' id='excel-btn' rel="/site/excel">
         <span class='reporte'>
-            <span class="text-visible">Excel</span>
+            <span class="text-visible"><img src="/images/excel.png" width="43" height="43"></span>
         </span>
     </a>
     
     <a class='itemreporte' href='javascript:void(0)' id='mail-btn' rel="/site/mail">
         <span class='reporte'>
-            <span class="text-visible">Mail</span>
+            <span class="text-visible"><img src="/images/mail.png" width="43" height="33"></span>
         </span>
     </a>
 </div>
+</form>
 <?php Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl . '/css/datatable.css'); ?>
 <?php Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl . '/css/demo_table_jui.css'); ?>
 <?php Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl . '/css/uploadfile.css'); ?>

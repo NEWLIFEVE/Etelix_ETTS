@@ -9,13 +9,15 @@ class ReportTickets
 {
     private $_cssTd;
     private $_cssTh;
-    private $_rowThead;
+    private $_cssThead;
+    private $_cssTable;
     
     public function __construct() 
     {
         $this->_cssTd = 'style="padding: 3px !important; margin: 0 !important; text-align: center;"';
         $this->_cssTh = 'style="padding: 3px !important; margin: 0 !important; text-align: center; font-weight: normal; border-left:1px solid silver;"';
-        $this->_rowThead = 'style="color: rgb(90, 90, 90); font-size: 0.8em; background: #e6e6e6 url(images/ui-bg_glass_75_e6e6e6_1x400.png) 50% 50% repeat-x; border-bottom: 1px solid #d3d3d3 !important; "';
+        $this->_cssThead = 'style="color: rgb(90, 90, 90); font-size: 0.8em; background: #e6e6e6 url(images/ui-bg_glass_75_e6e6e6_1x400.png) 50% 50% repeat-x; border-bottom: 1px solid #d3d3d3 !important; "';
+        $this->_cssTable = 'border="0" cellspacing="0" align="center width="100%"';
     }
     
     /**
@@ -31,7 +33,7 @@ class ReportTickets
         $data = $this->_getData($ids);
         $table = null;
         if (count($data)) {
-            $table = '<table border="0" cellspacing="0" align="center">' . 
+            $table = '<table ' . $this->_cssTable . '>' . 
                     $this->_thead() .
                     $this->_contentTable($data) .
                     '</table>';
@@ -123,7 +125,7 @@ class ReportTickets
             $data = array('Type', 'User', 'Carrier', 'Ticket Number', 'Failure', 'Country', 'Created', 'Lifetime');
         }
         $count = count($data);
-        $thead = '<thead><tr ' . $this->_rowThead . ' >';
+        $thead = '<thead><tr ' . $this->_cssThead . ' >';
         for ($i = 0; $i < $count; $i++) {
             $thead .= '<th ' . $this->_cssTh . ' >' . $data[$i] . '</th>';
         }

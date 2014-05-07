@@ -2,6 +2,7 @@
 /* @var $this TicketController */
 ?>
 <!--<textarea name="pp" id="pp"></textarea>-->
+<form id="form-excel" method="post" action="/site/excel">
 <div id="demo">
 <table cellpadding="0" cellspacing="0" border="0" class="display" id="example" width="100%">
 	<thead>
@@ -92,7 +93,7 @@
                         <td><?php echo $ticket->date . ' / ' . $ticket->hour; ?></td>
                         <td><?php  echo Utility::restarHoras($ticket->hour, date('H:i:s'), floor($timeTicket/ (60 * 60 * 24))); ?></td>
                         <td class="hidden"><?php echo $color; ?></td>
-                        <td><a href="javascript:void(0)" class="preview" rel="<?php echo $ticket->id; ?>"><img width="12" height="12" src="<?php echo Yii::app()->request->baseUrl.'/images/view.gif'; ?>"></a></td>
+                        <td><input type="hidden" value="<?php echo $ticket->id; ?>" id="id[]" name="id[]"><a href="javascript:void(0)" class="preview" rel="<?php echo $ticket->id; ?>"><img width="12" height="12" src="<?php echo Yii::app()->request->baseUrl.'/images/view.gif'; ?>"></a></td>
                     </tr>
                 <?php endforeach; ?>
 	</tbody>
@@ -149,6 +150,7 @@
         </span>
     </a>
 </div>
+</form>
 <?php Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl . '/css/datatable.css'); ?>
 <?php Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl . '/css/demo_table_jui.css'); ?>
 <?php Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl . '/css/uploadfile.css'); ?>
