@@ -31,18 +31,19 @@ and open the template in the editor.
 }
 
 
-.reportes-laterales #print-btn .reporte  {
-    background: green;
+/*.reportes-laterales #print-btn .reporte  {
+    background: #2E62B4;
 }
 .reportes-laterales #excel-btn .reporte  {
     background: green;
-}
+}*/
 .reportes-laterales #mail-btn .reporte  {
-    background: green;
+    /*background: green;*/
     padding: 8px 5px !important;
 }
 .reporte {
     padding: 5px;
+    background: #2E62B4;
 }
 
 .botones-sociales #youtube-btn .social {
