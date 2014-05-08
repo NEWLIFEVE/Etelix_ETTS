@@ -2,6 +2,7 @@
 /* @var $this TicketController */
 ?>
 <!--<textarea name="pp" id="pp"></textarea>-->
+<form id="form-excel" method="post" action="/site/excel">
 <div id="demo">
 <table cellpadding="0" cellspacing="0" border="0" class="display" id="example" width="100%">
 	<thead>
@@ -92,7 +93,7 @@
                         <td><?php echo $ticket->date . ' / ' . $ticket->hour; ?></td>
                         <td><?php  echo Utility::restarHoras($ticket->hour, date('H:i:s'), floor($timeTicket/ (60 * 60 * 24))); ?></td>
                         <td class="hidden"><?php echo $color; ?></td>
-                        <td><a href="javascript:void(0)" class="preview" rel="<?php echo $ticket->id; ?>"><img width="12" height="12" src="<?php echo Yii::app()->request->baseUrl.'/images/view.gif'; ?>"></a></td>
+                        <td><input type="hidden" value="<?php echo $ticket->id; ?>" id="id[]" name="id[]"><a href="javascript:void(0)" class="preview" rel="<?php echo $ticket->id; ?>"><img width="12" height="12" src="<?php echo Yii::app()->request->baseUrl.'/images/view.gif'; ?>"></a></td>
                     </tr>
                 <?php endforeach; ?>
 	</tbody>
@@ -130,7 +131,26 @@
         </span>
     </a>
 </div>
-
+<div class="reportes-laterales derecha">
+    <a class='itemreporte' href='javascript:void(0)' id='print-btn' rel="/site/print" title="Print tickets">
+        <span class='reporte'>
+            <span class="text-visible"><img src="/images/print.png" width="40" height="43"></span>
+        </span>
+    </a>
+    
+    <a class='itemreporte' href='javascript:void(0)' id='excel-btn' rel="/site/excel" title="Export tickets to excel">
+        <span class='reporte'>
+            <span class="text-visible"><img src="/images/excel.png" width="43" height="43"></span>
+        </span>
+    </a>
+    
+    <a class='itemreporte' href='javascript:void(0)' id='mail-btn' rel="/site/mail" title="Send tickets by email">
+        <span class='reporte'>
+            <span class="text-visible"><img src="/images/mail.png" width="43" height="33"></span>
+        </span>
+    </a>
+</div>
+</form>
 <?php Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl . '/css/datatable.css'); ?>
 <?php Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl . '/css/demo_table_jui.css'); ?>
 <?php Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl . '/css/uploadfile.css'); ?>
@@ -141,6 +161,7 @@
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/plugins/jquery/TableTools.min.js',CClientScript::POS_END); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/plugins/jquery/jquery.uploadfile.js',CClientScript::POS_END); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/modules/etts.ajax.js',CClientScript::POS_END); ?>
+<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/modules/etts.reports.js',CClientScript::POS_END); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/admin.js',CClientScript::POS_END); ?>
 <?php if ($tipoUsuario === "C"): ?>
     <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/dtable.carriers.js',CClientScript::POS_END); ?>

@@ -72,27 +72,9 @@ $(document).on('ready', function() {
            ],
            "fnHeaderCallback": function( nHead, aData, iStart, iEnd, aiDisplay ) {
                $('#example_length label').append('<span id="pruebas"></span>');
-//               $('#pruebas').html(', displaying '+(iEnd-iStart)+' records of '+(aiDisplay.length)+' ('+aData.length+' total entries)');
                setTimeout(function(){$('#pruebas').html(', ' + $('#example_info').html())}, 300);
-               
-            },
-//            "sDom": '<"H"Tlf>t<"F"ip>',
-//            "oTableTools": {
-//                "aButtons": [
-//                    "copy",
-//                    "csv",
-//                    "xls",
-//                    {
-//                        "sExtends": "pdf",
-//                        "sPdfOrientation": "landscape",
-//                        "sPdfMessage": "Your custom message would go here."
-//                    },
-//                    "print"
-//                ],
-//                "sSwfPath": '/themes/metroui/swf/copy_csv_xls_pdf.swf'
-//            }
+            }
     });
-//    new FixedHeader( oTable );
     
     /* Add a select menu for each TH element in the table footer */
     $(".test-select th").each( function ( i  ) {
