@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-$ETTS.reports=(function(){
+$ETTS.export=(function(){
     var _head   = '<!DOCTYPE html><html><meta charset="es"><head></head><body>',
         _footer = '<script>function printPage() { window.focus(); window.print();return; }</script>'+
                   '</body></html>';
@@ -14,14 +14,15 @@ $ETTS.reports=(function(){
      * @param {bool} _async Se especifica si es asincrono o no la petición ajax
      * @param {function} _success Si se desea mandar una función al success del ajax
      * @param {function} _beforesend Si se desea mandar una función al beforesend del ajax
+     * @param {int} _status Si es 1 son tickets abiertos, 2 para tickets cerrados
      * @param {bool} print Si es true, se retorna lo que trae response
      * @returns {jqXHR.responseText}
      */
-    function _xhr(_url, _id, _async, _success, _beforesend, print) {
+    function _xhr(_url, _id, _async, _success, _beforesend, _status, print) {
         var response = $.ajax({ 
                             type: 'POST',   
                             url: _url,
-                            data:{id:_id},
+                            data:{id:_id, status:_status},
                             async: _async,
                             success:_success,
                             beforeSend:_beforesend
@@ -71,13 +72,14 @@ $ETTS.reports=(function(){
          * Método para mostrar la vista de impresión
          * @param {obj} element
          * @param {string} url
+         * @param {int} status
          * @returns {void}
          */
-        print:function(element, url) {
+        print:function(element, url, status) {
             var ids = _getIds(element);
             // Si hay datos en la tabla
             if (ids.length > 0) {
-                var content = _head + _xhr(url, ids, false, null, null, true) + _footer,
+                var content = _head + _xhr(url, ids, false, null, null, status,  true) + _footer,
                 newIframe = document.createElement('iframe');
                 newIframe.width = '0';
                 newIframe.height = '0';
@@ -99,7 +101,7 @@ $ETTS.reports=(function(){
         excel:function(element, url) {
             var ids = _getIds(element);
             if (ids.length > 0) {
-                _window('Generating excel');
+                _window('Generating excel...<h2><img src="/images/loader.GIF">');
                 window.open(url + '?id=' + ids, '_top');
                 setTimeout(function(){_window('The file has been generated');}, 3500);
             }
@@ -112,7 +114,7 @@ $ETTS.reports=(function(){
          */
         excelForm:function(form, input) {
             if (input.length > 0) {
-                _window('Generating excel');
+                _window('Generating excel...<h2><img src="/images/loader.GIF">');
                 form.submit();
                 setTimeout(function(){_window('The file has been generated');}, 3500);
             }
@@ -121,14 +123,18 @@ $ETTS.reports=(function(){
          * Método para enviar mail
          * @param {obj} element
          * @param {string} url
+         * @param {int} status
          * @returns {undefined}
          */
-        mail:function(element, url) {
+        mail:function(element, url, status) {
             var ids = _getIds(element);
             if (ids.length > 0) {
-                _xhr(url, ids, true, 
-                function(data){_window('Success');}, 
-                function(data){_window('Wait a few seconds...<h2><img src="/images/loader.GIF">');});
+                _xhr(url, 
+                    ids, 
+                    true, 
+                    function(data){_window('Success');}, 
+                    function(data){_window('Sending email...<h2><img src="/images/loader.GIF">');}, 
+                    status);
             }
         }
     };
