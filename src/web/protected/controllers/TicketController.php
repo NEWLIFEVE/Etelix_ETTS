@@ -151,7 +151,11 @@ class TicketController extends Controller
     public function actionAdmin()
     {
         $colors=$this->_countColorsTicket();
-        $this->render('admin',array('colors'=>$colors));
+        $color = '';
+        $this->render('admin',array(
+            'colors'=>$colors,
+            'color'=>$color,
+            ));
     }
 
     /**
@@ -208,6 +212,7 @@ class TicketController extends Controller
         $modelTicket->id_user=Yii::app()->user->id;
         $modelTicket->id_status=1;
         $modelTicket->option_open=$_POST['optionOpen'];
+        $modelTicket->close_ticket=null;
         if($modelTicket->option_open == 'etelix_to_carrier')
         {
             $modelTicket->id_gmt=null;
@@ -344,11 +349,11 @@ class TicketController extends Controller
         {
             $ticketSon=self::getTicketsSon($idTickets);
             $ticketSon[]=$id;
-            $ticketModel::model()->updateAll(array('id_status'=>$_POST['idStatus']),'id in('.implode(",",$ticketSon).')');
+            $ticketModel::model()->updateAll(array('id_status'=>$_POST['idStatus'], 'close_ticket'=>date('Y-m-d H:i:s')),'id in('.implode(",",$ticketSon).')');
         }
         else
         {
-            $ticketModel::model()->updateByPk($id,array('id_status'=>$_POST['idStatus']));
+            $ticketModel::model()->updateByPk($id,array('id_status'=>$_POST['idStatus'], 'close_ticket'=>date('Y-m-d H:i:s')));
         }
         
         $rutaAttachFile=array();        
@@ -443,7 +448,11 @@ class TicketController extends Controller
     public function actionAdminclose()
     {
         $colors=$this->_countColorsTicket();
-        $this->render('adminclose',array('colors'=>$colors));
+        $color = '';
+        $this->render('adminclose',array(
+            'colors'=>$colors,
+            'color'=>$color,
+            ));
     }
     
     /**
@@ -458,7 +467,7 @@ class TicketController extends Controller
             $mails=$imap->messageByTicketNumber($_POST['ticketNumber']);
             if($mails != false)
             {
-                $imap->deleteMessage($mails, $_POST['optionOpen'], $_POST['idTicket']);
+                $imap->deleteMessage($mails,true);
                 $this->renderPartial('/ticket/_answer', array('datos' => Ticket::ticketsByUsers(Yii::app()->user->id, $_POST['idTicket'], false)));
             }
             else
@@ -527,17 +536,10 @@ class TicketController extends Controller
     public function actionTestimap()
     {
         error_reporting(E_ALL & ~E_NOTICE); 
-       
-        $connection = array(
-            'IMAP_HOST'=>'{imap.gmail.com:993/imap/ssl}INBOX',
-            'IMAP_USER'=>'tsu.nelsonmarcano@gmail.com',
-            'IMAP_PASS'=>'NayeskaMarcano123'
-        );
-        
         $imap = new Imap();
-        $mails = $imap->getMessagesByQuantity(3);
+        $mails = $imap->runConsole(2);
+        $imap->deleteMessage($mails, true);
         $imap->close();
-        
         $this->render('imap', array('mails'=>$mails));
     }
     
@@ -553,17 +555,18 @@ class TicketController extends Controller
         $red = 0; 
         foreach ($model::ticketsByUsers(Yii::app()->user->id, false) as $ticket) {          
             $timeTicket = Utility::getTime($ticket->date, $ticket->hour);
-            
-            if ($timeTicket <= 86400)
+            // Tickes a partir de las 6:00am
+            if ($timeTicket <= 64800)
                 $white += 1;
-            elseif ($timeTicket > 86400 && $timeTicket <= 172800) 
+            // Tickets de antes de las 6:00am hasta 6:00am del dia anterior
+            elseif ($timeTicket > 64800 && $timeTicket <= 151200) 
                 $yellow += 1;
             else 
                 $red += 1;
         }
         
         $green = $model::countTicketClosed();
-        $totalTickets=$white+$yellow+$green+$red;
+        $totalTickets = $white + $yellow + $green + $red;
         
         return array(
             'white'=>$white,

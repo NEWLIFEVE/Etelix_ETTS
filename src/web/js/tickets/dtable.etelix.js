@@ -54,7 +54,8 @@ function getTicketsRelated(id, nTr, oTable)
          
 $(document).on('ready', function() {
     // Los usuarios que no sean clientes contendran esta clase en el div page
-    $('div.page').addClass('width-page');
+    $('div.page').css('width', '85%');
+    
     
     /*
     * Initialse DataTables, with no sorting on the 'details' column
@@ -62,14 +63,55 @@ $(document).on('ready', function() {
     var oTable = $('#example').dataTable( {
            "bJQueryUI": true,
            "bDestroy": true,
+           "bInfo":true,
            "bAutoWidth": false,
            "sPaginationType": "full_numbers",
            "aoColumnDefs": [
-                   { "aDataSort": false, "aTargets": [ 0,9 ] },
-                   { "bSortable": false, "aTargets": [ 0,9 ] }
-           ]
-
+                   { "aDataSort": false, "aTargets": [ 0,10 ] },
+                   { "bSortable": false, "aTargets": [ 0,10 ] }
+           ],
+           "fnHeaderCallback": function( nHead, aData, iStart, iEnd, aiDisplay ) {
+               $('#example_length label').append('<span id="pruebas"></span>');
+//               $('#pruebas').html(', displaying '+(iEnd-iStart)+' records of '+(aiDisplay.length)+' ('+aData.length+' total entries)');
+               setTimeout(function(){$('#pruebas').html(', ' + $('#example_info').html())}, 300);
+               
+            },
+//            "sDom": '<"H"Tlf>t<"F"ip>',
+//            "oTableTools": {
+//                "aButtons": [
+//                    "copy",
+//                    "csv",
+//                    "xls",
+//                    {
+//                        "sExtends": "pdf",
+//                        "sPdfOrientation": "landscape",
+//                        "sPdfMessage": "Your custom message would go here."
+//                    },
+//                    "print"
+//                ],
+//                "sSwfPath": '/themes/metroui/swf/copy_csv_xls_pdf.swf'
+//            }
     });
+//    new FixedHeader( oTable );
+    
+    /* Add a select menu for each TH element in the table footer */
+    $(".test-select th").each( function ( i  ) {
+        this.innerHTML = fnCreateSelect( oTable.fnGetColumnData(i) );
+        $('select', this).change( function () {
+            oTable.fnFilter( $(this).val(), i );
+        } );
+    } );
+    
+    $(document).on('click', '.itemsocial', function(){
+        oTable.fnFilter( $(this).attr('rel') );
+    });
+    
+    $(document).on('dblclick', '.itemsocial', function(){
+        oTable.fnFilter('');
+    });
+    
+    $('.test-select').find('th').first().html('');
+    $('.test-select').find('th').last().html('');
 
     /* Add event listener for opening and closing details
      * Note that the indicator for showing which row is open is not controlled by DataTables,

@@ -597,6 +597,12 @@ div.answer-ticket div.msg-ticket.right {
 
 div.window.flat.shadow {
     max-width: 80% !important;
+    overflow: hidden !important;
+    min-width: 0 !important; 
+    min-height: 0 !important;   
+    width: 80% !important;
+    height: 95% !important;
+    margin: auto !important;
 }
 
 div.font-small {
@@ -662,8 +668,8 @@ span.text-span {
 }
 
 div.page.width-page {
-    width: 90% !important;
-    min-width: 950px !important;
+    width: 80% !important;
+    /*min-width: 950px !important;*/
 }
 
 
@@ -682,4 +688,19 @@ div.pre-loader {
     height: 24px;
     margin-top: -5px;
     margin-bottom: -5px;
+}
+
+.test-select {
+    background: #e6e6e6 url(images/ui-bg_glass_75_e6e6e6_1x400.png) 50% 50% repeat-x;
+    border-bottom: 1px solid #d3d3d3 !important;
+}
+
+.test-select th {
+    border-left: 1px solid #d3d3d3 !important;
+    padding: 2px 0 !important;
+    margin: 0 !important;
+}
+
+.test-select th select {
+    width: 80%;
 }
