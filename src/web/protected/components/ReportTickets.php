@@ -8,13 +8,11 @@
 class ReportTickets
 {
     private $_cssTh;
-    private $_cssThead;
     private $_cssTable;
     
     public function __construct() 
     {
-        $this->_cssTh = 'style="padding: 3px !important; margin: 0 !important; text-align: center; font-weight: normal; ';
-        $this->_cssThead = 'style="color:#FFF; font-size: 0.8em; background: #2E62B4; border-bottom: 1px solid #d3d3d3 !important; "';
+        $this->_cssTh = 'style="color:#FFF; font-size: 0.8em; background: #2E62B4; border-bottom: 1px solid #d3d3d3 !important; padding: 3px !important; margin: 0 !important; text-align: center; font-weight: normal; ';
         $this->_cssTable = 'border="0" cellspacing="0" align="center width="100%"';
     }
     
@@ -131,7 +129,7 @@ class ReportTickets
         }
         $thead .= '</tr></thead>';
          */
-        $thead = '<thead><tr ' . $this->_cssThead . ' >';
+        $thead = '<thead><tr>';
         if (CrugeAuthassignment::getRoleUser() === 'C') {
             $thead .= '<th ' . $this->_cssTh . ' width:10%;" >Type</th>';
             $thead .= '<th ' . $this->_cssTh . ' border-left:1px solid #d3d3d3; width:30%;" >Ticket Number</th>';

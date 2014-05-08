@@ -17,7 +17,7 @@ $ETTS.reports=(function(){
      * @param {bool} print Si es true, se retorna lo que trae response
      * @returns {jqXHR.responseText}
      */
-    function _urlReport(_url, _id, _async, _success, _beforesend, print) {
+    function _xhr(_url, _id, _async, _success, _beforesend, print) {
         var response = $.ajax({ 
                             type: 'POST',   
                             url: _url,
@@ -48,7 +48,7 @@ $ETTS.reports=(function(){
      * Ventana modal para informar los procesos de exportación
      * @param {string} text
      * @param {string} icon
-     * @returns {undefined}
+     * @returns {string}
      */
     function _window(text, icon) {
         if (!icon) {
@@ -77,7 +77,7 @@ $ETTS.reports=(function(){
             var ids = _getIds(element);
             // Si hay datos en la tabla
             if (ids.length > 0) {
-                var content = _head + _urlReport(url, ids, false, null, null, true) + _footer,
+                var content = _head + _xhr(url, ids, false, null, null, true) + _footer,
                 newIframe = document.createElement('iframe');
                 newIframe.width = '0';
                 newIframe.height = '0';
@@ -126,9 +126,9 @@ $ETTS.reports=(function(){
         mail:function(element, url) {
             var ids = _getIds(element);
             if (ids.length > 0) {
-                _urlReport(url, ids, true, 
+                _xhr(url, ids, true, 
                 function(data){_window('Success');}, 
-                function(data){_window('Wait a few seconds...');});
+                function(data){_window('Wait a few seconds...<h2><img src="/images/loader.GIF">');});
             }
         }
     };

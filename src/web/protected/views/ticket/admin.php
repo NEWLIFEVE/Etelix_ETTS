@@ -132,19 +132,19 @@
     </a>
 </div>
 <div class="reportes-laterales derecha">
-    <a class='itemreporte' href='javascript:void(0)' id='print-btn' rel="/site/print">
+    <a class='itemreporte' href='javascript:void(0)' id='print-btn' rel="/site/print" title="Print tickets">
         <span class='reporte'>
             <span class="text-visible"><img src="/images/print.png" width="40" height="43"></span>
         </span>
     </a>
     
-    <a class='itemreporte' href='javascript:void(0)' id='excel-btn' rel="/site/excel">
+    <a class='itemreporte' href='javascript:void(0)' id='excel-btn' rel="/site/excel" title="Export tickets to excel">
         <span class='reporte'>
             <span class="text-visible"><img src="/images/excel.png" width="43" height="43"></span>
         </span>
     </a>
     
-    <a class='itemreporte' href='javascript:void(0)' id='mail-btn' rel="/site/mail">
+    <a class='itemreporte' href='javascript:void(0)' id='mail-btn' rel="/site/mail" title="Send tickets by email">
         <span class='reporte'>
             <span class="text-visible"><img src="/images/mail.png" width="43" height="33"></span>
         </span>

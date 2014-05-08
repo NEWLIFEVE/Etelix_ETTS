@@ -280,7 +280,8 @@ var refreshInterval = setInterval(function(){
             }, 300000);
             
 $(document).on('ready', function() {
-       
+    
+    // Exportables
     $(document).on('click', '.itemreporte', function(){
         if ($(this).prop('id') === 'print-btn') {
             $ETTS.reports.print($('.preview'), $(this).prop('rel'));
