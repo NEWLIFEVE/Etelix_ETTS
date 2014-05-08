@@ -127,6 +127,73 @@ class SiteController extends Controller
 		Yii::app()->user->logout();
 		$this->redirect(Yii::app()->homeUrl);
 	}
+        
+        /**
+         * Exportable de imprimir
+         */
+        public function actionPrint()
+        {
+            $reports = new ReportTickets();
+            $table = $reports->table($_POST['id']);
+            if ($table !== null) {
+                echo $table;
+            }
+        }
+        
+        /**
+         * Exportable excel
+         */
+        public function actionExcel()
+        { 
+            ob_end_clean();
+            $reports = new ReportTickets();
+            $table = $reports->table($_REQUEST['id']);
+            $name = 'ETTS tickets-reports-' . date('Y-m-d H-i-s');
+            header('Content-type: application/octet-stream');
+            header("Content-Disposition: attachment; filename={$name}.xls");
+            header("Pragma: cache");
+            header("Expires: 0");
+            if ($table !== null) {
+                echo $table;
+            }
+        }
+        
+        /**
+         * Exportable email
+         */
+        public function actionMail()
+        {
+            $mail = new EnviarEmail();
+            $reports = new ReportTickets();
+            $table = $reports->table($_POST['id']);
+            $name = 'ETTS tickets-reports-' . date('Y-m-d H-i-s');
+            if ($table !== null) {
+                $this->_writeFile($name, $table);
+                $mail->enviar($table, Yii::app()->user->email, '', 'New report ETTS ' . date('Y-m-d H:i:s'), 'uploads/' . $name . '.xls');
+            }
+        }
+        
+        /**
+         * Escribe el archivo excel
+         * @param string $name
+         * @param string $table
+         */
+        private function _writeFile($name, $table)
+        {
+            $ruta = Yii::getPathOfAlias('webroot.uploads') . DIRECTORY_SEPARATOR;
+            $fp = fopen($ruta . "$name.xls", "w+");
+            $cuerpo = "<!DOCTYPE html>
+                        <html>
+                            <head>
+                                <meta charset='utf-8'>
+                                <meta http-equiv='Content-Type' content='application/vnd.ms-excel charset=utf-8'>
+                            </head>
+                            <body>
+                            $table
+                            </body>
+                        </html>";
+            fwrite($fp, $cuerpo);
+        }
 
 	/**
 	 * @access public

@@ -4,8 +4,8 @@ Etelix_ETTS
 Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
 
 Release 1.2.1
-28/04/2014
-	- Agregados botones de exportables.
+08/05/2014
+    - Exportables para los tickets(excel, imprimir y mandar por correo)
     - Select para filtrar los datos del datatable
     - Filtrado por color(Haciendo click en los íconos laterales)
     - El ícono lateral de los tickets cerrados, solo muestra los tickets de 2 semana (día actual hasta 14 dias atrás)

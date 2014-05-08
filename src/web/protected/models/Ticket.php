@@ -49,6 +49,7 @@ class Ticket extends CActiveRecord
     public $hour_number=array();
     public $number_of_the_day;
     public $lifetime;
+    public $color;
 
     /**
      *
