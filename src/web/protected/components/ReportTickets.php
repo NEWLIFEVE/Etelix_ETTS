@@ -7,15 +7,13 @@
  */
 class ReportTickets
 {
-    private $_cssTd;
     private $_cssTh;
-    private $_rowThead;
+    private $_cssTable;
     
     public function __construct() 
     {
-        $this->_cssTd = 'style="padding: 3px !important; margin: 0 !important; text-align: center;"';
-        $this->_cssTh = 'style="padding: 3px !important; margin: 0 !important; text-align: center; font-weight: normal; border-left:1px solid silver;"';
-        $this->_rowThead = 'style="color: rgb(90, 90, 90); font-size: 0.8em; background: #e6e6e6 url(images/ui-bg_glass_75_e6e6e6_1x400.png) 50% 50% repeat-x; border-bottom: 1px solid #d3d3d3 !important; "';
+        $this->_cssTh = 'style="color:#FFF; font-size: 0.8em; background: #2E62B4; border-bottom: 1px solid #d3d3d3 !important; padding: 3px !important; margin: 0 !important; text-align: center; font-weight: normal; ';
+        $this->_cssTable = 'border="0" cellspacing="0" align="center width="100%"';
     }
     
     /**
@@ -31,7 +29,7 @@ class ReportTickets
         $data = $this->_getData($ids);
         $table = null;
         if (count($data)) {
-            $table = '<table border="0" cellspacing="0" align="center">' . 
+            $table = '<table ' . $this->_cssTable . '>' . 
                     $this->_thead() .
                     $this->_contentTable($data) .
                     '</table>';
@@ -48,15 +46,15 @@ class ReportTickets
     {
         $contentTable = '<tbody>';
         foreach ($data as $tickets) {
-            $contentTable .= '<tr ' . $this->_backgroundTicket($tickets->color) . '>';
-                $contentTable .= '<td ' . $this->_cssTd . '>' . Utility::formatTicketNumber($tickets->ticket_number) . '</td>';
+            $contentTable .= '<tr>';
+                $contentTable .= '<td ' . $this->_cssTickets($tickets->color) . ' >' . Utility::formatTicketNumber($tickets->ticket_number) . '</td>';
                 $contentTable .= $this->_defineUserOrCarrier($tickets);
-                $contentTable .= '<td ' . $this->_cssTd . '>' . $tickets->ticket_number . '</td>';
-                $contentTable .= '<td ' . $this->_cssTd . '>' . $tickets->idFailure->name . '</td>';
-                if (TestedNumber::getNumber($tickets->id) != false) $contentTable .= '<td ' . $this->_cssTd . '>' . TestedNumber::getNumber($tickets->id)->idCountry->name . '</td>';
-                else $contentTable .= '<td ' . $this->_cssTd . '>&nbsp;</td>';
-                $contentTable .= '<td ' . $this->_cssTd . '>' . $tickets->date . ' / ' . $tickets->hour . '</td>';
-                $contentTable .= '<td ' . $this->_cssTd . '>' . substr($tickets->lifetime, 0, -3) . '</td>';
+                $contentTable .= '<td ' . $this->_cssTickets($tickets->color) . '>' . $tickets->ticket_number . '</td>';
+                $contentTable .= '<td ' . $this->_cssTickets($tickets->color) . '>' . $tickets->idFailure->name . '</td>';
+                if (TestedNumber::getNumber($tickets->id) != false) $contentTable .= '<td ' . $this->_cssTickets($tickets->color) . '>' . TestedNumber::getNumber($tickets->id)->idCountry->name . '</td>';
+                else $contentTable .= '<td ' . $this->_cssTickets($tickets->color) . '>&nbsp;</td>';
+                $contentTable .= '<td ' . $this->_cssTickets($tickets->color) . '>' . $tickets->date . ' / ' . $tickets->hour . '</td>';
+                $contentTable .= '<td ' . $this->_cssTickets($tickets->color) . '>' . substr($tickets->lifetime, 0, -3) . '</td>';
             $contentTable .= '</tr>';
         }
         return  $contentTable . '</tbody>';
@@ -72,18 +70,18 @@ class ReportTickets
         $contentTable = '';
         if (CrugeAuthassignment::getRoleUser() != 'C') {
             if ($tickets->option_open == 'etelix_to_carrier') {
-               if (isset($tickets->idUser->username)) $contentTable .= '<td ' . $this->_cssTd . '>' . $tickets->idUser->username . '</td>';
+               if (isset($tickets->idUser->username)) $contentTable .= '<td ' . $this->_cssTickets($tickets->color) . '>' . $tickets->idUser->username . '</td>';
             } else {
-                $contentTable .= '<td ' . $this->_cssTd . '>' .  Carrier::getCarriers(true, $tickets->id) . '</td>';
+                $contentTable .= '<td ' . $this->_cssTickets($tickets->color) . '>' .  Carrier::getCarriers(true, $tickets->id) . '</td>';
             }
-            $contentTable .= '<td ' . $this->_cssTd . '>' . Carrier::getCarriers(true, $tickets->id) . '</td>';
+            $contentTable .= '<td ' . $this->_cssTickets($tickets->color) . '>' . Carrier::getCarriers(true, $tickets->id) . '</td>';
         }
         return $contentTable;
     }
 
 
     /**
-     * Consulta sql para obtner los ticket dependiendo de los ids que se pasen como parametro
+     * Consulta sql para obtner los tickets dependiendo de los ids que se pasen como parametro
      * @param array $ids
      * @return array
      */
@@ -117,18 +115,39 @@ class ReportTickets
      */
     private function _thead()
     {
+        /*
+         * Descomentar para generar dinámicamente los th
         if (CrugeAuthassignment::getRoleUser() === 'C') {
             $data = array('Type', 'Ticket Number', 'Failure', 'Country', 'Created', 'Lifetime');
         } else {
             $data = array('Type', 'User', 'Carrier', 'Ticket Number', 'Failure', 'Country', 'Created', 'Lifetime');
         }
         $count = count($data);
-        $thead = '<thead><tr ' . $this->_rowThead . ' >';
+        $thead = '<thead><tr ' . $this->_cssThead . ' >';
         for ($i = 0; $i < $count; $i++) {
             $thead .= '<th ' . $this->_cssTh . ' >' . $data[$i] . '</th>';
         }
         $thead .= '</tr></thead>';
-        
+         */
+        $thead = '<thead><tr>';
+        if (CrugeAuthassignment::getRoleUser() === 'C') {
+            $thead .= '<th ' . $this->_cssTh . ' width:10%;" >Type</th>';
+            $thead .= '<th ' . $this->_cssTh . ' border-left:1px solid #d3d3d3; width:30%;" >Ticket Number</th>';
+            $thead .= '<th ' . $this->_cssTh . ' border-left:1px solid #d3d3d3; width:15%;" >Failure</th>';
+            $thead .= '<th ' . $this->_cssTh . ' border-left:1px solid #d3d3d3; width:15%;" >Country</th>';
+            $thead .= '<th ' . $this->_cssTh . ' border-left:1px solid #d3d3d3; width:15%;" >Created</th>';
+            $thead .= '<th ' . $this->_cssTh . ' border-left:1px solid #d3d3d3; width:15%;" >Lifetime</th>';
+        } else {
+            $thead .= '<th ' . $this->_cssTh . ' width:10%;" >Type</th>';
+            $thead .= '<th ' . $this->_cssTh . ' border-left:1px solid #d3d3d3;width:10%;" >User</th>';
+            $thead .= '<th ' . $this->_cssTh . ' border-left:1px solid #d3d3d3; width:10%;" >Carrier</th>';
+            $thead .= '<th ' . $this->_cssTh . ' border-left:1px solid #d3d3d3; width:20%;" >Ticket Number</th>';
+            $thead .= '<th ' . $this->_cssTh . ' border-left:1px solid #d3d3d3; width:10%;" >Failure</th>';
+            $thead .= '<th ' . $this->_cssTh . ' border-left:1px solid #d3d3d3; width:10%;" >Country</th>';
+            $thead .= '<th ' . $this->_cssTh . ' border-left:1px solid #d3d3d3; width:10%;" >Created</th>';
+            $thead .= '<th ' . $this->_cssTh . ' border-left:1px solid #d3d3d3; width:20%;" >Lifetime</th>';
+        }
+        $thead .= '</tr></thead>';
         return $thead;
     }
     
@@ -137,9 +156,9 @@ class ReportTickets
      * @param string $color
      * @return string
      */
-    private function _backgroundTicket($color)
+    private function _cssTickets($color)
     {
-        $style = 'style="color:rgb(90, 90, 90); font-size:0.88em; background:';
+        $style = 'style="padding: 3px !important; margin: 0 !important; text-align: center; color:#5A5A5A; font-size:0.88em; background:';
         switch ($color) {
             case 'white':
                 $style .= '#FFF;"';

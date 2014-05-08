@@ -11,19 +11,20 @@ $ETTS.reports=(function(){
      * Petición ajax para los exportables
      * @param {string} _url Url de la petición ajax
      * @param {array} _id Los id's que se muestren en datatable
-     * @param {string} _mail EL mail del usuario logueado donde se mandar el correo
      * @param {bool} _async Se especifica si es asincrono o no la petición ajax
      * @param {function} _success Si se desea mandar una función al success del ajax
+     * @param {function} _beforesend Si se desea mandar una función al beforesend del ajax
      * @param {bool} print Si es true, se retorna lo que trae response
      * @returns {jqXHR.responseText}
      */
-    function _urlReport(_url, _id, _mail, _async, _success, print) {
+    function _xhr(_url, _id, _async, _success, _beforesend, print) {
         var response = $.ajax({ 
-                            type: 'GET',   
+                            type: 'POST',   
                             url: _url,
-                            data:{id:_id, mail:_mail},
+                            data:{id:_id},
                             async: _async,
-                            success:_success
+                            success:_success,
+                            beforeSend:_beforesend
                         }).responseText;
         if (print === true) {
             return response;
@@ -35,7 +36,7 @@ $ETTS.reports=(function(){
     * @param {obj} element
     * @returns {Array}
     */
-    function _getIds(element){
+    function _getIds(element) {
         var ids = [];
         element.each(function(i){ 
             ids[i] = $(this).prop('rel'); 
@@ -43,8 +44,29 @@ $ETTS.reports=(function(){
         return ids;
     }
     
+    /**
+     * Ventana modal para informar los procesos de exportación
+     * @param {string} text
+     * @param {string} icon
+     * @returns {string}
+     */
+    function _window(text, icon) {
+        if (!icon) {
+            icon = 'icon-rocket';
+        }
+        $.Dialog.close();
+        $.Dialog({
+            shadow: true,
+            overlay: false,
+            icon: '<span class="' + icon + '"></span>',
+            title: false,
+            width: 500,
+            padding: 10,
+            content: '<center><h3>' + text + '</h3></center>'
+        });
+    }
+            
     return {
-        
         /**
          * Método para mostrar la vista de impresión
          * @param {obj} element
@@ -54,8 +76,8 @@ $ETTS.reports=(function(){
         print:function(element, url) {
             var ids = _getIds(element);
             // Si hay datos en la tabla
-            if (ids !== '') {
-                var content = _head + _urlReport(url, ids, null, false, null, true) + _footer,
+            if (ids.length > 0) {
+                var content = _head + _xhr(url, ids, false, null, null, true) + _footer,
                 newIframe = document.createElement('iframe');
                 newIframe.width = '0';
                 newIframe.height = '0';
@@ -76,21 +98,37 @@ $ETTS.reports=(function(){
          */
         excel:function(element, url) {
             var ids = _getIds(element);
-            if (ids !== '') {
-                setTimeout("window.open('"+url+"?id="+ids+"','_top');",500);
+            if (ids.length > 0) {
+                _window('Generating excel');
+                window.open(url + '?id=' + ids, '_top');
+                setTimeout(function(){_window('The file has been generated');}, 3500);
+            }
+        },
+        /**
+         * Método para exportar a excel usando formulario
+         * @param {obj} form
+         * @param {obj} input
+         * @returns {void}
+         */
+        excelForm:function(form, input) {
+            if (input.length > 0) {
+                _window('Generating excel');
+                form.submit();
+                setTimeout(function(){_window('The file has been generated');}, 3500);
             }
         },
         /**
          * Método para enviar mail
          * @param {obj} element
          * @param {string} url
-         * @param {string} email
          * @returns {undefined}
          */
-        mail:function(element, url, email) {
+        mail:function(element, url) {
             var ids = _getIds(element);
-            if (ids !== '') {
-                _urlReport(url, ids, email, true, null);
+            if (ids.length > 0) {
+                _xhr(url, ids, true, 
+                function(data){_window('Success');}, 
+                function(data){_window('Wait a few seconds...<h2><img src="/images/loader.GIF">');});
             }
         }
     };

@@ -280,13 +280,15 @@ var refreshInterval = setInterval(function(){
             }, 300000);
             
 $(document).on('ready', function() {
+    
+    // Exportables
     $(document).on('click', '.itemreporte', function(){
         if ($(this).prop('id') === 'print-btn') {
             $ETTS.reports.print($('.preview'), $(this).prop('rel'));
         } else if ($(this).prop('id') === 'excel-btn') {
-            $ETTS.reports.excel($('.preview'), $(this).prop('rel'));
+            $ETTS.reports.excelForm($('#form-excel'), $('input[name="id[]"]'));
         } else {
-            $ETTS.reports.mail($('.preview'), $(this).prop('rel'), $('#email').val());
+            $ETTS.reports.mail($('.preview'), $(this).prop('rel'));
         }
     });
     

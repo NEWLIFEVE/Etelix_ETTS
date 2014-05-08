@@ -134,7 +134,7 @@ class SiteController extends Controller
         public function actionPrint()
         {
             $reports = new ReportTickets();
-            $table = $reports->table($_REQUEST['id']);
+            $table = $reports->table($_POST['id']);
             if ($table !== null) {
                 echo $table;
             }
@@ -145,21 +145,32 @@ class SiteController extends Controller
          */
         public function actionExcel()
         { 
+            ob_end_clean();
             $reports = new ReportTickets();
             $table = $reports->table($_REQUEST['id']);
-            $name = 'tickets-' . date('Y-m-d H-i-s');
-            header('Content-type: application/vnd.ms-excel');
+            $name = 'ETTS tickets-reports-' . date('Y-m-d H-i-s');
+            header('Content-type: application/octet-stream');
             header("Content-Disposition: attachment; filename={$name}.xls");
             header("Pragma: cache");
             header("Expires: 0");
-            $this->_writeFile($name, $table);
-            echo $table;
+            if ($table !== null) {
+                echo $table;
+            }
         }
         
+        /**
+         * Exportable email
+         */
         public function actionMail()
         {
             $mail = new EnviarEmail();
-            $mail->enviar($html, Yii::app()->user->email, null, 'Prueba de exportable');
+            $reports = new ReportTickets();
+            $table = $reports->table($_POST['id']);
+            $name = 'ETTS tickets-reports-' . date('Y-m-d H-i-s');
+            if ($table !== null) {
+                $this->_writeFile($name, $table);
+                $mail->enviar($table, Yii::app()->user->email, '', 'New report ETTS ' . date('Y-m-d H:i:s'), 'uploads/' . $name . '.xls');
+            }
         }
         
         /**

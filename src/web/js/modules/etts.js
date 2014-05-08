@@ -416,11 +416,6 @@ $ETTS.UI=(function(){
         },
         removeBlink:function(boton){
             boton.parent().parent().removeClass('blink');
-        },
-        refresh:function(time){
-            setInterval(function(){
-            window.location.reload(true);
-            }, time);  
         }
     }
     

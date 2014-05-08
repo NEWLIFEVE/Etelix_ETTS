@@ -3,6 +3,9 @@ Etelix_ETTS
 
 Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
 
+08/05/2014
+    - Exportables para los tickets(excel, imprimir y mandar por correo)
+
 28/04/2014
     - Select para filtrar los datos del datatable
     - Filtrado por color(Haciendo click en los íconos laterales)
