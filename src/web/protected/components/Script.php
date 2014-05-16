@@ -1,6 +1,7 @@
 <?php
 abstract class Script
 {
+
     /**
      * Registra el codigo css y js del datatable
      */
@@ -10,6 +11,16 @@ abstract class Script
         self::registerJqueryPlugins(array('dataTables.min'));
     }
     
+    /**
+     * Registra el plugin jquery.uploadfile
+     */
+    public static function registerUploadFile()
+    {
+        self::registerCss(array('uploadfile'));
+        self::registerJqueryPlugins(array('uploadfile'));
+    }
+
+
     /**
      * Registra los mudlos que usara el action
      * @param array $modules Modulos que seran pasados como un arreglo
@@ -61,12 +72,25 @@ abstract class Script
         }
     }
     
-    public static function registerJsController($javascript = array())
+    /**
+     * Registro los scripts propios de cada action
+     * @param array $javascript
+     * @param string $controller
+     * @throws Exception
+     */    
+    public static function registerJsController($javascript = array(), $controller = false)
     {        
         $cs = Yii::app()->getClientScript();
+        if ($controller) {
+            $controller = $controller;
+        } else {
+            $controller = Yii::app()->getController()->id;
+            if ($controller === 'ticket') $controller .= 's';
+        }
+        
         if (is_array($javascript)) {
             foreach ($javascript as $js) {
-                $cs->registerScriptFile(Yii::app()->baseUrl . '/js/' . Yii::app()->getController()->id . 's/' . $js . '.js', CClientScript::POS_END);
+                $cs->registerScriptFile(Yii::app()->baseUrl . '/js/' . $controller . '/' . $js . '.js', CClientScript::POS_END);
             }
         } else {
             throw new Exception('Error in javascript');

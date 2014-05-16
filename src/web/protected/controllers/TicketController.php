@@ -168,6 +168,11 @@ class TicketController extends Controller
         Script::registerDataTable();
         Script::registerModules(array('ajax', 'export'));
         Script::registerJsController(array('admin'));
+        if (CrugeAuthassignment::getRoleUser() === 'C') {
+            Script::registerJsController(array('dtable.carriers'));
+        } else {
+            Script::registerJsController(array('dtable.etelix'));
+        }
         $this->render('statistics');
     }
     
