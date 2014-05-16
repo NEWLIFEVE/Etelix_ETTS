@@ -1,4 +1,5 @@
 <?php
+ini_set('display_erros', true);
 //Definimos nuestro servidor de produccion
 define('SERVER_NAME_PROD','etts.etelix.com');
 //Obtenemos el nombre del servidor actual
