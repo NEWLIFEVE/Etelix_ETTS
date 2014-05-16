@@ -150,6 +150,8 @@ class TicketController extends Controller
      */
     public function actionAdmin()
     {
+        Script::registerDataTable();
+        Script::registerModules(array('ajax', 'export'));
         $colors=$this->_countColorsTicket();
         $color = '';
         $this->render('admin',array(
@@ -157,7 +159,19 @@ class TicketController extends Controller
             'color'=>$color,
             ));
     }
-
+    
+    /**
+     * Statistics
+     */
+    public function actionStatistics()
+    {
+        Script::registerDataTable();
+        Script::registerModules(array('ajax', 'export'));
+        Script::registerJsController(array('admin'));
+        $this->render('statistics');
+    }
+    
+    
     /**
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.

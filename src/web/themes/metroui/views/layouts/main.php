@@ -7,19 +7,15 @@
         <link href="<?php echo Yii::app()->theme->baseUrl; ?>/css/metro-bootstrap-responsive.css" rel="stylesheet" type="text/css">
         <link href="<?php echo Yii::app()->theme->baseUrl; ?>/js/prettify/prettify.css" rel="stylesheet">
         <link href="<?php echo Yii::app()->theme->baseUrl; ?>/css/docs.css" rel="stylesheet" type="text/css">
-        <!--<link href="<?php // echo Yii::app()->theme->baseUrl; ?>/css/jui/base/jquery-ui.css" rel="stylesheet" type="text/css">-->
-                
+     
         <?php Yii::app()->clientScript->registerCssFile(Yii::app()->clientScript->getCoreScriptUrl().'/jui/css/base/jquery-ui.css'); ?>
-        
         <?php Yii::app()->clientScript->registerCoreScript('jquery'); ?>
         <?php Yii::app()->clientScript->registerCoreScript('jquery.ui'); ?>
-        <!--<script src="<?php // echo Yii::app()->theme->baseUrl; ?>/js/jquery/jquery.min.js"></script>-->
-        <!--<script src="<?php // echo Yii::app()->request->baseUrl; ?>/js/plugins/jui/jquery-ui.min.js"></script>-->
         
         <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/jquery/jquery.widget.min.js"></script>
         <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/jquery/jquery.mousewheel.js"></script>
         <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/prettify/prettify.js"></script>
-        <!--COMENTARIO TEST-->
+     
         <!-- Local JavaScript -->
         <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/metro/metro-loader.js"></script>
         <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/metro/metro-dropdown.js"></script>
@@ -27,20 +23,15 @@
         <!-- Local JavaScript -->
         <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/modules/etts.js"></script>
         <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/docs.js"></script>
-        <!--<script src="<?php // echo Yii::app()->theme->baseUrl; ?>/js/github.info.js"></script>-->
         
         <link rel="shortcut icon" href="<?php echo Yii::app()->request->baseUrl; ?>/images/favicon.ico" type="image/x-icon"/> 
     </head>
     <body class="metro">
         <header class="bg-dark">
-            <!--
-            AQUÍ COMIENZA EL MENU
-            -->
+            <!--AQUÍ COMIENZA EL MENU -->
             <div class="navigation-bar dark">
                 <div class="navigation-bar-content container">
                     <a href="/" class="element"><span class=""><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/tkt.png"></span> <?php echo Yii::app()->name; ?> <sup>ETELIX</sup></a>
-                    
-                    <!-- ############################################################ -->
                     <!-- SI SE LOGUEA EL USUARIO -->
                     <?php if (!Yii::app()->user->isGuest): ?>
                         <span class="element-divider"></span>
@@ -60,8 +51,6 @@
 
                             )); ?>
                         </div>
-                        
-                        <!-- ############################################################ -->
                         <!-- SI SE LOGUEA COMO SUPERADMIN -->
                         <?php if (Yii::app()->user->checkAccess('admin')): // Solo visible al superadmin ?>
                             <div class="element">
@@ -77,8 +66,6 @@
                                     )); ?>
                             </div>
                         <?php else: ?>
-                        
-                            <!-- ############################################################ -->
                             <!-- SI SE LOGUEA COMO SUBADMIN -->
                             <?php if (Yii::app()->user->checkAccess('subadmin')): // Solo visible al subadministrador ?>
                             <div class="element">
@@ -94,7 +81,6 @@
                             </div>
                            <?php endif; //FIN SI ES SUBADMIN ?>
                             
-                           <!-- ############################################################ -->
                            <!-- SI NO ES SUPERADMIN NI SUBADMIN -->
                            <?php if (!Yii::app()->user->checkAccess('subadmin')): // Solo visible al subadministrador ?>
                                 <?php echo CHtml::link('<i class="icon-pencil on-right on-left"></i> Edit Profile', array('/cruge/ui/editprofile'), array('class' => 'element')); ?>
