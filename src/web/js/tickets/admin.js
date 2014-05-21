@@ -284,11 +284,11 @@ $(document).on('ready', function() {
     // Exportables
     $(document).on('click', '.itemreporte', function(){
         if ($(this).prop('id') === 'print-btn') {
-            $ETTS.reports.print($('.preview'), $(this).prop('rel'));
+            $ETTS.export.print($('.preview'), $(this).prop('rel'), $('#status').val());
         } else if ($(this).prop('id') === 'excel-btn') {
-            $ETTS.reports.excelForm($('#form-excel'), $('input[name="id[]"]'));
+            $ETTS.export.excelForm($('#form-excel'), $('input[name="id[]"]'));
         } else {
-            $ETTS.reports.mail($('.preview'), $(this).prop('rel'));
+            $ETTS.export.mail($('.preview'), $(this).prop('rel'), $('#status').val());
         }
     });
     

@@ -93,7 +93,13 @@
                         <td><?php echo $ticket->date . ' / ' . $ticket->hour; ?></td>
                         <td><?php  echo Utility::restarHoras($ticket->hour, date('H:i:s'), floor($timeTicket/ (60 * 60 * 24))); ?></td>
                         <td class="hidden"><?php echo $color; ?></td>
-                        <td><input type="hidden" value="<?php echo $ticket->id; ?>" id="id[]" name="id[]"><a href="javascript:void(0)" class="preview" rel="<?php echo $ticket->id; ?>"><img width="12" height="12" src="<?php echo Yii::app()->request->baseUrl.'/images/view.gif'; ?>"></a></td>
+                        <td>
+                            <input type="hidden" value="<?php echo $ticket->id; ?>" id="id[]" name="id[]">
+                            <input type="hidden" value="1" id="status" name="status">
+                            <a href="javascript:void(0)" class="preview" rel="<?php echo $ticket->id; ?>">
+                                <img width="12" height="12" src="<?php echo Yii::app()->request->baseUrl.'/images/view.gif'; ?>">
+                            </a>
+                        </td>
                     </tr>
                 <?php endforeach; ?>
 	</tbody>
@@ -161,7 +167,7 @@
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/plugins/jquery/TableTools.min.js',CClientScript::POS_END); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/plugins/jquery/jquery.uploadfile.js',CClientScript::POS_END); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/modules/etts.ajax.js',CClientScript::POS_END); ?>
-<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/modules/etts.reports.js',CClientScript::POS_END); ?>
+<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/modules/etts.export.js',CClientScript::POS_END); ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/admin.js',CClientScript::POS_END); ?>
 <?php if ($tipoUsuario === "C"): ?>
     <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/tickets/dtable.carriers.js',CClientScript::POS_END); ?>

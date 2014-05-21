@@ -133,7 +133,7 @@ class SiteController extends Controller
          */
         public function actionPrint()
         {
-            $reports = new ReportTickets();
+            $reports = new Export();
             $table = $reports->table($_POST['id']);
             if ($table !== null) {
                 echo $table;
@@ -146,9 +146,9 @@ class SiteController extends Controller
         public function actionExcel()
         { 
             ob_end_clean();
-            $reports = new ReportTickets();
+            $reports = new Export();
             $table = $reports->table($_REQUEST['id']);
-            $name = 'ETTS tickets-reports-' . date('Y-m-d H-i-s');
+            $name = $this->_setNameExport($_POST['status']);
             header('Content-type: application/octet-stream');
             header("Content-Disposition: attachment; filename={$name}.xls");
             header("Pragma: cache");
@@ -164,12 +164,12 @@ class SiteController extends Controller
         public function actionMail()
         {
             $mail = new EnviarEmail();
-            $reports = new ReportTickets();
+            $reports = new Export();
             $table = $reports->table($_POST['id']);
-            $name = 'ETTS tickets-reports-' . date('Y-m-d H-i-s');
+            $name = $this->_setNameExport($_POST['status']);
             if ($table !== null) {
                 $this->_writeFile($name, $table);
-                $mail->enviar($table, Yii::app()->user->email, '', 'New report ETTS ' . date('Y-m-d H:i:s'), 'uploads/' . $name . '.xls');
+                $mail->enviar($table, Yii::app()->user->email, '', $name, 'uploads/' . $name . '.xls');
             }
         }
         
@@ -193,6 +193,21 @@ class SiteController extends Controller
                             </body>
                         </html>";
             fwrite($fp, $cuerpo);
+        }
+        
+        /**
+         * Define el nombre que contendra el exportable dependiendo del status del ticket
+         * @param int $status
+         * @return string
+         */
+        private function _setNameExport($status)
+        {
+            if ($status == 1) {
+                $string = 'Open tickets';
+            } else {
+                $string = 'Closed tickets';
+            }
+            return 'ETTS ' . $string . '-' . date('Y-m-d H-i-s');
         }
 
 	/**
