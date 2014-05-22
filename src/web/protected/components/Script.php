@@ -54,6 +54,15 @@ abstract class Script
             throw new Exception('Error in jquery');
         }
     }
+    public static function registerChartsPlugin()
+    {
+        $cs = Yii::app()->getClientScript();
+        $javascript = array('highcharts', 'highcharts-3d', 'exporting');
+        
+        foreach ($javascript as $js) {
+            $cs->registerScriptFile(Yii::app()->baseUrl . '/js/plugins/charts/' . $js . '.js', CClientScript::POS_END);
+        }
+    }
     
     /**
      * Registra los estilos css
@@ -73,7 +82,7 @@ abstract class Script
     }
     
     /**
-     * Registro los scripts propios de cada action
+     * Registro los scripts propios de cada controller
      * @param array $javascript
      * @param string $controller
      * @throws Exception
@@ -94,6 +103,30 @@ abstract class Script
             }
         } else {
             throw new Exception('Error in javascript');
+        }
+    }
+    
+    public static function registerJsAction($controller = false, $action = false)
+    {
+        $cs = Yii::app()->getClientScript();
+        if ($controller) {
+            $controller = $controller;
+        } else {
+            $controller = Yii::app()->getController()->id;
+            if ($controller === 'ticket') $controller .= 's';
+        }
+        
+        if ($action) {
+            $action = $action;
+        } else {
+            $action = Yii::app()->getController()->action->id;
+        }
+        
+        $path = YiiBase::getPathOfAlias('webroot') . DIRECTORY_SEPARATOR .  'js' . DIRECTORY_SEPARATOR . $controller . DIRECTORY_SEPARATOR . $action . '.js';
+        if (file_exists($path)) {
+            $cs->registerScriptFile(Yii::app()->baseUrl . '/js/' . $controller . '/' . $action . '.js', CClientScript::POS_END);
+        } else {
+            return false;
         }
     }
 }

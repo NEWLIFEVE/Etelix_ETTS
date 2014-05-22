@@ -1,6 +1,6 @@
 <?php
 Yii::import('webroot.protected.extensions.phpexcel.Classes.PHPExcel');
-abstract class Report
+abstract class Excel
 {
     protected $_phpExcel;
     
@@ -12,7 +12,7 @@ abstract class Report
     /**
      * La clase que lo herede, obligatoriamente deberá tener un método  genExcel
      */
-    public abstract function genExcel();
+    public abstract function genExcel($params);
     
     /**
      * Setear los títulos de la hoja

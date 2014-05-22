@@ -130,9 +130,10 @@ class SiteController extends Controller
         
         public function actionOpenticketsoneday()
         {
-            Yii::import('webroot.protected.components.reports.TicketOneDay');
-            $report = new TicketOneDay(365);
+            Yii::import('webroot.protected.components.reports.Report');
+            $report = new Report(365);
             $report->genExcel();
+            Yii::app()->end();
         }
         
         /**

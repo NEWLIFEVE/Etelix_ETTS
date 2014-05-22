@@ -5,28 +5,27 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-class TicketOneDay extends Report 
-{
-    private $_method;
-    
-    public function __construct($days) 
+Yii::import('webroot.protected.extensions.phpexcel.Classes.PHPExcel');
+Yii::import('webroot.protected.components.reports.Excel');
+
+class Report extends Excel 
+{    
+    public function __construct() 
     {
         parent::__construct();
-        $days = (int) $days;
-        $this->_method = $this->_openTicketsOneDay($days);
     }
     
     /**
      * Método para generar el excel
      */
-    public function genExcel() 
+    public function genExcel($args) 
     {
         $sheetName = array('Tickets a day', 'Total tickets');
         foreach ($sheetName as $key => $value) {
             $params = array(
                 'nameSheet' => $value,
                 'index' => $key,
-                'method' => $this->_method
+                'method' => $this->_openTicketsOneDay($args)
             );
             $this->_setData($params);
         }
@@ -171,6 +170,20 @@ class TicketOneDay extends Report
     }
         
     /**
+     * Metodo para soltar el excel en pantalla
+     * @param object $objWriter Llamado del PHPExcel_IOFactory::createWriter 
+     * @param string $file Nombre del  archivo
+     */
+    private function _octetStream($objWriter, $file)
+    {
+        header('Content-type: application/octet-stream');
+        header('Content-Disposition: attachment; filename="'.$file.'"');
+        header('Pragma: cache');
+        header('Expires: 0');
+        $objWriter->save('php://output');
+    }
+    
+    /**
      * Método para obtener los tickets abiertos de 1 día
      * @param int $days dias a consultar
      * @return array
@@ -189,17 +202,61 @@ class TicketOneDay extends Report
     }
     
     /**
-     * Metodo para soltar el excel en pantalla
-     * @param object $objWriter Llamado del PHPExcel_IOFactory::createWriter 
-     * @param string $file Nombre del  archivo
+     * tickets no gestionados en la fecha seleccionada(tickets que no tienes 
+     * descripciones en esa fechan de parte del equipo Etelix)
+     * @param string $date Fecha para hacer la consulta
+     * @return array
      */
-    private function _octetStream($objWriter, $file)
+    public function withoutDescription($date)
     {
-        header('Content-type: application/octet-stream');
-        header('Content-Disposition: attachment; filename="'.$file.'"');
-        header('Pragma: cache');
-        header('Expires: 0');
-        $objWriter->save('php://output');
+        return Ticket::model()
+                ->findAllBySql("SELECT * 
+                                FROM ticket WHERE id IN(SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user)) AND
+                                id NOT IN(SELECT id_ticket FROM description_ticket GROUP BY id_ticket HAVING COUNT(id_ticket) >= 2) AND 
+                                date = '$date' AND close_ticket > '$date'");
     }
     
+    public function openOrClose($date, $color = 'white', $status = 'close')
+    {
+        $subQuery = $this->_subQuery($date, $color, $status);
+        
+        return Ticket::model()
+                ->findAllBySql("SELECT * FROM ticket WHERE 
+                                id IN(SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user)) AND
+                                $subQuery");
+    }
+    
+    private function _subQuery($date, $color, $status)
+    {
+        $subQuery = '';
+        
+        switch ($color) {
+            case 'white':
+                if ($status === 'close' || $status === 'open') {
+                    $subQuery = " date = '".$date."' AND close_ticket = '".$date."'";
+                }
+            break;
+                
+            case 'yellow':
+                if ($status === 'close') {
+                    $subQuery = " date = '".$date."'::timestamp - '1 days'::interval AND close_ticket = '".$date."'";
+                } else {
+                    $subQuery = " date = '".$date."' AND close_ticket = '".$date."'::timestamp + '1 days'::interval";
+                }
+            break;
+            
+            case 'red':
+                if ($status === 'close') {
+                   $subQuery = " date <= '".$date."'::timestamp - '2 days'::interval AND close_ticket = '".$date."'";
+                } else {
+                    $subQuery = " date = '".$date."' AND close_ticket >= '".$date."'::timestamp + '2 days'::interval";
+                }
+            break;
+
+            default:
+                break;
+        }
+        
+        return $subQuery;
+    }
 }

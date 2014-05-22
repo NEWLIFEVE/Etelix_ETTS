@@ -9,7 +9,7 @@ class TicketController extends Controller
      * using two-column layout. See 'protected/views/layouts/column2.php'.
      */
     public $layout='//layouts/column2';
-
+    
     /**
      * @access public
      * @return array
@@ -150,8 +150,24 @@ class TicketController extends Controller
      */
     public function actionAdmin()
     {
+        // Css y js del datable
         Script::registerDataTable();
+        // Css y js del uploadfile
+        Script::registerUploadFile();
+        // Patrón módulo que se usa en este action
         Script::registerModules(array('ajax', 'export'));
+        // Js por defecto del action
+        Script::registerJsAction();
+        // Datatable de los usuarios externo
+        if (CrugeAuthassignment::getRoleUser() === 'C') {
+            Script::registerJsController(array('dtable.carriers'));
+        // Datatable de los usuarios internos
+        } else {
+            Script::registerJsController(array('dtable.etelix'));
+        }
+        // Css de la leyenda
+        Script::registerCss(array('leyenda'));
+        
         $colors=$this->_countColorsTicket();
         $color = '';
         $this->render('admin',array(
@@ -163,20 +179,54 @@ class TicketController extends Controller
     /**
      * Statistics
      */
-    public function actionStatistics()
+    public function actionStatistics() 
     {
         Script::registerDataTable();
         Script::registerModules(array('ajax', 'export'));
-        Script::registerJsController(array('admin'));
-        if (CrugeAuthassignment::getRoleUser() === 'C') {
-            Script::registerJsController(array('dtable.carriers'));
-        } else {
-            Script::registerJsController(array('dtable.etelix'));
-        }
+        Script::registerJsAction();
+        //Script::registerChartsPlugin();
+        Script::registerCss(array('datepicker', 'leyenda'));
         $this->render('statistics');
     }
     
-    
+    /**
+     * Retorna un json con los datos de las estadísticas
+     */
+    public function actionAjaxstatistics()
+    {
+        Yii::import('webroot.protected.components.reports.Report');
+        $report = new Report;
+        $date = date('Y-m-d');
+        
+        if (isset($_POST['date']) && !empty($_POST['date'])) $date = $_POST['date'];
+        
+        $ticketCloseWhite = count($report->openOrClose($date, 'white', 'close'));
+        $ticketPendingWhite = count($report->openOrClose($date, 'white', 'open'));
+        $ticketCloseYellow = count($report->openOrClose($date, 'yellow', 'close'));
+        $ticketPendingYellow = count($report->openOrClose($date, 'yellow', 'open'));
+        $ticketCloseRed = count($report->openOrClose($date, 'red', 'close'));
+        $ticketPendingRed = count($report->openOrClose($date, 'red', 'open'));
+        $ticketWithoutDescription = count($report->withoutDescription($date));
+        
+        $totalPending = $ticketPendingWhite + $ticketPendingYellow + $ticketPendingRed + $ticketWithoutDescription;
+        $totalClosed = $ticketCloseWhite + $ticketCloseYellow + $ticketCloseRed;
+        
+        $data = array(
+            'ticketCloseWhite' => $ticketCloseWhite,
+            'ticketPendingWhite' => $ticketPendingWhite,
+            'ticketCloseYellow' => $ticketCloseYellow,
+            'ticketPendingYellow' => $ticketPendingYellow,
+            'ticketCloseRed' => $ticketCloseRed,
+            'ticketPendingRed' => $ticketPendingRed,
+            'ticketWithoutDescription' => $ticketWithoutDescription,
+            'totalPending' => $totalPending,
+            'totalClosed' => $totalClosed
+        );
+        
+        echo CJSON::encode($data);
+    }
+        
+
     /**
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.
