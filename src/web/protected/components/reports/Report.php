@@ -213,7 +213,7 @@ class Report extends Excel
                 ->findAllBySql("SELECT * 
                                 FROM ticket WHERE id IN(SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user)) AND
                                 id NOT IN(SELECT id_ticket FROM description_ticket GROUP BY id_ticket HAVING COUNT(id_ticket) >= 2) AND 
-                                date = '$date' AND close_ticket > '$date'");
+                                date = '$date' AND substr(close_ticket::text, 1, 10) <> '$date'");
     }
     
     public function openOrClose($date, $color = 'white', $status = 'close')
@@ -232,24 +232,26 @@ class Report extends Excel
         
         switch ($color) {
             case 'white':
-                if ($status === 'close' || $status === 'open') {
-                    $subQuery = " date = '".$date."' AND close_ticket = '".$date."'";
+                if ($status === 'close') {
+                    $subQuery = " date = '".$date."' AND substr(close_ticket::text, 1, 10) = '".$date."'";
+                } else {
+                    $subQuery = " date = '".$date."' AND close_ticket IS NULL";
                 }
             break;
                 
             case 'yellow':
                 if ($status === 'close') {
-                    $subQuery = " date = '".$date."'::timestamp - '1 days'::interval AND close_ticket = '".$date."'";
+                    $subQuery = " date = '".$date."'::timestamp - '1 days'::interval AND substr(close_ticket::text, 1, 10) = '".$date."'";
                 } else {
-                    $subQuery = " date = '".$date."' AND close_ticket = '".$date."'::timestamp + '1 days'::interval";
+                    $subQuery = " date = '".$date."' AND substr(close_ticket::text, 1, 10) = to_char('".$date."'::timestamp + '1 days'::interval, 'YYYY-MM-DD')";
                 }
             break;
             
             case 'red':
                 if ($status === 'close') {
-                   $subQuery = " date <= '".$date."'::timestamp - '2 days'::interval AND close_ticket = '".$date."'";
+                   $subQuery = " date <= '".$date."'::timestamp - '2 days'::interval AND substr(close_ticket::text, 1, 10) = '".$date."'";
                 } else {
-                    $subQuery = " date = '".$date."' AND close_ticket >= '".$date."'::timestamp + '2 days'::interval";
+                    $subQuery = " date = '".$date."' AND substr(close_ticket::text, 1, 10) >= to_char('".$date."'::timestamp + '2 days'::interval, 'YYYY-MM-DD')";
                 }
             break;
 

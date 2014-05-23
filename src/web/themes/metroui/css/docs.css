@@ -712,6 +712,25 @@ div.pre-loader {
     margin-bottom: 5px;
 }
 
+.table-report .table .red {
+    background: #EEB8B8;
+}
+
+.table-report .table .yellow {
+    background: #FFDC51;
+}
+.table-report .table .white {
+    background: #FFF;
+}
+
+.table-report .table .pending {
+    background: #FDFFDF;
+}
+.table-report .table .total {
+    border-top: 1px solid #d3d3d3;
+}
+
+
 .table-report .table-report-header {
     background: #16499a !important;
     padding-top: 5px !important;
@@ -732,6 +751,7 @@ div.pre-loader {
    color:rgb(90, 90, 90);
    padding: 0px !important;
    line-height: 1.5;
+   border: none !important;
 }
 .table-report .table-report-content table tbody  tr td:nth-child(2), 
 .table-report .table-report-content table tbody  tr td:nth-child(5) {

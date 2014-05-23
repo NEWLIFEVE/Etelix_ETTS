@@ -9,7 +9,6 @@
             <th id="th-oip">Country</th>
             <th id="th-date">Created</th>
             <th id="th-life">LT</th>
-            <th id="th-color" class="hidden">color</th>
         </thead>
         <tbody>
 

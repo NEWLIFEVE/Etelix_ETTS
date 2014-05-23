@@ -2,15 +2,21 @@
  * Inicializando datatable
  * @returns {void}
  */
-function initDatatable()
+function initDatatable(date, option)
 {
+    if (!date) date = '';
+    if (!option) option = '';
     var oTable = $('#example').dataTable({
         "bJQueryUI": true,
+        "sPaginationType": "full_numbers",
+        "sDom": '<"H"lfr>t<"F"ip>',
         "bDestroy": true,
         "bInfo":false,
         "bAutoWidth": false,
-        "sPaginationType": "full_numbers",
-        "sDom": '<"H"lfr>t<"F"ip>'
+        "bProcessing": true,
+        "sAjaxSource": '/ticket/datatable?date=' + date + '&option=' + option,
+        "sAjaxDataProp": "aaData"
+        
    });
 }
 
@@ -113,8 +119,12 @@ $(document).on('ready', function(){
     getData(null);
     
     // Carga de los datos al introducir una fecha
-    $(document).on('change', '.date', function(){
-        getData($(this).val()); 
+    $(document).on('change', function(){
+        getData($(this).val());
+    });
+    
+    $(document).on('change', '.date, input[type="radio"]', function(){
+        initDatatable($('.date').val(), $('input[type="radio"]:checked').val());
     });
     
     initDatatable();

@@ -190,6 +190,70 @@ class TicketController extends Controller
     }
     
     /**
+     * Pobla el datatable con los datos
+     */
+    public function actionDatatable()
+    {
+        $date = date('Y-m-d');
+        $option = '1';
+        
+        if (isset($_REQUEST['date']) && !empty($_REQUEST['date'])) $date = $_REQUEST['date'];
+        if (isset($_REQUEST['option']) && !empty($_REQUEST['option'])) $option = $_REQUEST['option'];
+                
+        $data = $this->_optionStatistics($option, $date);
+        
+        echo CJSON::encode($data);         
+    }
+    
+    /**
+     * Retorna la consulta que contiene las estadísticas
+     * @param integer $option Si será pendiente o cerrado dependiendo
+     * @param string $date La fecha de la consulta
+     * @return array
+     */
+    private function _optionStatistics($option, $date)
+    {
+        Yii::import('webroot.protected.components.reports.Report');
+        $report = new Report;
+        $statistcs = null;
+        $data = array();
+        
+        switch ($option) {
+            // Open Today
+            case '1': $statistcs = $report->openOrClose($date, 'white', 'open'); break;
+            // Pending Yellow
+            case '2': $statistcs = $report->openOrClose($date, 'yellow', 'open'); break;
+            // Pending Red
+            case '3': $statistcs = $report->openOrClose($date, 'red', 'open'); break;
+            // Pending without activity
+            case '4': $statistcs = $report->withoutDescription($date); break;
+            // Close white
+            case '5': $statistcs = $report->openOrClose($date, 'white', 'close'); break;
+            // Close yellow
+            case '6': $statistcs = $report->openOrClose($date, 'white', 'yellow'); break;
+            // Close red
+            case '7': $statistcs = $report->openOrClose($date, 'white', 'red'); break;
+        }
+        
+        if ($statistcs !== null) {
+            foreach ($statistcs as $value) {
+                $data['aaData'][] = array(
+                    $value->id, 
+                    $value->idFailure->name,
+                    $value->ticket_number, 
+                    $value->date,
+                    $value->origination_ip,
+                    $value->destination_ip,
+                    $value->idUser->username,
+                    $value->hour
+                );
+            }
+        }
+        
+        return $data;
+    }
+        
+    /**
      * Retorna un json con los datos de las estadísticas
      */
     public function actionAjaxstatistics()

@@ -4,14 +4,14 @@
             <div class="span12 table-report-header">
                 <div class="span3 offset9">
                     <div class="input-control text span3" data-role="input-control">
-                        <input readonly="readonly"  placeholder="Select day" class="date" type="text" name="report0" id="search-date">
+                        <input readonly="readonly" value="<?php echo date('Y-m-d'); ?>"  placeholder="Select day" class="date" type="text" name="report0" id="search-date">
                     </div>
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="span12 table-report-content">
-                <table class="table bordered" width="100%" >
+                <table class="table" width="100%" >
                     <thead>
                         <tr>
                             <th>See tickets</th>                    
@@ -23,7 +23,90 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
+                        <tr class="white">
+                            <td>
+                                <div class="input-control radio default-style">
+                                    <label>
+                                        <input type="radio" checked="checked" name="report-pending" id="report-pending-1" value="1">
+                                        <span class="check"></span>
+                                    </label>
+                                </div>
+                            </td>
+                            <td>Tickets opens today</td>
+                            <td class="display-data"></td>
+                            <td>
+                                <div class="input-control radio default-style">
+                                    <label>
+                                        <input type="radio" name="report-close" id="report-close-1" value="5">
+                                        <span class="check"></span>
+                                    </label>
+                                </div>
+                            </td>
+                            <td>Tickets closed white</td>
+                            <td class="display-data"></td>
+                        </tr>
+                        <tr class="yellow">
+                            <td>
+                                <div class="input-control radio default-style">
+                                    <label>
+                                        <input type="radio" name="report-pending" id="report-pending-2" value="2">
+                                        <span class="check"></span>
+                                    </label>
+                                </div>
+                            </td>
+                            <td>Tickets pendign yellow</td>
+                            <td class="display-data"></td>
+                            <td>
+                                <div class="input-control radio default-style">
+                                    <label>
+                                        <input type="radio" name="report-close" id="report-close-2" value="6">
+                                        <span class="check"></span>
+                                    </label>
+                                </div>
+                            </td>
+                            <td>Tickets closed yellow</td>
+                            <td class="display-data"></td>
+                        </tr>
+                        <tr class="red">
+                            <td>
+                                <div class="input-control radio default-style">
+                                    <label>
+                                        <input type="radio" name="report-pending" id="report-pending-3" value="3">
+                                        <span class="check"></span>
+                                    </label>
+                                </div>
+                            </td>
+                            <td>Tickets pending red</td>
+                            <td class="display-data"></td>
+                            <td>
+                                <div class="input-control radio default-style">
+                                    <label>
+                                        <input type="radio" name="report-close" id="report-close-3" value="7">
+                                        <span class="check"></span>
+                                    </label>
+                                </div>
+                            </td>
+                            <td>Tickets closed red</td>
+                            <td class="display-data"></td>
+                        </tr>
+                        
+                        <tr class="pending">
+                            <td>
+                                <div class="input-control radio default-style">
+                                    <label>
+                                        <input type="radio" name="report-pending" id="report-pending-4" value="4">
+                                        <span class="check"></span>
+                                    </label>
+                                </div>
+                            </td>
+                            <td>Tickets pending without activity</td>
+                            <td class="display-data"></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        
+                        <tr class="total">
                             <td>
                                 <div class="input-control radio default-style">
                                     <label>
@@ -32,7 +115,7 @@
                                     </label>
                                 </div>
                             </td>
-                            <td>Total tickets pending</td>
+                            <td>Total tickets open</td>
                             <td class="set-total"></td>
                             <td>
                                 <div class="input-control radio default-style">
@@ -45,93 +128,12 @@
                             <td>Total tickets closed</td>
                             <td class="set-total"></td>
                         </tr>
-                        <tr>
-                            <td>
-                                <div class="input-control radio default-style">
-                                    <label>
-                                        <input type="radio" name="report-pending" id="report-pending-1">
-                                        <span class="check"></span>
-                                    </label>
-                                </div>
-                            </td>
-                            <td>Tickets pending white</td>
-                            <td class="display-data"></td>
-                            <td>
-                                <div class="input-control radio default-style">
-                                    <label>
-                                        <input type="radio" name="report-close" id="report-close-1">
-                                        <span class="check"></span>
-                                    </label>
-                                </div>
-                            </td>
-                            <td>Tickets closed white</td>
-                            <td class="display-data"></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="input-control radio default-style">
-                                    <label>
-                                        <input type="radio" name="report-pending" id="report-pending-2">
-                                        <span class="check"></span>
-                                    </label>
-                                </div>
-                            </td>
-                            <td>Tickets pendign yellow</td>
-                            <td class="display-data"></td>
-                            <td>
-                                <div class="input-control radio default-style">
-                                    <label>
-                                        <input type="radio" name="report-close" id="report-close-2">
-                                        <span class="check"></span>
-                                    </label>
-                                </div>
-                            </td>
-                            <td>Tickets closed yellow</td>
-                            <td class="display-data"></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="input-control radio default-style">
-                                    <label>
-                                        <input type="radio" name="report-pending" id="report-pending-3">
-                                        <span class="check"></span>
-                                    </label>
-                                </div>
-                            </td>
-                            <td>Tickets pending red</td>
-                            <td class="display-data"></td>
-                            <td>
-                                <div class="input-control radio default-style">
-                                    <label>
-                                        <input type="radio" name="report-close" id="report-close-3">
-                                        <span class="check"></span>
-                                    </label>
-                                </div>
-                            </td>
-                            <td>Tickets closed red</td>
-                            <td class="display-data"></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="input-control radio default-style">
-                                    <label>
-                                        <input type="radio" name="report-pending" id="report-pending-4">
-                                        <span class="check"></span>
-                                    </label>
-                                </div>
-                            </td>
-                            <td>Tickets pending without description</td>
-                            <td class="display-data"></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
-    <?php $this->renderPartial('_datatable', array('')); ?>
+    <?php $this->renderPartial('_datatable'); ?>
 </form>
 <div class="reportes-laterales derecha">
     <a class='itemreporte' href='javascript:void(0)' id='print-btn' rel="/site/print" title="Print tickets">
