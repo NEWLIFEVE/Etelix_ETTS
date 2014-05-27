@@ -5,10 +5,10 @@
                 <div class="span3 offset1">
                     <div class="input-control select">
                         <select id="select-carrier">
-                            <option>Select carrier</option>
-                            <option>Customer</option>
-                            <option>Supplier</option>
-                            <option>Both</option>
+                            <option value="">Select carrier</option>
+                            <option value="Customer">Customer</option>
+                            <option value="Supplier">Supplier</option>
+                            <option value="both">Both</option>
                         </select>
                     </div>
                 </div>

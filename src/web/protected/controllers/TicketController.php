@@ -180,7 +180,7 @@ class TicketController extends Controller
      * Renderiza la vista de los reportes con datatable
      */
     public function actionStatistics() 
-    {
+    {        
         Script::registerDataTable();
         Script::registerModules(array('ajax', 'export'));
         Script::registerJsAction();
@@ -195,12 +195,14 @@ class TicketController extends Controller
     {
         $date = date('Y-m-d');
         $option = '1';
+        $carrier = 'both';
         
         if (isset($_REQUEST['date']) && !empty($_REQUEST['date'])) $date = $_REQUEST['date'];
         if (isset($_REQUEST['option']) && !empty($_REQUEST['option'])) $option = $_REQUEST['option'];
+        if (isset($_REQUEST['carrier']) && !empty($_REQUEST['carrier'])) $carrier = $_REQUEST['carrier'];
         
                 
-        $data = $this->_optionStatistics($option, $date);
+        $data = $this->_optionStatistics($option, $date, $carrier);
         
         if ($data !== null) {
             echo CJSON::encode($data);
@@ -216,7 +218,7 @@ class TicketController extends Controller
      * @param string $date La fecha de la consulta
      * @return array
      */
-    private function _optionStatistics($option, $date)
+    private function _optionStatistics($option, $date, $carrier)
     {
         Yii::import('webroot.protected.components.reports.Report');
         $report = new Report;
@@ -225,23 +227,23 @@ class TicketController extends Controller
         
         switch ($option) {
             // Open Today
-            case '1': $statistcs = $report->openOrClose($date, 'white', 'open'); break;
+            case '1': $statistcs = $report->openOrClose($date, 'white', 'open', $carrier); break;
             // Pending Yellow
-            case '2': $statistcs = $report->openOrClose($date, 'yellow', 'open'); break;
+            case '2': $statistcs = $report->openOrClose($date, 'yellow', 'open', $carrier); break;
             // Pending Red
-            case '3': $statistcs = $report->openOrClose($date, 'red', 'open'); break;
+            case '3': $statistcs = $report->openOrClose($date, 'red', 'open', $carrier); break;
             // Pending without activity
-            case '4': $statistcs = $report->withoutDescription($date); break;
+            case '4': $statistcs = $report->withoutDescription($date, $carrier); break;
             // Close white
-            case '5': $statistcs = $report->openOrClose($date, 'white', 'close'); break;
+            case '5': $statistcs = $report->openOrClose($date, 'white', 'close', $carrier); break;
             // Close yellow
-            case '6': $statistcs = $report->openOrClose($date, 'yellow', 'close'); break;
+            case '6': $statistcs = $report->openOrClose($date, 'yellow', 'close', $carrier); break;
             // Close red
-            case '7': $statistcs = $report->openOrClose($date, 'red', 'close'); break;
+            case '7': $statistcs = $report->openOrClose($date, 'red', 'close', $carrier); break;
             // Total tickets open
-            case '8': $statistcs = $report->totalTicketsPending($date); break;
+            case '8': $statistcs = $report->totalTicketsPending($date, $carrier); break;
             // Total tickets closed
-            case '9': $statistcs = $report->totalTicketsClosed($date); break;
+            case '9': $statistcs = $report->totalTicketsClosed($date, $carrier); break;
         }
             
         
@@ -255,7 +257,9 @@ class TicketController extends Controller
                     $value->idFailure->name,
                     TestedNumber::getNumber($value->id) != false ? TestedNumber::getNumber($value->id)->idCountry->name : '',
                     $value->date . '/' . $value->hour,
-                    $value->hour
+                    $value->close_ticket,
+                    $value->lifetime . '<input type="hidden" value="'.$value->id.'" name="ids[]">',
+                    $value->color
                 );
             }
         }
@@ -271,19 +275,20 @@ class TicketController extends Controller
         Yii::import('webroot.protected.components.reports.Report');
         $report = new Report;
         $date = date('Y-m-d');
+        $carrier = 'both';
         
         if (isset($_POST['date']) && !empty($_POST['date'])) $date = $_POST['date'];
+        if (isset($_POST['carrier']) && !empty($_POST['carrier'])) $carrier = $_POST['carrier'];
         
-        $ticketCloseWhite = count($report->openOrClose($date, 'white', 'close'));
-        $ticketPendingWhite = count($report->openOrClose($date, 'white', 'open'));
-        $ticketCloseYellow = count($report->openOrClose($date, 'yellow', 'close'));
-        $ticketPendingYellow = count($report->openOrClose($date, 'yellow', 'open'));
-        $ticketCloseRed = count($report->openOrClose($date, 'red', 'close'));
-        $ticketPendingRed = count($report->openOrClose($date, 'red', 'open'));
-        $ticketWithoutDescription = count($report->withoutDescription($date));
-        
-        $totalPending = $ticketPendingWhite + $ticketPendingYellow + $ticketPendingRed + $ticketWithoutDescription;
-        $totalClosed = $ticketCloseWhite + $ticketCloseYellow + $ticketCloseRed;
+        $ticketCloseWhite = count($report->openOrClose($date, 'white', 'close', $carrier));
+        $ticketPendingWhite = count($report->openOrClose($date, 'white', 'open', $carrier));
+        $ticketCloseYellow = count($report->openOrClose($date, 'yellow', 'close', $carrier));
+        $ticketPendingYellow = count($report->openOrClose($date, 'yellow', 'open', $carrier));
+        $ticketCloseRed = count($report->openOrClose($date, 'red', 'close', $carrier));
+        $ticketPendingRed = count($report->openOrClose($date, 'red', 'open', $carrier));
+        $ticketWithoutDescription = count($report->withoutDescription($date, $carrier));
+        $totalPending = count($report->totalTicketsPending($date, $carrier));
+        $totalClosed = count($report->totalTicketsClosed($date, $carrier));
         
         $data = array(
             'ticketCloseWhite' => $ticketCloseWhite,

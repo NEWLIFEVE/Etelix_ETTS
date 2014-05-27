@@ -1,24 +1,32 @@
 /**
  * Inicializando datatable
+ * @param {string} date
+ * @param {string} option
+ * @param {string} carrier
  * @returns {void}
  */
-function initDatatable(date, option)
+function initDatatable(date, option, carrier)
 {
     if (!date) date = '';
     if (!option) option = '';
+    if (!carrier) carrier = '';
+    
     var oTable = $('#tbl-datatable').dataTable({
         "bJQueryUI": true,
-        "sPaginationType": "full_numbers",
+        "bPaginate": false,
+        "bLengthChange": false,
+        "bSort": false,
         "bDestroy": true,
         "bInfo":true,
         "bAutoWidth": false,
         "bProcessing": true,
-        "sAjaxSource": '/ticket/datatable?date=' + date + '&option=' + option,
-        "sAjaxDataProp": "aaData"
-        
+        "sAjaxSource": '/ticket/datatable?date=' + date + '&option=' + option + '&carrier=' + carrier,
+        "sAjaxDataProp": "aaData",
+        "fnDrawCallback":function () {
+            changeBackground();
+        }  
    });
 }
-
 
 /**
  * Inicializando gráficos estadísticos
@@ -84,13 +92,19 @@ function getDataPieChart()
     return result;
 }
 
-function getData(date)
+/**
+ * Retorna la cantidad de tickets por categoria
+ * @param {string} date
+ * @param {string} carrier
+ * @returns {void}
+ */
+function getData(date, carrier)
 {
     $.ajax({
         type:'POST',
         url:'/ticket/ajaxstatistics',
         dataType:'json',
-        data:{'date':date},
+        data:{'date':date, 'carrier':carrier},
         success:function(data) {
             $('.display-data').eq(0).text(data.ticketPendingWhite);
             $('.display-data').eq(1).text(data.ticketCloseWhite);
@@ -105,7 +119,22 @@ function getData(date)
     });
 }
 
+/**
+ * Cambio de los colores de los tr dependiendo de la categoria del ticket
+ * @returns {void}
+ */
+function changeBackground()
+{
+    var radio = $('input[type="radio"]:checked').val()
+    switch(radio) {
+         case '1': case '5': $('#tbl-datatable tr').css('background', 'white'); break;
 
+         case '2': case '6': $('#tbtbl-datatablel-datatable tr').css('background', 'yellow'); break;
+
+         case '3': case '7': $('#tbl-datatable tr').css('background', 'pink'); break;
+
+    }
+}
 
 $(document).on('ready', function(){
     $('.date').datepicker({
@@ -116,16 +145,17 @@ $(document).on('ready', function(){
     });
     
     // Carga de los datos al cargar el documento
-    getData(null);
-    
+    getData(null, null);
+   
     // Carga de los datos al introducir una fecha
-    $(document).on('change', '.date', function(){
-        getData($(this).val());
+    $(document).on('change', '.date, #select-carrier', function(){
+        getData($('.date').val(), $('#select-carrier').val());
     });
     
-    $(document).on('change', '.date, input[type="radio"]', function(){
-        initDatatable($('.date').val(), $('input[type="radio"]:checked').val());
+    $(document).on('change', '.date, input[type="radio"], #select-carrier', function(){
+        initDatatable($('.date').val(), $('input[type="radio"]:checked').val(), $('#select-carrier').val());
     });
     
+    // Inicializando datatable
     initDatatable();
 });
