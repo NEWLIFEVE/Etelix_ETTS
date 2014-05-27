@@ -50,6 +50,8 @@ class Ticket extends CActiveRecord
     public $number_of_the_day;
     public $lifetime;
     public $color;
+    public $carrier;
+    public $user_open_ticket;
 
     /**
      *

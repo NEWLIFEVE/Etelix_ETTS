@@ -727,13 +727,13 @@ div.pre-loader {
     background: #FDFFDF;
 }
 .table-report .table .total {
-    border-top: 1px solid #d3d3d3;
+    border-top: 15px solid #d3d3d3;
 }
 
 
 .table-report .table-report-header {
     background: #16499a !important;
-    padding-top: 5px !important;
+    padding-top: 7px !important;
 }
 
 .table-report .row {
@@ -767,7 +767,7 @@ div.pre-loader {
    text-align: center;
 }
 
-.table-report .table-report-header .span3.offset9 .input-control.text.span3 {
+.table-report .table-report-header .span3.offset5 .input-control.text.span3 {
     margin-left: -15px;
 }
 

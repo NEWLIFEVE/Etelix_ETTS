@@ -2,7 +2,17 @@
     <div class="table-report">
         <div class="row">
             <div class="span12 table-report-header">
-                <div class="span3 offset9">
+                <div class="span3 offset1">
+                    <div class="input-control select">
+                        <select id="select-carrier">
+                            <option>Select carrier</option>
+                            <option>Customer</option>
+                            <option>Supplier</option>
+                            <option>Both</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="span3 offset5">
                     <div class="input-control text span3" data-role="input-control">
                         <input readonly="readonly" value="<?php echo date('Y-m-d'); ?>"  placeholder="Select day" class="date" type="text" name="report0" id="search-date">
                     </div>
@@ -27,7 +37,7 @@
                             <td>
                                 <div class="input-control radio default-style">
                                     <label>
-                                        <input type="radio" checked="checked" name="report-pending" id="report-pending-1" value="1">
+                                        <input type="radio" name="rb-report" id="report-pending-1" value="1">
                                         <span class="check"></span>
                                     </label>
                                 </div>
@@ -37,7 +47,7 @@
                             <td>
                                 <div class="input-control radio default-style">
                                     <label>
-                                        <input type="radio" name="report-close" id="report-close-1" value="5">
+                                        <input type="radio" name="rb-report" id="report-close-1" value="5">
                                         <span class="check"></span>
                                     </label>
                                 </div>
@@ -49,7 +59,7 @@
                             <td>
                                 <div class="input-control radio default-style">
                                     <label>
-                                        <input type="radio" name="report-pending" id="report-pending-2" value="2">
+                                        <input  type="radio" name="rb-report" id="report-pending-2" value="2">
                                         <span class="check"></span>
                                     </label>
                                 </div>
@@ -59,7 +69,7 @@
                             <td>
                                 <div class="input-control radio default-style">
                                     <label>
-                                        <input type="radio" name="report-close" id="report-close-2" value="6">
+                                        <input type="radio" name="rb-report" id="report-close-2" value="6">
                                         <span class="check"></span>
                                     </label>
                                 </div>
@@ -71,7 +81,7 @@
                             <td>
                                 <div class="input-control radio default-style">
                                     <label>
-                                        <input type="radio" name="report-pending" id="report-pending-3" value="3">
+                                        <input type="radio" name="rb-report" id="report-pending-3" value="3">
                                         <span class="check"></span>
                                     </label>
                                 </div>
@@ -81,7 +91,7 @@
                             <td>
                                 <div class="input-control radio default-style">
                                     <label>
-                                        <input type="radio" name="report-close" id="report-close-3" value="7">
+                                        <input type="radio" name="rb-report" id="report-close-3" value="7">
                                         <span class="check"></span>
                                     </label>
                                 </div>
@@ -94,7 +104,7 @@
                             <td>
                                 <div class="input-control radio default-style">
                                     <label>
-                                        <input type="radio" name="report-pending" id="report-pending-4" value="4">
+                                        <input type="radio" name="rb-report" id="report-pending-4" value="4">
                                         <span class="check"></span>
                                     </label>
                                 </div>
@@ -105,12 +115,11 @@
                             <td></td>
                             <td></td>
                         </tr>
-                        
                         <tr class="total">
                             <td>
                                 <div class="input-control radio default-style">
                                     <label>
-                                        <input type="radio" name="report-pending" id="report-pending-0">
+                                        <input type="radio" name="rb-report" id="report-pending-0" value="8">
                                         <span class="check"></span>
                                     </label>
                                 </div>
@@ -120,7 +129,7 @@
                             <td>
                                 <div class="input-control radio default-style">
                                     <label>
-                                        <input type="radio" name="report-close" id="report-close-0">
+                                        <input checked="checked" type="radio" name="rb-report" id="report-close-0" value="9">
                                         <span class="check"></span>
                                     </label>
                                 </div>

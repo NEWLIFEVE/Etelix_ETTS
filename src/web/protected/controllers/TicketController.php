@@ -177,14 +177,13 @@ class TicketController extends Controller
     }
     
     /**
-     * Statistics
+     * Renderiza la vista de los reportes con datatable
      */
     public function actionStatistics() 
     {
         Script::registerDataTable();
         Script::registerModules(array('ajax', 'export'));
         Script::registerJsAction();
-        //Script::registerChartsPlugin();
         Script::registerCss(array('datepicker', 'leyenda'));
         $this->render('statistics');
     }
@@ -199,11 +198,17 @@ class TicketController extends Controller
         
         if (isset($_REQUEST['date']) && !empty($_REQUEST['date'])) $date = $_REQUEST['date'];
         if (isset($_REQUEST['option']) && !empty($_REQUEST['option'])) $option = $_REQUEST['option'];
+        
                 
         $data = $this->_optionStatistics($option, $date);
         
-        echo CJSON::encode($data);         
+        if ($data !== null) {
+            echo CJSON::encode($data);
+        } else {
+            echo CJSON::encode(array('aaData' => array()));
+        }
     }
+    
     
     /**
      * Retorna la consulta que contiene las estadísticas
@@ -216,7 +221,7 @@ class TicketController extends Controller
         Yii::import('webroot.protected.components.reports.Report');
         $report = new Report;
         $statistcs = null;
-        $data = array();
+        $data = null;
         
         switch ($option) {
             // Open Today
@@ -230,21 +235,26 @@ class TicketController extends Controller
             // Close white
             case '5': $statistcs = $report->openOrClose($date, 'white', 'close'); break;
             // Close yellow
-            case '6': $statistcs = $report->openOrClose($date, 'white', 'yellow'); break;
+            case '6': $statistcs = $report->openOrClose($date, 'yellow', 'close'); break;
             // Close red
-            case '7': $statistcs = $report->openOrClose($date, 'white', 'red'); break;
+            case '7': $statistcs = $report->openOrClose($date, 'red', 'close'); break;
+            // Total tickets open
+            case '8': $statistcs = $report->totalTicketsPending($date); break;
+            // Total tickets closed
+            case '9': $statistcs = $report->totalTicketsClosed($date); break;
         }
+            
         
         if ($statistcs !== null) {
             foreach ($statistcs as $value) {
                 $data['aaData'][] = array(
-                    $value->id, 
+                    $value->carrier, 
+                    $value->user_open_ticket != null ? $value->idUser->username : Carrier::getCarriers(true, $value->id),
+                    Carrier::getCarriers(true, $value->id), 
+                    $value->ticket_number,
                     $value->idFailure->name,
-                    $value->ticket_number, 
-                    $value->date,
-                    $value->origination_ip,
-                    $value->destination_ip,
-                    $value->idUser->username,
+                    TestedNumber::getNumber($value->id) != false ? TestedNumber::getNumber($value->id)->idCountry->name : '',
+                    $value->date . '/' . $value->hour,
                     $value->hour
                 );
             }

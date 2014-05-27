@@ -183,23 +183,6 @@ class Report extends Excel
         $objWriter->save('php://output');
     }
     
-    /**
-     * Método para obtener los tickets abiertos de 1 día
-     * @param int $days dias a consultar
-     * @return array
-     */
-    private function _openTicketsOneDay($days)
-    {
-        $conditionUser = '';
-        if (CrugeAuthassignment::getRoleUser() === 'C') {
-            $conditionUser = ' WHERE id_user = ' . Yii::app()->user->id;
-        }
-        return Ticket::model()
-                ->findAllBySql("SELECT *, (age((to_char(NOW(), 'YYYY-MM-DD') || ' ' || to_char(NOW(), 'HH24:MI:SS'))::timestamp, (to_char(date, 'YYYY-MM-DD') || ' ' || to_char(hour, 'HH24:MI:SS'))::timestamp)) AS lifetime
-                               FROM ticket WHERE 
-                               date >= NOW() - '$days days'::interval AND
-                               id IN(SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user $conditionUser))");
-    }
     
     /**
      * tickets no gestionados en la fecha seleccionada(tickets que no tienes 
@@ -210,22 +193,41 @@ class Report extends Excel
     public function withoutDescription($date)
     {
         return Ticket::model()
-                ->findAllBySql("SELECT * 
+                ->findAllBySql("SELECT *, 
+                                (CASE WHEN ticket_number LIKE '%S%' OR ticket_number LIKE '%P%' THEN 'Supplier' ELSE 'Customer' END) AS carrier,
+                                (CASE WHEN option_open = 'etelix_to_carrier' THEN id_user END) AS user_open_ticket 
                                 FROM ticket WHERE id IN(SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user)) AND
                                 id NOT IN(SELECT id_ticket FROM description_ticket GROUP BY id_ticket HAVING COUNT(id_ticket) >= 2) AND 
                                 date = '$date' AND substr(close_ticket::text, 1, 10) <> '$date'");
     }
     
+    /**
+     * Método para retornar los reportes estadísticos
+     * @param string $date Fecha de la consulta
+     * @param string $color Color del ticket dependiendo de su tiempo de vida
+     * @param string $status Si el ticket es cerrado o abierto 
+     * @return array
+     */
     public function openOrClose($date, $color = 'white', $status = 'close')
     {
         $subQuery = $this->_subQuery($date, $color, $status);
         
         return Ticket::model()
-                ->findAllBySql("SELECT * FROM ticket WHERE 
+                ->findAllBySql("SELECT *, 
+                                (CASE WHEN ticket_number LIKE '%S%' OR ticket_number LIKE '%P%' THEN 'Supplier' ELSE 'Customer' END) AS carrier, 
+                                (CASE WHEN option_open = 'etelix_to_carrier' THEN id_user END) AS user_open_ticket 
+                                FROM ticket WHERE 
                                 id IN(SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user)) AND
                                 $subQuery");
     }
     
+    /**
+     * Retorna la condición que se pasara a los reportes estadísticos
+     * @param string $date Fecha de la consulta
+     * @param string $color Color del ticket dependiendo de su tiempo de vida
+     * @param string $status Si el ticket es cerrado o abierto 
+     * @return string
+     */
     private function _subQuery($date, $color, $status)
     {
         $subQuery = '';
@@ -260,5 +262,45 @@ class Report extends Excel
         }
         
         return $subQuery;
+    }
+    
+    /**
+     * Retorna la union de todos las consultas de reportes de tickets pendientes
+     * @param string $date Fecha de la consulta
+     * @return array
+     */
+    public function totalTicketsPending($date)
+    {
+        $query = '';
+        $sql = "SELECT *, 
+                 (CASE WHEN ticket_number LIKE '%S%' OR ticket_number LIKE '%P%' THEN 'Supplier' ELSE 'Customer' END) AS carrier, 
+                 (CASE WHEN option_open = 'etelix_to_carrier' THEN id_user END) AS user_open_ticket 
+                 FROM ticket WHERE 
+                 id IN(SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user)) ";
+         $query .= " $sql AND date = '".$date."' AND close_ticket IS NULL ";
+         $query .= " UNION $sql AND date = '".$date."' AND substr(close_ticket::text, 1, 10) = to_char('".$date."'::timestamp + '1 days'::interval, 'YYYY-MM-DD') ";
+         $query .= " UNION $sql AND date = '".$date."' AND substr(close_ticket::text, 1, 10) >= to_char('".$date."'::timestamp + '2 days'::interval, 'YYYY-MM-DD') ";
+         $query .= " UNION $sql AND id NOT IN(SELECT id_ticket FROM description_ticket GROUP BY id_ticket HAVING COUNT(id_ticket) >= 2) AND date = '$date' AND substr(close_ticket::text, 1, 10) <> '$date'";
+        return Ticket::model()->findAllBySql($query);
+    }
+    
+    /**
+     * Retorna la union de todos las consultas de reportes de tickets cerrados
+     * @param string $date Fecha de la consulta
+     * @return type
+     */
+    public function totalTicketsClosed($date)
+    {
+        $query = '';
+        $sql = "SELECT *, 
+                 (CASE WHEN ticket_number LIKE '%S%' OR ticket_number LIKE '%P%' THEN 'Supplier' ELSE 'Customer' END) AS carrier, 
+                 (CASE WHEN option_open = 'etelix_to_carrier' THEN id_user END) AS user_open_ticket 
+                 FROM ticket WHERE 
+                 id IN(SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user)) ";
+         $query .= " $sql AND date = '".$date."' AND substr(close_ticket::text, 1, 10) = '".$date."' ";
+         $query .= " UNION $sql AND date = '".$date."'::timestamp - '1 days'::interval AND substr(close_ticket::text, 1, 10) = '".$date."' ";
+         $query .= " UNION $sql AND date <= '".$date."'::timestamp - '2 days'::interval AND substr(close_ticket::text, 1, 10) = '".$date."' ";
+         
+        return Ticket::model()->findAllBySql($query);
     }
 }

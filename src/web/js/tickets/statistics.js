@@ -6,12 +6,11 @@ function initDatatable(date, option)
 {
     if (!date) date = '';
     if (!option) option = '';
-    var oTable = $('#example').dataTable({
+    var oTable = $('#tbl-datatable').dataTable({
         "bJQueryUI": true,
         "sPaginationType": "full_numbers",
-        "sDom": '<"H"lfr>t<"F"ip>',
         "bDestroy": true,
-        "bInfo":false,
+        "bInfo":true,
         "bAutoWidth": false,
         "bProcessing": true,
         "sAjaxSource": '/ticket/datatable?date=' + date + '&option=' + option,
@@ -19,6 +18,7 @@ function initDatatable(date, option)
         
    });
 }
+
 
 /**
  * Inicializando gráficos estadísticos
@@ -119,7 +119,7 @@ $(document).on('ready', function(){
     getData(null);
     
     // Carga de los datos al introducir una fecha
-    $(document).on('change', function(){
+    $(document).on('change', '.date', function(){
         getData($(this).val());
     });
     
@@ -128,6 +128,4 @@ $(document).on('ready', function(){
     });
     
     initDatatable();
-    
-//    initHighChart();
 });

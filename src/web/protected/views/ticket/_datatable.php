@@ -1,5 +1,5 @@
 <div id="demo">
-    <table cellpadding="0" cellspacing="0" border="0" class="display" id="example" width="100%">
+    <table cellpadding="0" cellspacing="0" border="0" class="display" id="tbl-datatable" width="100%">
         <thead>
             <th id="th-date">Type</th>
             <th id="th-user">User</th>

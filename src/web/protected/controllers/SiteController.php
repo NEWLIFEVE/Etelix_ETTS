@@ -135,7 +135,7 @@ class SiteController extends Controller
             $report->genExcel();
             Yii::app()->end();
         }
-        
+                
         /**
          * Exportable de imprimir
          */
