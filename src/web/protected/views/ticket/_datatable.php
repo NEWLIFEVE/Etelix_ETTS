@@ -10,7 +10,6 @@
             <th>Created</th>
             <th>Closed</th>
             <th>LT</th>
-            <th>Color</th>
         </thead>
         <tbody>
 

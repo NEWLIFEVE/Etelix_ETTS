@@ -125,14 +125,24 @@ function getData(date, carrier)
  */
 function changeBackground()
 {
-    var radio = $('input[type="radio"]:checked').val()
+    var radio = $('input[type="radio"]:checked').val();
+    
     switch(radio) {
-         case '1': case '5': $('#tbl-datatable tr').css('background', 'white'); break;
+        case '1': case '5': $('#tbl-datatable tr').css('background', '#FFF'); break;
 
-         case '2': case '6': $('#tbtbl-datatablel-datatable tr').css('background', 'yellow'); break;
+        case '2': case '6': $('#tbl-datatable tr').css('background', '#FFDC51'); break;
 
-         case '3': case '7': $('#tbl-datatable tr').css('background', 'pink'); break;
-
+        case '3': case '7': $('#tbl-datatable tr').css('background', '#EEB8B8'); break;
+        
+        case '4': 
+        case '8': 
+        case '9':
+            $('#tbl-datatable tbody tr').each(function(i){
+                $('#tbl-datatable tbody tr')
+                        .eq(i)
+                        .css('background', $(this).find('td').find('input[name="color[]"]').val());
+            });
+        break;
     }
 }
 

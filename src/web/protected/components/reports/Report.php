@@ -194,16 +194,14 @@ class Report extends Excel
     {
         $selectCarrier = $this->_carrierInQuery($carrier);
         $colorAndLifeTime = "SELECT *,
-                            (CASE WHEN lifetime >= '0 hours'::interval AND lifetime <= '23:59 hours'::interval THEN 'white' 
-                            WHEN lifetime >= '1 days'::interval AND lifetime < '2 days'::interval THEN 'yellow'
-                            WHEN lifetime >= '2 days'::interval THEN 'red' END) AS color 
+                            (CASE WHEN lifetime < '1 days'::interval THEN '#FFF' 
+                            WHEN lifetime >= '1 days'::interval AND lifetime < '2 days'::interval THEN '#FFDC51'
+                            WHEN lifetime >= '2 days'::interval THEN '#EEB8B8' END) AS color 
                             FROM (
-
                             SELECT *,
-                            (CASE WHEN date = '$date' AND close_ticket IS NULL THEN '23:59 hours'::interval  
-                            WHEN date = '$date' AND substr(close_ticket::text, 1, 10) = to_char('$date'::timestamp + '1 days'::interval, 'YYYY-MM-DD') THEN '1 days'::interval 
-                            WHEN date = '$date' AND substr(close_ticket::text, 1, 10) >= to_char('$date'::timestamp + '2 days'::interval, 'YYYY-MM-DD') THEN '2 days'::interval END) AS lifetime
-
+                            (CASE WHEN age(date, '$date') < '1 days'::interval THEN (CASE WHEN date < '$date' THEN age('$date', date) ELSE age(date, '$date') END)  
+                            WHEN age(date, '$date') >= '1 days'::interval AND age(date, '$date') < '2 days'::interval THEN (CASE WHEN date < '$date' THEN age('$date', date) ELSE age(date, '$date') END) 
+                            WHEN age(date, '$date') >= '2 days'::interval THEN (CASE WHEN date < '$date' THEN age('$date', date) ELSE age(date, '$date') END) END) AS lifetime
                             FROM";
         
         return Ticket::model()
@@ -211,8 +209,8 @@ class Report extends Excel
                                 (CASE WHEN ticket_number LIKE '%S%' OR ticket_number LIKE '%P%' THEN 'Supplier' ELSE 'Customer' END) AS carrier,
                                 (CASE WHEN option_open = 'etelix_to_carrier' THEN id_user END) AS user_open_ticket 
                                 FROM ticket WHERE id IN(SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user)) AND
-                                id NOT IN(SELECT id_ticket FROM description_ticket GROUP BY id_ticket HAVING COUNT(id_ticket) >= 2) AND 
-                                date = '$date' AND substr(close_ticket::text, 1, 10) <> '$date') AS tiempo) AS colores  $selectCarrier");
+                                id NOT IN(SELECT id_ticket FROM description_ticket WHERE date = '$date' GROUP BY id_ticket HAVING COUNT(id_ticket) >= 2)) AS tiempo) AS colores 
+                                WHERE date <= '$date' AND (close_ticket IS NULL OR close_ticket > '$date') $selectCarrier");
     }
     
     /**
@@ -227,16 +225,14 @@ class Report extends Excel
         $subQuery = $this->_subQuery($date, $color, $status);
         $selectCarrier = $this->_carrierInQuery($carrier);
         $colorAndLifeTime = "SELECT *,
-                            (CASE WHEN lifetime >= '0 hours'::interval AND lifetime <= '23:59 hours'::interval THEN 'white' 
-                            WHEN lifetime >= '1 days'::interval AND lifetime < '2 days'::interval THEN 'yellow'
-                            WHEN lifetime >= '2 days'::interval THEN 'red' END) AS color 
+                            (CASE WHEN lifetime < '1 days'::interval THEN '#FFF' 
+                            WHEN lifetime >= '1 days'::interval AND lifetime < '2 days'::interval THEN '#FFDC51'
+                            WHEN lifetime >= '2 days'::interval THEN '#EEB8B8' END) AS color 
                             FROM (
-
                             SELECT *,
-                            (CASE WHEN date = '$date' AND close_ticket IS NULL THEN '23:59 hours'::interval  
-                            WHEN date = '$date' AND substr(close_ticket::text, 1, 10) = to_char('$date'::timestamp + '1 days'::interval, 'YYYY-MM-DD') THEN '1 days'::interval 
-                            WHEN date = '$date' AND substr(close_ticket::text, 1, 10) >= to_char('$date'::timestamp + '2 days'::interval, 'YYYY-MM-DD') THEN '2 days'::interval END) AS lifetime
-
+                            (CASE WHEN age(date, '$date') < '1 days'::interval THEN (CASE WHEN date < '$date' THEN age('$date', date) ELSE age(date, '$date') END)  
+                            WHEN age(date, '$date') >= '1 days'::interval AND age(date, '$date') < '2 days'::interval THEN (CASE WHEN date < '$date' THEN age('$date', date) ELSE age(date, '$date') END) 
+                            WHEN age(date, '$date') >= '2 days'::interval THEN (CASE WHEN date < '$date' THEN age('$date', date) ELSE age(date, '$date') END) END) AS lifetime
                             FROM";
         
         return Ticket::model()
@@ -244,8 +240,8 @@ class Report extends Excel
                                 (CASE WHEN ticket_number LIKE '%S%' OR ticket_number LIKE '%P%' THEN 'Supplier' ELSE 'Customer' END) AS carrier, 
                                 (CASE WHEN option_open = 'etelix_to_carrier' THEN id_user END) AS user_open_ticket 
                                 FROM ticket WHERE 
-                                id IN(SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user)) AND
-                                $subQuery) AS tiempo) AS colores $selectCarrier ");
+                                id IN(SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user))) AS tiempo) AS colores 
+                                $subQuery $selectCarrier");
     }
     
     /**
@@ -262,30 +258,27 @@ class Report extends Excel
         switch ($color) {
             case 'white':
                 if ($status === 'close') {
-                    $subQuery = " date = '".$date."' AND substr(close_ticket::text, 1, 10) = '".$date."'";
+                    $subQuery = " WHERE lifetime < '1 days'::interval AND substr(close_ticket::text, 1, 10) = '$date'";
                 } else {
-                    $subQuery = " date = '".$date."' AND close_ticket IS NULL";
+                    $subQuery = " WHERE lifetime < '1 days'::interval  AND date = '$date' AND (close_ticket IS NULL OR close_ticket > '$date')";
                 }
             break;
                 
             case 'yellow':
                 if ($status === 'close') {
-                    $subQuery = " date = '".$date."'::timestamp - '1 days'::interval AND substr(close_ticket::text, 1, 10) = '".$date."'";
+                    $subQuery = " WHERE lifetime >= '1 days'::interval AND lifetime < '2 days'::interval AND substr(close_ticket::text, 1, 10) <= '$date'";
                 } else {
-                    $subQuery = " date = '".$date."' AND substr(close_ticket::text, 1, 10) = to_char('".$date."'::timestamp + '1 days'::interval, 'YYYY-MM-DD')";
+                    $subQuery = " WHERE lifetime >= '1 days'::interval AND lifetime < '2 days'::interval  AND date <= '$date' AND (close_ticket IS NULL OR close_ticket > '$date')";
                 }
             break;
             
             case 'red':
                 if ($status === 'close') {
-                   $subQuery = " date <= '".$date."'::timestamp - '2 days'::interval AND substr(close_ticket::text, 1, 10) = '".$date."'";
+                    $subQuery = " WHERE lifetime >= '2 days'::interval AND substr(close_ticket::text, 1, 10) <= '$date'";
                 } else {
-                    $subQuery = " date = '".$date."' AND substr(close_ticket::text, 1, 10) >= to_char('".$date."'::timestamp + '2 days'::interval, 'YYYY-MM-DD')";
+                    $subQuery = " WHERE lifetime >= '2 days'::interval AND date <= '$date' AND (close_ticket IS NULL OR close_ticket > '$date')";
                 }
             break;
-
-            default:
-                break;
         }
         
         return $subQuery;
@@ -301,7 +294,7 @@ class Report extends Excel
         $subQuery = '';
         
         if ($carrier != 'both') {
-            $subQuery = " WHERE carrier = '$carrier' ";
+            $subQuery = " AND carrier = '$carrier'";
         }
         return $subQuery;
     }
@@ -314,30 +307,27 @@ class Report extends Excel
     public function totalTicketsPending($date, $carrier = 'both')
     {
         $selectCarrier = $this->_carrierInQuery($carrier);
-        
-        $query = '';
-        $colorAndLifeTime = "SELECT *,
-                            (CASE WHEN lifetime >= '0 hours'::interval AND lifetime <= '23:59 hours'::interval THEN 'white' 
-                            WHEN lifetime >= '1 days'::interval AND lifetime < '2 days'::interval THEN 'yellow'
-                            WHEN lifetime >= '2 days'::interval THEN 'red' END) AS color 
-                            FROM (
+        $begin = "SELECT *,
+                (CASE WHEN lifetime < '1 days'::interval THEN '#FFF' 
+                WHEN lifetime >= '1 days'::interval AND lifetime < '2 days'::interval THEN '#FFDC51'
+                WHEN lifetime >= '2 days'::interval THEN '#EEB8B8' END) AS color 
+                FROM (
+                SELECT *,
+                (CASE WHEN age(date, '$date') < '1 days'::interval THEN (CASE WHEN date < '$date' THEN age('$date', date) ELSE age(date, '$date') END)  
+                WHEN age(date, '$date') >= '1 days'::interval AND age(date, '$date') < '2 days'::interval THEN (CASE WHEN date < '$date' THEN age('$date', date) ELSE age(date, '$date') END) 
+                WHEN age(date, '$date') >= '2 days'::interval THEN (CASE WHEN date < '$date' THEN age('$date', date) ELSE age(date, '$date') END) END) AS lifetime
 
-                            SELECT *,
-                            (CASE WHEN date = '$date' AND close_ticket IS NULL THEN '23:59 hours'::interval  
-                            WHEN date = '$date' AND substr(close_ticket::text, 1, 10) = to_char('$date'::timestamp + '1 days'::interval, 'YYYY-MM-DD') THEN '1 days'::interval 
-                            WHEN date = '$date' AND substr(close_ticket::text, 1, 10) >= to_char('$date'::timestamp + '2 days'::interval, 'YYYY-MM-DD') THEN '2 days'::interval END) AS lifetime
+                FROM
 
-                            FROM";
-        
-        $sql = "SELECT *, 
-                 (CASE WHEN ticket_number LIKE '%S%' OR ticket_number LIKE '%P%' THEN 'Supplier' ELSE 'Customer' END) AS carrier, 
-                 (CASE WHEN option_open = 'etelix_to_carrier' THEN id_user END) AS user_open_ticket 
-                 FROM ticket WHERE 
-                 id IN(SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user)) ";
-         $query .= " $colorAndLifeTime ( $sql AND date = '".$date."' AND close_ticket IS NULL ";
-         $query .= " UNION $sql AND date = '".$date."' AND substr(close_ticket::text, 1, 10) = to_char('".$date."'::timestamp + '1 days'::interval, 'YYYY-MM-DD') ";
-         $query .= " UNION $sql AND date = '".$date."' AND substr(close_ticket::text, 1, 10) >= to_char('".$date."'::timestamp + '2 days'::interval, 'YYYY-MM-DD') ";
-         $query .= " UNION $sql AND id NOT IN(SELECT id_ticket FROM description_ticket GROUP BY id_ticket HAVING COUNT(id_ticket) >= 2) AND date = '$date' AND substr(close_ticket::text, 1, 10) <> '$date') AS tiempo) AS colores $selectCarrier";
+                (SELECT *, 
+                (CASE WHEN ticket_number LIKE '%S%' OR ticket_number LIKE '%P%' THEN 'Supplier' ELSE 'Customer' END) AS carrier,
+                (CASE WHEN option_open = 'etelix_to_carrier' THEN id_user END) AS user_open_ticket 
+                FROM ticket WHERE id IN(SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user)) 
+                ) AS tiempo) AS colores ";
+        $query  = " $begin WHERE lifetime >= '2 days'::interval AND date <= '$date' AND (close_ticket IS NULL OR close_ticket > '$date') $selectCarrier UNION ";
+        $query .= " $begin WHERE lifetime >= '1 days'::interval AND lifetime < '2 days'::interval  AND date <= '$date' AND (close_ticket IS NULL OR close_ticket > '$date') $selectCarrier UNION ";
+        $query .= " $begin WHERE lifetime < '1 days'::interval  AND date = '$date' AND (close_ticket IS NULL OR close_ticket > '$date') $selectCarrier UNION ";
+        $query .= " $begin WHERE date <= '$date' AND (close_ticket IS NULL OR close_ticket > '$date') AND id NOT IN(SELECT id_ticket FROM description_ticket WHERE date = '$date' GROUP BY id_ticket HAVING COUNT(id_ticket) >= 2) $selectCarrier ";
         return Ticket::model()->findAllBySql($query);
     }
     
@@ -349,28 +339,26 @@ class Report extends Excel
     public function totalTicketsClosed($date, $carrier = 'both')
     {
         $selectCarrier = $this->_carrierInQuery($carrier);
-        $colorAndLifeTime = "SELECT *,
-                            (CASE WHEN lifetime >= '0 hours'::interval AND lifetime <= '23:59 hours'::interval THEN 'white' 
-                            WHEN lifetime >= '1 days'::interval AND lifetime < '2 days'::interval THEN 'yellow'
-                            WHEN lifetime >= '2 days'::interval THEN 'red' END) AS color 
-                            FROM (
+        $begin = "SELECT *,
+                (CASE WHEN lifetime < '1 days'::interval THEN '#FFF' 
+                WHEN lifetime >= '1 days'::interval AND lifetime < '2 days'::interval THEN '#FFDC51'
+                WHEN lifetime >= '2 days'::interval THEN '#EEB8B8' END) AS color 
+                FROM (
+                SELECT *,
+                (CASE WHEN age(date, '$date') < '1 days'::interval THEN (CASE WHEN date < '$date' THEN age('$date', date) ELSE age(date, '$date') END)  
+                WHEN age(date, '$date') >= '1 days'::interval AND age(date, '$date') < '2 days'::interval THEN (CASE WHEN date < '$date' THEN age('$date', date) ELSE age(date, '$date') END) 
+                WHEN age(date, '$date') >= '2 days'::interval THEN (CASE WHEN date < '$date' THEN age('$date', date) ELSE age(date, '$date') END) END) AS lifetime
 
-                            SELECT *,
-                            (CASE WHEN date = '$date' AND close_ticket IS NULL THEN '23:59 hours'::interval  
-                            WHEN date = '$date' AND substr(close_ticket::text, 1, 10) = to_char('$date'::timestamp + '1 days'::interval, 'YYYY-MM-DD') THEN '1 days'::interval 
-                            WHEN date = '$date' AND substr(close_ticket::text, 1, 10) >= to_char('$date'::timestamp + '2 days'::interval, 'YYYY-MM-DD') THEN '2 days'::interval END) AS lifetime
+                FROM
 
-                            FROM";
-        $query = '';
-        $sql = "SELECT *, 
-                 (CASE WHEN ticket_number LIKE '%S%' OR ticket_number LIKE '%P%' THEN 'Supplier' ELSE 'Customer' END) AS carrier, 
-                 (CASE WHEN option_open = 'etelix_to_carrier' THEN id_user END) AS user_open_ticket 
-                 FROM ticket WHERE 
-                 id IN(SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user)) ";
-         $query .= "$colorAndLifeTime ( $sql AND date = '".$date."' AND substr(close_ticket::text, 1, 10) = '".$date."' ";
-         $query .= " UNION $sql AND date = '".$date."'::timestamp - '1 days'::interval AND substr(close_ticket::text, 1, 10) = '".$date."' ";
-         $query .= " UNION $sql AND date <= '".$date."'::timestamp - '2 days'::interval AND substr(close_ticket::text, 1, 10) = '".$date."') AS tiempo) AS colores $selectCarrier ";
-         
+                (SELECT *, 
+                (CASE WHEN ticket_number LIKE '%S%' OR ticket_number LIKE '%P%' THEN 'Supplier' ELSE 'Customer' END) AS carrier,
+                (CASE WHEN option_open = 'etelix_to_carrier' THEN id_user END) AS user_open_ticket 
+                FROM ticket WHERE id IN(SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user)) 
+                ) AS tiempo) AS colores ";
+        $query  = " $begin WHERE lifetime >= '2 days'::interval AND substr(close_ticket::text, 1, 10) <= '$date' $selectCarrier UNION ";
+        $query .= " $begin WHERE lifetime >= '1 days'::interval AND lifetime < '2 days'::interval AND substr(close_ticket::text, 1, 10) <= '$date' $selectCarrier UNION ";
+        $query .= " $begin WHERE lifetime < '1 days'::interval AND substr(close_ticket::text, 1, 10) = '$date' $selectCarrier  ";
         return Ticket::model()->findAllBySql($query);
     }
 }

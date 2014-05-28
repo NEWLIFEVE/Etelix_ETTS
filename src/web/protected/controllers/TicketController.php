@@ -250,16 +250,17 @@ class TicketController extends Controller
         if ($statistcs !== null) {
             foreach ($statistcs as $value) {
                 $data['aaData'][] = array(
-                    $value->carrier, 
-                    $value->user_open_ticket != null ? $value->idUser->username : Carrier::getCarriers(true, $value->id),
-                    Carrier::getCarriers(true, $value->id), 
+                    $value->carrier . 
+                    '<input type="hidden" value="'.$value->id.'" name="ids[]">' . 
+                    '<input type="hidden" value="'.$value->color.'" name="color[]">', 
+                    $value->user_open_ticket != null ? $value->idUser->username : (strlen(Carrier::getCarriers(true, $value->id)) <= 9 ? Carrier::getCarriers(true, $value->id) : substr(Carrier::getCarriers(true, $value->id), 0, 9) .'...'),
+                    strlen(Carrier::getCarriers(true, $value->id)) <= 9 ? Carrier::getCarriers(true, $value->id) : substr(Carrier::getCarriers(true, $value->id), 0, 9) .'...', 
                     $value->ticket_number,
-                    $value->idFailure->name,
+                    strlen($value->idFailure->name) <= 13 ? $value->idFailure->name : substr($value->idFailure->name, 0, 13) .'...',
                     TestedNumber::getNumber($value->id) != false ? TestedNumber::getNumber($value->id)->idCountry->name : '',
                     $value->date . '/' . $value->hour,
-                    $value->close_ticket,
-                    $value->lifetime . '<input type="hidden" value="'.$value->id.'" name="ids[]">',
-                    $value->color
+                    $value->close_ticket != null ? substr($value->close_ticket, 0, 16) : '',
+                    $value->lifetime,
                 );
             }
         }
