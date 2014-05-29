@@ -181,6 +181,9 @@ class TicketController extends Controller
      */
     public function actionStatistics() 
     {        
+//        $macAddr = new MacAddress(PHP_OS); 
+//        echo $macAddr->macAddr; exit();
+
         Script::registerDataTable();
         Script::registerModules(array('ajax', 'export'));
         Script::registerJsAction();
@@ -251,7 +254,7 @@ class TicketController extends Controller
             foreach ($statistcs as $value) {
                 $data['aaData'][] = array(
                     $value->carrier . 
-                    '<input type="hidden" value="'.$value->id.'" name="ids[]">' . 
+                    '<input type="hidden" value="'.$value->id.'" rel="'.$value->id.'" name="id[]">' . 
                     '<input type="hidden" value="'.$value->color.'" name="color[]">', 
                     $value->user_open_ticket != null ? $value->idUser->username : (strlen(Carrier::getCarriers(true, $value->id)) <= 9 ? Carrier::getCarriers(true, $value->id) : substr(Carrier::getCarriers(true, $value->id), 0, 9) .'...'),
                     strlen(Carrier::getCarriers(true, $value->id)) <= 9 ? Carrier::getCarriers(true, $value->id) : substr(Carrier::getCarriers(true, $value->id), 0, 9) .'...', 

@@ -21,12 +21,12 @@ class Export
      * @param arrray $ids
      * @return string
      */
-    public function table($ids)
+    public function table($ids, $date = false)
     {
         if (!is_array($ids)) {
             $ids = explode (",", $ids);
         }
-        $data = $this->_getData($ids);
+        $data = $this->_getData($ids, $date);
         $table = null;
         if (count($data)) {
             $table = '<table ' . $this->_cssTable . '>' . 
@@ -85,27 +85,36 @@ class Export
      * @param array $ids
      * @return array
      */
-    private function _getData($ids)
+    private function _getData($ids, $date = false)
     {
-        $sql = "SELECT *,(
-                CASE WHEN id_status = 1 THEN
-                        CASE WHEN lifetime <= '12 hours'::interval THEN 'white'
-                        WHEN lifetime > '12 hours'::interval AND lifetime <= '36 hours'::interval THEN 'yellow'
-                        ELSE 'red' END
-                ELSE 'green' END
-                ) AS color
-                FROM (SELECT *, (
-                                 CASE WHEN id_status = 1 THEN
-                                        age((to_char(NOW(), 'YYYY-MM-DD') || ' ' || to_char(NOW(), 'HH24:MI:SS'))::timestamp, (to_char(date, 'YYYY-MM-DD') || ' ' || to_char(hour, 'HH24:MI:SS'))::timestamp)
-                                 ELSE
-                                        age(close_ticket::timestamp, (to_char(date, 'YYYY-MM-DD') || ' ' || to_char(hour, 'HH24:MI:SS'))::timestamp)
-                                 END
-                        ) AS lifetime
-                        FROM ticket
-                        WHERE id IN (SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user)) AND
-                        id IN(" . implode(",", $ids) . ")
-                        ORDER BY id_status, id ASC
-                ) AS consulta";
+        if ($date) {
+            $colorAndLifeTime = "(CASE WHEN lifetime < '1 days'::interval THEN 'white' 
+                                WHEN lifetime >= '1 days'::interval AND lifetime < '2 days'::interval THEN 'yellow'
+                                WHEN lifetime >= '2 days'::interval THEN 'red' END) AS color 
+                                FROM (
+                                SELECT *,
+                                (CASE WHEN age(date, '$date') < '1 days'::interval THEN (CASE WHEN date < '$date' THEN age('$date', date) ELSE age(date, '$date') END)  
+                                WHEN age(date, '$date') >= '1 days'::interval AND age(date, '$date') < '2 days'::interval THEN (CASE WHEN date < '$date' THEN age('$date', date) ELSE age(date, '$date') END) 
+                                WHEN age(date, '$date') >= '2 days'::interval THEN (CASE WHEN date < '$date' THEN age('$date', date) ELSE age(date, '$date') END) END) AS lifetime";
+        } else {
+            $colorAndLifeTime = "(CASE WHEN id_status = 1 THEN
+                                CASE WHEN lifetime <= '12 hours'::interval THEN 'white'
+                                WHEN lifetime > '12 hours'::interval AND lifetime <= '36 hours'::interval THEN 'yellow'
+                                ELSE 'red' END
+                                ELSE 'green' END) AS color
+                                FROM (SELECT *, (
+                                CASE WHEN id_status = 1 THEN
+                                age((to_char(NOW(), 'YYYY-MM-DD') || ' ' || to_char(NOW(), 'HH24:MI:SS'))::timestamp, (to_char(date, 'YYYY-MM-DD') || ' ' || to_char(hour, 'HH24:MI:SS'))::timestamp)
+                                ELSE
+                                age(close_ticket::timestamp, (to_char(date, 'YYYY-MM-DD') || ' ' || to_char(hour, 'HH24:MI:SS'))::timestamp) END) AS lifetime";
+        }
+        
+        $sql = "SELECT *,
+                $colorAndLifeTime
+                FROM ticket
+                WHERE id IN(SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user)) AND
+                id IN(" . implode(",", $ids) . ")
+                ORDER BY id_status, id ASC) AS consulta";
         return Ticket::model()->findAllBySql($sql);
     }
     

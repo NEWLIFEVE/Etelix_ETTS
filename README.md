@@ -3,6 +3,21 @@ Etelix_ETTS
 
 Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
 
+29/05/2014
+    - Sub menu statistics en el menu tickets, no visible para usuarios externos
+    - Reportes por pantalla contien:
+      * Tickets opens today
+      * Tickets pendign yellow
+      * Tickets pending red
+      * Tickets pending without activity
+      * Tickets closed white
+      * Tickets closed yellow
+      * Tickets closed red
+      * Total tickets pending
+      * Total tickets closed
+    - Exportables para los reportes mencionados anteriormente
+    
+
 08/05/2014
     - Exportables para los tickets(excel, imprimir y mandar por correo)
 

@@ -16,13 +16,14 @@ $ETTS.export=(function(){
      * @param {function} _beforesend Si se desea mandar una función al beforesend del ajax
      * @param {int} _status Si es 1 son tickets abiertos, 2 para tickets cerrados
      * @param {bool} print Si es true, se retorna lo que trae response
+     * @param {string} _date Fecha para determinar el lifetime y el color del ticket
      * @returns {jqXHR.responseText}
      */
-    function _xhr(_url, _id, _async, _success, _beforesend, _status, print) {
+    function _xhr(_url, _id, _async, _success, _beforesend, _status, print, _date) {
         var response = $.ajax({ 
                             type: 'POST',   
                             url: _url,
-                            data:{id:_id, status:_status},
+                            data:{id:_id, status:_status, date:_date},
                             async: _async,
                             success:_success,
                             beforeSend:_beforesend
@@ -40,7 +41,7 @@ $ETTS.export=(function(){
     function _getIds(element) {
         var ids = [];
         element.each(function(i){ 
-            ids[i] = $(this).prop('rel'); 
+            ids.push(element.eq(i).attr('rel')); 
         });
         return ids;
     }
@@ -73,13 +74,14 @@ $ETTS.export=(function(){
          * @param {obj} element
          * @param {string} url
          * @param {int} status
+         * @param {string} date
          * @returns {void}
          */
-        print:function(element, url, status) {
+        print:function(element, url, status, date) {
             var ids = _getIds(element);
             // Si hay datos en la tabla
             if (ids.length > 0) {
-                var content = _head + _xhr(url, ids, false, null, null, status,  true) + _footer,
+                var content = _head + _xhr(url, ids, false, null, null, status,  true, date) + _footer,
                 newIframe = document.createElement('iframe');
                 newIframe.width = '0';
                 newIframe.height = '0';
@@ -126,7 +128,7 @@ $ETTS.export=(function(){
          * @param {int} status
          * @returns {undefined}
          */
-        mail:function(element, url, status) {
+        mail:function(element, url, status, date) {
             var ids = _getIds(element);
             if (ids.length > 0) {
                 _xhr(url, 
@@ -134,7 +136,8 @@ $ETTS.export=(function(){
                     true, 
                     function(data){_window('Success');}, 
                     function(data){_window('Sending email...<h2><img src="/images/loader.GIF">');}, 
-                    status);
+                    status,
+                    date);
             }
         }
     };

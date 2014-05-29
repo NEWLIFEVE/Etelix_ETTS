@@ -146,6 +146,23 @@ function changeBackground()
     }
 }
 
+/**
+ * Botones para exportar
+ * @param {object} boton
+ * @returns {void}
+ */
+function initExport(boton)
+{    
+    if (boton.prop('id') === 'print-btn') {
+        $ETTS.export.print($('input[name="id[]"]'), boton.prop('rel'), null, $('.date').val());
+    } else if (boton.prop('id') === 'excel-btn') {
+        $ETTS.export.excelForm($('#form'), $('input[name="id[]"]'));
+    } else {
+        $ETTS.export.mail($('input[name="id[]"]'), boton.prop('rel'), null, $('.date').val());
+    }
+}
+
+
 $(document).on('ready', function(){
     $('.date').datepicker({
         'dateFormat':'yy-mm-dd',
@@ -156,16 +173,23 @@ $(document).on('ready', function(){
     
     // Carga de los datos al cargar el documento
     getData(null, null);
+    
+    // Inicializando datatable
+    initDatatable($('.date').val(), $('input[type="radio"]:checked').val(), $('#select-carrier').val());
    
     // Carga de los datos al introducir una fecha
     $(document).on('change', '.date, #select-carrier', function(){
         getData($('.date').val(), $('#select-carrier').val());
     });
     
+    // Refrescar datable dependiando del change de los inputs
     $(document).on('change', '.date, input[type="radio"], #select-carrier', function(){
         initDatatable($('.date').val(), $('input[type="radio"]:checked').val(), $('#select-carrier').val());
     });
     
-    // Inicializando datatable
-    initDatatable();
+    // Exportar 
+    $(document).on('click', '.itemreporte', function(){
+        initExport($(this));
+    });
+        
 });

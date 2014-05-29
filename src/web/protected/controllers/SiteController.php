@@ -142,7 +142,9 @@ class SiteController extends Controller
         public function actionPrint()
         {
             $reports = new Export();
-            $table = $reports->table($_POST['id']);
+            $date = false;
+            if (isset($_POST['date']) && !empty($_POST['date'])) $date = $_POST['date'];
+            $table = $reports->table($_POST['id'], $date);
             if ($table !== null) {
                 echo $table;
             }
@@ -155,12 +157,19 @@ class SiteController extends Controller
         { 
             ob_end_clean();
             $reports = new Export();
-            $table = $reports->table($_REQUEST['id']);
-            $name = $this->_setNameExport($_POST['status']);
+            $date = false;
+            $status = '';
+            
+            if (isset($_POST['date']) && !empty($_POST['date'])) $date = $_POST['date'];
+            if (isset($_POST['status']) && !empty($_POST['status'])) $status = $_POST['status'];
+            $table = $reports->table($_REQUEST['id'], $date);
+            $name = $this->_setNameExport($status);
+            
             header('Content-type: application/octet-stream');
             header("Content-Disposition: attachment; filename={$name}.xls");
             header("Pragma: cache");
             header("Expires: 0");
+            
             if ($table !== null) {
                 echo $table;
             }
@@ -173,8 +182,14 @@ class SiteController extends Controller
         {
             $mail = new EnviarEmail();
             $reports = new Export();
-            $table = $reports->table($_POST['id']);
-            $name = $this->_setNameExport($_POST['status']);
+            $date = false;
+            $status = '';
+            
+            if (isset($_POST['date']) && !empty($_POST['date'])) $date = $_POST['date'];
+            if (isset($_POST['status']) && !empty($_POST['status'])) $status = $_POST['status'];
+            
+            $table = $reports->table($_POST['id'], $date);
+            $name = $this->_setNameExport($status);
             if ($table !== null) {
                 $this->_writeFile($name, $table);
                 $mail->enviar($table, Yii::app()->user->email, '', $name, 'uploads/' . $name . '.xls');
@@ -210,10 +225,12 @@ class SiteController extends Controller
          */
         private function _setNameExport($status)
         {
-            if ($status == 1) {
+            if ($status === '1') {
                 $string = 'Open tickets';
-            } else {
+            } elseif ($status === '2') {
                 $string = 'Closed tickets';
+            } else {
+                $string = 'report';
             }
             return 'ETTS ' . $string . '-' . date('Y-m-d H-i-s');
         }
@@ -238,10 +255,14 @@ class SiteController extends Controller
 					'label'=>'Open TT Customer/Supplier to Etelix by Etelix',
 					'url'=>array('/ticket/createascarrier')
 					),
-                array(
+                                 array(
 					'label'=>'Open TT Etelix to Customer/Supplier',
 					'url'=>array('/ticket/createtocarrier')
 					),
+                                array(
+                                        'label'=>'Statistics',
+                                        'url'=>array('/ticket/statistics')
+                                        )
 				);
 		}
 		// SUBADMIN
@@ -296,6 +317,10 @@ class SiteController extends Controller
 					'label'=>'Open TT Etelix to Customer/Supplier',
 					'url'=>array('/ticket/createtocarrier')
 					),
+                            array(
+                                        'label'=>'Statistics',
+                                        'url'=>array('/ticket/statistics')
+                                        )
                 );
 		}
 	}

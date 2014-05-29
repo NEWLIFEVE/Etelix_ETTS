@@ -1,4 +1,4 @@
-<form method="post" name="form" id="form">
+<form method="post" name="form" id="form" action="/site/excel">
     <div class="table-report">
         <div class="row">
             <div class="span12 table-report-header">
@@ -14,7 +14,7 @@
                 </div>
                 <div class="span3 offset5">
                     <div class="input-control text span3" data-role="input-control">
-                        <input readonly="readonly" value="<?php echo date('Y-m-d'); ?>"  placeholder="Select day" class="date" type="text" name="report0" id="search-date">
+                        <input readonly="readonly" value="<?php echo date('Y-m-d'); ?>"  placeholder="Select day" class="date" type="text" name="date" id="search-date">
                     </div>
                 </div>
             </div>
