@@ -206,11 +206,11 @@ class Report extends Excel
         
         return Ticket::model()
                 ->findAllBySql("$colorAndLifeTime (SELECT *, 
-                                (CASE WHEN ticket_number LIKE '%S%' OR ticket_number LIKE '%P%' THEN 'Supplier' ELSE 'Customer' END) AS carrier,
+                                (CASE WHEN ticket_number LIKE '%S%' OR ticket_number LIKE '%P%' THEN 'Supplier' WHEN ticket_number LIKE '%C%' THEN 'Customer' END) AS carrier, 
                                 (CASE WHEN option_open = 'etelix_to_carrier' THEN id_user END) AS user_open_ticket 
                                 FROM ticket WHERE id IN(SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user)) AND
                                 id NOT IN(SELECT id_ticket FROM description_ticket WHERE date = '$date' GROUP BY id_ticket HAVING COUNT(id_ticket) >= 2)) AS tiempo) AS colores 
-                                WHERE date <= '$date' AND (close_ticket IS NULL OR close_ticket > '$date') $selectCarrier");
+                                WHERE date <= '$date' AND (close_ticket IS NULL OR close_ticket > '$date') $selectCarrier ORDER BY id ASC");
     }
     
     /**
@@ -237,11 +237,11 @@ class Report extends Excel
         
         return Ticket::model()
                 ->findAllBySql("$colorAndLifeTime  (SELECT *, 
-                                (CASE WHEN ticket_number LIKE '%S%' OR ticket_number LIKE '%P%' THEN 'Supplier' ELSE 'Customer' END) AS carrier, 
+                                (CASE WHEN ticket_number LIKE '%S%' OR ticket_number LIKE '%P%' THEN 'Supplier' WHEN ticket_number LIKE '%C%' THEN 'Customer' END) AS carrier, 
                                 (CASE WHEN option_open = 'etelix_to_carrier' THEN id_user END) AS user_open_ticket 
                                 FROM ticket WHERE 
                                 id IN(SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user))) AS tiempo) AS colores 
-                                $subQuery $selectCarrier");
+                                $subQuery $selectCarrier ORDER BY id ASC");
     }
     
     /**
@@ -320,14 +320,14 @@ class Report extends Excel
                 FROM
 
                 (SELECT *, 
-                (CASE WHEN ticket_number LIKE '%S%' OR ticket_number LIKE '%P%' THEN 'Supplier' ELSE 'Customer' END) AS carrier,
+                (CASE WHEN ticket_number LIKE '%S%' OR ticket_number LIKE '%P%' THEN 'Supplier' WHEN ticket_number LIKE '%C%' THEN 'Customer' END) AS carrier, 
                 (CASE WHEN option_open = 'etelix_to_carrier' THEN id_user END) AS user_open_ticket 
                 FROM ticket WHERE id IN(SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user)) 
                 ) AS tiempo) AS colores ";
         $query  = " $begin WHERE lifetime >= '2 days'::interval AND date <= '$date' AND (close_ticket IS NULL OR close_ticket > '$date') $selectCarrier UNION ";
         $query .= " $begin WHERE lifetime >= '1 days'::interval AND lifetime < '2 days'::interval  AND date <= '$date' AND (close_ticket IS NULL OR close_ticket > '$date') $selectCarrier UNION ";
         $query .= " $begin WHERE lifetime < '1 days'::interval  AND date = '$date' AND (close_ticket IS NULL OR close_ticket > '$date') $selectCarrier UNION ";
-        $query .= " $begin WHERE date <= '$date' AND (close_ticket IS NULL OR close_ticket > '$date') AND id NOT IN(SELECT id_ticket FROM description_ticket WHERE date = '$date' GROUP BY id_ticket HAVING COUNT(id_ticket) >= 2) $selectCarrier ";
+        $query .= " $begin WHERE date <= '$date' AND (close_ticket IS NULL OR close_ticket > '$date') AND id NOT IN(SELECT id_ticket FROM description_ticket WHERE date = '$date' GROUP BY id_ticket HAVING COUNT(id_ticket) >= 2) $selectCarrier ORDER BY id ASC";
         return Ticket::model()->findAllBySql($query);
     }
     
@@ -352,13 +352,13 @@ class Report extends Excel
                 FROM
 
                 (SELECT *, 
-                (CASE WHEN ticket_number LIKE '%S%' OR ticket_number LIKE '%P%' THEN 'Supplier' ELSE 'Customer' END) AS carrier,
+                (CASE WHEN ticket_number LIKE '%S%' OR ticket_number LIKE '%P%' THEN 'Supplier' WHEN ticket_number LIKE '%C%' THEN 'Customer' END) AS carrier, 
                 (CASE WHEN option_open = 'etelix_to_carrier' THEN id_user END) AS user_open_ticket 
                 FROM ticket WHERE id IN(SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user)) 
                 ) AS tiempo) AS colores ";
         $query  = " $begin WHERE lifetime >= '2 days'::interval AND substr(close_ticket::text, 1, 10) <= '$date' $selectCarrier UNION ";
         $query .= " $begin WHERE lifetime >= '1 days'::interval AND lifetime < '2 days'::interval AND substr(close_ticket::text, 1, 10) <= '$date' $selectCarrier UNION ";
-        $query .= " $begin WHERE lifetime < '1 days'::interval AND substr(close_ticket::text, 1, 10) = '$date' $selectCarrier  ";
+        $query .= " $begin WHERE lifetime < '1 days'::interval AND substr(close_ticket::text, 1, 10) = '$date' $selectCarrier ORDER BY id ASC";
         return Ticket::model()->findAllBySql($query);
     }
 }

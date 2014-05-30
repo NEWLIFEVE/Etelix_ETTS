@@ -152,15 +152,28 @@ function changeBackground()
  * @returns {void}
  */
 function initExport(boton)
-{    
+{
+    var settings = {
+        'url': boton.prop('rel'),
+        'id': $('input[name="id[]"]'),
+        'date':$('.date').val(),
+        'status':null,
+        'nameReport':$('input[type="radio"]:checked').val()
+    };
+    
     if (boton.prop('id') === 'print-btn') {
-        $ETTS.export.print($('input[name="id[]"]'), boton.prop('rel'), null, $('.date').val());
+        settings.async = false;
+        settings.print = true;
+        $ETTS.export.print(settings);
     } else if (boton.prop('id') === 'excel-btn') {
         $ETTS.export.excelForm($('#form'), $('input[name="id[]"]'));
     } else {
-        $ETTS.export.mail($('input[name="id[]"]'), boton.prop('rel'), null, $('.date').val());
+        settings.async = true;
+        settings.print = false;
+        $ETTS.export.mail(settings);
     }
 }
+
 
 
 $(document).on('ready', function(){
@@ -170,6 +183,8 @@ $(document).on('ready', function(){
         'changeMonth':true,
         'maxDate':'0'
     });
+   
+    $(document).tooltip({track: true});
     
     // Carga de los datos al cargar el documento
     getData(null, null);

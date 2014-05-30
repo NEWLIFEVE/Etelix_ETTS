@@ -269,6 +269,32 @@ function saveMessage()
     }
 }
 
+/**
+ * Botones para exportar
+ * @param {object} boton
+ * @returns {void}
+ */
+function initExport(boton)
+{
+    var settings = {
+        'url': boton.prop('rel'),
+        'id': $('.preview'),
+        'date': null,
+        'status': $('#status').val()
+    };
+    
+    if (boton.prop('id') === 'print-btn') {
+        settings.async = false;
+        settings.print = true;
+        $ETTS.export.print(settings);
+    } else if (boton.prop('id') === 'excel-btn') {
+        $ETTS.export.excelForm($('#form-excel'), $('.preview'));
+    } else {
+        settings.async = true;
+        settings.print = false;
+        $ETTS.export.mail(settings);
+    }
+}
 
 /**
 *Función para refrescar la vista admin.php cada 5 minutos. Si se da un preview del
@@ -283,13 +309,7 @@ $(document).on('ready', function() {
     
     // Exportables
     $(document).on('click', '.itemreporte', function(){
-        if ($(this).prop('id') === 'print-btn') {
-            $ETTS.export.print($('.preview'), $(this).prop('rel'), $('#status').val());
-        } else if ($(this).prop('id') === 'excel-btn') {
-            $ETTS.export.excelForm($('#form-excel'), $('input[name="id[]"]'));
-        } else {
-            $ETTS.export.mail($('.preview'), $(this).prop('rel'), $('#status').val());
-        }
+        initExport($(this));
     });
     
     // Leyenda de colores

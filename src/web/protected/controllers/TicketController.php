@@ -180,10 +180,7 @@ class TicketController extends Controller
      * Renderiza la vista de los reportes con datatable
      */
     public function actionStatistics() 
-    {        
-//        $macAddr = new MacAddress(PHP_OS); 
-//        echo $macAddr->macAddr; exit();
-
+    {  
         Script::registerDataTable();
         Script::registerModules(array('ajax', 'export'));
         Script::registerJsAction();

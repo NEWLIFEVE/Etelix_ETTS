@@ -162,6 +162,8 @@ class SiteController extends Controller
             
             if (isset($_POST['date']) && !empty($_POST['date'])) $date = $_POST['date'];
             if (isset($_POST['status']) && !empty($_POST['status'])) $status = $_POST['status'];
+            if (isset($_POST['rb-report']) && !empty($_POST['rb-report'])) $status = $this->_defineNameReport($_POST['rb-report']);
+            
             $table = $reports->table($_REQUEST['id'], $date);
             $name = $this->_setNameExport($status);
             
@@ -175,11 +177,29 @@ class SiteController extends Controller
             }
         }
         
+        private function _defineNameReport($name)
+        {
+            $return = '';
+            switch ($name) {
+                case '1': $return = 'Report - tickets open today'; break;
+                case '2': $return = 'Report - tickets pending yellow';  break;
+                case '3': $return = 'Report - tickets pending red';  break;
+                case '4': $return = 'Report - tickets pending without activity';  break;
+                case '5': $return = 'Report - tickets closed white';  break;
+                case '6': $return = 'Report - tickets closed yellow';  break;
+                case '7': $return = 'Report - tickets closed red';  break;
+                case '8': $return = 'Report - total tickets pendings';  break;
+                case '9': $return = 'Report - total tickets closed';  break;
+            }
+            return $return;
+        }
+        
         /**
          * Exportable email
          */
         public function actionMail()
         {
+//            print_r($_POST);exit;
             $mail = new EnviarEmail();
             $reports = new Export();
             $date = false;
@@ -187,6 +207,7 @@ class SiteController extends Controller
             
             if (isset($_POST['date']) && !empty($_POST['date'])) $date = $_POST['date'];
             if (isset($_POST['status']) && !empty($_POST['status'])) $status = $_POST['status'];
+            if (isset($_POST['rb-report']) && !empty($_POST['rb-report'])) $status = $this->_defineNameReport($_POST['rb-report']);
             
             $table = $reports->table($_POST['id'], $date);
             $name = $this->_setNameExport($status);
@@ -220,7 +241,7 @@ class SiteController extends Controller
         
         /**
          * Define el nombre que contendra el exportable dependiendo del status del ticket
-         * @param int $status
+         * @param int|string $status
          * @return string
          */
         private function _setNameExport($status)
@@ -230,7 +251,7 @@ class SiteController extends Controller
             } elseif ($status === '2') {
                 $string = 'Closed tickets';
             } else {
-                $string = 'report';
+                $string = $status;
             }
             return 'ETTS ' . $string . '-' . date('Y-m-d H-i-s');
         }

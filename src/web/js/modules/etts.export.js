@@ -9,26 +9,24 @@ $ETTS.export=(function(){
                   '</body></html>';
     /**
      * Petición ajax para los exportables
-     * @param {string} _url Url de la petición ajax
-     * @param {array} _id Los id's que se muestren en datatable
-     * @param {bool} _async Se especifica si es asincrono o no la petición ajax
-     * @param {function} _success Si se desea mandar una función al success del ajax
-     * @param {function} _beforesend Si se desea mandar una función al beforesend del ajax
-     * @param {int} _status Si es 1 son tickets abiertos, 2 para tickets cerrados
-     * @param {bool} print Si es true, se retorna lo que trae response
-     * @param {string} _date Fecha para determinar el lifetime y el color del ticket
+     * @param {object} settings Url de la petición ajax
      * @returns {jqXHR.responseText}
      */
-    function _xhr(_url, _id, _async, _success, _beforesend, _status, print, _date) {
+    function _xhr(settings) {
         var response = $.ajax({ 
                             type: 'POST',   
-                            url: _url,
-                            data:{id:_id, status:_status, date:_date},
-                            async: _async,
-                            success:_success,
-                            beforeSend:_beforesend
+                            url: settings.url,
+                            data:{
+                                'id':settings.id, 
+                                'status':settings.status, 
+                                'date':settings.date,
+                                'rb-report':settings.nameReport
+                            },
+                            async: settings.async,
+                            success:settings.success,
+                            beforeSend:settings.beforesend
                         }).responseText;
-        if (print === true) {
+        if (settings.print === true) {
             return response;
         }
     }
@@ -71,17 +69,16 @@ $ETTS.export=(function(){
     return {
         /**
          * Método para mostrar la vista de impresión
-         * @param {obj} element
-         * @param {string} url
-         * @param {int} status
-         * @param {string} date
+         * @param {object} settings
          * @returns {void}
          */
-        print:function(element, url, status, date) {
-            var ids = _getIds(element);
+        print:function(settings) {
+            settings.id = _getIds(settings.id);
             // Si hay datos en la tabla
-            if (ids.length > 0) {
-                var content = _head + _xhr(url, ids, false, null, null, status,  true, date) + _footer,
+            if (settings.id.length > 0) {
+                settings.success = null;
+                settings.beforesend = null;
+                var content = _head + _xhr(settings) + _footer,
                 newIframe = document.createElement('iframe');
                 newIframe.width = '0';
                 newIframe.height = '0';
@@ -116,28 +113,26 @@ $ETTS.export=(function(){
          */
         excelForm:function(form, input) {
             if (input.length > 0) {
-                _window('Generating excel...<h2><img src="/images/loader.GIF">');
-                form.submit();
-                setTimeout(function(){_window('The file has been generated');}, 3500);
+                _window('Generating excel... <br><img src="/images/loader.GIF">');
+                setTimeout(function(){_window('The file has been generated');}, 3000);
+                setTimeout(form.submit(), 1000);
             }
         },
         /**
          * Método para enviar mail
-         * @param {obj} element
-         * @param {string} url
-         * @param {int} status
-         * @returns {undefined}
+         * @param {object} settings
+         * @returns {void}
          */
-        mail:function(element, url, status, date) {
-            var ids = _getIds(element);
-            if (ids.length > 0) {
-                _xhr(url, 
-                    ids, 
-                    true, 
-                    function(data){_window('Success');}, 
-                    function(data){_window('Sending email...<h2><img src="/images/loader.GIF">');}, 
-                    status,
-                    date);
+        mail:function(settings) {
+            settings.id = _getIds(settings.id);
+            if (settings.id.length > 0) {
+                settings.success = function() {
+                                    _window('Success');
+                                   };
+                settings.beforesend = function() {
+                                        _window('Sending email...<h2><img src="/images/loader.GIF">');
+                                    };
+                _xhr(settings);
             }
         }
     };

@@ -54,7 +54,7 @@ class Export
                 if (TestedNumber::getNumber($tickets->id) != false) $contentTable .= '<td ' . $this->_cssTickets($tickets->color) . '>' . TestedNumber::getNumber($tickets->id)->idCountry->name . '</td>';
                 else $contentTable .= '<td ' . $this->_cssTickets($tickets->color) . '>&nbsp;</td>';
                 $contentTable .= '<td ' . $this->_cssTickets($tickets->color) . '>' . $tickets->date . ' / ' . $tickets->hour . '</td>';
-                $contentTable .= '<td ' . $this->_cssTickets($tickets->color) . '>' . substr($tickets->lifetime, 0, -3) . '</td>';
+                $contentTable .= '<td ' . $this->_cssTickets($tickets->color) . '>' . $tickets->lifetime . '</td>';
             $contentTable .= '</tr>';
         }
         return  $contentTable . '</tbody>';
