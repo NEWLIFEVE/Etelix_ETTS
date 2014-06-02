@@ -20,24 +20,40 @@ class Report extends Excel
      */
     public function genExcel($args) 
     {
-        $sheetName = array('Tickets a day', 'Total tickets');
+        $sheetName = array(
+            'Open today',
+            'Pending yellow',
+            'Pending red', 
+            'Without activity',
+            'Close white',
+            'Close yellow',
+            'Close red',
+            'Total pending',
+            'Total close'
+        );
+        
         foreach ($sheetName as $key => $value) {
             $params = array(
                 'nameSheet' => $value,
                 'index' => $key,
-                'method' => $this->_openTicketsOneDay($args)
+                'data' => $args
             );
             $this->_setData($params);
         }
-        $this->_phpExcel->setActiveSheetIndex(0);
+        
+        
+        $this->_phpExcel->setActiveSheetIndexByName($this->_matchSheetName($args['option']));
         $objWriter = PHPExcel_IOFactory::createWriter($this->_phpExcel, 'Excel2007');
-        $file = 'Tickets ' . date('Y-m-d His') . '.xlsx';
-        $this->_octetStream($objWriter, $file);
+        $file = 'ETTS Report '. $this->_matchSheetName($args['option']) . '-' . date('Y-m-d His') . '.xlsx';
+        if ($args['octetStream'] === true) {
+            $this->_octetStream($objWriter, $file);
+        }
         $objWriter->save('uploads' . DIRECTORY_SEPARATOR . $file);
         unset($this->objWriter);
         unset($this->_phpExcel);
         Yii::app()->end();
     }
+    
     
    /**
     * Generando los titulos de la hoja
@@ -82,24 +98,30 @@ class Report extends Excel
         $this->_setAutoSize();
         //cargo los datos en las celdas
         $i = 2;
-        foreach ($params['method'] as $key => $value) {
-            $gmt = $value->idGmt;
-            $country = TestedNumber::getNumber($value->id);
-            $this->_phpExcel->setActiveSheetIndex($params['index'])
-                ->setCellValue('A' . $i, ($key + 1))
-                ->setCellValue('B' . $i, $value->idFailure->name)
-                ->setCellValue('C' . $i, $value->idStatus->name)
-                ->setCellValue('D' . $i, $value->origination_ip)
-                ->setCellValue('E' . $i, $value->destination_ip)
-                ->setCellValue('F' . $i, $value->date)
-                ->setCellValue('G' . $i, $value->hour)
-                ->setCellValue('H' . $i, $value->machine_ip)
-                ->setCellValue('I' . $i, $gmt !== null ? $gmt->name : '')
-                ->setCellValue('J' . $i, $value->ticket_number)
-                ->setCellValue('K' . $i, $value->prefix)
-                ->setCellValue('L' . $i, $country !== false ? $country->idCountry->name : '')
-                ->setCellValue('M' . $i, $value->lifetime);
-            $i++;
+        
+        $data = $this->optionStatistics($params['index'], $params['data']['date'], $params['data']['carrier']);
+        if ($data !== null) {
+            foreach ($data as $key => $value) {
+                $gmt = $value->idGmt;
+                $country = TestedNumber::getNumber($value->id);
+                $this->_phpExcel->setActiveSheetIndex($params['index'])
+                    ->setCellValue('A' . $i, ($key + 1))
+                    ->setCellValue('B' . $i, $value->idFailure->name)
+                    ->setCellValue('C' . $i, $value->idStatus->name)
+                    ->setCellValue('D' . $i, $value->origination_ip)
+                    ->setCellValue('E' . $i, $value->destination_ip)
+                    ->setCellValue('F' . $i, $value->date)
+                    ->setCellValue('G' . $i, $value->hour)
+                    ->setCellValue('H' . $i, $value->machine_ip)
+                    ->setCellValue('I' . $i, $gmt !== null ? $gmt->name : '')
+                    ->setCellValue('J' . $i, $value->ticket_number)
+                    ->setCellValue('K' . $i, $value->prefix)
+                    ->setCellValue('L' . $i, $country !== false ? $country->idCountry->name : '')
+                    ->setCellValue('M' . $i, $value->lifetime);
+                $row = $key + 2;
+                $this->_setStyleBody('A' . $row. ':M' . $row, $value->color);       
+                $i++;
+            }
         }
     }
 
@@ -113,7 +135,7 @@ class Report extends Excel
             'font' => array(
                 'bold' => true,
                 'color' => array(
-                    'argb' => 'FF62C25E'
+                    'argb' => '808080'
                 ),
             ),
             'aligment' => array(
@@ -121,7 +143,7 @@ class Report extends Excel
             ),
             'borders' => array(
                 'allborders' => array(
-                    'style' => PHPExcel_Style_Border::BORDER_THICK,
+                    'style' => PHPExcel_Style_Border::BORDER_NONE,
                     'color' => array(
                         'argb' => '00000000',
                     )
@@ -130,12 +152,44 @@ class Report extends Excel
             'fill' => array(
                 'type' => PHPExcel_Style_Fill::FILL_SOLID,
                 'startcolor' => array(
-                    'argb' => 'FF615E5E',
+                    'argb' => 'C0C0C0',
                 ),
             )
         );
         
         $this->_phpExcel->getActiveSheet()->getStyle('A1:M1')->applyFromArray($style);
+    }
+    
+    private function _setStyleBody($cell, $color)
+    {
+        $color = $this->_cssTickets($color);
+        $style = array(
+            'font' => array(
+                'bold' => true,
+                'color' => array(
+                    'argb' => '808080'
+                ),
+            ),
+            'aligment' => array(
+                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+            ),
+            'borders' => array(
+                'allborders' => array(
+                    'style' => PHPExcel_Style_Border::BORDER_NONE,
+                    'color' => array(
+                        'argb' => '00000000',
+                    )
+                )
+            ),
+            'fill' => array(
+                'type' => PHPExcel_Style_Fill::FILL_SOLID,
+                'startcolor' => array(
+                    'argb' => $color,
+                ),
+            )
+        );
+        
+        $this->_phpExcel->getActiveSheet()->getStyle($cell)->applyFromArray($style);
     }
     
     /**
@@ -158,16 +212,6 @@ class Report extends Excel
         $this->_phpExcel->getActiveSheet()->getColumnDimension('M')->setAutoSize(true);
     }
     
-    /**
-     * Método para retornar el total de los tickets
-     * @param int $index
-     */
-    private function _totalRows($index) 
-    {
-        $this->_phpExcel->setActiveSheetIndex($index)
-                ->setCellValue('L' . ($this->_count + 3), 'Total')
-                ->setCellValue('M' . ($this->_count + 3), $this->_count);
-    }
         
     /**
      * Metodo para soltar el excel en pantalla
@@ -360,5 +404,80 @@ class Report extends Excel
         $query .= " $begin WHERE lifetime >= '1 days'::interval AND lifetime < '2 days'::interval AND substr(close_ticket::text, 1, 10) <= '$date' $selectCarrier UNION ";
         $query .= " $begin WHERE lifetime < '1 days'::interval AND substr(close_ticket::text, 1, 10) = '$date' $selectCarrier ORDER BY id ASC";
         return Ticket::model()->findAllBySql($query);
+    }
+    
+    /**
+     * Retorna los tickets dependiendo de la categoria
+     * @param int $option La categoría 
+     * @param string $date Fecha que se realiza la consulta
+     * @param string $carrier Si se busca por carrier
+     * @return null|array
+     */
+    public function optionStatistics($option, $date, $carrier)
+    {
+        switch ($option) {
+            // Open Today
+            case '0': $statistcs = $this->openOrClose($date, 'white', 'open', $carrier); break;
+            // Pending Yellow
+            case '1': $statistcs = $this->openOrClose($date, 'yellow', 'open', $carrier); break;
+            // Pending Red
+            case '2': $statistcs = $this->openOrClose($date, 'red', 'open', $carrier); break;
+            // Pending without activity
+            case '3': $statistcs = $this->withoutDescription($date, $carrier); break;
+            // Close white
+            case '4': $statistcs = $this->openOrClose($date, 'white', 'close', $carrier); break;
+            // Close yellow
+            case '5': $statistcs = $this->openOrClose($date, 'yellow', 'close', $carrier); break;
+            // Close red
+            case '6': $statistcs = $this->openOrClose($date, 'red', 'close', $carrier); break;
+            // Total tickets open
+            case '7': $statistcs = $this->totalTicketsPending($date, $carrier); break;
+            // Total tickets closed
+            case '8': $statistcs = $this->totalTicketsClosed($date, $carrier); break;
+        }
+            
+        
+        if ($statistcs !== null) {
+            return $statistcs;
+        }
+        
+        return null;
+    }
+    
+    /**
+     * Retorna el nombre del reporte, este debe ser igual al de la hoja excel
+     * @param int $option Categoría seleccionada
+     * @return string
+     */
+    private function _matchSheetName($option)
+    {
+        switch ($option) {
+            case '0': return 'Open today';  break;
+            case '1': return 'Pending yellow';  break;
+            case '2': return 'Pending red';  break;
+            case '3': return 'Without activity';  break;
+            case '4': return 'Close white';  break;
+            case '5': return 'Close yellow';  break;
+            case '6': return 'Close red';  break;
+            case '7': return 'Total pending';  break;
+            case '8': return 'Total close';  break;
+            default : 'Open today'; break;
+        }
+    }
+    
+    /**
+     * Define  el color del reporte dependiendo la categoria y el lifetime del ticket
+     * @param string $color
+     * @return string
+     */
+    private function _cssTickets($color)
+    {
+        $style = '';
+        switch ($color) {
+            case '#FFF':    $style = 'FFFFFF'; break;
+            case '#FFDC51': $style = 'FFFF99'; break;
+            case '#EEB8B8': $style = 'FF8080';  break;
+        }
+        return $style;
     }
 }

@@ -127,15 +127,7 @@ class SiteController extends Controller
 		Yii::app()->user->logout();
 		$this->redirect(Yii::app()->homeUrl);
 	}
-        
-        public function actionOpenticketsoneday()
-        {
-            Yii::import('webroot.protected.components.reports.Report');
-            $report = new Report(365);
-            $report->genExcel();
-            Yii::app()->end();
-        }
-                
+                        
         /**
          * Exportable de imprimir
          */
@@ -177,6 +169,39 @@ class SiteController extends Controller
             }
         }
         
+        /**
+         * Exportable en formato .xls con el componente yii excel
+         */
+        public function actionYiiexcel()
+        {
+            Yii::import('webroot.protected.components.reports.Report');
+            $report = new Report;
+            
+            $date = date('Y-m-d');
+            $option = '0';
+            $carrier = 'both';
+        
+            if (isset($_POST['date']) && !empty($_POST['date'])) $date = $_POST['date'];
+            if (isset($_POST['rb-report']) && !empty($_POST['rb-report'])) $option = $_POST['rb-report'];
+            if (isset($_POST['carrier']) && !empty($_POST['carrier'])) $carrier = $_POST['carrier'];
+        
+            
+            if (isset($option)) {
+                $args = array(
+                    'date' => $date,
+                    'option' => $option,
+                    'carrier' => $carrier,
+                    'octetStream' => true
+                );
+                $report->genExcel($args);
+            }
+        }
+        
+        /**
+         * Nombre de los exportables en statistics
+         * @param int $name El tipo de exportable que se ha seleccionado
+         * @return string
+         */
         private function _defineNameReport($name)
         {
             $return = '';
@@ -194,12 +219,12 @@ class SiteController extends Controller
             return $return;
         }
         
+        
         /**
          * Exportable email
          */
         public function actionMail()
         {
-//            print_r($_POST);exit;
             $mail = new EnviarEmail();
             $reports = new Export();
             $date = false;
@@ -216,7 +241,7 @@ class SiteController extends Controller
                 $mail->enviar($table, Yii::app()->user->email, '', $name, 'uploads/' . $name . '.xls');
             }
         }
-        
+                
         /**
          * Escribe el archivo excel
          * @param string $name

@@ -124,20 +124,6 @@ class Export
      */
     private function _thead()
     {
-        /*
-         * Descomentar para generar dinámicamente los th
-        if (CrugeAuthassignment::getRoleUser() === 'C') {
-            $data = array('Type', 'Ticket Number', 'Failure', 'Country', 'Created', 'Lifetime');
-        } else {
-            $data = array('Type', 'User', 'Carrier', 'Ticket Number', 'Failure', 'Country', 'Created', 'Lifetime');
-        }
-        $count = count($data);
-        $thead = '<thead><tr ' . $this->_cssThead . ' >';
-        for ($i = 0; $i < $count; $i++) {
-            $thead .= '<th ' . $this->_cssTh . ' >' . $data[$i] . '</th>';
-        }
-        $thead .= '</tr></thead>';
-         */
         $thead = '<thead><tr>';
         if (CrugeAuthassignment::getRoleUser() === 'C') {
             $thead .= '<th ' . $this->_cssTh . ' width:10%;" >Type</th>';

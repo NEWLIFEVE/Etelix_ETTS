@@ -1,5 +1,5 @@
 <?php
-Yii::import('webroot.protected.extensions.phpexcel.Classes.PHPExcel');
+//Yii::import('webroot.protected.extensions.phpexcel.Classes.PHPExcel');
 abstract class Excel
 {
     protected $_phpExcel;

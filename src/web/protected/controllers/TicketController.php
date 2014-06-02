@@ -193,15 +193,15 @@ class TicketController extends Controller
      */
     public function actionDatatable()
     {
+                
         $date = date('Y-m-d');
-        $option = '1';
+        $option = '0';
         $carrier = 'both';
         
         if (isset($_REQUEST['date']) && !empty($_REQUEST['date'])) $date = $_REQUEST['date'];
         if (isset($_REQUEST['option']) && !empty($_REQUEST['option'])) $option = $_REQUEST['option'];
         if (isset($_REQUEST['carrier']) && !empty($_REQUEST['carrier'])) $carrier = $_REQUEST['carrier'];
-        
-                
+       
         $data = $this->_optionStatistics($option, $date, $carrier);
         
         if ($data !== null) {
@@ -222,30 +222,8 @@ class TicketController extends Controller
     {
         Yii::import('webroot.protected.components.reports.Report');
         $report = new Report;
-        $statistcs = null;
+        $statistcs = $report->optionStatistics($option, $date, $carrier);
         $data = null;
-        
-        switch ($option) {
-            // Open Today
-            case '1': $statistcs = $report->openOrClose($date, 'white', 'open', $carrier); break;
-            // Pending Yellow
-            case '2': $statistcs = $report->openOrClose($date, 'yellow', 'open', $carrier); break;
-            // Pending Red
-            case '3': $statistcs = $report->openOrClose($date, 'red', 'open', $carrier); break;
-            // Pending without activity
-            case '4': $statistcs = $report->withoutDescription($date, $carrier); break;
-            // Close white
-            case '5': $statistcs = $report->openOrClose($date, 'white', 'close', $carrier); break;
-            // Close yellow
-            case '6': $statistcs = $report->openOrClose($date, 'yellow', 'close', $carrier); break;
-            // Close red
-            case '7': $statistcs = $report->openOrClose($date, 'red', 'close', $carrier); break;
-            // Total tickets open
-            case '8': $statistcs = $report->totalTicketsPending($date, $carrier); break;
-            // Total tickets closed
-            case '9': $statistcs = $report->totalTicketsClosed($date, $carrier); break;
-        }
-            
         
         if ($statistcs !== null) {
             foreach ($statistcs as $value) {
