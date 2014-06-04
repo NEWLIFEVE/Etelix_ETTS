@@ -27,7 +27,7 @@ abstract class Excel
     /**
      * Estilos de los títulos
      */
-    protected abstract function _setStyleHeader();
+    protected abstract function _setStyleHeader($cell);
     
     /**
      * Auto ajustar el tamaño de las columnas

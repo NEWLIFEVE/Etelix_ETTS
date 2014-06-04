@@ -128,15 +128,15 @@ function changeBackground()
     var radio = $('input[type="radio"]:checked').val();
     
     switch(radio) {
-        case '0': case '4': $('#tbl-datatable tr').css('background', '#FFF'); break;
+        case '1': case '5': $('#tbl-datatable tr').css('background', '#FFF'); break;
 
-        case '1': case '5': $('#tbl-datatable tr').css('background', '#FFDC51'); break;
+        case '2': case '6': $('#tbl-datatable tr').css('background', '#FFDC51'); break;
 
-        case '2': case '6': $('#tbl-datatable tr').css('background', '#EEB8B8'); break;
+        case '3': case '7': $('#tbl-datatable tr').css('background', '#EEB8B8'); break;
         
-        case '3': 
-        case '7': 
-        case '8':
+        case '4': 
+        case '8': 
+        case '9':
             $('#tbl-datatable tbody tr').each(function(i){
                 $('#tbl-datatable tbody tr')
                         .eq(i)

@@ -195,7 +195,7 @@ class TicketController extends Controller
     {
                 
         $date = date('Y-m-d');
-        $option = '0';
+        $option = '1';
         $carrier = 'both';
         
         if (isset($_REQUEST['date']) && !empty($_REQUEST['date'])) $date = $_REQUEST['date'];
@@ -258,27 +258,17 @@ class TicketController extends Controller
         
         if (isset($_POST['date']) && !empty($_POST['date'])) $date = $_POST['date'];
         if (isset($_POST['carrier']) && !empty($_POST['carrier'])) $carrier = $_POST['carrier'];
-        
-        $ticketCloseWhite = count($report->openOrClose($date, 'white', 'close', $carrier));
-        $ticketPendingWhite = count($report->openOrClose($date, 'white', 'open', $carrier));
-        $ticketCloseYellow = count($report->openOrClose($date, 'yellow', 'close', $carrier));
-        $ticketPendingYellow = count($report->openOrClose($date, 'yellow', 'open', $carrier));
-        $ticketCloseRed = count($report->openOrClose($date, 'red', 'close', $carrier));
-        $ticketPendingRed = count($report->openOrClose($date, 'red', 'open', $carrier));
-        $ticketWithoutDescription = count($report->withoutDescription($date, $carrier));
-        $totalPending = count($report->totalTicketsPending($date, $carrier));
-        $totalClosed = count($report->totalTicketsClosed($date, $carrier));
-        
+               
         $data = array(
-            'ticketCloseWhite' => $ticketCloseWhite,
-            'ticketPendingWhite' => $ticketPendingWhite,
-            'ticketCloseYellow' => $ticketCloseYellow,
-            'ticketPendingYellow' => $ticketPendingYellow,
-            'ticketCloseRed' => $ticketCloseRed,
-            'ticketPendingRed' => $ticketPendingRed,
-            'ticketWithoutDescription' => $ticketWithoutDescription,
-            'totalPending' => $totalPending,
-            'totalClosed' => $totalClosed
+            'ticketCloseWhite' => count($report->openOrClose($date, 'white', 'close', $carrier)),
+            'ticketPendingWhite' => count($report->openOrClose($date, 'white', 'open', $carrier)),
+            'ticketCloseYellow' => count($report->openOrClose($date, 'yellow', 'close', $carrier)),
+            'ticketPendingYellow' => count($report->openOrClose($date, 'yellow', 'open', $carrier)),
+            'ticketCloseRed' => count($report->openOrClose($date, 'red', 'close', $carrier)),
+            'ticketPendingRed' => count($report->openOrClose($date, 'red', 'open', $carrier)),
+            'ticketWithoutDescription' => count($report->withoutDescription($date, $carrier)),
+            'totalPending' => count($report->totalTicketsPending($date, $carrier)),
+            'totalClosed' => count($report->totalTicketsClosed($date, $carrier))
         );
         
         echo CJSON::encode($data);
