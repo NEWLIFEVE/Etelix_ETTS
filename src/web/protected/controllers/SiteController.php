@@ -191,11 +191,70 @@ class SiteController extends Controller
                     'date' => $date,
                     'option' => $option,
                     'carrier' => $carrier,
-                    'octetStream' => true
+                    'octetStream' => true,
+                    'nameReport' => 'ETTS Report '. $this->_matchSheetName($option) . '-' . date('Y-m-d His') . '.xlsx'
                 );
                 $report->genExcel($args);
             }
         }
+        
+        /**
+         * Exportable en formato .xls con el componente yii excel
+         */
+        public function actionMailyiiexcel()
+        {
+            Yii::import('webroot.protected.components.reports.Report');
+            $report = new Report;
+            $export = new Export;
+            
+            $date = date('Y-m-d');
+            $option = '0';
+            $carrier = 'both';
+        
+            if (isset($_POST['date']) && !empty($_POST['date'])) $date = $_POST['date'];
+            if (isset($_POST['rb-report']) && !empty($_POST['rb-report'])) $option = $_POST['rb-report'];
+            if (isset($_POST['carrier']) && !empty($_POST['carrier'])) $carrier = $_POST['carrier'];
+        
+            
+            if (isset($option)) {
+                $nameReport = 'ETTS Report '. $this->_matchSheetName($option) . '-' . date('Y-m-d His');
+                $args = array(
+                    'date' => $date,
+                    'option' => $option,
+                    'carrier' => $carrier,
+                    'octetStream' => false,
+                    'nameReport' => $nameReport . '.xlsx'
+                );
+                $report->genExcel($args);
+                
+                $table = $export->table($_POST['id'], $date);
+                if ($table !== null) {
+                    $mail = new EnviarEmail;
+                    $mail->enviar($table, Yii::app()->user->email, '', $nameReport, 'uploads/' . $nameReport . '.xlsx');   
+                } 
+            }
+        }
+        
+        /**
+        * Retorna el nombre del reporte, este debe ser igual al de la hoja excel
+        * @param int $option Categoría seleccionada
+        * @return string
+        */
+        private function _matchSheetName($option)
+        {
+            switch ($option) {
+                case '1': return 'Open today';  break;
+                case '2': return 'Pending yellow';  break;
+                case '3': return 'Pending red';  break;
+                case '4': return 'Without activity';  break;
+                case '5': return 'Close white';  break;
+                case '6': return 'Close yellow';  break;
+                case '7': return 'Close red';  break;
+                case '8': return 'Total pending';  break;
+                case '9': return 'Total close';  break;
+                default : 'Open today'; break;
+            }
+        }        
         
         /**
          * Nombre de los exportables en statistics
@@ -226,7 +285,7 @@ class SiteController extends Controller
         public function actionMail()
         {
             $mail = new EnviarEmail();
-            $reports = new Export();
+            $export = new Export();
             $date = false;
             $status = '';
             
@@ -234,7 +293,7 @@ class SiteController extends Controller
             if (isset($_POST['status']) && !empty($_POST['status'])) $status = $_POST['status'];
             if (isset($_POST['rb-report']) && !empty($_POST['rb-report'])) $status = $this->_defineNameReport($_POST['rb-report']);
             
-            $table = $reports->table($_POST['id'], $date);
+            $table = $export->table($_POST['id'], $date);
             $name = $this->_setNameExport($status);
             if ($table !== null) {
                 $this->_writeFile($name, $table);

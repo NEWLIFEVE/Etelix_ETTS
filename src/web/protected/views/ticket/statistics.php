@@ -157,7 +157,7 @@
         </span>
     </a>
     
-    <a class='itemreporte' href='javascript:void(0)' id='mail-btn' rel="/site/mail" title="Send tickets by email">
+    <a class='itemreporte' href='javascript:void(0)' id='mail-btn' rel="/site/mailyiiexcel" title="Send tickets by email">
         <span class='reporte'>
             <span class="text-visible"><img src="/images/mail.png" width="43" height="33"></span>
         </span>

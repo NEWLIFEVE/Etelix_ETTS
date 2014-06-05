@@ -46,9 +46,10 @@ class Report extends Excel
         // Se setea una hoja nueva que contendrá el resumen de los tickets
         $this->_setSummary($args);
         
-        $this->_phpExcel->setActiveSheetIndexByName($this->_matchSheetName($args['option']));
+        // Activamos la hoja dependiendo del radiobutton que sea seleccioando
+        $this->_phpExcel->setActiveSheetIndex($args['option']);
         $objWriter = PHPExcel_IOFactory::createWriter($this->_phpExcel, 'Excel2007');
-        $file = 'ETTS Report '. $this->_matchSheetName($args['option']) . '-' . date('Y-m-d His') . '.xlsx';
+        $file = $args['nameReport'];
         if ($args['octetStream'] === true) {
             $this->_octetStream($objWriter, $file);
         }
@@ -56,7 +57,7 @@ class Report extends Excel
         $objWriter->save('uploads' . DIRECTORY_SEPARATOR . $file);
         unset($this->objWriter);
         unset($this->_phpExcel);
-        Yii::app()->end();
+        
     }
     
     /**
@@ -68,6 +69,8 @@ class Report extends Excel
         $sheet = new PHPExcel_Worksheet($this->_phpExcel, 'Summary');
         $this->_phpExcel->addSheet($sheet, 0);
         $this->_phpExcel->setActiveSheetIndexByName('Summary');
+        $this->_phpExcel->setActiveSheetIndexByName('Summary')->mergeCells('A1:B1');
+        $this->_phpExcel->setActiveSheetIndexByName('Summary')->mergeCells('C1:D1');
         
         $titles = array(
             'A' => 'Category',
@@ -77,46 +80,64 @@ class Report extends Excel
         );
         
         foreach ($titles as $key => $value) {
-            $this->_phpExcel->getActiveSheet()->setCellValue($key . '1', $value);
+            $this->_phpExcel->getActiveSheet()->setCellValue($key . '2', $value);
         }
         
-        $this->_setStyleHeader('A1:D1');
-        $this->_setStyleBody('A2:D2', '#FFF');
-        $this->_setStyleBody('A3:D3', '#FFDC51');
-        $this->_setStyleBody('A4:D4', '#EEB8B8');
-        $this->_setStyleBody('A5:D5', '');
+        $this->_setStyleHeader('A2:D2');
+        $this->_setStyleBody('A3:D3', '#FFF');
+        $this->_setStyleBody('A4:D4', '#FFDC51');
+        $this->_setStyleBody('A5:D5', '#EEB8B8');
+        $this->_setStyleBody('A6:D6', '');
+        $this->_phpExcel
+                ->getActiveSheet()
+                ->getStyle('A8:D8')
+                ->getFill()
+                ->applyFromArray(
+                    array(
+                        'type' => PHPExcel_Style_Fill::FILL_SOLID,
+                        'startcolor' => array('argb' => 'C0C0C0')
+                    )
+                );
+        $this->_phpExcel->getActiveSheet()->getStyle('B8')->getFont()->setBold(true);
+        $this->_phpExcel->getActiveSheet()->getStyle('D8')->getFont()->setBold(true);
         
-        $this->_phpExcel->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
-        $this->_phpExcel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
-        $this->_phpExcel->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
-        $this->_phpExcel->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
+        $this->_phpExcel->getActiveSheet()->getRowDimension('1')->setRowHeight(90);
+        $this->_phpExcel->getActiveSheet()->getStyle('C1:D1')->getFont()->setSize(42);
+        $this->_phpExcel->getActiveSheet()->getColumnDimension('A')->setWidth(28);
+        $this->_phpExcel->getActiveSheet()->getColumnDimension('B')->setWidth(10);
+        $this->_phpExcel->getActiveSheet()->getColumnDimension('C')->setWidth(25);
+        $this->_phpExcel->getActiveSheet()->getColumnDimension('D')->setWidth(10);
         
+        $this->_getLogo();
+        
+        $this->_backgroundLogo('A1:D1');
         
         $this->_phpExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A2', 'Open today')
-                    ->setCellValue('B2', count($this->openOrClose($args['date'], 'white', 'open', $args['carrier'])))
-                    ->setCellValue('C2', 'Closed white')
-                    ->setCellValue('D2', count($this->openOrClose($args['date'], 'white', 'close', $args['carrier'])))
+                    ->setCellValue('C1', 'Summary')
+                    ->setCellValue('A3', 'Open today')
+                    ->setCellValue('B3', count($this->openOrClose($args['date'], 'white', 'open', $args['carrier'])))
+                    ->setCellValue('C3', 'Closed white')
+                    ->setCellValue('D3', count($this->openOrClose($args['date'], 'white', 'close', $args['carrier'])))
                 
-                    ->setCellValue('A3', 'Pending yellow')
-                    ->setCellValue('B3', count($this->openOrClose($args['date'], 'yellow', 'open', $args['carrier'])))
-                    ->setCellValue('C3', 'Closed yellow')
-                    ->setCellValue('D3', count($this->openOrClose($args['date'], 'yellow', 'close', $args['carrier'])))
+                    ->setCellValue('A4', 'Pending yellow')
+                    ->setCellValue('B4', count($this->openOrClose($args['date'], 'yellow', 'open', $args['carrier'])))
+                    ->setCellValue('C4', 'Closed yellow')
+                    ->setCellValue('D4', count($this->openOrClose($args['date'], 'yellow', 'close', $args['carrier'])))
                 
-                    ->setCellValue('A4', 'Pending red')
-                    ->setCellValue('B4', count($this->openOrClose($args['date'], 'red', 'open', $args['carrier'])))
-                    ->setCellValue('C4', 'Closed red')
-                    ->setCellValue('D4', count($this->openOrClose($args['date'], 'red', 'close', $args['carrier'])))
+                    ->setCellValue('A5', 'Pending red')
+                    ->setCellValue('B5', count($this->openOrClose($args['date'], 'red', 'open', $args['carrier'])))
+                    ->setCellValue('C5', 'Closed red')
+                    ->setCellValue('D5', count($this->openOrClose($args['date'], 'red', 'close', $args['carrier'])))
                 
-                    ->setCellValue('A5', 'Pending without activity')
-                    ->setCellValue('B5', count($this->withoutDescription($args['date'], $args['carrier'])))
-                    ->setCellValue('C5', '')
-                    ->setCellValue('D5', '')
+                    ->setCellValue('A6', 'Pending without activity')
+                    ->setCellValue('B6', count($this->withoutDescription($args['date'], $args['carrier'])))
+                    ->setCellValue('C6', '')
+                    ->setCellValue('D6', '')
                 
-                    ->setCellValue('A7', 'Total tickets pending')
-                    ->setCellValue('B7', count($this->totalTicketsPending($args['date'], $args['carrier'])))
-                    ->setCellValue('C7', 'Total tickets closed')
-                    ->setCellValue('D7', count($this->totalTicketsClosed($args['date'], $args['carrier'])));
+                    ->setCellValue('A8', 'Total tickets pending')
+                    ->setCellValue('B8', count($this->totalTicketsPending($args['date'], $args['carrier'])))
+                    ->setCellValue('C8', 'Total tickets closed')
+                    ->setCellValue('D8', count($this->totalTicketsClosed($args['date'], $args['carrier'])));
         
     }
     
@@ -128,18 +149,15 @@ class Report extends Excel
     {
         $titles = array(
             'A' => 'N°',
-            'B' => 'Failure',
-            'C' => 'Status',
-            'D' => 'Origination ip',
-            'E' => 'Destination ip',
-            'F' => 'Date',
-            'G' => 'Hour',
-            'H' => 'Machine ip',
-            'I' => 'Gmt',
-            'J' => 'Ticket Number',
-            'K' => 'Prefix',
-            'L' => 'Country',
-            'M' => 'Lifetime',
+            'B' => 'Type',
+            'C' => 'User',
+            'D' => 'Carrier',
+            'E' => 'Ticket Number',
+            'F' => 'Failure',
+            'G' => 'Country',
+            'H' => 'Created',
+            'I' => 'Closed',
+            'J' => 'Lifetime',
         );
         foreach ($titles as $key => $value) {
             $i = 2;
@@ -157,14 +175,14 @@ class Report extends Excel
         $this->_phpExcel->addSheet($sheet, $params['index']);
         $this->_phpExcel->setActiveSheetIndexByName($params['nameSheet']);
         $this->_phpExcel->setActiveSheetIndexByName($params['nameSheet'])->mergeCells('A1:C1');
-        $this->_phpExcel->setActiveSheetIndexByName($params['nameSheet'])->mergeCells('D1:M1');
+        $this->_phpExcel->setActiveSheetIndexByName($params['nameSheet'])->mergeCells('D1:J1');
         
         $this->_phpExcel->getActiveSheet()->freezePane('A3');
         
         //Asigno los nombres de las columnas al principio
         $this->_setTitle();
         //Asigno colores a la segunda fila
-        $this->_setStyleHeader('A2:M2');
+        $this->_setStyleHeader('A2:J2');
         //Habilito un  auto tamaño en las columnas
         $this->_setAutoSize();
         
@@ -172,45 +190,47 @@ class Report extends Excel
         // La data que contendrá las hojas dependiendo de la categoria
         $data = $this->optionStatistics(($params['index'] + 1), $params['data']['date'], $params['data']['carrier']);
         if ($data !== null) {
-            $this->_phpExcel->getActiveSheet()->setAutoFilter('A2:M2');
-            
-            // Colocamos un logo a las hojas
-            $objDrawing = new PHPExcel_Worksheet_Drawing();
-            $objDrawing->setName('Logo');
-            $objDrawing->setDescription('Logo');
-            $objDrawing->setPath('images/logo.jpg');
-
-            $objDrawing->setCoordinates('A1');
-            $objDrawing->setHeight(200);
-            $objDrawing->setWidth(250);
-            $objDrawing->setWorksheet($this->_phpExcel->getActiveSheet());
-            
+            $this->_phpExcel->getActiveSheet()->setAutoFilter('A2:J2');
+            // Seteamos el logo
+            $this->_getLogo();
             // Definiendo un Subtitulo para la hoja
             $this->_getSubTitleHeader($params['index'], $params['nameSheet']);
             foreach ($data as $key => $value) {
-                $gmt = $value->idGmt;
-                $country = TestedNumber::getNumber($value->id);
                 $this->_phpExcel->setActiveSheetIndex($params['index'])
                     ->setCellValue('A' . $i, ($key + 1))
-                    ->setCellValue('B' . $i, $value->idFailure->name)
-                    ->setCellValue('C' . $i, $value->idStatus->name)
-                    ->setCellValue('D' . $i, $value->origination_ip)
-                    ->setCellValue('E' . $i, $value->destination_ip)
-                    ->setCellValue('F' . $i, $value->date)
-                    ->setCellValue('G' . $i, $value->hour)
-                    ->setCellValue('H' . $i, $value->machine_ip)
-                    ->setCellValue('I' . $i, $gmt !== null ? $gmt->name : '')
-                    ->setCellValue('J' . $i, $value->ticket_number)
-                    ->setCellValue('K' . $i, $value->prefix)
-                    ->setCellValue('L' . $i, $country !== false ? $country->idCountry->name : '')
-                    ->setCellValue('M' . $i, $value->lifetime);
+                    ->setCellValue('B' . $i, $value->carrier)
+                    ->setCellValue('C' . $i, $value->user_open_ticket != null ? $value->idUser->username : Carrier::getCarriers(true, $value->id))
+                    ->setCellValue('D' . $i, Carrier::getCarriers(true, $value->id))
+                    ->setCellValue('E' . $i, $value->ticket_number)
+                    ->setCellValue('F' . $i, $value->idFailure->name)
+                    ->setCellValue('G' . $i, TestedNumber::getNumber($value->id) != false ? TestedNumber::getNumber($value->id)->idCountry->name : '')
+                    ->setCellValue('H' . $i, $value->date . '/' . $value->hour)
+                    ->setCellValue('I' . $i, $value->close_ticket)
+                    ->setCellValue('J' . $i, $value->lifetime);
                 $row = $key + 3;
-                $this->_setStyleBody('A' . $row. ':M' . $row, $value->color);       
+                $this->_setStyleBody('A' . $row. ':J' . $row, $value->color);       
                 $i++;
             }
         }
     }
     
+    /**
+     * Logo de las hojas
+     */
+    private function _getLogo()
+    {
+        // Colocamos un logo a las hojas
+        $objDrawing = new PHPExcel_Worksheet_Drawing();
+        $objDrawing->setName('Logo');
+        $objDrawing->setDescription('Logo');
+        $objDrawing->setPath('images/logo.jpg');
+
+        $objDrawing->setCoordinates('A1');
+        $objDrawing->setHeight(200);
+        $objDrawing->setWidth(250);
+        $objDrawing->setWorksheet($this->_phpExcel->getActiveSheet());
+    }
+
     /**
      * Define un subtitulo para cada hoja dependiendo su categoria
      * @param int $index La posición de la hoja
@@ -219,10 +239,16 @@ class Report extends Excel
     private function _getSubTitleHeader($index, $title)
     {
         $this->_phpExcel->getActiveSheet()->getRowDimension('1')->setRowHeight(90);
-        $this->_phpExcel->getActiveSheet()->getStyle('D1:M1')->getFont()->setSize(42);
+        $this->_phpExcel->getActiveSheet()->getStyle('D1:J1')->getFont()->setSize(42);
+        $this->_backgroundLogo('A1:J1');
+        $this->_phpExcel->setActiveSheetIndex($index)->setCellValue('D1', $title);
+    }
+    
+    private function _backgroundLogo($cell)
+    {
         $this->_phpExcel
                 ->getActiveSheet()
-                ->getStyle('A1:M1')
+                ->getStyle($cell)
                 ->applyFromArray(
                         array(
                             'borders' => array(
@@ -238,7 +264,6 @@ class Report extends Excel
                             )
                         )
                 );
-        $this->_phpExcel->setActiveSheetIndex($index)->setCellValue('D1', $title);
     }
     
     /**
@@ -329,9 +354,6 @@ class Report extends Excel
         $this->_phpExcel->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
         $this->_phpExcel->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
         $this->_phpExcel->getActiveSheet()->getColumnDimension('J')->setAutoSize(true);
-        $this->_phpExcel->getActiveSheet()->getColumnDimension('K')->setAutoSize(true);
-        $this->_phpExcel->getActiveSheet()->getColumnDimension('L')->setAutoSize(true);
-        $this->_phpExcel->getActiveSheet()->getColumnDimension('M')->setAutoSize(true);
     }
     
         
@@ -570,26 +592,7 @@ class Report extends Excel
         return null;
     }
     
-    /**
-     * Retorna el nombre del reporte, este debe ser igual al de la hoja excel
-     * @param int $option Categoría seleccionada
-     * @return string
-     */
-    private function _matchSheetName($option)
-    {
-        switch ($option) {
-            case '1': return 'Open today';  break;
-            case '2': return 'Pending yellow';  break;
-            case '3': return 'Pending red';  break;
-            case '4': return 'Without activity';  break;
-            case '5': return 'Close white';  break;
-            case '6': return 'Close yellow';  break;
-            case '7': return 'Close red';  break;
-            case '8': return 'Total pending';  break;
-            case '9': return 'Total close';  break;
-            default : 'Open today'; break;
-        }
-    }
+    
     
     /**
      * Define  el color del reporte dependiendo la categoria y el lifetime del ticket
