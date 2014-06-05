@@ -180,7 +180,7 @@ class TicketController extends Controller
      * Renderiza la vista de los reportes con datatable
      */
     public function actionStatistics() 
-    {  
+    {          
         Script::registerDataTable();
         Script::registerModules(array('ajax', 'export'));
         Script::registerJsAction();

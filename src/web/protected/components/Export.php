@@ -37,6 +37,69 @@ class Export
         return $table;
     }
     
+    public function tableSummary($carrier = 'both', $date = false)
+    {
+        Yii::import('webroot.protected.components.reports.Report');
+        $report = new Report;
+        if ($date === false) {
+            $date = date('Y-m-d');
+        } else {
+            $date = $date;
+        }
+        
+        $th = 'style="padding:3px 7px; background: #e6e6e6;color:#555;border: 1px solid #d3d3d3; font-weight: normal;"';
+        $white = 'style="background: #FFF; padding:3px 7px;"';
+        $yellow = 'style="background: #FFDC51; padding:3px 7px;"';
+        $red = 'style="background: #EEB8B8; padding:3px 7px;"';
+        $without = 'style="background: #FDFFDF; padding:3px 7px; border-bottom:4px solid #d3d3d3;"';
+        
+        $table = '<table width="100%" border="0" cellspacing="0">';
+            $table .= '<caption>Ticket Summary '.$date.'</caption>';
+            $table .= '<thead>'
+                        . '<tr>'
+                            . '<th '.$th.'>Category</th>'
+                            . '<th '.$th.'>Total</th>'
+                            . '<th '.$th.'>Category</th>'
+                            . '<th '.$th.'>Total</th>'
+                        . '</tr>'
+                    . '</thead>';
+            $table .= '<tbody>'
+                        . '<tr>'
+                            . '<td '.$white.'>Open today</td>'
+                            . '<td '.$white.'>' . count($report->openOrClose($date, 'white', 'open', $carrier)) . '</td>'
+                            . '<td '.$white.'>Closed white</td>'
+                            . '<td '.$white.'>' . count($report->openOrClose($date, 'white', 'close', $carrier)) . '</td>'
+                        . '</tr>'
+                        . '<tr>'
+                            . '<td '.$yellow.'>Pending yellow</td>'
+                            . '<td '.$yellow.'>' . count($report->openOrClose($date, 'yellow', 'open', $carrier)) . '</td>'
+                            . '<td '.$yellow.'>Closed yellow</td>'
+                            . '<td '.$yellow.'>' . count($report->openOrClose($date, 'yellow', 'close', $carrier)) . '</td>'
+                        . '</tr>'
+                        . '<tr>'
+                            . '<td '.$red.'>Pending red</td>'
+                            . '<td '.$red.'>' . count($report->openOrClose($date, 'red', 'open', $carrier)) . '</td>'
+                            . '<td '.$red.'>Closed red</td>'
+                            . '<td '.$red.'>' . count($report->openOrClose($date, 'red', 'close', $carrier)) . '</td>'
+                        . '</tr>'
+                        . '<tr>'
+                            . '<td '.$without.'>Pending without activity</td>'
+                            . '<td '.$without.'>' . count($report->withoutDescription($date, $carrier)) . '</td>'
+                            . '<td '.$without.'></td>'
+                            . '<td '.$without.'></td>'
+                        . '</tr>'
+                        . '<tr>'
+                            . '<td style="padding:3px 7px;">Total tickets pending</td>'
+                            . '<td style="padding:3px 7px;">' . count($report->totalTicketsPending($date, $carrier)) . '</td>'
+                            . '<td style="padding:3px 7px;">Total tickets closed</td>'
+                            . '<td style="padding:3px 7px;">' . count($report->totalTicketsClosed($date, $carrier)) . '</td>'
+                        . '</tr>'
+                    . '</tbody>';
+        $table .= '</table>';
+        
+        return $table;
+    }
+    
     /**
      * Contenido de la tabla
      * @param array $data

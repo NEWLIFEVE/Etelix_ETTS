@@ -227,7 +227,7 @@ class SiteController extends Controller
                 );
                 $report->genExcel($args);
                 
-                $table = $export->table($_POST['id'], $date);
+                $table = $export->tableSummary($carrier, $date) . '<center><h3>'. substr($nameReport, 0, -7) .'</h3></center>' . $export->table($_POST['id'], $date);
                 if ($table !== null) {
                     $mail = new EnviarEmail;
                     $mail->enviar($table, Yii::app()->user->email, '', $nameReport, 'uploads/' . $nameReport . '.xlsx');   
