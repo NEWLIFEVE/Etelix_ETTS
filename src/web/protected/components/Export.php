@@ -5,7 +5,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-class Export
+class Export 
 {
     private $_cssTh;
     private $_cssTable;
@@ -42,7 +42,7 @@ class Export
         Yii::import('webroot.protected.components.reports.Report');
         $report = new Report;
         if ($date === false) {
-            $date = date('Y-m-d');
+            $date = date('Y-m-d H:i:s');
         } else {
             $date = $date;
         }
@@ -153,12 +153,12 @@ class Export
         if ($date) {
             $colorAndLifeTime = "(CASE WHEN lifetime < '1 days'::interval THEN 'white' 
                                 WHEN lifetime >= '1 days'::interval AND lifetime < '2 days'::interval THEN 'yellow'
-                                WHEN lifetime >= '2 days'::interval THEN 'red' END) AS color 
+                                WHEN lifetime >= '2 days'::interval THEN 'red' END) AS color  
                                 FROM (
                                 SELECT *,
-                                (CASE WHEN age(date, '$date') < '1 days'::interval THEN (CASE WHEN date < '$date' THEN age('$date', date) ELSE age(date, '$date') END)  
-                                WHEN age(date, '$date') >= '1 days'::interval AND age(date, '$date') < '2 days'::interval THEN (CASE WHEN date < '$date' THEN age('$date', date) ELSE age(date, '$date') END) 
-                                WHEN age(date, '$date') >= '2 days'::interval THEN (CASE WHEN date < '$date' THEN age('$date', date) ELSE age(date, '$date') END) END) AS lifetime";
+                                (CASE WHEN (date::text || ' ' || hour::text)::timestamp <= '$date' THEN 
+                                age('$date', (date::text || ' ' || hour::text)::timestamp) ELSE
+                                age((date::text || ' ' || hour::text)::timestamp, '$date' ) END) AS lifetime";
         } else {
             $colorAndLifeTime = "(CASE WHEN id_status = 1 THEN
                                 CASE WHEN lifetime <= '12 hours'::interval THEN 'white'

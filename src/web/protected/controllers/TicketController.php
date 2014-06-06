@@ -180,7 +180,7 @@ class TicketController extends Controller
      * Renderiza la vista de los reportes con datatable
      */
     public function actionStatistics() 
-    {          
+    {                  
         Script::registerDataTable();
         Script::registerModules(array('ajax', 'export'));
         Script::registerJsAction();
@@ -194,11 +194,11 @@ class TicketController extends Controller
     public function actionDatatable()
     {
                 
-        $date = date('Y-m-d');
+        $date = date('Y-m-d H:i:s');
         $option = '1';
         $carrier = 'both';
         
-        if (isset($_REQUEST['date']) && !empty($_REQUEST['date'])) $date = $_REQUEST['date'];
+        if (isset($_REQUEST['date']) && !empty($_REQUEST['date'])) $date = $_REQUEST['date'] . ' ' . date('H:i:s');
         if (isset($_REQUEST['option']) && !empty($_REQUEST['option'])) $option = $_REQUEST['option'];
         if (isset($_REQUEST['carrier']) && !empty($_REQUEST['carrier'])) $carrier = $_REQUEST['carrier'];
        
@@ -253,10 +253,10 @@ class TicketController extends Controller
     {
         Yii::import('webroot.protected.components.reports.Report');
         $report = new Report;
-        $date = date('Y-m-d');
+        $date = date('Y-m-d H:i:s');
         $carrier = 'both';
         
-        if (isset($_POST['date']) && !empty($_POST['date'])) $date = $_POST['date'];
+        if (isset($_POST['date']) && !empty($_POST['date'])) $date = $_POST['date'] . ' ' . date('H:i:s');
         if (isset($_POST['carrier']) && !empty($_POST['carrier'])) $carrier = $_POST['carrier'];
                
         $data = array(

@@ -135,7 +135,7 @@ class SiteController extends Controller
         {
             $reports = new Export();
             $date = false;
-            if (isset($_POST['date']) && !empty($_POST['date'])) $date = $_POST['date'];
+            if (isset($_POST['date']) && !empty($_POST['date'])) $date = $_POST['date'] . ' ' . date('H:i:s');
             $table = $reports->table($_POST['id'], $date);
             if ($table !== null) {
                 echo $table;
@@ -170,22 +170,21 @@ class SiteController extends Controller
         }
         
         /**
-         * Exportable en formato .xls con el componente yii excel
+         * Exportable en formato excel con el componente yii excel
          */
         public function actionYiiexcel()
         {
             Yii::import('webroot.protected.components.reports.Report');
             $report = new Report;
             
-            $date = date('Y-m-d');
+            $date = date('Y-m-d H:i:s');
             $option = '0';
             $carrier = 'both';
         
-            if (isset($_POST['date']) && !empty($_POST['date'])) $date = $_POST['date'];
+            if (isset($_POST['date']) && !empty($_POST['date'])) $date = $_POST['date'] . ' ' .date('H:i:s');
             if (isset($_POST['rb-report']) && !empty($_POST['rb-report'])) $option = $_POST['rb-report'];
             if (isset($_POST['carrier']) && !empty($_POST['carrier'])) $carrier = $_POST['carrier'];
         
-            
             if (isset($option)) {
                 $args = array(
                     'date' => $date,
@@ -207,15 +206,14 @@ class SiteController extends Controller
             $report = new Report;
             $export = new Export;
             
-            $date = date('Y-m-d');
+            $date = date('Y-m-d H:i:s');
             $option = '0';
             $carrier = 'both';
         
-            if (isset($_POST['date']) && !empty($_POST['date'])) $date = $_POST['date'];
+            if (isset($_POST['date']) && !empty($_POST['date'])) $date = $_POST['date'] . ' ' . date('H:i:s');;
             if (isset($_POST['rb-report']) && !empty($_POST['rb-report'])) $option = $_POST['rb-report'];
             if (isset($_POST['carrier']) && !empty($_POST['carrier'])) $carrier = $_POST['carrier'];
         
-            
             if (isset($option)) {
                 $nameReport = 'ETTS Report '. $this->_matchSheetName($option) . '-' . date('Y-m-d His');
                 $args = array(

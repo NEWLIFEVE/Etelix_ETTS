@@ -35,6 +35,16 @@ class Report extends Excel
      */
     public function genExcel($args) 
     {
+               
+        $this->_phpExcel->getDefaultStyle()->applyFromArray(
+            array(
+                'fill' => array(
+                    'type'  => PHPExcel_Style_Fill::FILL_SOLID,
+                    'color' => array('argb' => 'FFFFFF')
+                ),
+            )
+        );
+        
         // Titulo de las hojas
         $sheetName = array(
             'Open today',
@@ -387,9 +397,16 @@ class Report extends Excel
     
     private function _getLifeTime($date)
     {
+        /*
         return "(CASE WHEN age(date, '$date') < '1 days'::interval THEN (CASE WHEN date < '$date' THEN age('$date', date) ELSE age(date, '$date') END)  
                 WHEN age(date, '$date') >= '1 days'::interval AND age(date, '$date') < '2 days'::interval THEN (CASE WHEN date < '$date' THEN age('$date', date) ELSE age(date, '$date') END) 
                 WHEN age(date, '$date') >= '2 days'::interval THEN (CASE WHEN date < '$date' THEN age('$date', date) ELSE age(date, '$date') END) END) AS lifetime";
+         * 
+         */
+        
+        return "(CASE WHEN (date::text || ' ' || hour::text)::timestamp <= '$date' THEN 
+               age('$date', (date::text || ' ' || hour::text)::timestamp) ELSE
+               age((date::text || ' ' || hour::text)::timestamp, '$date' ) END) AS lifetime";
     }
     
     
