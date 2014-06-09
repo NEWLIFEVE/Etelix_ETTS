@@ -5,7 +5,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-class Export 
+class Export extends TicketDesign
 {
     private $_cssTh;
     private $_cssTable;
@@ -234,6 +234,12 @@ class Export
                 break;
         }
         return $style;
+    }
+    
+    public function printTicket($key)
+    {
+        parent::__construct($key);
+        return $this->_getDetailTicket();
     }
     
 }

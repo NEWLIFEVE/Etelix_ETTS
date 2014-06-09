@@ -275,6 +275,20 @@ class TicketController extends Controller
     }
         
 
+    public function actionPrintticket()
+    {
+        if (isset($_POST['data'])) {
+            $data = $_POST['data'];
+        } else {
+            $data = self::getTicketAsArray($_POST['id']);
+        }
+        
+        $export = new Export;
+        echo $export->printTicket($data);
+    }
+
+    
+
     /**
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.

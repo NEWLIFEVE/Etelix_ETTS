@@ -305,13 +305,30 @@ var refreshInterval = setInterval(function(){
             window.location.reload(true);
             }, 300000);
             
+/**
+ * Imprime el ticket que ya esta guardado en base de datos
+ * @returns {void}
+ */
+function printTicketBd()
+{
+    var settings = {
+        'url': '/ticket/printticket',
+        'async': false,
+        'print': true,
+        'id': $('#id_ticket').val()
+    };
+    $('#print-ticket').on('click', function(){
+       $ETTS.export.printPreviewTicket(settings); 
+    });
+}
+
 $(document).on('ready', function() {
     
     // Exportables
     $(document).on('click', '.itemreporte', function(){
         initExport($(this));
     });
-    
+        
     // Leyenda de colores
     $('.botones-sociales .social').mouseenter(function(){
         $(this).stop();
@@ -406,6 +423,9 @@ $(document).on('ready', function() {
                 $ETTS.UI.removeBlink($(this));
                 $ETTS.ajax.removeBlink(idTicket);
             }
+            
+            // Imprime el ticket que ya esta guardado en base de datos
+            setTimeout('printTicketBd()', 1000);
     });
     
     $(document).on('focus', 'textarea#answer', function(){

@@ -1,6 +1,6 @@
 <div id=content_detail>
     <div class="grid fluid">
-        <h3 class="ticket-information">Ticket #:<?php echo $datos->ticket_number; ?>, Created on <?php echo Utility::getDayByDate($datos->date) . ' at ' . $datos->hour; ?>  <a href="javascript:void(0)" title="Print ticket"><i class="icon-printer"></i></a></h3>
+        <h3 class="ticket-information">Ticket #:<?php echo $datos->ticket_number; ?>, Created on <?php echo Utility::getDayByDate($datos->date) . ' at ' . $datos->hour; ?>  <a href="javascript:void(0)" id="print-ticket" title="Print ticket"><i class="icon-printer"></i></a></h3>
         <div class="row">
             <div class="span5">
                 <?php 

@@ -91,6 +91,21 @@ $ETTS.export=(function(){
                 return;
             }
         },
+        printPreviewTicket:function(settings) {
+            settings.success = null;
+            settings.beforesend = null;
+            var content = _head + _xhr(settings) + _footer,
+            newIframe = document.createElement('iframe');
+            newIframe.width = '0';
+            newIframe.height = '0';
+            newIframe.src = 'about:blank';
+            document.body.appendChild(newIframe);
+            newIframe.contentWindow.contents = content;
+            newIframe.src = 'javascript:window["contents"]';
+            newIframe.focus();
+            newIframe.contentWindow.printPage();
+            return;
+        },
         /**
          * Método para exportar a excel
          * @param {obj} element
