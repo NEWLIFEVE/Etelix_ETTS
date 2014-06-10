@@ -150,6 +150,7 @@ class TicketController extends Controller
      */
     public function actionAdmin()
     {
+        
         // Css y js del datable
         Script::registerDataTable();
         // Css y js del uploadfile
@@ -165,8 +166,11 @@ class TicketController extends Controller
         } else {
             Script::registerJsController(array('dtable.etelix'));
         }
+        
+        Script::registerPlugins(array('kendo.all.min'));
+        
         // Css de la leyenda
-        Script::registerCss(array('leyenda'));
+        Script::registerCss(array('leyenda', 'kendo.common.min', 'kendo.rtl.min', 'kendo.metro.min'));
         
         $colors=$this->_countColorsTicket();
         $color = '';

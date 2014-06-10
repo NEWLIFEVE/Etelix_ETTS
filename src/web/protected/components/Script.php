@@ -38,6 +38,18 @@ abstract class Script
         }
     }
     
+    public static function registerPlugins($jquery = array())
+    {
+        $cs = Yii::app()->getClientScript();
+        if (is_array($jquery)) {
+            foreach ($jquery as $js) {
+                $cs->registerScriptFile(Yii::app()->baseUrl . '/js/plugins/' . $js . '.js', CClientScript::POS_END);
+            }
+        } else {
+            throw new Exception('Error in pluging');
+        }
+    }
+    
     /**
      * Registra plugins jquery que seran usados en actions
      * @param array $jquery Plugins Jquery

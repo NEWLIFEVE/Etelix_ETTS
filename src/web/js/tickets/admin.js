@@ -322,8 +322,59 @@ function printTicketBd()
     });
 }
 
-$(document).on('ready', function() {
+/**
+ * Función para escalar tickets
+ * @returns {void}
+ */
+function escaladeTicket()
+{
     
+    $('#escalade-ticket').on('click', function(){
+       $.Dialog.close();
+       $.Dialog({
+            shadow: true,
+            overlay: true,
+            overlayClickClose: true,
+            flat:true,
+            icon: "<span class=icon-eye-2></span>",
+            title: "Escalade Ticket",
+            width: 400,
+            height: 300,
+            padding:10,
+            draggable: true,
+            onShow: function(_dialog){
+                $("#required").kendoMultiSelect({placeholder: "Select mails",}).data("kendoMultiSelect");
+            },
+            content:
+            '<h3>Escalade ticket</h3>' +
+            '<!--<div class="input-control select">-->' +
+                '<select id="required" multiple="multiple">' +
+                    '<option>Steven White</option>'+
+                    '<option>Nancy King</option>' +
+                    '<option>Nancy Davolio</option>' +
+                    '<option>Robert Davolio</option>' +
+                    '<option>Michael Leverling</option>' +
+                    '<option>Andrew Callahan</option>' +
+                    '<option>Michael Suyama</option>' +
+                    '<option>Anne King</option>' +
+                '</select>' +
+            '<!--</div>--><p></p>' +
+            '<div class="input-control textarea" data-role="input-control">' +
+                '<textarea name="escaladed" id="escaladed"></textarea>' +
+            '</div>' +
+            '<button class="primary" type="button">Send</button>'
+        });
+    });
+}
+
+function loadFunctions()
+{
+    printTicketBd()
+    escaladeTicket();
+    attachFile();
+}
+
+$(document).on('ready', function() {
     // Exportables
     $(document).on('click', '.itemreporte', function(){
         initExport($(this));
@@ -416,7 +467,6 @@ $(document).on('ready', function() {
                     });
                 }
             });
-            setTimeout('attachFile()', 1000);
 
             if (clase.toLowerCase().indexOf("blink") >= 0)
             {
@@ -425,7 +475,7 @@ $(document).on('ready', function() {
             }
             
             // Imprime el ticket que ya esta guardado en base de datos
-            setTimeout('printTicketBd()', 1000);
+            setTimeout('loadFunctions()', 1000);
     });
     
     $(document).on('focus', 'textarea#answer', function(){
