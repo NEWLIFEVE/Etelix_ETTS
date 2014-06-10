@@ -37,6 +37,12 @@ class Export extends TicketDesign
         return $table;
     }
     
+    /**
+     * Tabla del resumen de los tickets
+     * @param string $carrier
+     * @param string $date
+     * @return string
+     */
     public function tableSummary($carrier = 'both', $date = false)
     {
         Yii::import('webroot.protected.components.reports.Report');
