@@ -21,7 +21,7 @@ class Export extends TicketDesign
      * @param arrray $ids
      * @return string
      */
-    public function table($ids, $date = false)
+    public function table($ids, $date = false,  $withoutDescription = false)
     {
         if (!is_array($ids)) {
             $ids = explode (",", $ids);
@@ -31,7 +31,7 @@ class Export extends TicketDesign
         if (count($data)) {
             $table = '<table ' . $this->_cssTable . '>' . 
                     $this->_thead() .
-                    $this->_contentTable($data) .
+                    $this->_contentTable($data, $withoutDescription) .
                     '</table>';
         }
         return $table;
@@ -111,10 +111,11 @@ class Export extends TicketDesign
      * @param array $data
      * @return string
      */
-    private function _contentTable($data) 
+    private function _contentTable($data, $withoutDescription = false) 
     {
         $contentTable = '<tbody>';
         foreach ($data as $tickets) {
+            if ($withoutDescription === true) $tickets->color = '#FDFFDF;"';
             $contentTable .= '<tr>';
                 $contentTable .= '<td ' . $this->_cssTickets($tickets->color) . ' >' . Utility::formatTicketNumber($tickets->ticket_number) . '</td>';
                 $contentTable .= $this->_defineUserOrCarrier($tickets);
@@ -168,7 +169,8 @@ class Export extends TicketDesign
                                 (CASE WHEN (date::text || ' ' || hour::text)::timestamp <= '$date' THEN 
                                 age('$date', (date::text || ' ' || hour::text)::timestamp) ELSE
                                 age((date::text || ' ' || hour::text)::timestamp, '$date' ) END) AS lifetime";
-        } else {
+        } 
+        else {
             $colorAndLifeTime = "(CASE WHEN id_status = 1 THEN
                                     CASE WHEN lifetime < '1 days'::interval THEN 'white' 
                                     WHEN lifetime >= '1 days'::interval AND lifetime < '2 days'::interval THEN 'yellow'
@@ -242,6 +244,7 @@ class Export extends TicketDesign
                 $style .= '#61CF61;"';
                 break;
             default:
+                $style .= '#FDFFDF;"';
                 break;
         }
         return $style;
