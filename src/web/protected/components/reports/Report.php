@@ -483,7 +483,7 @@ class Report extends Excel
             
             case 'red':
                 if ($status === 'close') {
-                    $subQuery = " WHERE lifetime >= '2 days'::interval AND substr(close_ticket::text, 1, 10) <= '$date'";
+                    $subQuery = " WHERE lifetime >= '2 days'::interval AND substr(close_ticket::text, 1, 10) = '$date'";
                 } else {
                     $subQuery = " WHERE lifetime >= '2 days'::interval AND date <= '$date' AND (close_ticket IS NULL OR close_ticket > '$date')";
                 }
@@ -537,7 +537,7 @@ class Report extends Excel
         $selectCarrier = $this->_carrierInQuery($carrier);
         $getTickets = $this->_getTickets($date);
         $begin = "$getTickets) AS tiempo) AS colores ";
-        $query  = " $begin WHERE lifetime >= '2 days'::interval AND substr(close_ticket::text, 1, 10) <= '$date' $selectCarrier UNION ";
+        $query  = " $begin WHERE lifetime >= '2 days'::interval AND substr(close_ticket::text, 1, 10) = '$date' $selectCarrier UNION ";
         $query .= " $begin WHERE lifetime >= '1 days'::interval AND lifetime < '2 days'::interval AND substr(close_ticket::text, 1, 10) <= '$date' $selectCarrier UNION ";
         $query .= " $begin WHERE lifetime < '1 days'::interval AND substr(close_ticket::text, 1, 10) = '$date' $selectCarrier ORDER BY id ASC";
         return Ticket::model()->findAllBySql($query);
