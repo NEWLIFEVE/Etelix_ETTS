@@ -427,6 +427,7 @@ class Report extends Excel
      */
     public function withoutDescription($date, $carrier = 'both')
     {
+        $date = substr($date, 0, 10);
         $selectCarrier = $this->_carrierInQuery($carrier);
         $getTickets = $this->_getTickets($date);
         
@@ -446,6 +447,7 @@ class Report extends Excel
      */
     public function openOrClose($date, $color = 'white', $status = 'close', $carrier = 'both')
     {
+        $date = substr($date, 0, 10);
         $subQuery = $this->_subQuery($date, $color, $status);
         $selectCarrier = $this->_carrierInQuery($carrier);
         $getTickets = $this->_getTickets($date);
@@ -516,6 +518,7 @@ class Report extends Excel
      */
     public function totalTicketsPending($date, $carrier = 'both')
     {
+        $date = substr($date, 0, 10);
         $selectCarrier = $this->_carrierInQuery($carrier);
         $getTickets = $this->_getTickets($date);
         $begin = "$getTickets) AS tiempo) AS colores ";
@@ -534,6 +537,7 @@ class Report extends Excel
      */
     public function totalTicketsClosed($date, $carrier = 'both')
     {
+        $date = substr($date, 0, 10);
         $selectCarrier = $this->_carrierInQuery($carrier);
         $getTickets = $this->_getTickets($date);
         $begin = "$getTickets) AS tiempo) AS colores ";
