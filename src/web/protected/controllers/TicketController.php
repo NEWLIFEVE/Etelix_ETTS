@@ -686,11 +686,11 @@ class TicketController extends Controller
         $red = 0; 
         foreach ($model::ticketsByUsers(Yii::app()->user->id, false) as $ticket) {          
             $timeTicket = Utility::getTime($ticket->date, $ticket->hour);
-            // Tickes a partir de las 6:00am
-            if ($timeTicket <= 64800)
+            // Tickes blancos
+            if ($timeTicket < 86400)
                 $white += 1;
-            // Tickets de antes de las 6:00am hasta 6:00am del dia anterior
-            elseif ($timeTicket > 64800 && $timeTicket <= 151200) 
+            // Tickets amarillos
+            elseif ($timeTicket >= 86400 && $timeTicket < 172800) 
                 $yellow += 1;
             else 
                 $red += 1;
