@@ -326,9 +326,10 @@ function printTicketBd()
  * Función para escalar tickets
  * @returns {void}
  */
-function escaladeTicket()
+function previewEscaladeTicket()
 {
     $('#escalade-ticket').on('click', function(){
+       var idTicket = $('#id_ticket').val(), mails = null;
        $.Dialog.close();
        $.Dialog({
             shadow: true,
@@ -342,42 +343,144 @@ function escaladeTicket()
             padding:10,
             draggable: true,
             onShow: function(_dialog){
-                $("#required").kendoMultiSelect({placeholder: "Select mails",}).data("kendoMultiSelect");
-                efectBorder('#escaladed');
+                var mails = $("#mail-escalade").kendoMultiSelect({placeholder: "Select mails",}).data("kendoMultiSelect");
+                
+                $('#bt-escalade').on('click', function() {
+                    var settings = {
+                        data : {
+                            'mails':mails.value(),
+                            'idTicket':idTicket,
+                            'message':$('#message').val()
+                        }
+                    };
+                    escaladedTicket(settings);
+                });
+                
+                efectBorder('#message');
+            },
+            sysBtnCloseClick: function(event){
+                // Al cerrar la ventana, se vuelve a contar los 5 munitos
+                refreshInterval = setInterval(function(){
+                   window.location.reload(true);
+                }, 300000);
             },
             content:
-            '<h3>Escalade ticket</h3>' +
+            '<h3 class="ticket-information">Escalade ticket</h3><br>' +
             '<!--<div class="input-control select">-->' +
-                '<select id="required" multiple="multiple">' +
-                    '<option>Steven White</option>'+
-                    '<option>Nancy King</option>' +
-                    '<option>Nancy Davolio</option>' +
-                    '<option>Robert Davolio</option>' +
-                    '<option>Michael Leverling</option>' +
-                    '<option>Andrew Callahan</option>' +
-                    '<option>Michael Suyama</option>' +
-                    '<option>Anne King</option>' +
+                '<select id="mail-escalade" multiple="multiple">' +
+                    '<option value="tsu.nelsonmarcano@gmail.com">Nelson gmail</option>'+
+                    '<option value="tsu.nelsonmarcano@hotmail.com">Nelson hotmail</option>' +
+                    '<option value="nelson_redimi2@hotmail.com">Nelson hotmail2</option>' +
+                    '<option value="nelsonm@sacet.biz">Nelson sacet</option>' +
                 '</select>' +
             '<!--</div>--><p></p>' +
             '<div class="input-control textarea" data-role="input-control">' +
-                '<textarea class="textarea-integrado" name="escaladed" id="escaladed"></textarea>' +
+                '<textarea class="textarea-integrado" name="message" id="message"></textarea>' +
             '</div>' +
             '<div class="panel-down-textarea">' +
                 '<div class="option-panel right">' +
-                    '<input type="button" value="Send" class="primary">' +
+                    '<input type="button" value="Send" id="bt-escalade" class="primary">' +
                 '</div>' +
                 '<div class="option-panel right">' +
-                    '<input type="button" value="Cancel" >' +
+                    '<input type="button" onclick="previewTicket('+ idTicket +')" value="Cancel" >' +
                 '</div>' +
             '</div>'
         });
     });
 }
 
+function escaladedTicket(settings)
+{
+    $.ajax({
+        type:'POST',
+        url:'/ticket/scalade',
+        data:{
+            'data':settings.data
+        },
+        success:function(response){
+            $.Dialog.close();
+            $.Dialog({content:response});
+        }
+    });
+}
+
+/**
+ * Muestra el preview del ticket
+ * @param {int} idTicket
+ * @param {string} clase
+ * @returns {void}
+ */
+function previewTicket(idTicket, clase)
+{   
+    $.Dialog.close();
+    setTimeout(function(){
+        $('.tab-control').tabcontrol({
+            effect: 'fade' // or 'slide'
+        });
+    }, 1000);
+    // Se detiene el refresh
+    clearInterval(refreshInterval);
+    // Se oculta el div para agregar correo
+    setTimeout(function(){$('.options-hide, .mails-associates').hide();}, 500);
+
+    $.ajax({
+        type:"POST",
+        url:"/ticket/getdataticket/" + idTicket,
+        success:function(data){
+            $.Dialog({
+                shadow: true,
+                overlay: true,
+                overlayClickClose: false,
+                flat:true,
+                icon: "<span class=icon-eye-2></span>",
+                title: "Ticket Information",
+                width: 1024,
+                height: 540,
+                padding:0,
+                paddingBottom: 0,
+                draggable: true,
+                content:data,
+                onShow:function(_dialog) {
+                  loadFunctions();  
+                },
+                sysBtnCloseClick: function(event){
+                    // Al cerrar la ventana, se vuelve a contar los 5 munitos
+                    refreshInterval = setInterval(function(){
+                       window.location.reload(true);
+                    }, 300000);
+                }
+            });
+            // Scroll abajo al cargar el detalle del ticket
+            $('div.answer-ticket').scrollTop(100000);
+            // Click para cargar los corres entrantes con imap
+            $('.see-email').on('click', function () {
+                var settings = {
+                    ticketNumber:$(this).attr('id'),
+                    loader:$('.pre-loader'),
+                    answer:$('.answer-ticket'),
+                    optionOpen:$('#open-ticket').val(),
+                    idTicket:$('#id_ticket').val()
+                };
+
+                $ETTS.ajax.getMailsImap(settings);
+            });
+        }
+    });
+
+    if (clase) 
+    {
+        if (clase.toLowerCase().indexOf("blink") >= 0)
+        {
+            $ETTS.UI.removeBlink($(this));
+            $ETTS.ajax.removeBlink(idTicket);
+        }
+    }
+}
+
 function loadFunctions()
 {
     printTicketBd();
-    escaladeTicket();
+    previewEscaladeTicket();
     attachFile();
 }
 
@@ -436,71 +539,13 @@ $(document).on('ready', function() {
         }
     });
 
-   // Boton para abrir el preview del ticket
-   $(document).on('click', '.preview', function () {
-            setTimeout(function(){
-                $('.tab-control').tabcontrol({
-                    effect: 'fade' // or 'slide'
-                });
-            }, 1000);
-            // Se detiene el refresh
-            clearInterval(refreshInterval);
-            // Se oculta el div para agregar correo
-            setTimeout(function(){$('.options-hide, .mails-associates').hide();}, 500);
-
-            var clase=$(this).parent().parent().attr('class'),
-            idTicket = $(this).attr('rel');
-            $.ajax({
-                type:"POST",
-                url:"/ticket/getdataticket/" + idTicket,
-                success:function(data){
-
-                    $.Dialog({
-                        shadow: true,
-                        overlay: true,
-                        overlayClickClose: false,
-                        flat:true,
-                        icon: "<span class=icon-eye-2></span>",
-                        title: "Ticket Information",
-                        width: 1024,
-                        height: 540,
-                        padding:0,
-                        paddingBottom: 0,
-                        draggable: true,
-                        content:data,
-                        onShow:function(_dialog) {
-                          loadFunctions();  
-                        },
-                        sysBtnCloseClick: function(event){
-                            // Al cerrar la ventana, se vuelve a contar los 5 munitos
-                            refreshInterval = setInterval(function(){
-                               window.location.reload(true);
-                            }, 300000);
-                        }
-                    });
-                    // Scroll abajo al cargar el detalle del ticket
-                    $('div.answer-ticket').scrollTop(100000);
-                    // Click para cargar los corres entrantes con imap
-                    $('.see-email').on('click', function () {
-                        var settings = {
-                            ticketNumber:$(this).attr('id'),
-                            loader:$('.pre-loader'),
-                            answer:$('.answer-ticket'),
-                            optionOpen:$('#open-ticket').val(),
-                            idTicket:$('#id_ticket').val()
-                        };
-
-                        $ETTS.ajax.getMailsImap(settings);
-                    });
-                }
-            });
-
-            if (clase.toLowerCase().indexOf("blink") >= 0)
-            {
-                $ETTS.UI.removeBlink($(this));
-                $ETTS.ajax.removeBlink(idTicket);
-            }
+    // Llamado del preview del ticket
+    $(document).on('click', '.preview', function () {
+        var clase=$(this).parent().parent().attr('class'),
+        idTicket = $(this).attr('rel');
+        previewTicket(idTicket, clase);
     });
     
+    // Efecto seleccion de border al tener foco en un textarea
     efectBorder('textarea#answer');
 });

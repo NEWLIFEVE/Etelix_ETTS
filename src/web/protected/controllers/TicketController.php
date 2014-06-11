@@ -527,6 +527,17 @@ class TicketController extends Controller
         else
             echo 'false';
     }
+    
+    public function actionScalade()
+    {
+        echo '<pre>';
+        print_r($_POST['data']['mails']);
+        echo '</pre>';
+        
+        echo $_POST['data']['idTicket'] . '<br>';
+        
+        echo '<p>' . $_POST['data']['message'] . '</p>';
+    }
 
 
     /**
