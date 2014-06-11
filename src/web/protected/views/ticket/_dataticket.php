@@ -175,7 +175,7 @@
                 <?php endif; ?>
 
                 <div class="input-control textarea" data-role="input-control">
-                    <textarea name="answer" id="answer"></textarea>
+                    <textarea class="textarea-integrado" name="answer" id="answer"></textarea>
                 </div>
                 <div class="panel-down-textarea">
                     <div class="option-panel right">

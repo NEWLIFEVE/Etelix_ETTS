@@ -328,7 +328,6 @@ function printTicketBd()
  */
 function escaladeTicket()
 {
-    
     $('#escalade-ticket').on('click', function(){
        $.Dialog.close();
        $.Dialog({
@@ -338,12 +337,13 @@ function escaladeTicket()
             flat:true,
             icon: "<span class=icon-eye-2></span>",
             title: "Escalade Ticket",
-            width: 400,
-            height: 300,
+            width: 450,
+            height: 350,
             padding:10,
             draggable: true,
             onShow: function(_dialog){
                 $("#required").kendoMultiSelect({placeholder: "Select mails",}).data("kendoMultiSelect");
+                efectBorder('#escaladed');
             },
             content:
             '<h3>Escalade ticket</h3>' +
@@ -360,18 +360,42 @@ function escaladeTicket()
                 '</select>' +
             '<!--</div>--><p></p>' +
             '<div class="input-control textarea" data-role="input-control">' +
-                '<textarea name="escaladed" id="escaladed"></textarea>' +
+                '<textarea class="textarea-integrado" name="escaladed" id="escaladed"></textarea>' +
             '</div>' +
-            '<button class="primary" type="button">Send</button>'
+            '<div class="panel-down-textarea">' +
+                '<div class="option-panel right">' +
+                    '<input type="button" value="Send" class="primary">' +
+                '</div>' +
+                '<div class="option-panel right">' +
+                    '<input type="button" value="Cancel" >' +
+                '</div>' +
+            '</div>'
         });
     });
 }
 
 function loadFunctions()
 {
-    printTicketBd()
+    printTicketBd();
     escaladeTicket();
     attachFile();
+}
+
+function efectBorder(element)
+{
+    $(document).on('focus', element, function(){
+       $('div.panel-down-textarea').css('border-bottom', '1px solid grey')
+       $('div.panel-down-textarea, select#speech').css('border-left', '1px solid grey')
+       $('div.panel-down-textarea, select#speech').css('border-right', '1px solid grey')
+       $('select#speech').css('border-top', '1px solid grey')
+    });
+    
+    $(document).on('blur', element, function(){
+        $('div.panel-down-textarea').css('border-bottom', '1px solid #d9d9d9')
+        $('div.panel-down-textarea, select#speech').css('border-left', '1px solid #d9d9d9')
+        $('div.panel-down-textarea, select#speech').css('border-right', '1px solid #d9d9d9')
+        $('select#speech').css('border-top', '1px solid #d9d9d9')
+    }); 
 }
 
 $(document).on('ready', function() {
@@ -444,6 +468,9 @@ $(document).on('ready', function() {
                         paddingBottom: 0,
                         draggable: true,
                         content:data,
+                        onShow:function(_dialog) {
+                          loadFunctions();  
+                        },
                         sysBtnCloseClick: function(event){
                             // Al cerrar la ventana, se vuelve a contar los 5 munitos
                             refreshInterval = setInterval(function(){
@@ -473,22 +500,7 @@ $(document).on('ready', function() {
                 $ETTS.UI.removeBlink($(this));
                 $ETTS.ajax.removeBlink(idTicket);
             }
-            
-            // Imprime el ticket que ya esta guardado en base de datos
-            setTimeout('loadFunctions()', 1000);
     });
     
-    $(document).on('focus', 'textarea#answer', function(){
-       $('div.panel-down-textarea').css('border-bottom', '1px solid grey')
-       $('div.panel-down-textarea, select#speech').css('border-left', '1px solid grey')
-       $('div.panel-down-textarea, select#speech').css('border-right', '1px solid grey')
-       $('select#speech').css('border-top', '1px solid grey')
-    });
-    
-    $(document).on('blur', 'textarea#answer', function(){
-        $('div.panel-down-textarea').css('border-bottom', '1px solid #d9d9d9')
-        $('div.panel-down-textarea, select#speech').css('border-left', '1px solid #d9d9d9')
-        $('div.panel-down-textarea, select#speech').css('border-right', '1px solid #d9d9d9')
-        $('select#speech').css('border-top', '1px solid #d9d9d9')
-    }); 
+    efectBorder('textarea#answer');
 });

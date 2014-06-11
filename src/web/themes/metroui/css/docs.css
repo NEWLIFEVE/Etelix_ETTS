@@ -549,7 +549,7 @@ select#status {
     padding: 0px 2px !important;
 }
 
-textarea#answer {
+div.input-control.textarea .textarea-integrado {
     border-bottom: none;
     height: 160px !important;
 }
