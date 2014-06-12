@@ -42,7 +42,7 @@
                                     </label>
                                 </div>
                             </td>
-                            <td>Tickets opens today</td>
+                            <td>Tickets open today</td>
                             <td class="display-data"></td>
                             <td>
                                 <div class="input-control radio default-style">

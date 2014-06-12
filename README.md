@@ -7,7 +7,7 @@ Release 1.3
 29/05/2014
     - Sub menu statistics en el menu tickets, no visible para usuarios externos
     - Reportes por pantalla contien:
-      * Tickets opens today
+      * Tickets open today
       * Tickets pendign yellow
       * Tickets pending red
       * Tickets pending without activity
