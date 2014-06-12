@@ -472,7 +472,7 @@ class Report extends Excel
                 if ($status === 'close') {
                     $subQuery = " WHERE lifetime < '1 days'::interval AND substr(close_ticket::text, 1, 10) = '".substr($date, 0, 10)."'";
                 } else {
-                    $subQuery = " WHERE lifetime < '1 days'::interval  AND date = '".substr($date, 0, 10)."' AND (close_ticket IS NULL OR close_ticket > '$date')";
+                    $subQuery = " WHERE lifetime < '1 days'::interval  AND date <= '".substr($date, 0, 10)."' AND (close_ticket IS NULL OR close_ticket > '$date')";
                 }
             break;
                 
