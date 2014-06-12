@@ -436,7 +436,7 @@ class Report extends Excel
         
         return Ticket::model()
                 ->findAllBySql("$getTickets AND
-                                id NOT IN(SELECT id_ticket FROM description_ticket WHERE date = '$date' GROUP BY id_ticket HAVING COUNT(id_ticket) >= 2)) AS tiempo) AS colores 
+                                id NOT IN(SELECT id_ticket FROM description_ticket WHERE date = '".substr($date, 0, 10)."' GROUP BY id_ticket HAVING COUNT(id_ticket) >= 2)) AS tiempo) AS colores 
                                 WHERE date <= '$date' AND (close_ticket IS NULL OR close_ticket > '$date') $selectCarrier ORDER BY id_status, id ASC");
     }
     
@@ -472,7 +472,7 @@ class Report extends Excel
                 if ($status === 'close') {
                     $subQuery = " WHERE lifetime < '1 days'::interval AND substr(close_ticket::text, 1, 10) = '".substr($date, 0, 10)."'";
                 } else {
-                    $subQuery = " WHERE lifetime < '1 days'::interval  AND date = '".substr($date, 0, 10)."' AND (close_ticket IS NULL OR close_ticket > '$date')";
+                    $subQuery = " WHERE lifetime < '1 days'::interval  AND date <= '".substr($date, 0, 10)."' AND (close_ticket IS NULL OR close_ticket > '$date')";
                 }
             break;
                 
@@ -480,7 +480,7 @@ class Report extends Excel
                 if ($status === 'close') {
                     $subQuery = " WHERE lifetime >= '1 days'::interval AND lifetime < '2 days'::interval AND substr(close_ticket::text, 1, 10) = '".substr($date, 0, 10)."'";
                 } else {
-                    $subQuery = " WHERE lifetime >= '1 days'::interval AND lifetime < '2 days'::interval  AND date <= '$date' AND (close_ticket IS NULL OR close_ticket > '$date')";
+                    $subQuery = " WHERE lifetime >= '1 days'::interval AND lifetime < '2 days'::interval  AND date <= '".substr($date, 0, 10)."' AND (close_ticket IS NULL OR close_ticket > '$date')";
                 }
             break;
             
@@ -488,7 +488,7 @@ class Report extends Excel
                 if ($status === 'close') {
                     $subQuery = " WHERE lifetime >= '2 days'::interval AND substr(close_ticket::text, 1, 10) = '".substr($date, 0, 10)."'";
                 } else {
-                    $subQuery = " WHERE lifetime >= '2 days'::interval AND date <= '$date' AND (close_ticket IS NULL OR close_ticket > '$date')";
+                    $subQuery = " WHERE lifetime >= '2 days'::interval AND date <= '".substr($date, 0, 10)."' AND (close_ticket IS NULL OR close_ticket > '$date')";
                 }
             break;
         }
@@ -522,10 +522,10 @@ class Report extends Excel
         $selectCarrier = $this->_carrierInQuery($carrier);
         $getTickets = $this->_getTickets($date);
         $begin = "$getTickets) AS tiempo) AS colores ";
-        $query  = " $begin WHERE lifetime >= '2 days'::interval AND date <= '$date' AND (close_ticket IS NULL OR close_ticket > '$date') $selectCarrier UNION ";
-        $query .= " $begin WHERE lifetime >= '1 days'::interval AND lifetime < '2 days'::interval  AND date <= '$date' AND (close_ticket IS NULL OR close_ticket > '$date') $selectCarrier UNION ";
-        $query .= " $begin WHERE lifetime < '1 days'::interval  AND date = '$date' AND (close_ticket IS NULL OR close_ticket > '$date') $selectCarrier UNION ";
-        $query .= " $begin WHERE date <= '$date' AND (close_ticket IS NULL OR close_ticket > '$date') AND id NOT IN(SELECT id_ticket FROM description_ticket WHERE date = '$date' GROUP BY id_ticket HAVING COUNT(id_ticket) >= 2) $selectCarrier ORDER BY id_status, id ASC";
+        $query  = " $begin WHERE lifetime >= '2 days'::interval AND date <= '".substr($date, 0, 10)."' AND (close_ticket IS NULL OR close_ticket > '$date') $selectCarrier UNION ";
+        $query .= " $begin WHERE lifetime >= '1 days'::interval AND lifetime < '2 days'::interval  AND date <= '".substr($date, 0, 10)."' AND (close_ticket IS NULL OR close_ticket > '$date') $selectCarrier UNION ";
+        $query .= " $begin WHERE lifetime < '1 days'::interval  AND date <= '".substr($date, 0, 10)."' AND (close_ticket IS NULL OR close_ticket > '$date') $selectCarrier UNION ";
+        $query .= " $begin WHERE date <= '$date' AND (close_ticket IS NULL OR close_ticket > '$date') AND id NOT IN(SELECT id_ticket FROM description_ticket WHERE date = '".substr($date, 0, 10)."' GROUP BY id_ticket HAVING COUNT(id_ticket) >= 2) $selectCarrier ORDER BY id_status, id ASC";
         return Ticket::model()->findAllBySql($query);
     }
     
@@ -540,9 +540,9 @@ class Report extends Excel
         $selectCarrier = $this->_carrierInQuery($carrier);
         $getTickets = $this->_getTickets($date);
         $begin = "$getTickets) AS tiempo) AS colores ";
-        $query  = " $begin WHERE lifetime >= '2 days'::interval AND substr(close_ticket::text, 1, 10) = '$date' $selectCarrier UNION ";
-        $query .= " $begin WHERE lifetime >= '1 days'::interval AND lifetime < '2 days'::interval AND substr(close_ticket::text, 1, 10) <= '$date' $selectCarrier UNION ";
-        $query .= " $begin WHERE lifetime < '1 days'::interval AND substr(close_ticket::text, 1, 10) = '$date' $selectCarrier ORDER BY id_status, id ASC";
+        $query  = " $begin WHERE lifetime >= '2 days'::interval AND substr(close_ticket::text, 1, 10) = '".substr($date, 0, 10)."' $selectCarrier UNION ";
+        $query .= " $begin WHERE lifetime >= '1 days'::interval AND lifetime < '2 days'::interval AND substr(close_ticket::text, 1, 10) = '".substr($date, 0, 10)."' $selectCarrier UNION ";
+        $query .= " $begin WHERE lifetime < '1 days'::interval AND substr(close_ticket::text, 1, 10) = '".substr($date, 0, 10)."' $selectCarrier ORDER BY id_status, id ASC";
         return Ticket::model()->findAllBySql($query);
     }
     
