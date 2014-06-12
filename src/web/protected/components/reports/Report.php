@@ -232,7 +232,11 @@ class Report extends Excel
                     ->setCellValue('I' . $i, $value->close_ticket)
                     ->setCellValue('J' . $i, $value->lifetime);
                 $row = $key + 3;
-                $this->_setStyleBody('A' . $row. ':J' . $row, $value->color);       
+                if ($params['nameSheet'] === 'Without activity') {
+                    $this->_setStyleBody('A' . $row. ':J' . $row, '');
+                } else {
+                    $this->_setStyleBody('A' . $row. ':J' . $row, $value->color);   
+                }      
                 $i++;
             }
         }
