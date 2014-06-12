@@ -244,6 +244,7 @@ class Export extends TicketDesign
                 $style .= '#61CF61;"';
                 break;
             default:
+                $style .= '#FDFFDF;"';
                 break;
         }
         return $style;
