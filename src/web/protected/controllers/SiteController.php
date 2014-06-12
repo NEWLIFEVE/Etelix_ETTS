@@ -133,10 +133,14 @@ class SiteController extends Controller
          */
         public function actionPrint()
         {
-            $reports = new Export();
+            $exports = new Export();
             $date = false;
+            $withoutDescription = false;
             if (isset($_POST['date']) && !empty($_POST['date'])) $date = $_POST['date'] . ' ' . date('H:i:s');
-            $table = $reports->table($_POST['id'], $date);
+            if (isset($_POST['rb-report']) && !empty($_POST['rb-report'])) {
+                if ($_POST['rb-report'] == '4') $withoutDescription = true;
+            }
+            $table = $exports->table($_POST['id'], $date, $withoutDescription);
             if ($table !== null) {
                 echo $table;
             }
