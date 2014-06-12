@@ -157,6 +157,9 @@ class Export extends TicketDesign
      */
     private function _getData($ids, $date = false)
     {
+        $currentTime = "(to_char(NOW(), 'YYYY-MM-DD') || ' ' || to_char(NOW(), 'HH24:MI:SS'))::timestamp";
+        $createTicket = "(date::text || ' ' || hour::text)::timestamp";
+        
         if ($date) {
             $colorAndLifeTime = "(CASE WHEN lifetime < '1 days'::interval THEN 'white' 
                                 WHEN lifetime >= '1 days'::interval AND lifetime < '2 days'::interval THEN 'yellow'
@@ -166,17 +169,20 @@ class Export extends TicketDesign
                                 (CASE WHEN (date::text || ' ' || hour::text)::timestamp <= '$date' THEN 
                                 age('$date', (date::text || ' ' || hour::text)::timestamp) ELSE
                                 age((date::text || ' ' || hour::text)::timestamp, '$date' ) END) AS lifetime";
-        } else {
+        } 
+        else {
             $colorAndLifeTime = "(CASE WHEN id_status = 1 THEN
-                                CASE WHEN lifetime <= '12 hours'::interval THEN 'white'
-                                WHEN lifetime > '12 hours'::interval AND lifetime <= '36 hours'::interval THEN 'yellow'
-                                ELSE 'red' END
-                                ELSE 'green' END) AS color
+                                    CASE WHEN lifetime < '1 days'::interval THEN 'white' 
+                                    WHEN lifetime >= '1 days'::interval AND lifetime < '2 days'::interval THEN 'yellow'
+                                    WHEN lifetime >= '2 days'::interval THEN 'red' END
+                                  ELSE 'green' END) AS color
                                 FROM (SELECT *, (
-                                CASE WHEN id_status = 1 THEN
-                                age((to_char(NOW(), 'YYYY-MM-DD') || ' ' || to_char(NOW(), 'HH24:MI:SS'))::timestamp, (to_char(date, 'YYYY-MM-DD') || ' ' || to_char(hour, 'HH24:MI:SS'))::timestamp)
+                                CASE WHEN id_status = 1 OR id_status = 3 THEN
+                                    (CASE WHEN $createTicket <= $currentTime THEN 
+                                    age($currentTime, $createTicket) ELSE
+                                    age($createTicket, $currentTime) END) 
                                 ELSE
-                                age(close_ticket::timestamp, (to_char(date, 'YYYY-MM-DD') || ' ' || to_char(hour, 'HH24:MI:SS'))::timestamp) END) AS lifetime";
+                                    age(close_ticket::timestamp, $createTicket) END) AS lifetime";
         }
         
         $sql = "SELECT *,
