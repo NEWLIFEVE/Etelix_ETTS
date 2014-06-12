@@ -139,6 +139,5 @@ abstract class Utility extends CApplicationComponent
         else
             return self::formatWeek($_date, $lang) . ' ' . $day . ' de ' . self::formatMonth($month, $lang) . ' de ' . $year;
     }
-    
 }
 ?>

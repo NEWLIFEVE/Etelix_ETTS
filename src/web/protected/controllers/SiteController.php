@@ -127,14 +127,20 @@ class SiteController extends Controller
 		Yii::app()->user->logout();
 		$this->redirect(Yii::app()->homeUrl);
 	}
-        
+                        
         /**
          * Exportable de imprimir
          */
         public function actionPrint()
         {
-            $reports = new ReportTickets();
-            $table = $reports->table($_POST['id']);
+            $exports = new Export();
+            $date = false;
+            $withoutDescription = false;
+            if (isset($_POST['date']) && !empty($_POST['date'])) $date = $_POST['date'] . ' ' . date('H:i:s');
+            if (isset($_POST['rb-report']) && !empty($_POST['rb-report'])) {
+                if ($_POST['rb-report'] == '4') $withoutDescription = true;
+            }
+            $table = $exports->table($_POST['id'], $date, $withoutDescription);
             if ($table !== null) {
                 echo $table;
             }
@@ -146,17 +152,134 @@ class SiteController extends Controller
         public function actionExcel()
         { 
             ob_end_clean();
-            $reports = new ReportTickets();
-            $table = $reports->table($_REQUEST['id']);
-            $name = 'ETTS tickets-reports-' . date('Y-m-d H-i-s');
+            $reports = new Export();
+            $date = false;
+            $status = '';
+            
+            if (isset($_POST['date']) && !empty($_POST['date'])) $date = $_POST['date'];
+            if (isset($_POST['status']) && !empty($_POST['status'])) $status = $_POST['status'];
+            if (isset($_POST['rb-report']) && !empty($_POST['rb-report'])) $status = $this->_defineNameReport($_POST['rb-report']);
+            
+            $table = $reports->table($_REQUEST['id'], $date);
+            $name = $this->_setNameExport($status);
+            
             header('Content-type: application/octet-stream');
             header("Content-Disposition: attachment; filename={$name}.xls");
             header("Pragma: cache");
             header("Expires: 0");
+            
             if ($table !== null) {
                 echo $table;
             }
         }
+        
+        /**
+         * Exportable en formato excel con el componente yii excel
+         */
+        public function actionYiiexcel()
+        {
+            Yii::import('webroot.protected.components.reports.Report');
+            $report = new Report;
+            
+            $date = date('Y-m-d H:i:s');
+            $option = '0';
+            $carrier = 'both';
+        
+            if (isset($_POST['date']) && !empty($_POST['date'])) $date = $_POST['date'] . ' ' .date('H:i:s');
+            if (isset($_POST['rb-report']) && !empty($_POST['rb-report'])) $option = $_POST['rb-report'];
+            if (isset($_POST['carrier']) && !empty($_POST['carrier'])) $carrier = $_POST['carrier'];
+        
+            if (isset($option)) {
+                $args = array(
+                    'date' => $date,
+                    'option' => $option,
+                    'carrier' => $carrier,
+                    'octetStream' => true,
+                    'nameReport' => 'ETTS Report '. $this->_matchSheetName($option) . '-' . date('Y-m-d His') . '.xlsx'
+                );
+                $report->genExcel($args);
+            }
+        }
+        
+        /**
+         * Exportable en formato .xls con el componente yii excel
+         */
+        public function actionMailyiiexcel()
+        {
+            Yii::import('webroot.protected.components.reports.Report');
+            $report = new Report;
+            $export = new Export;
+            
+            $date = date('Y-m-d H:i:s');
+            $option = '0';
+            $carrier = 'both';
+        
+            if (isset($_POST['date']) && !empty($_POST['date'])) $date = $_POST['date'] . ' ' . date('H:i:s');;
+            if (isset($_POST['rb-report']) && !empty($_POST['rb-report'])) $option = $_POST['rb-report'];
+            if (isset($_POST['carrier']) && !empty($_POST['carrier'])) $carrier = $_POST['carrier'];
+        
+            if (isset($option)) {
+                $nameReport = 'ETTS Report '. $this->_matchSheetName($option) . '-' . date('Y-m-d His');
+                $args = array(
+                    'date' => $date,
+                    'option' => $option,
+                    'carrier' => $carrier,
+                    'octetStream' => false,
+                    'nameReport' => $nameReport . '.xlsx'
+                );
+                $report->genExcel($args);
+                
+                $table = $export->tableSummary($carrier, $date) . '<center><h3>'. substr($nameReport, 0, -7) .'</h3></center>' . $export->table($_POST['id'], $date);
+                if ($table !== null) {
+                    $mail = new EnviarEmail;
+                    $mail->enviar($table, Yii::app()->user->email, '', $nameReport, 'uploads/' . $nameReport . '.xlsx');   
+                } 
+            }
+        }
+        
+        /**
+        * Retorna el nombre del reporte, este debe ser igual al de la hoja excel
+        * @param int $option Categoría seleccionada
+        * @return string
+        */
+        private function _matchSheetName($option)
+        {
+            switch ($option) {
+                case '1': return 'Open today';  break;
+                case '2': return 'Pending yellow';  break;
+                case '3': return 'Pending red';  break;
+                case '4': return 'Without activity';  break;
+                case '5': return 'Close white';  break;
+                case '6': return 'Close yellow';  break;
+                case '7': return 'Close red';  break;
+                case '8': return 'Total pending';  break;
+                case '9': return 'Total close';  break;
+                default : 'Open today'; break;
+            }
+        }        
+        
+        /**
+         * Nombre de los exportables en statistics
+         * @param int $name El tipo de exportable que se ha seleccionado
+         * @return string
+         */
+        private function _defineNameReport($name)
+        {
+            $return = '';
+            switch ($name) {
+                case '1': $return = 'Report - tickets open today'; break;
+                case '2': $return = 'Report - tickets pending yellow';  break;
+                case '3': $return = 'Report - tickets pending red';  break;
+                case '4': $return = 'Report - tickets pending without activity';  break;
+                case '5': $return = 'Report - tickets closed white';  break;
+                case '6': $return = 'Report - tickets closed yellow';  break;
+                case '7': $return = 'Report - tickets closed red';  break;
+                case '8': $return = 'Report - total tickets pendings';  break;
+                case '9': $return = 'Report - total tickets closed';  break;
+            }
+            return $return;
+        }
+        
         
         /**
          * Exportable email
@@ -164,15 +287,22 @@ class SiteController extends Controller
         public function actionMail()
         {
             $mail = new EnviarEmail();
-            $reports = new ReportTickets();
-            $table = $reports->table($_POST['id']);
-            $name = 'ETTS tickets-reports-' . date('Y-m-d H-i-s');
+            $export = new Export();
+            $date = false;
+            $status = '';
+            
+            if (isset($_POST['date']) && !empty($_POST['date'])) $date = $_POST['date'];
+            if (isset($_POST['status']) && !empty($_POST['status'])) $status = $_POST['status'];
+            if (isset($_POST['rb-report']) && !empty($_POST['rb-report'])) $status = $this->_defineNameReport($_POST['rb-report']);
+            
+            $table = $export->table($_POST['id'], $date);
+            $name = $this->_setNameExport($status);
             if ($table !== null) {
                 $this->_writeFile($name, $table);
-                $mail->enviar($table, Yii::app()->user->email, '', 'New report ETTS ' . date('Y-m-d H:i:s'), 'uploads/' . $name . '.xls');
+                $mail->enviar($table, Yii::app()->user->email, '', $name, 'uploads/' . $name . '.xls');
             }
         }
-        
+                
         /**
          * Escribe el archivo excel
          * @param string $name
@@ -193,6 +323,23 @@ class SiteController extends Controller
                             </body>
                         </html>";
             fwrite($fp, $cuerpo);
+        }
+        
+        /**
+         * Define el nombre que contendra el exportable dependiendo del status del ticket
+         * @param int|string $status
+         * @return string
+         */
+        private function _setNameExport($status)
+        {
+            if ($status === '1') {
+                $string = 'Open tickets';
+            } elseif ($status === '2') {
+                $string = 'Closed tickets';
+            } else {
+                $string = $status;
+            }
+            return 'ETTS ' . $string . '-' . date('Y-m-d H-i-s');
         }
 
 	/**
@@ -215,20 +362,24 @@ class SiteController extends Controller
 					'label'=>'Open TT Customer/Supplier to Etelix by Etelix',
 					'url'=>array('/ticket/createascarrier')
 					),
-                array(
+                                 array(
 					'label'=>'Open TT Etelix to Customer/Supplier',
 					'url'=>array('/ticket/createtocarrier')
 					),
+                                array(
+                                        'label'=>'Statistics',
+                                        'url'=>array('/ticket/statistics')
+                                        )
 				);
 		}
 		// SUBADMIN
 		if($tipoUsuario=="S")
 		{
 			return array(
-                array(
-                    'label'=>'Closed',
-                    'url'=>array('/ticket/adminclose')
-					),
+                                array(
+                                    'label'=>'Closed',
+                                    'url'=>array('/ticket/adminclose')
+                                                        ),
 				array(
 					'label'=>'Open TT Customer/Supplier to Etelix by Etelix',
 					'url'=>array('/ticket/createascarrier')
@@ -237,6 +388,10 @@ class SiteController extends Controller
 					'label'=>'Open TT Etelix to Customer/Supplier',
 					'url'=>array('/ticket/createtocarrier')
 					),
+                                array(
+                                        'label'=>'Statistics',
+                                        'url'=>array('/ticket/statistics')
+                                        )
 				);
 		}
 		// CLIENTE
@@ -269,6 +424,10 @@ class SiteController extends Controller
 					'label'=>'Open TT Etelix to Customer/Supplier',
 					'url'=>array('/ticket/createtocarrier')
 					),
+                            array(
+                                        'label'=>'Statistics',
+                                        'url'=>array('/ticket/statistics')
+                                        )
                 );
 		}
 	}

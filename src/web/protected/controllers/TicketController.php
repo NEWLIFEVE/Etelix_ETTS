@@ -9,7 +9,7 @@ class TicketController extends Controller
      * using two-column layout. See 'protected/views/layouts/column2.php'.
      */
     public $layout='//layouts/column2';
-
+    
     /**
      * @access public
      * @return array
@@ -150,6 +150,24 @@ class TicketController extends Controller
      */
     public function actionAdmin()
     {
+        // Css y js del datable
+        Script::registerDataTable();
+        // Css y js del uploadfile
+        Script::registerUploadFile();
+        // Patrón módulo que se usa en este action
+        Script::registerModules(array('ajax', 'export'));
+        // Js por defecto del action
+        Script::registerJsAction();
+        // Datatable de los usuarios externo
+        if (CrugeAuthassignment::getRoleUser() === 'C') {
+            Script::registerJsController(array('dtable.carriers'));
+        // Datatable de los usuarios internos
+        } else {
+            Script::registerJsController(array('dtable.etelix'));
+        }
+        // Css de la leyenda
+        Script::registerCss(array('leyenda'));
+        
         $colors=$this->_countColorsTicket();
         $color = '';
         $this->render('admin',array(
@@ -157,6 +175,119 @@ class TicketController extends Controller
             'color'=>$color,
             ));
     }
+    
+    /**
+     * Renderiza la vista de los reportes con datatable
+     */
+    public function actionStatistics() 
+    {                  
+        Script::registerDataTable();
+        Script::registerModules(array('ajax', 'export'));
+        Script::registerJsAction();
+        Script::registerCss(array('datepicker', 'leyenda'));
+        $this->render('statistics');
+    }
+    
+    /**
+     * Pobla el datatable con los datos
+     */
+    public function actionDatatable()
+    {
+                
+        $date = date('Y-m-d H:i:s');
+        $option = '1';
+        $carrier = 'both';
+        
+        if (isset($_REQUEST['date']) && !empty($_REQUEST['date'])) $date = $_REQUEST['date'] . ' ' . date('H:i:s');
+        if (isset($_REQUEST['option']) && !empty($_REQUEST['option'])) $option = $_REQUEST['option'];
+        if (isset($_REQUEST['carrier']) && !empty($_REQUEST['carrier'])) $carrier = $_REQUEST['carrier'];
+       
+        $data = $this->_optionStatistics($option, $date, $carrier);
+        
+        if ($data !== null) {
+            echo CJSON::encode($data);
+        } else {
+            echo CJSON::encode(array('aaData' => array()));
+        }
+    }
+    
+    
+    /**
+     * Retorna la consulta que contiene las estadísticas
+     * @param integer $option Si será pendiente o cerrado dependiendo
+     * @param string $date La fecha de la consulta
+     * @return array
+     */
+    private function _optionStatistics($option, $date, $carrier)
+    {
+        Yii::import('webroot.protected.components.reports.Report');
+        $report = new Report;
+        $statistcs = $report->optionStatistics($option, $date, $carrier);
+        $data = null;
+        
+        if ($statistcs !== null) {
+            foreach ($statistcs as $value) {
+                $data['aaData'][] = array(
+                    $value->carrier . 
+                    '<input type="hidden" value="'.$value->id.'" rel="'.$value->id.'" name="id[]">' . 
+                    '<input type="hidden" value="'.$value->color.'" name="color[]">', 
+                    $value->user_open_ticket != null ? $value->idUser->username : (strlen(Carrier::getCarriers(true, $value->id)) <= 9 ? Carrier::getCarriers(true, $value->id) : substr(Carrier::getCarriers(true, $value->id), 0, 9) .'...'),
+                    strlen(Carrier::getCarriers(true, $value->id)) <= 9 ? Carrier::getCarriers(true, $value->id) : substr(Carrier::getCarriers(true, $value->id), 0, 9) .'...', 
+                    $value->ticket_number,
+                    strlen($value->idFailure->name) <= 13 ? $value->idFailure->name : substr($value->idFailure->name, 0, 13) .'...',
+                    TestedNumber::getNumber($value->id) != false ? TestedNumber::getNumber($value->id)->idCountry->name : '',
+                    $value->date . '/' . $value->hour,
+                    $value->close_ticket != null ? substr($value->close_ticket, 0, 16) : '',
+                    $value->lifetime,
+                );
+            }
+        }
+        
+        return $data;
+    }
+        
+    /**
+     * Retorna un json con los datos de las estadísticas
+     */
+    public function actionAjaxstatistics()
+    {
+        Yii::import('webroot.protected.components.reports.Report');
+        $report = new Report;
+        $date = date('Y-m-d H:i:s');
+        $carrier = 'both';
+        
+        if (isset($_POST['date']) && !empty($_POST['date'])) $date = $_POST['date'] . ' ' . date('H:i:s');
+        if (isset($_POST['carrier']) && !empty($_POST['carrier'])) $carrier = $_POST['carrier'];
+               
+        $data = array(
+            'ticketCloseWhite' => count($report->openOrClose($date, 'white', 'close', $carrier)),
+            'ticketPendingWhite' => count($report->openOrClose($date, 'white', 'open', $carrier)),
+            'ticketCloseYellow' => count($report->openOrClose($date, 'yellow', 'close', $carrier)),
+            'ticketPendingYellow' => count($report->openOrClose($date, 'yellow', 'open', $carrier)),
+            'ticketCloseRed' => count($report->openOrClose($date, 'red', 'close', $carrier)),
+            'ticketPendingRed' => count($report->openOrClose($date, 'red', 'open', $carrier)),
+            'ticketWithoutDescription' => count($report->withoutDescription($date, $carrier)),
+            'totalPending' => count($report->totalTicketsPending($date, $carrier)),
+            'totalClosed' => count($report->totalTicketsClosed($date, $carrier))
+        );
+        
+        echo CJSON::encode($data);
+    }
+        
+
+    public function actionPrintticket()
+    {
+        if (isset($_POST['data'])) {
+            $data = $_POST['data'];
+        } else {
+            $data = self::getTicketAsArray($_POST['id']);
+        }
+        
+        $export = new Export;
+        echo $export->printTicket($data);
+    }
+
+    
 
     /**
      * Returns the data model based on the primary key given in the GET variable.
@@ -555,11 +686,11 @@ class TicketController extends Controller
         $red = 0; 
         foreach ($model::ticketsByUsers(Yii::app()->user->id, false) as $ticket) {          
             $timeTicket = Utility::getTime($ticket->date, $ticket->hour);
-            // Tickes a partir de las 6:00am
-            if ($timeTicket <= 64800)
+            // Tickes blancos
+            if ($timeTicket < 86400)
                 $white += 1;
-            // Tickets de antes de las 6:00am hasta 6:00am del dia anterior
-            elseif ($timeTicket > 64800 && $timeTicket <= 151200) 
+            // Tickets amarillos
+            elseif ($timeTicket >= 86400 && $timeTicket < 172800) 
                 $yellow += 1;
             else 
                 $red += 1;
