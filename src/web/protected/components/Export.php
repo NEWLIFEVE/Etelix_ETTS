@@ -21,7 +21,7 @@ class Export extends TicketDesign
      * @param arrray $ids
      * @return string
      */
-    public function table($ids, $date = false)
+    public function table($ids, $date = false,  $withoutDescription = false)
     {
         if (!is_array($ids)) {
             $ids = explode (",", $ids);
@@ -31,7 +31,7 @@ class Export extends TicketDesign
         if (count($data)) {
             $table = '<table ' . $this->_cssTable . '>' . 
                     $this->_thead() .
-                    $this->_contentTable($data) .
+                    $this->_contentTable($data, $withoutDescription) .
                     '</table>';
         }
         return $table;
