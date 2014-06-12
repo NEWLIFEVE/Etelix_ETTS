@@ -182,7 +182,7 @@ $ETTS.UI=(function(){
                         '</div>' +
                    '</div>' +
                    '<div id="preview_buttons">' +
-                        '<button  class="primary large" id="save_ticket">Send Ticket Information</button> <a  href="#" id="imprimir"><i class="icon-printer on-right"></i></a>' +
+                        '<button  class="primary large" id="save_ticket">Send Ticket Information</button> <!--<a  href="#" id="imprimir"><i class="icon-printer on-right"></i></a>-->' +
                    '</div>';
     }
     

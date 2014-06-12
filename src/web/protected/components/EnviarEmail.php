@@ -78,7 +78,7 @@ class EnviarEmail extends CApplicationComponent
             }
             else
             {
-                $mailer->addCC('mark182182@gmail.com','Eduardo Makoukdji');
+//                $mailer->addCC('mark182182@gmail.com','Eduardo Makoukdji');
             }
             if($copia!=null)
             {
