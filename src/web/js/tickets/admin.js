@@ -269,6 +269,32 @@ function saveMessage()
     }
 }
 
+/**
+ * Botones para exportar
+ * @param {object} boton
+ * @returns {void}
+ */
+function initExport(boton)
+{
+    var settings = {
+        'url': boton.prop('rel'),
+        'id': $('.preview'),
+        'date': null,
+        'status': $('#status').val()
+    };
+    
+    if (boton.prop('id') === 'print-btn') {
+        settings.async = false;
+        settings.print = true;
+        $ETTS.export.print(settings);
+    } else if (boton.prop('id') === 'excel-btn') {
+        $ETTS.export.excelForm($('#form-excel'), $('.preview'));
+    } else {
+        settings.async = true;
+        settings.print = false;
+        $ETTS.export.mail(settings);
+    }
+}
 
 /**
 *Función para refrescar la vista admin.php cada 5 minutos. Si se da un preview del
@@ -279,19 +305,30 @@ var refreshInterval = setInterval(function(){
             window.location.reload(true);
             }, 300000);
             
+/**
+ * Imprime el ticket que ya esta guardado en base de datos
+ * @returns {void}
+ */
+function printTicketBd()
+{
+    var settings = {
+        'url': '/ticket/printticket',
+        'async': false,
+        'print': true,
+        'id': $('#id_ticket').val()
+    };
+    $('#print-ticket').on('click', function(){
+       $ETTS.export.printPreviewTicket(settings); 
+    });
+}
+
 $(document).on('ready', function() {
     
     // Exportables
     $(document).on('click', '.itemreporte', function(){
-        if ($(this).prop('id') === 'print-btn') {
-            $ETTS.reports.print($('.preview'), $(this).prop('rel'));
-        } else if ($(this).prop('id') === 'excel-btn') {
-            $ETTS.reports.excelForm($('#form-excel'), $('input[name="id[]"]'));
-        } else {
-            $ETTS.reports.mail($('.preview'), $(this).prop('rel'));
-        }
+        initExport($(this));
     });
-    
+        
     // Leyenda de colores
     $('.botones-sociales .social').mouseenter(function(){
         $(this).stop();
@@ -386,6 +423,9 @@ $(document).on('ready', function() {
                 $ETTS.UI.removeBlink($(this));
                 $ETTS.ajax.removeBlink(idTicket);
             }
+            
+            // Imprime el ticket que ya esta guardado en base de datos
+            setTimeout('printTicketBd()', 1000);
     });
     
     $(document).on('focus', 'textarea#answer', function(){

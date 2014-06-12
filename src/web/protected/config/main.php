@@ -17,11 +17,11 @@ return array(
 	// autoloading model and component classes
 	'import'=>array(
 		'application.models.*',
-        'application.controllers.*',
-		'application.components.*',
-        'application.components.Imap.*',
-		'application.modules.cruge.components.*',
-		'application.modules.cruge.extensions.crugemailer.*',
+                'application.controllers.*',
+                'application.components.*',
+                'application.components.Imap.*',
+                'application.modules.cruge.components.*',
+                'application.modules.cruge.extensions.crugemailer.*'
 		),
 	'modules'=>array(
 	// uncomment the following to enable the Gii tool
@@ -107,9 +107,9 @@ return array(
 		'log'=>array(
 			'class'=>'CLogRouter',
 			'routes'=>array(
-				array(
-                    'class'=>'ext.yii-debug-toolbar.YiiDebugToolbarRoute',
-                ),
+//				array(
+//                    'class'=>'ext.yii-debug-toolbar.YiiDebugToolbarRoute',
+//                ),
 				// uncomment the following to show log messages on web pages
 				/*
 				array(
@@ -124,7 +124,7 @@ return array(
         'user'=>array(
         	'allowAutoLogin'=>true,
         	'class'=>'application.modules.cruge.components.CrugeWebUser',
-        	'loginUrl'=>array('/cruge/ui/login'),
+        	'loginUrl'=>array('/cruge/ui/login')
         	),
         'authManager'=>array(
         	'class'=>'application.modules.cruge.components.CrugeAuthManager',
@@ -139,14 +139,18 @@ return array(
         	'datetimeFormat'=>"d M, Y h:m:s a",
         	),
         'session'=>array(
-        	'timeout'=>'3600',
-        	),
+        	'timeout'=>86400,
+                'autoStart' => true , 
+                'gCProbability'  => 100 ,
+        ),
         'clientScript'=>array(
                   'scriptMap'=>array(
                       'jquery.js' => '/js/plugins/jquery/jquery.min.js',
                       'jquery.yii.js' => '/js/plugins/jquery/jquery.min.js',
                   ),
             ),
+            
+            
         ),
         // application-level parameters that can be accessed
         // using Yii::app()->params['paramName']

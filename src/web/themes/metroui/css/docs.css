@@ -704,3 +704,71 @@ div.pre-loader {
 .test-select th select {
     width: 80%;
 }
+
+/******** TABLE REPORTS ********/
+
+.table-report {
+    width: 100% !important;
+    margin-bottom: 5px;
+}
+
+.table-report .table .red {
+    background: #EEB8B8;
+}
+
+.table-report .table .yellow {
+    background: #FFDC51;
+}
+.table-report .table .white {
+    background: #FFF;
+}
+
+.table-report .table .pending {
+    background: #FDFFDF;
+}
+.table-report .table .total {
+    border-top: 15px solid #d3d3d3;
+}
+
+
+.table-report .table-report-header {
+    background: #16499a !important;
+    padding-top: 7px !important;
+}
+
+.table-report .row {
+    margin-top: 0px !important;
+}
+
+.table-report .table-report-content table thead  tr th {
+   background: #e6e6e6 url(images/ui-bg_glass_75_e6e6e6_1x400.png) 50% 50% repeat-x;
+   color:#555;
+   border: 1px solid #d3d3d3;
+   font-weight: normal;
+}
+
+.table-report .table-report-content table tbody  tr td {
+   color:rgb(90, 90, 90);
+   padding: 0px !important;
+   line-height: 1.5;
+   border: none !important;
+}
+.table-report .table-report-content table tbody  tr td:nth-child(2), 
+.table-report .table-report-content table tbody  tr td:nth-child(5) {
+   font-size: 110%;
+   text-align: justify;
+   padding-left: 10px !important;
+}
+
+.table-report .table-report-content table tbody  tr td:nth-child(1),
+.table-report .table-report-content table tbody  tr td:nth-child(3), 
+.table-report .table-report-content table tbody  tr td:nth-child(4), 
+.table-report .table-report-content table tbody  tr td:nth-child(6) {
+   text-align: center;
+}
+
+.table-report .table-report-header .span3.offset5 .input-control.text.span3 {
+    margin-left: -15px;
+}
+
+/******* View table tickets ********/
