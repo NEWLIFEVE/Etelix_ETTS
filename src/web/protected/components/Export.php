@@ -111,10 +111,11 @@ class Export extends TicketDesign
      * @param array $data
      * @return string
      */
-    private function _contentTable($data) 
+    private function _contentTable($data, $withoutDescription = false) 
     {
         $contentTable = '<tbody>';
         foreach ($data as $tickets) {
+            if ($withoutDescription === true) $tickets->color = '#FDFFDF;"';
             $contentTable .= '<tr>';
                 $contentTable .= '<td ' . $this->_cssTickets($tickets->color) . ' >' . Utility::formatTicketNumber($tickets->ticket_number) . '</td>';
                 $contentTable .= $this->_defineUserOrCarrier($tickets);
