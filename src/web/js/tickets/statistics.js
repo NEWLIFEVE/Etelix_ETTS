@@ -134,7 +134,8 @@ function changeBackground()
 
         case '3': case '7': $('#tbl-datatable tr').css('background', '#EEB8B8'); break;
         
-        case '4': 
+        case '4': $('#tbl-datatable tr').css('background', '#FDFFDF'); break;
+        
         case '8': 
         case '9':
             $('#tbl-datatable tbody tr').each(function(i){
