@@ -294,39 +294,29 @@ $ETTS.UI=(function(){
                              hour)
             });
         },
-        direccionesIp:function(element, e){
-          
-            var valor = element.val();
-            // Para IE
-            if (window.event)
-            {
-                if (window.event.keyCode == 190 || window.event.keyCode == 110) 
-                {
-                    element.val(valor.replace('.', ''));
-                    element.next('input').focus();
+        direccionesIp:function(element){
+            $(element).on('keyup', function(e){
+                if ($(this).val().length === 3) {
+                    if ($(this).val() > 255) {
+                        $(this).val(255);
+                    }
+                    $(this).next('input').focus();
+                    e.preventDefault();
                 }
-            }
-            else
-            {
-                // Para Chrome, Firefox, etc.
-                if(e)
-                {
-                    if (e.which == 190 || e.which == 110)
-                    {
-                        element.val(valor.replace('.', ''));
-                        element.next('input').focus();
+            });
+            
+            $(element).on('keypress', function(e){
+                var keyNum = window.event ? window.event.keyCode : e.which;
+                
+                if (keyNum === 46) {
+                    $(this).next('input').focus();
+                    e.preventDefault();
+                } else {
+                    if (keyNum < 48 || keyNum > 57) {
+                        e.preventDefault();
                     }
                 }
-            }
-            
-            if (element.val().length === 3) 
-            {
-                if (element.val() > 255) 
-                {
-                    element.val('255');
-                }
-                element.next('input').focus();
-            }
+            });
         },
         borrarOptionSelect:function(select){
               var element = select.parent().children('select');
