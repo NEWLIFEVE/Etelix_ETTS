@@ -530,13 +530,24 @@ class TicketController extends Controller
     
     public function actionScalade()
     {
-        echo '<pre>';
-        print_r($_POST['data']['mails']);
-        echo '</pre>';
-        
-        echo $_POST['data']['idTicket'] . '<br>';
-        
-        echo '<p>' . $_POST['data']['message'] . '</p>';
+        if (isset($_POST['data']['idTicket'])) {
+            $model=new Ticket;
+            $isOk=$model::model()->updateByPk($_POST['data']['idTicket'],array('id_status'=>3));
+
+            if ($isOk) {
+                $mail= new EnviarEmail;
+                if (isset($_POST['data']['message'])) $message=$_POST['data']['message'];
+                if (isset($_POST['data']['mails'])) $mails=$_POST['data']['mails'];
+                $send=$mail->enviar($message, $mails, null, 'Ticket escalado');
+                if ($send === true) { 
+                    echo 'true';
+                    return true;
+                } else {
+                    echo 'Error ' . $send;
+                    return false;
+                }
+            }
+        }
     }
 
 

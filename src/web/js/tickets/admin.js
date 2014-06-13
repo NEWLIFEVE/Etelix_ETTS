@@ -398,8 +398,10 @@ function escaladedTicket(settings)
             'data':settings.data
         },
         success:function(response){
-            $.Dialog.close();
-            $.Dialog({content:response});
+            if (response === 'true') {
+                $.Dialog.close();
+                $.Dialog({content:response});
+            }
         }
     });
 }
