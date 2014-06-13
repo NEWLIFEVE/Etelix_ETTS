@@ -301,9 +301,10 @@ function initExport(boton)
 *ticket se interrrumpe el proceso y al cerrar el preview se vuelven a contar los 
 *cinco minutos.
 */
-var refreshInterval = setInterval(function(){
-            window.location.reload(true);
-            }, 300000);
+var timeRefresh = 300000, 
+    refreshInterval = setInterval(function(){
+        window.location.reload(true);
+    }, timeRefresh);
             
 /**
  * Imprime el ticket que ya esta guardado en base de datos
@@ -335,13 +336,22 @@ function previewEscaladeTicket()
             shadow: true,
             overlay: true,
             overlayClickClose: true,
+            overlayClickCloseDefault: false,
             flat:true,
             icon: "<span class=icon-eye-2></span>",
             title: "Escalade Ticket",
-            width: 450,
-            height: 350,
-            padding:10,
+            width: '450px',
+            height: '30%',
+            padding:20,
             draggable: true,
+            functionOverlayClickClose: function(_dialog){
+                // Al cerrar la ventana, se vuelve a contar los 5 munitos
+                refreshInterval = setInterval(function(){
+                   window.location.reload(true);
+                }, timeRefresh);
+                
+                $.Dialog.close();
+            },
             onShow: function(_dialog){
                 var mails = $("#mail-escalade").kendoMultiSelect({placeholder: "Select mails",}).data("kendoMultiSelect");
                 
@@ -350,7 +360,8 @@ function previewEscaladeTicket()
                         data : {
                             'mails':mails.value(),
                             'idTicket':idTicket,
-                            'message':$('#message').val()
+                            'message':$('#message').val(),
+                            'subject':$('#subject').val()
                         }
                     };
                     escaladedTicket(settings);
@@ -362,7 +373,7 @@ function previewEscaladeTicket()
                 // Al cerrar la ventana, se vuelve a contar los 5 munitos
                 refreshInterval = setInterval(function(){
                    window.location.reload(true);
-                }, 300000);
+                }, timeRefresh);
             },
             content:
             '<h3 class="ticket-information">Escalade ticket</h3><br>' +
@@ -374,6 +385,9 @@ function previewEscaladeTicket()
                     '<option value="nelsonm@sacet.biz">Nelson sacet</option>' +
                 '</select>' +
             '<!--</div>--><p></p>' +
+            '<div class="input-control text" data-role="input-control">' +
+                '<input type="text" id="subject" placeholder="Subject:">' +
+            '</div>' +
             '<div class="input-control textarea" data-role="input-control">' +
                 '<textarea class="textarea-integrado" name="message" id="message"></textarea>' +
             '</div>' +
@@ -397,10 +411,17 @@ function escaladedTicket(settings)
         data:{
             'data':settings.data
         },
-        success:function(response){
+        beforeSend:function(data) {
+            $.Dialog.close();
+            $ETTS.UI.message('Sending email...<h2><img src="/images/loader.GIF">');
+        },
+        success:function(response) {
             if (response === 'true') {
                 $.Dialog.close();
-                $.Dialog({content:response});
+                $ETTS.UI.message('Success');
+            } else {
+                $.Dialog.close();
+                $ETTS.UI.message('Error ' + response);
             }
         }
     });
@@ -432,7 +453,8 @@ function previewTicket(idTicket, clase)
             $.Dialog({
                 shadow: true,
                 overlay: true,
-                overlayClickClose: false,
+                overlayClickClose: true,
+                overlayClickCloseDefault: false,
                 flat:true,
                 icon: "<span class=icon-eye-2></span>",
                 title: "Ticket Information",
@@ -442,6 +464,14 @@ function previewTicket(idTicket, clase)
                 paddingBottom: 0,
                 draggable: true,
                 content:data,
+                functionOverlayClickClose: function(_dialog){
+                    // Al cerrar la ventana, se vuelve a contar los 5 munitos
+                    refreshInterval = setInterval(function(){
+                       window.location.reload(true);
+                    }, timeRefresh);
+                    
+                    $.Dialog.close();
+                },
                 onShow:function(_dialog) {
                   loadFunctions();  
                 },
@@ -449,7 +479,7 @@ function previewTicket(idTicket, clase)
                     // Al cerrar la ventana, se vuelve a contar los 5 munitos
                     refreshInterval = setInterval(function(){
                        window.location.reload(true);
-                    }, 300000);
+                    }, timeRefresh);
                 }
             });
             // Scroll abajo al cargar el detalle del ticket

@@ -24,6 +24,8 @@
             position: 'default',
             padding: false,
             overlayClickClose: true,
+            overlayClickCloseDefault: true,
+            functionOverlayClickClose:function(event){},
             sysButtons: {
                 btnClose: true
             },
@@ -144,7 +146,11 @@
         if (params.overlayClickClose) {
             _overlay.on('click', function(e){
                 e.preventDefault();
-                $.Dialog.close();
+                if (params.overlayClickCloseDefault) {
+                    $.Dialog.close();
+                } else {
+                    params.functionOverlayClickClose(e);
+                }
             });
         }
 
@@ -197,7 +203,7 @@
 
         METRO_DIALOG.css({
             width: _content.outerWidth(),
-            height: _content.outerHeight(),
+            //height: _content.outerHeight(),
             top: top,
             left: left
         });

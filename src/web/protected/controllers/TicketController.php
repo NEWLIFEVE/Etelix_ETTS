@@ -528,17 +528,30 @@ class TicketController extends Controller
             echo 'false';
     }
     
+    /**
+     * Escalando ticket
+     * @return boolean
+     */
     public function actionScalade()
     {
         if (isset($_POST['data']['idTicket'])) {
+            $id=$_POST['data']['idTicket'];
             $model=new Ticket;
-            $isOk=$model::model()->updateByPk($_POST['data']['idTicket'],array('id_status'=>3));
+            $isOk=$model::model()->updateByPk($id,array('id_status'=>3));
 
             if ($isOk) {
+                $data=self::getTicketAsArray($id);
                 $mail= new EnviarEmail;
+                $bodyEmail=new CuerpoCorreo($data);
+                $subject='Ticket escaladed ';
+                
                 if (isset($_POST['data']['message'])) $message=$_POST['data']['message'];
                 if (isset($_POST['data']['mails'])) $mails=$_POST['data']['mails'];
-                $send=$mail->enviar($message, $mails, null, 'Ticket escalado');
+                if (isset($_POST['data']['subject'])) $subject=$_POST['data']['subject'];
+                
+                $html=$bodyEmail->getBodyEscaladeTicket($message);
+                $send=$mail->enviar($html, $mails, null, $subject . ' TT ' . $data['ticketNumber']);
+                
                 if ($send === true) { 
                     echo 'true';
                     return true;
