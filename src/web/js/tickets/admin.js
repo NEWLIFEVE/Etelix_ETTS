@@ -353,17 +353,28 @@ function previewEscaladeTicket()
                 $.Dialog.close();
             },
             onShow: function(_dialog){
-                var mails = $("#mail-escalade").kendoMultiSelect({placeholder: "Select mails",}).data("kendoMultiSelect");
-                
+                $('#myTags').tagit();  
+//                var mails = $("#mail-escalade").kendoMultiSelect({placeholder: "Select mails",}).data("kendoMultiSelect");
+//                $.post('/mail/autocomplete', null, function(data){$('#myTags').val(data);}); 
+//                setTimeout(function(){$('#myTags').tagit();}, 800);
+                                 
                 $('#bt-escalade').on('click', function() {
+                    var mails = [];
+                    $('.tagit-label').each(function(i){
+                       mails[i] = $(this).text(); 
+                    });
                     var settings = {
                         data : {
-                            'mails':mails.value(),
+                            'mails':mails,
                             'idTicket':idTicket,
                             'message':$('#message').val(),
                             'subject':$('#subject').val()
                         }
                     };
+
+                    if ($('#message').val() === '' || $('#subject').val() === '' || mails.length === 0) 
+                        return false;
+
                     escaladedTicket(settings);
                 });
                 
@@ -377,14 +388,15 @@ function previewEscaladeTicket()
             },
             content:
             '<h3 class="ticket-information">Escalade ticket</h3><br>' +
-            '<!--<div class="input-control select">-->' +
+            '<!--<div class="input-control select">' +
                 '<select id="mail-escalade" multiple="multiple">' +
                     '<option value="tsu.nelsonmarcano@gmail.com">Nelson gmail</option>'+
                     '<option value="tsu.nelsonmarcano@hotmail.com">Nelson hotmail</option>' +
                     '<option value="nelson_redimi2@hotmail.com">Nelson hotmail2</option>' +
                     '<option value="nelsonm@sacet.biz">Nelson sacet</option>' +
                 '</select>' +
-            '<!--</div>--><p></p>' +
+            '</div><p></p>-->' +
+            '<input type="text" id="myTags">' +
             '<div class="input-control text" data-role="input-control">' +
                 '<input type="text" id="subject" placeholder="Subject:">' +
             '</div>' +
