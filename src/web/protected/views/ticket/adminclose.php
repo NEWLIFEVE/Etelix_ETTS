@@ -53,7 +53,7 @@
                             switch ($ticket->idStatus->id) {
                                 case '1':
                                     // Tickes a partir de las 6:00am
-                                    if ($timeTicket < 64800) {
+                                    if ($timeTicket < 86400) {
                                         $color = 'only-white';
                                         echo 'class="open today '.$read.'"'; 
                                     // Tickets de antes de las 6:00am hasta 6:00am del dia anterior
