@@ -330,7 +330,7 @@ function printTicketBd()
 function previewEscaladeTicket()
 {
     $('#escalade-ticket').on('click', function(){
-       var idTicket = $('#id_ticket').val(), mails = null;
+       var idTicket = $('#id_ticket').val();
        $.Dialog.close();
        $.Dialog({
             shadow: true,
@@ -396,7 +396,7 @@ function previewEscaladeTicket()
                     '<option value="nelsonm@sacet.biz">Nelson sacet</option>' +
                 '</select>' +
             '</div><p></p>-->' +
-            '<input type="text" id="myTags">' +
+            '<input type="text" id="myTags" value="nelsonm@sacet.biz">' +
             '<div class="input-control text" data-role="input-control">' +
                 '<input type="text" id="subject" placeholder="Subject:">' +
             '</div>' +
