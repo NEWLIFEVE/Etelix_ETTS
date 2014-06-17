@@ -2,6 +2,8 @@ Etelix_ETTS
 ===========
 
 Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
+17/06/2014
+	- Interfaz para escalar tickets
 
 29/05/2014
     - Sub menu statistics en el menu tickets, no visible para usuarios externos
