@@ -213,6 +213,21 @@ $ETTS.UI=(function(){
         tables:function(){
             return _tables[0];
         },
+        message:function(text, icon) {
+            if (!icon) {
+                icon = 'icon-rocket';
+            }
+            $.Dialog.close();
+            $.Dialog({
+                shadow: true,
+                overlay: false,
+                icon: '<span class="' + icon + '"></span>',
+                title: false,
+                width: 500,
+                padding: 10,
+                content: '<center><h3>' + text + '</h3></center>'
+            });
+        },
         
         /**
          * Método para mostrar un confirm personalizado

@@ -130,6 +130,11 @@ class CuerpoCorreo extends TicketDesign
         return $this->_getHeader() . $this->_getInfoCloseTicekt($status) . $this->_getDetailTicket() . $this->_footerCustomer;
     }
     
+    public function getBodyEscaladeTicket($message)
+    {
+        return $this->_getHeader() . '<p>'. $message . '</p>' . $this->_getDetailTicket() . $this->_footerCustomer;
+    }
+    
     /**
      * Retorna el header del correo
      * @return string
