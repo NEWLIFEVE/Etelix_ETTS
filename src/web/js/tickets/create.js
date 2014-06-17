@@ -140,9 +140,7 @@ $(document).on('ready', function(){
      * 
      ************************************************************************/
     // Event keyup para direccioenes ip
-    $(document).on('keyup', 'input._ip', function(e){
-        $ETTS.UI.direccionesIp($(this), e);
-    });
+    $ETTS.UI.direccionesIp($('input._ip'));
     
     /*************************************************************************
      * 

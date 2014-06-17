@@ -236,7 +236,8 @@ class Report extends Excel
                     $this->_setStyleBody('A' . $row. ':J' . $row, '');
                 } else {
                     $this->_setStyleBody('A' . $row. ':J' . $row, $value->color);   
-                }
+
+                }    
                 $i++;
             }
         }
@@ -437,7 +438,7 @@ class Report extends Excel
         return Ticket::model()
                 ->findAllBySql("$getTickets AND
                                 id NOT IN(SELECT id_ticket FROM description_ticket WHERE date = '".substr($date, 0, 10)."' GROUP BY id_ticket HAVING COUNT(id_ticket) >= 2)) AS tiempo) AS colores 
-                                WHERE date <= '$date' AND (close_ticket IS NULL OR close_ticket > '$date') $selectCarrier ORDER BY id_status, id ASC");
+                                WHERE date = '".substr($date, 0, 10)."' AND (close_ticket IS NULL OR close_ticket > '$date') AND option_open <> 'etelix_to_carrier' $selectCarrier ORDER BY id_status, id ASC");
     }
     
     /**
@@ -525,7 +526,8 @@ class Report extends Excel
         $query  = " $begin WHERE lifetime >= '2 days'::interval AND date <= '".substr($date, 0, 10)."' AND (close_ticket IS NULL OR close_ticket > '$date') $selectCarrier UNION ";
         $query .= " $begin WHERE lifetime >= '1 days'::interval AND lifetime < '2 days'::interval  AND date <= '".substr($date, 0, 10)."' AND (close_ticket IS NULL OR close_ticket > '$date') $selectCarrier UNION ";
         $query .= " $begin WHERE lifetime < '1 days'::interval  AND date <= '".substr($date, 0, 10)."' AND (close_ticket IS NULL OR close_ticket > '$date') $selectCarrier UNION ";
-        $query .= " $begin WHERE date <= '$date' AND (close_ticket IS NULL OR close_ticket > '$date') AND id NOT IN(SELECT id_ticket FROM description_ticket WHERE date = '".substr($date, 0, 10)."' GROUP BY id_ticket HAVING COUNT(id_ticket) >= 2) $selectCarrier ORDER BY id_status, id ASC";
+        $query .= " $begin WHERE date = '".substr($date, 0, 10)."' AND (close_ticket IS NULL OR close_ticket > '$date') AND id NOT IN(SELECT id_ticket FROM description_ticket WHERE date = '".substr($date, 0, 10)."' GROUP BY id_ticket HAVING COUNT(id_ticket) >= 2) AND option_open <> 'etelix_to_carrier' $selectCarrier ORDER BY id_status, id ASC";
+
         return Ticket::model()->findAllBySql($query);
     }
     
