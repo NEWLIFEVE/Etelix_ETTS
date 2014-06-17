@@ -167,12 +167,9 @@ class TicketController extends Controller
             Script::registerJsController(array('dtable.etelix'));
         }
         
-//        Script::registerPlugins(array('kendo.all.min', 'tag-it.min'));
         Script::registerPlugins(array('tag-it.min'));
-        
         // Css de la leyenda
-//        Script::registerCss(array('leyenda', 'kendo.common.min', 'kendo.rtl.min', 'kendo.metro.min', 'jquery.tagit', 'tagit.ui-zendesk'));
-        Script::registerCss(array('leyenda', 'kendo.common.min', 'jquery.tagit', 'tagit.ui-zendesk'));
+        Script::registerCss(array('leyenda', 'jquery.tagit', 'tagit.ui-zendesk'));
         
         $colors=$this->_countColorsTicket();
         $color = '';
