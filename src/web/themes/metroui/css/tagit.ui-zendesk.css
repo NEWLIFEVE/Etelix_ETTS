@@ -52,7 +52,7 @@ ul.tagit li.tagit-choice .tagit-close .text-icon {
 }
 ul.tagit li.tagit-choice:hover, ul.tagit li.tagit-choice.remove {
     background-color: #61CF61;
-    border-color: silver;
+    border-color: #61CF61;
 }
 ul.tagit li.tagit-choice a.tagLabel:hover,
 ul.tagit li.tagit-choice a.tagit-close .text-icon:hover {
