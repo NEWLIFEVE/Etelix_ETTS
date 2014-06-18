@@ -175,7 +175,7 @@ class Export extends TicketDesign
                                     CASE WHEN lifetime < '1 days'::interval THEN 'white' 
                                     WHEN lifetime >= '1 days'::interval AND lifetime < '2 days'::interval THEN 'yellow'
                                     WHEN lifetime >= '2 days'::interval THEN 'red' END
-                                  ELSE 'green' END) AS color
+                                  WHEN id_status = 2 THEN 'green' WHEN id_status = 3 THEN 'gray' END) AS color
                                 FROM (SELECT *, (
                                 CASE WHEN id_status = 1 OR id_status = 3 THEN
                                     (CASE WHEN $createTicket <= $currentTime THEN 
@@ -242,6 +242,9 @@ class Export extends TicketDesign
                 break;
             case 'green':
                 $style .= '#61CF61;"';
+                break;
+            case 'gray':
+                $style .= '#D0DEEE;"';
                 break;
             default:
                 $style .= '#FDFFDF;"';

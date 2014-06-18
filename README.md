@@ -2,8 +2,14 @@ Etelix_ETTS
 ===========
 
 Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
+18/06/2014
+    - Se borró a Leandro del componente de correos
+    - Escalar ticket ahora solo está visible para los usuarios internos
+    - Leyenda indicando el significado de los tickets escalados
+    
+
 17/06/2014
-	- Interfaz para escalar tickets
+    - Interfaz para escalar tickets
 
 29/05/2014
     - Sub menu statistics en el menu tickets, no visible para usuarios externos

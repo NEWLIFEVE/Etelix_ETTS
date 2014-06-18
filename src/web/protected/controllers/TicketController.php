@@ -734,17 +734,27 @@ class TicketController extends Controller
         }
         
         $green = $model::countTicketClosed();
-        $totalTickets = $white + $yellow + $green + $red;
+        
+        if (CrugeAuthassignment::getRoleUser() != 'C') {
+            $scaled=$model::model()->count("id_status = 3");
+        } else {
+            $scaled=$model::model()->count("id_status = 3 AND id IN(SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user WHERE id_user=".Yii::app()->user->id."))");
+        }
+        
+        $totalTickets = $white + $yellow + $green + $red + $scaled;
         
         return array(
             'white'=>$white,
             'yellow'=>$yellow,
             'green'=>$green,
             'red'=>$red,
+            'scaled'=>$scaled,
             'percentageWhite'=>$totalTickets != 0 ? round(($white/$totalTickets) * 100, 1) : 0,
             'percentageYellow'=>$totalTickets != 0 ? round(($yellow/$totalTickets) * 100, 1) : 0,
             'percentageGreen'=>$totalTickets != 0 ? round(($green/$totalTickets) * 100, 1) : 0,
             'percentageRed'=>$totalTickets != 0 ? round(($red/$totalTickets) * 100, 1) : 0,
+            'percentageScaled'=>$totalTickets != 0 ? round(($scaled/$totalTickets) * 100, 1) : 0,
+            
         );
     }
 }

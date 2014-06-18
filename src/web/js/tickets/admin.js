@@ -443,10 +443,10 @@ function escaladedTicket(settings)
 /**
  * Muestra el preview del ticket
  * @param {int} idTicket
- * @param {string} clase
+ * @param {object} boton
  * @returns {void}
  */
-function previewTicket(idTicket, clase)
+function previewTicket(idTicket, boton)
 {   
     $.Dialog.close();
     setTimeout(function(){
@@ -512,11 +512,11 @@ function previewTicket(idTicket, clase)
         }
     });
 
-    if (clase) 
+    if (boton) 
     {
-        if (clase.toLowerCase().indexOf("blink") >= 0)
+        if (boton.parent().parent().attr('class').toLowerCase().indexOf("blink") >= 0)
         {
-            $ETTS.UI.removeBlink($(this));
+            $ETTS.UI.removeBlink(boton);
             $ETTS.ajax.removeBlink(idTicket);
         }
     }
@@ -586,9 +586,7 @@ $(document).on('ready', function() {
 
     // Llamado del preview del ticket
     $(document).on('click', '.preview', function () {
-        var clase=$(this).parent().parent().attr('class'),
-        idTicket = $(this).attr('rel');
-        previewTicket(idTicket, clase);
+        previewTicket($(this).attr('rel'), $(this));
     });
     
     // Efecto seleccion de border al tener foco en un textarea

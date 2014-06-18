@@ -3,7 +3,7 @@
     <head>
         <title><?php echo CHtml::encode($this->pageTitle); ?></title>
         <meta charset="<?php echo Yii::app()->charset;?>">
-        <link href="<?php echo Yii::app()->theme->baseUrl; ?>/css/normalize.css" rel="stylesheet" type="text/css">
+        <!--<link href="<?php // echo Yii::app()->theme->baseUrl; ?>/css/normalize.css" rel="stylesheet" type="text/css">-->
         <link href="<?php echo Yii::app()->theme->baseUrl; ?>/css/metro-bootstrap.css" rel="stylesheet" type="text/css">
         <link href="<?php echo Yii::app()->theme->baseUrl; ?>/css/metro-bootstrap-responsive.css" rel="stylesheet" type="text/css">
         <link href="<?php echo Yii::app()->theme->baseUrl; ?>/js/prettify/prettify.css" rel="stylesheet">

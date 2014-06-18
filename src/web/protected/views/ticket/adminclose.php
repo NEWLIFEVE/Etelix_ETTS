@@ -69,6 +69,10 @@
                                     $color = 'only-green';
                                     echo 'class="close '.$read.'"';
                                     break;
+                                case '3':
+                                    $color = 'only-scaled';
+                                    echo 'class="scaled '.$read.'"';
+                                    break; 
                                 }
                                 ?>>
                         <?php if ($tipoUsuario !== "C"): ?>
@@ -97,7 +101,7 @@
                         <td><?php echo $ticket->date . ' / ' . $ticket->hour; ?></td>
                         <td><?php echo $ticket->close_ticket != null ? substr($ticket->close_ticket, 0, 10) . ' / ' . substr($ticket->close_ticket, 11, 12) : ''; ?></td>
                         <td><?php echo substr($ticket->lifetime, 0, -3); ?></td>
-                         <td class="hidden"><?php echo $color; ?></td>
+                        <td class="hidden"><?php echo $color; ?></td>
                         <td>
                             <input type="hidden" value="<?php echo $ticket->id; ?>" id="id[]" name="id[]">
                             <input type="hidden" value="2" id="status" name="status">
@@ -133,6 +137,12 @@
         <span class='social'>
             <span class="total-tickets"><?php echo $colors['red']; ?> TT's <br>(<?php echo $colors['percentageRed']; ?>%)</span>
             <span class='texto'>TT's abiertos con mas de 48 horas (<?php echo $colors['red']; ?> en total)</span>
+        </span>
+    </a>
+    <a class='itemsocial' href='javascript:void(0)' id='escalade-btn' rel="only-scaled">
+        <span class='social'>
+            <span class="total-tickets"><?= $colors['scaled']; ?> TT's <br>(<?= $colors['percentageScaled']; ?>%)</span>
+            <span class='texto'>TT's scaled (<?= $colors['scaled']; ?> total)</span>
         </span>
     </a>
     <a class='itemsocial' href='javascript:void(0)' id='pinterest-btn' rel="only-green">

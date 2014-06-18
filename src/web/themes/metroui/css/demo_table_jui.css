@@ -263,6 +263,18 @@ table.display td.center {
  table.display tr{
      color: rgb(90, 90, 90);
  }
+/*Escalados*/
+table.display tr.odd.scaled{
+	background-color: #D0DEEE;
+	/*background-color: #ddffdd;*/
+}
+
+table.display tr.even.scaled {
+	background-color: #D0DEEE;
+	/*background-color: #ddffdd;*/
+	/*background-color: #eeffee;*/
+}
+/*Cerrados*/
 table.display tr.odd.close{
 	background-color: #61CF61;
 	/*background-color: #ddffdd;*/
@@ -488,6 +500,36 @@ tr.even td.sorting_3 {
 	  ee > e2
  */
  
+/************ SCALED ****************/ 
+tr.odd.scaled td.sorting_1 {
+	background-color: #B3C9E2;
+	/*background-color: #FFCC00*/
+	/*background-color: #FAFFBE*/
+	/*background-color: rgba(248, 248, 119, 0.75);*/
+}
+
+tr.odd.scaled td.sorting_2 {
+	background-color: #d1d1ff;
+}
+
+tr.odd.scaled td.sorting_3 {
+	background-color: #d1d1ff;
+}
+
+tr.even.scaled td.sorting_1 {
+	background-color: #B3C9E2;
+	/*background-color: #FAFFBE;*/
+}
+
+tr.even.scaled td.sorting_2 {
+	background-color: #e2e2ff;
+}
+
+tr.even.scaled td.sorting_3 {
+	background-color: #e2e2ff;
+}
+/*end scaled*/
+
 /************ OPEN TODAY ****************/ 
 tr.odd.open.today td.sorting_1 {
 	background-color: #FDFFDF;

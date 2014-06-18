@@ -66,6 +66,10 @@ and open the template in the editor.
     background-color: #61CF61;
 }
 
+.botones-sociales #escalade-btn .social {
+    background-color: #D0DEEE;
+}
+
 .izquierda #facebook-btn span {
     background-position: right 10px;
 }
