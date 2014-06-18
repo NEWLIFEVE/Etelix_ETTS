@@ -172,7 +172,7 @@ class Ticket extends CActiveRecord
         $conditionTicket='';
         $order='ASC';
         $sql='';
-        $onlyOpen="id_status=(SELECT id FROM status WHERE name='open') AND";
+        $onlyOpen="id_status IN(SELECT id FROM status WHERE name = 'open' OR name = 'escalated') AND";
         if ($sendMail) $onlyOpen='';
         
         /**

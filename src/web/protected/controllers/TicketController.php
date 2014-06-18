@@ -542,12 +542,11 @@ class TicketController extends Controller
                 $data=self::getTicketAsArray($id);
                 $mail= new EnviarEmail;
                 $bodyEmail=new CuerpoCorreo($data);
-                $subject='Ticket escaladed ';
+                $subject='URGENT ESCALATED ';
                 
                 if (isset($_POST['data']['message'])) $message=$_POST['data']['message'];
                 if (isset($_POST['data']['mails'])) $mails=$_POST['data']['mails'];
-                if (isset($_POST['data']['subject'])) $subject=$_POST['data']['subject'];
-                
+                                
                 $html=$bodyEmail->getBodyEscaladeTicket($message);
                 $send=$mail->enviar($html, $mails, null, $subject . ' TT ' . $data['ticketNumber']);
                 
