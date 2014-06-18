@@ -158,7 +158,7 @@ class MailController extends Controller
                     $data[]=$value->mail;
                 }
             }
-            echo implode(',', $data);
+            echo CJSON::encode($data);
         }
 
 	/**

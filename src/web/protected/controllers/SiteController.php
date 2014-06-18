@@ -219,7 +219,7 @@ class SiteController extends Controller
             if (isset($_POST['carrier']) && !empty($_POST['carrier'])) $carrier = $_POST['carrier'];
         
             if (isset($option)) {
-                $nameReport = 'ETTS Report '. $this->_matchSheetName($option) . '-' . date('Y-m-d His');
+                $nameReport = 'REPORT ETTS, '. strtoupper($this->_matchSheetName($option)) . '-' . date('Y-m-d His');
                 $args = array(
                     'date' => $date,
                     'option' => $option,
@@ -232,7 +232,8 @@ class SiteController extends Controller
                 $table = $export->tableSummary($carrier, $date) . '<center><h3>'. substr($nameReport, 0, -7) .'</h3></center>' . $export->table($_POST['id'], $date);
                 if ($table !== null) {
                     $mail = new EnviarEmail;
-                    $mail->enviar($table, Yii::app()->user->email, '', $nameReport, 'uploads/' . $nameReport . '.xlsx');   
+                    $subject = 'REPORT ETTS, '. strtoupper($this->_matchSheetName($option)) . ', ' . date('Y-m-d') . ', Hour ' . date('H:i:s');
+                    $mail->enviar($table, Yii::app()->user->email, '', $subject, 'uploads/' . $nameReport . '.xlsx');   
                 } 
             }
         }

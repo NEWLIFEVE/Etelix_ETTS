@@ -15,10 +15,9 @@ class ReportCommand extends CConsoleCommand
 {
     public function run($args)
     {
-        Yii::import('webroot.protected.components.reports.Report');
         $report = new Report;
         $export = new Export;
-        $nameReport = 'ETTS Report automatic-'. date('Y-m-d His');
+        $nameReport = 'ETTS Automatic Report '. date('Y-m-d His');
         $config = array(
             'date' => date('Y-m-d H:i:s'),
             'option' => '0',
@@ -32,7 +31,7 @@ class ReportCommand extends CConsoleCommand
         $table = $export->tableSummary();
         if ($table !== null) {
             $mail = new EnviarEmail;
-            $mail->enviar($table, 'tsu.nelsonmarcano@gmail.com', '', $nameReport, 'uploads/' . $nameReport . '.xlsx');   
+            $mail->enviar($table, 'manuelz@sacet.biz', '', $nameReport, 'uploads/' . $nameReport . '.xlsx');   
         } 
         
     }

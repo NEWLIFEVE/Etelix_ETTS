@@ -330,7 +330,8 @@ function printTicketBd()
 function previewEscaladeTicket()
 {
     $('#escalade-ticket').on('click', function(){
-       var idTicket = $('#id_ticket').val();
+       var idTicket = $('#id_ticket').val(), 
+       tags = ['eykiss@etelix.com', 'nathaliag@etelix.com', 'alvaroquintana@etelix.com', 'ceo@etelix.com', 'jclopezsilva@etelix.com'];
        $.Dialog.close();
        $.Dialog({
             shadow: true,
@@ -353,10 +354,15 @@ function previewEscaladeTicket()
                 $.Dialog.close();
             },
             onShow: function(_dialog){
-                $('#myTags').tagit();  
-//                var mails = $("#mail-escalade").kendoMultiSelect({placeholder: "Select mails",}).data("kendoMultiSelect");
-//                $.post('/mail/autocomplete', null, function(data){$('#myTags').val(data);}); 
-//                setTimeout(function(){$('#myTags').tagit();}, 800);
+                $('#myTags').tagit({
+                    placeholderText:'example@example.com',
+                    autocomplete: {delay: 0, minLength: 1, source:tags},
+                    showAutocompleteOnFocus:false,
+                    beforeTagAdded: function(event, ui) {
+                        if (!ui.tagLabel.match(/[\w-\.]{3,}@([\w-]{2,}\.)*([\w-]{2,}\.)[\w-]{2,4}/))
+                            return false;
+                    }
+                });  
                                  
                 $('#bt-escalade').on('click', function() {
                     var mails = [];
@@ -372,7 +378,7 @@ function previewEscaladeTicket()
                         }
                     };
 
-                    if ($('#message').val() === '' || $('#subject').val() === '' || mails.length === 0) 
+                    if ($('#message').val() === '' || mails.length === 0) 
                         return false;
 
                     escaladedTicket(settings);
@@ -387,19 +393,8 @@ function previewEscaladeTicket()
                 }, timeRefresh);
             },
             content:
-            '<h3 class="ticket-information">Escalade ticket</h3><br>' +
-            '<!--<div class="input-control select">' +
-                '<select id="mail-escalade" multiple="multiple">' +
-                    '<option value="tsu.nelsonmarcano@gmail.com">Nelson gmail</option>'+
-                    '<option value="tsu.nelsonmarcano@hotmail.com">Nelson hotmail</option>' +
-                    '<option value="nelson_redimi2@hotmail.com">Nelson hotmail2</option>' +
-                    '<option value="nelsonm@sacet.biz">Nelson sacet</option>' +
-                '</select>' +
-            '</div><p></p>-->' +
-            '<input type="text" id="myTags" value="nelsonm@sacet.biz">' +
-            '<div class="input-control text" data-role="input-control">' +
-                '<input type="text" id="subject" placeholder="Subject:">' +
-            '</div>' +
+            '<div style="max-width:450px !important"><h3 class="ticket-information">Escalade ticket</h3><br>' +
+            '<input type="text" id="myTags" value="eykiss@etelix.com, nathaliag@etelix.com, alvaroquintana@etelix.com, ceo@etelix.com, jclopezsilva@etelix.com">' +
             '<div class="input-control textarea" data-role="input-control">' +
                 '<textarea class="textarea-integrado" name="message" id="message"></textarea>' +
             '</div>' +
@@ -410,7 +405,7 @@ function previewEscaladeTicket()
                 '<div class="option-panel right">' +
                     '<input type="button" onclick="previewTicket('+ idTicket +')" value="Cancel" >' +
                 '</div>' +
-            '</div>'
+            '</div></div>'
         });
     });
 }
@@ -442,10 +437,10 @@ function escaladedTicket(settings)
 /**
  * Muestra el preview del ticket
  * @param {int} idTicket
- * @param {string} clase
+ * @param {object} boton
  * @returns {void}
  */
-function previewTicket(idTicket, clase)
+function previewTicket(idTicket, boton)
 {   
     $.Dialog.close();
     setTimeout(function(){
@@ -511,11 +506,11 @@ function previewTicket(idTicket, clase)
         }
     });
 
-    if (clase) 
+    if (boton) 
     {
-        if (clase.toLowerCase().indexOf("blink") >= 0)
+        if (boton.parent().parent().attr('class').toLowerCase().indexOf("blink") >= 0)
         {
-            $ETTS.UI.removeBlink($(this));
+            $ETTS.UI.removeBlink(boton);
             $ETTS.ajax.removeBlink(idTicket);
         }
     }
@@ -585,9 +580,7 @@ $(document).on('ready', function() {
 
     // Llamado del preview del ticket
     $(document).on('click', '.preview', function () {
-        var clase=$(this).parent().parent().attr('class'),
-        idTicket = $(this).attr('rel');
-        previewTicket(idTicket, clase);
+        previewTicket($(this).attr('rel'), $(this));
     });
     
     // Efecto seleccion de border al tener foco en un textarea

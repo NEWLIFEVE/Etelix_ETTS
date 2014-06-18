@@ -8,14 +8,14 @@ ul.tagit {
     border-color: #d9d9d9;
     background: inherit;
     
-    
-    margin-left: 5px;
-    padding-left: 15px;
+    margin: 0px !important;
+    margin-bottom: 10px !important;
+    padding: 5px !important;
     font-family: 'Segoe UI_', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
     font-weight: normal;
     font-style: normal;
-    color: #000000;
-    font-size: 11pt;
+    color: initial !important;
+    font-size: 100% !important;
     line-height: 15pt;
     letter-spacing: 0.02em;
     
@@ -24,10 +24,10 @@ ul.tagit li.tagit-choice {
     -moz-border-radius: 6px;
     border-radius: 6px;
     -webkit-border-radius: 6px;
-    border: 1px solid #CAD8F3;
+    border: 1px solid silver;
 
     background: none;
-    background-color: #DEE7F8;
+    background-color: #FFF;
 
     font-weight: normal;
 }
@@ -51,8 +51,8 @@ ul.tagit li.tagit-choice .tagit-close .text-icon {
     color: #777;
 }
 ul.tagit li.tagit-choice:hover, ul.tagit li.tagit-choice.remove {
-    background-color: #bbcef1;
-    border-color: #6d95e0;
+    background-color: #61CF61;
+    border-color: #61CF61;
 }
 ul.tagit li.tagit-choice a.tagLabel:hover,
 ul.tagit li.tagit-choice a.tagit-close .text-icon:hover {
