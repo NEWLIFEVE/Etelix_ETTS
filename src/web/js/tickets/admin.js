@@ -355,12 +355,14 @@ function previewEscaladeTicket()
             },
             onShow: function(_dialog){
                 $('#myTags').tagit({
-                    placeholderText:'Write an email',
-                    availableTags:tags
+                    placeholderText:'example@example.com',
+                    autocomplete: {delay: 0, minLength: 1, source:tags},
+                    showAutocompleteOnFocus:false,
+                    beforeTagAdded: function(event, ui) {
+                        if (!ui.tagLabel.match(/[\w-\.]{3,}@([\w-]{2,}\.)*([\w-]{2,}\.)[\w-]{2,4}/))
+                            return false;
+                    }
                 });  
-//                var mails = $("#mail-escalade").kendoMultiSelect({placeholder: "Select mails",}).data("kendoMultiSelect");
-//                $.post('/mail/autocomplete', null, function(data){$('#myTags').val(data);}); 
-//                setTimeout(function(){$('#myTags').tagit();}, 800);
                                  
                 $('#bt-escalade').on('click', function() {
                     var mails = [];
@@ -392,14 +394,6 @@ function previewEscaladeTicket()
             },
             content:
             '<div style="max-width:450px !important"><h3 class="ticket-information">Escalade ticket</h3><br>' +
-            '<!--<div class="input-control select">' +
-                '<select id="mail-escalade" multiple="multiple">' +
-                    '<option value="tsu.nelsonmarcano@gmail.com">Nelson gmail</option>'+
-                    '<option value="tsu.nelsonmarcano@hotmail.com">Nelson hotmail</option>' +
-                    '<option value="nelson_redimi2@hotmail.com">Nelson hotmail2</option>' +
-                    '<option value="nelsonm@sacet.biz">Nelson sacet</option>' +
-                '</select>' +
-            '</div><p></p>-->' +
             '<input type="text" id="myTags" value="eykiss@etelix.com, nathaliag@etelix.com, alvaroquintana@etelix.com, ceo@etelix.com, jclopezsilva@etelix.com">' +
             '<div class="input-control textarea" data-role="input-control">' +
                 '<textarea class="textarea-integrado" name="message" id="message"></textarea>' +

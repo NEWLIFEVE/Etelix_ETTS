@@ -6,6 +6,7 @@ Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
     - Se borró a Leandro del componente de correos
     - Escalar ticket ahora solo está visible para los usuarios internos
     - Leyenda indicando el significado de los tickets escalados
+    - Caja de email de escalar tickets solo admite formato de correo
     
 
 17/06/2014
