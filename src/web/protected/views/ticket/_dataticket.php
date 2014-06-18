@@ -1,9 +1,12 @@
+<?php $tipoUsuario=CrugeAuthassignment::getRoleUser(); ?>
 <div id=content_detail>
     <div class="grid fluid">
         <h3 class="ticket-information">
             Ticket #:<?php echo $datos->ticket_number; ?>, Created on <?php echo Utility::getDayByDate($datos->date) . ' at ' . $datos->hour; ?>  
             <a href="javascript:void(0)" id="print-ticket" title="Print ticket"><i class="icon-printer"></i></a>&nbsp;&nbsp;
+            <?php if ($tipoUsuario != 'C' && $datos->id_status != '2'): ?> 
             <a href="javascript:void(0)" id="escalade-ticket" title="Escalade ticket"><i class="icon-redo"></i></a>
+            <?php endif; ?>
         </h3>
         <div class="row">
             <div class="span5">
@@ -11,7 +14,7 @@
                 $optionOpen='';
                 if ($datos->option_open == 'etelix_as_carrier' || $datos->option_open == 'carrier_to_etelix') $optionOpen='true';
                 $mailByTicket=MailUser::getMails(CrugeUser2::getUserTicket($datos->id, true)->iduser, false, $optionOpen, $datos->id);
-                $tipoUsuario=CrugeAuthassignment::getRoleUser();
+                
                 ?>
                 <input type="hidden" id="id_ticket" value="<?php echo $datos->id; ?>">
                 <input type="hidden" id="open-ticket" value="<?php echo $datos->option_open; ?>">
