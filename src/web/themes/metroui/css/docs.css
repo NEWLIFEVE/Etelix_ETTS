@@ -730,6 +730,9 @@ div.pre-loader {
 .table-report .table .total {
     border-top: 15px solid #d3d3d3;
 }
+.table-report .table .escalade {
+    background: #B3C9E2;
+}
 
 
 .table-report .table-report-header {
@@ -771,5 +774,7 @@ div.pre-loader {
 .table-report .table-report-header .span3.offset5 .input-control.text.span3 {
     margin-left: -15px;
 }
+
+
 
 /******* View table tickets ********/

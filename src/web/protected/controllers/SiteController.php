@@ -255,6 +255,7 @@ class SiteController extends Controller
                 case '7': return 'Close red';  break;
                 case '8': return 'Total pending';  break;
                 case '9': return 'Total close';  break;
+                case '10': return 'Ticket Escaladed'; break;
                 default : 'Open today'; break;
             }
         }        

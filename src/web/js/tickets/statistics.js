@@ -12,6 +12,7 @@ function initDatatable(date, option, carrier)
     if (!carrier) carrier = '';
     
     var oTable = $('#tbl-datatable').dataTable({
+        "aaSorting":[],
         "bJQueryUI": true,
         "bPaginate": false,
         "bLengthChange": false,
@@ -112,7 +113,8 @@ function getData(date, carrier)
             $('.display-data').eq(3).text(data.ticketCloseYellow);
             $('.display-data').eq(4).text(data.ticketPendingRed );
             $('.display-data').eq(5).text(data.ticketCloseRed);
-            $('.display-data').eq(6).text(data.ticketWithoutDescription);
+            $('.display-data').eq(6).text(data.ticketScaled);
+            $('.display-data').eq(7).text(data.ticketWithoutDescription);
             $('.set-total').eq(0).text(data.totalPending);
             $('.set-total').eq(1).text(data.totalClosed);
         }
@@ -144,6 +146,8 @@ function changeBackground()
                         .css('background', $(this).find('td').find('input[name="color[]"]').val());
             });
         break;
+        
+        case '10': $('#tbl-datatable tr').css('background', '#B3C9E2'); break;
     }
 }
 

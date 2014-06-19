@@ -55,7 +55,8 @@ class Report extends Excel
             'Close yellow',
             'Close red',
             'Total pending',
-            'Total close'
+            'Total close',
+            'Escaladed'
         );
         
         // Bucle para setear las hojas
@@ -111,10 +112,11 @@ class Report extends Excel
         $this->_setStyleBody('A3:D3', '#FFF');
         $this->_setStyleBody('A4:D4', '#FFDC51');
         $this->_setStyleBody('A5:D5', '#EEB8B8');
-        $this->_setStyleBody('A6:D6', '');
+        $this->_setStyleBody('A6:D6', '#B3C9E2');
+        $this->_setStyleBody('A7:D7', '');
         $this->_phpExcel
                 ->getActiveSheet()
-                ->getStyle('A8:D8')
+                ->getStyle('A9:D9')
                 ->getFill()
                 ->applyFromArray(
                     array(
@@ -122,8 +124,8 @@ class Report extends Excel
                         'startcolor' => array('argb' => 'C0C0C0')
                     )
                 );
-        $this->_phpExcel->getActiveSheet()->getStyle('B8')->getFont()->setBold(true);
-        $this->_phpExcel->getActiveSheet()->getStyle('D8')->getFont()->setBold(true);
+        $this->_phpExcel->getActiveSheet()->getStyle('B9')->getFont()->setBold(true);
+        $this->_phpExcel->getActiveSheet()->getStyle('D9')->getFont()->setBold(true);
         
         $this->_phpExcel->getActiveSheet()->getRowDimension('1')->setRowHeight(90);
         $this->_phpExcel->getActiveSheet()->getStyle('C1:D1')->getFont()->setSize(42);
@@ -153,15 +155,20 @@ class Report extends Excel
                     ->setCellValue('C5', 'Closed red')
                     ->setCellValue('D5', count($this->openOrClose($args['date'], 'red', 'close', $args['carrier'])))
                 
-                    ->setCellValue('A6', 'Pending without activity')
-                    ->setCellValue('B6', count($this->withoutDescription($args['date'], $args['carrier'])))
+                    ->setCellValue('A6', 'Pending escaladed')
+                    ->setCellValue('B6', count($this->ticketEscaladed($args['date'], $args['carrier'])))
                     ->setCellValue('C6', '')
                     ->setCellValue('D6', '')
                 
-                    ->setCellValue('A8', 'Total tickets pending')
-                    ->setCellValue('B8', count($this->totalTicketsPending($args['date'], $args['carrier'])))
-                    ->setCellValue('C8', 'Total tickets closed')
-                    ->setCellValue('D8', count($this->totalTicketsClosed($args['date'], $args['carrier'])));
+                    ->setCellValue('A7', 'Pending without activity')
+                    ->setCellValue('B7', count($this->withoutDescription($args['date'], $args['carrier'])))
+                    ->setCellValue('C7', '')
+                    ->setCellValue('D7', '')
+                
+                    ->setCellValue('A9', 'Total tickets pending')
+                    ->setCellValue('B9', count($this->totalTicketsPending($args['date'], $args['carrier'])))
+                    ->setCellValue('C9', 'Total tickets closed')
+                    ->setCellValue('D9', count($this->totalTicketsClosed($args['date'], $args['carrier'])));
         
     }
     
@@ -401,14 +408,7 @@ class Report extends Excel
     }
     
     private function _getLifeTime($date)
-    {
-        /*
-        return "(CASE WHEN age(date, '$date') < '1 days'::interval THEN (CASE WHEN date < '$date' THEN age('$date', date) ELSE age(date, '$date') END)  
-                WHEN age(date, '$date') >= '1 days'::interval AND age(date, '$date') < '2 days'::interval THEN (CASE WHEN date < '$date' THEN age('$date', date) ELSE age(date, '$date') END) 
-                WHEN age(date, '$date') >= '2 days'::interval THEN (CASE WHEN date < '$date' THEN age('$date', date) ELSE age(date, '$date') END) END) AS lifetime";
-         * 
-         */
-        
+    {        
         return "(CASE WHEN (date::text || ' ' || hour::text)::timestamp <= '$date' THEN 
                 age('$date', (date::text || ' ' || hour::text)::timestamp) ELSE
                 age((date::text || ' ' || hour::text)::timestamp, '$date' ) END) AS lifetime";
@@ -422,6 +422,21 @@ class Report extends Excel
                 $this->_carrier, $this->_openOption 
                 FROM ticket WHERE id IN($this->_selectTickets)";
     }
+    
+    /**
+     * Retorna los tickets escalados
+     * @param string $date
+     * @param string $carrier
+     * @return array
+     */
+    public function ticketEscaladed($date, $carrier = 'both')
+    {
+        $selectCarrier = $this->_carrierInQuery($carrier);
+        $getTickets = $this->_getTickets($date);
+        
+        return Ticket::model()->findAllBySql("$getTickets ) AS tiempo) AS colores WHERE id_status = 3 AND date = '".substr($date, 0, 10)."' $selectCarrier ORDER BY id_status, date, hour ASC");
+    }
+    
     
     /**
      * tickets no gestionados en la fecha seleccionada(tickets que no tienes 
@@ -438,7 +453,7 @@ class Report extends Excel
         return Ticket::model()
                 ->findAllBySql("$getTickets AND
                                 id NOT IN(SELECT id_ticket FROM description_ticket WHERE date = '".substr($date, 0, 10)."' GROUP BY id_ticket HAVING COUNT(id_ticket) >= 2)) AS tiempo) AS colores 
-                                WHERE date = '".substr($date, 0, 10)."' AND (close_ticket IS NULL OR close_ticket > '$date') AND option_open <> 'etelix_to_carrier' $selectCarrier ORDER BY id_status, id ASC");
+                                WHERE date = '".substr($date, 0, 10)."' AND (close_ticket IS NULL OR close_ticket > '$date') AND option_open <> 'etelix_to_carrier' $selectCarrier ORDER BY id_status, date, hour ASC");
     }
     
     /**
@@ -454,7 +469,7 @@ class Report extends Excel
         $subQuery = $this->_subQuery($date, $color, $status);
         $selectCarrier = $this->_carrierInQuery($carrier);
         $getTickets = $this->_getTickets($date);
-        return Ticket::model()->findAllBySql("$getTickets ) AS tiempo) AS colores $subQuery $selectCarrier ORDER BY id_status, id ASC");
+        return Ticket::model()->findAllBySql("$getTickets ) AS tiempo) AS colores $subQuery $selectCarrier ORDER BY id_status, date, hour ASC");
     }
     
     
@@ -526,7 +541,7 @@ class Report extends Excel
         $query  = " $begin WHERE lifetime >= '2 days'::interval AND date <= '".substr($date, 0, 10)."' AND (close_ticket IS NULL OR close_ticket > '$date') $selectCarrier UNION ";
         $query .= " $begin WHERE lifetime >= '1 days'::interval AND lifetime < '2 days'::interval  AND date <= '".substr($date, 0, 10)."' AND (close_ticket IS NULL OR close_ticket > '$date') $selectCarrier UNION ";
         $query .= " $begin WHERE lifetime < '1 days'::interval  AND date <= '".substr($date, 0, 10)."' AND (close_ticket IS NULL OR close_ticket > '$date') $selectCarrier UNION ";
-        $query .= " $begin WHERE date = '".substr($date, 0, 10)."' AND (close_ticket IS NULL OR close_ticket > '$date') AND id NOT IN(SELECT id_ticket FROM description_ticket WHERE date = '".substr($date, 0, 10)."' GROUP BY id_ticket HAVING COUNT(id_ticket) >= 2) AND option_open <> 'etelix_to_carrier' $selectCarrier ORDER BY id_status, id ASC";
+        $query .= " $begin WHERE date = '".substr($date, 0, 10)."' AND (close_ticket IS NULL OR close_ticket > '$date') AND id NOT IN(SELECT id_ticket FROM description_ticket WHERE date = '".substr($date, 0, 10)."' GROUP BY id_ticket HAVING COUNT(id_ticket) >= 2) AND option_open <> 'etelix_to_carrier' $selectCarrier ORDER BY id_status, date, hour ASC";
 
         return Ticket::model()->findAllBySql($query);
     }
@@ -544,7 +559,7 @@ class Report extends Excel
         $begin = "$getTickets) AS tiempo) AS colores ";
         $query  = " $begin WHERE lifetime >= '2 days'::interval AND substr(close_ticket::text, 1, 10) = '".substr($date, 0, 10)."' $selectCarrier UNION ";
         $query .= " $begin WHERE lifetime >= '1 days'::interval AND lifetime < '2 days'::interval AND substr(close_ticket::text, 1, 10) = '".substr($date, 0, 10)."' $selectCarrier UNION ";
-        $query .= " $begin WHERE lifetime < '1 days'::interval AND substr(close_ticket::text, 1, 10) = '".substr($date, 0, 10)."' $selectCarrier ORDER BY id_status, id ASC";
+        $query .= " $begin WHERE lifetime < '1 days'::interval AND substr(close_ticket::text, 1, 10) = '".substr($date, 0, 10)."' $selectCarrier ORDER BY id_status, date, hour ASC";
         return Ticket::model()->findAllBySql($query);
     }
     
@@ -576,6 +591,8 @@ class Report extends Excel
             case '8': $statistcs = $this->totalTicketsPending($date, $carrier); break;
             // Total tickets closed
             case '9': $statistcs = $this->totalTicketsClosed($date, $carrier); break;
+            // Tciekts escalados
+            case '10': $statistcs = $this->ticketEscaladed($date, $carrier); break;
         }
         
         if ($statistcs !== null) {
@@ -597,6 +614,7 @@ class Report extends Excel
             case '#FFF':    $style = 'FFFFFF'; break;
             case '#FFDC51': $style = 'FFFF00'; break;
             case '#EEB8B8': $style = 'FF8080';  break;
+            case '#B3C9E2': $style = '808080';  break;
             default : $style = 'FFFFCC';  break;
         }
         return $style;

@@ -35,9 +35,9 @@
                     <tbody>
                         <tr class="white">
                             <td>
-                                <div class="input-control radio default-style">
+                                <div title="Report - Tickets open today" class="input-control radio default-style">
                                     <label>
-                                        <input title="Report - Tickets open today" type="radio" name="rb-report" id="report-pending-1" value="1">
+                                        <input type="radio" name="rb-report" id="report-pending-1" value="1">
                                         <span class="check"></span>
                                     </label>
                                 </div>
@@ -45,9 +45,9 @@
                             <td>Tickets opens today</td>
                             <td class="display-data"></td>
                             <td>
-                                <div class="input-control radio default-style">
+                                <div title="Report - Tickets closed white" class="input-control radio default-style">
                                     <label>
-                                        <input title="Report - Tickets closed white" type="radio" name="rb-report" id="report-close-1" value="5">
+                                        <input type="radio" name="rb-report" id="report-close-1" value="5">
                                         <span class="check"></span>
                                     </label>
                                 </div>
@@ -57,9 +57,9 @@
                         </tr>
                         <tr class="yellow">
                             <td>
-                                <div class="input-control radio default-style">
+                                <div title="Report - Tickets pending Yellow" class="input-control radio default-style">
                                     <label>
-                                        <input title="Report - Tickets pending Yellow" type="radio" name="rb-report" id="report-pending-2" value="2">
+                                        <input type="radio" name="rb-report" id="report-pending-2" value="2">
                                         <span class="check"></span>
                                     </label>
                                 </div>
@@ -67,9 +67,9 @@
                             <td>Tickets pendign yellow</td>
                             <td class="display-data"></td>
                             <td>
-                                <div class="input-control radio default-style">
+                                <div title="Report - Tickets closed yellow" class="input-control radio default-style">
                                     <label>
-                                        <input title="Report - Tickets closed yellow" type="radio" name="rb-report" id="report-close-2" value="6">
+                                        <input type="radio" name="rb-report" id="report-close-2" value="6">
                                         <span class="check"></span>
                                     </label>
                                 </div>
@@ -79,9 +79,9 @@
                         </tr>
                         <tr class="red">
                             <td>
-                                <div class="input-control radio default-style">
+                                <div title="Report - Tickets pending red" class="input-control radio default-style">
                                     <label>
-                                        <input title="Report - Tickets pending red" type="radio" name="rb-report" id="report-pending-3" value="3">
+                                        <input type="radio" name="rb-report" id="report-pending-3" value="3">
                                         <span class="check"></span>
                                     </label>
                                 </div>
@@ -89,15 +89,31 @@
                             <td>Tickets pending red</td>
                             <td class="display-data"></td>
                             <td>
-                                <div class="input-control radio default-style">
+                                <div title="Report - Tickets closed red" class="input-control radio default-style">
                                     <label>
-                                        <input title="Report - Tickets closed red" type="radio" name="rb-report" id="report-close-3" value="7">
+                                        <input type="radio" name="rb-report" id="report-close-3" value="7">
                                         <span class="check"></span>
                                     </label>
                                 </div>
                             </td>
                             <td>Tickets closed red</td>
                             <td class="display-data"></td>
+                        </tr>
+                        
+                        <tr class="escalade">
+                            <td>
+                                <div title="Report - Tickets pending escaladed" class="input-control radio default-style">
+                                    <label>
+                                        <input type="radio" name="rb-report" id="report-pending-10" value="10">
+                                        <span class="check"></span>
+                                    </label>
+                                </div>
+                            </td>
+                            <td>Tickets pending escaladed</td>
+                            <td class="display-data"></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
                         </tr>
                         
                         <tr class="pending">
@@ -117,9 +133,9 @@
                         </tr>
                         <tr class="total">
                             <td>
-                                <div class="input-control radio default-style">
+                                <div title="Report - Total tickets pendings" class="input-control radio default-style">
                                     <label>
-                                        <input title="Report - Total tickets pendings" type="radio" name="rb-report" id="report-pending-0" value="8">
+                                        <input type="radio" name="rb-report" id="report-pending-0" value="8">
                                         <span class="check"></span>
                                     </label>
                                 </div>
@@ -127,9 +143,9 @@
                             <td>Total tickets pendings</td>
                             <td class="set-total"></td>
                             <td>
-                                <div class="input-control radio default-style">
+                                <div title="Report - Total tickets closed" class="input-control radio default-style">
                                     <label>
-                                        <input title="Report - Total tickets closed" checked="checked" type="radio" name="rb-report" id="report-close-0" value="9">
+                                        <input checked="checked" type="radio" name="rb-report" id="report-close-0" value="9">
                                         <span class="check"></span>
                                     </label>
                                 </div>

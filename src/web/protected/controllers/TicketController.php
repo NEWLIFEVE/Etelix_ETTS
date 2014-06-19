@@ -271,7 +271,8 @@ class TicketController extends Controller
             'ticketPendingRed' => count($report->openOrClose($date, 'red', 'open', $carrier)),
             'ticketWithoutDescription' => count($report->withoutDescription($date, $carrier)),
             'totalPending' => count($report->totalTicketsPending($date, $carrier)),
-            'totalClosed' => count($report->totalTicketsClosed($date, $carrier))
+            'totalClosed' => count($report->totalTicketsClosed($date, $carrier)),
+            'ticketScaled' => count($report->ticketEscaladed($date, $carrier))
         );
         
         echo CJSON::encode($data);

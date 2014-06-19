@@ -190,7 +190,7 @@ class Export extends TicketDesign
                 FROM ticket
                 WHERE id IN(SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user)) AND
                 id IN(" . implode(",", $ids) . ")
-                ORDER BY id_status, id ASC) AS consulta";
+                ORDER BY id_status, date, hour ASC) AS consulta";
         return Ticket::model()->findAllBySql($sql);
     }
     
