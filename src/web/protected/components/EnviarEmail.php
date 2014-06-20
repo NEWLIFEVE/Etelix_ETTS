@@ -73,7 +73,7 @@ class EnviarEmail extends CApplicationComponent
             }
             if(!YII_DEBUG)
             {
-                $mailer->addBCC('leandrojoseiglesias@etelix.com','Leandro Iglesias');
+               // $mailer->addBCC('leandrojoseiglesias@etelix.com','Leandro Iglesias');
                 $mailer->addCC('noc@etelix.com','NOC');
             }
             else
