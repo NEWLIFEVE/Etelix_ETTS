@@ -9,25 +9,10 @@ Yii::import('webroot.protected.extensions.phpexcel.Classes.PHPExcel');
 Yii::import('webroot.protected.components.reports.Excel');
 
 class Report extends Excel 
-{   
-    private $_color;
-    private $_carrier;
-    private $_openOption;
-    private $_selectTickets;
-    
+{       
     public function __construct() 
     {
         parent::__construct();
-        
-        $this->_color = "(CASE WHEN lifetime < '1 days'::interval THEN '#FFF' 
-                            WHEN lifetime >= '1 days'::interval AND lifetime < '2 days'::interval THEN '#FFDC51'
-                            WHEN lifetime >= '2 days'::interval THEN '#EEB8B8' END) AS color ";
-        
-        $this->_carrier = "(CASE WHEN ticket_number LIKE '%S%' OR ticket_number LIKE '%P%' THEN 'Supplier' WHEN ticket_number LIKE '%C%' THEN 'Customer' END) AS carrier ";
-        
-        $this->_openOption = "(CASE WHEN option_open = 'etelix_to_carrier' THEN id_user END) AS user_open_ticket ";
-        
-        $this->_selectTickets = "SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user)";
     }
     
     /**
@@ -47,16 +32,18 @@ class Report extends Excel
         
         // Titulo de las hojas
         $sheetName = array(
-            'Open today',
-            'Pending yellow',
-            'Pending red', 
-            'Without activity',
-            'Close white',
-            'Close yellow',
-            'Close red',
-            'Total pending',
-            'Total close',
-            'Escaladed'
+            'Open white',
+            'Open yellow',
+            'Open red', 
+            'Closed white',
+            'Closed yellow',
+            'Closed red',
+            'No activity white',
+            'No activity yellow',
+            'No activity red',
+            'Escalated white',
+            'Escalated yellow',
+            'Escalated red'
         );
         
         // Bucle para setear las hojas
@@ -94,81 +81,80 @@ class Report extends Excel
         $sheet = new PHPExcel_Worksheet($this->_phpExcel, 'Summary');
         $this->_phpExcel->addSheet($sheet, 0);
         $this->_phpExcel->setActiveSheetIndexByName('Summary');
-        $this->_phpExcel->setActiveSheetIndexByName('Summary')->mergeCells('A1:B1');
-        $this->_phpExcel->setActiveSheetIndexByName('Summary')->mergeCells('C1:D1');
         
         $titles = array(
             'A' => 'Category',
-            'B' => 'Total',
-            'C' => 'Category',
-            'D' => 'Total'
+            'B' => 'Total'
         );
         
         foreach ($titles as $key => $value) {
             $this->_phpExcel->getActiveSheet()->setCellValue($key . '2', $value);
         }
         
-        $this->_setStyleHeader('A2:D2');
-        $this->_setStyleBody('A3:D3', '#FFF');
-        $this->_setStyleBody('A4:D4', '#FFDC51');
-        $this->_setStyleBody('A5:D5', '#EEB8B8');
-        $this->_setStyleBody('A6:D6', '#B3C9E2');
-        $this->_setStyleBody('A7:D7', '');
-        $this->_phpExcel
-                ->getActiveSheet()
-                ->getStyle('A9:D9')
-                ->getFill()
-                ->applyFromArray(
-                    array(
-                        'type' => PHPExcel_Style_Fill::FILL_SOLID,
-                        'startcolor' => array('argb' => 'C0C0C0')
-                    )
-                );
-        $this->_phpExcel->getActiveSheet()->getStyle('B9')->getFont()->setBold(true);
-        $this->_phpExcel->getActiveSheet()->getStyle('D9')->getFont()->setBold(true);
-        
+        $this->_setStyleHeader('A2:B2');
+        $this->_setStyleBody('A3:B3', '#FFF');
+        $this->_setStyleBody('A4:B4', '#FFDC51');
+        $this->_setStyleBody('A5:B5', '#EEB8B8');
+        $this->_setStyleBody('A6:B6', '');
+        $this->_setStyleBody('A7:B7', '#FFF');
+        $this->_setStyleBody('A8:B8', '#FFDC51');
+        $this->_setStyleBody('A9:B9', '#EEB8B8');
+        $this->_setStyleBody('A10:B10', '');
+        $this->_setStyleBody('A11:B11', '#FFF');
+        $this->_setStyleBody('A12:B12', '#FFDC51');
+        $this->_setStyleBody('A13:B13', '#EEB8B8');
+        $this->_setStyleBody('A14:B14', '');
+        $this->_setStyleBody('A15:B15', '#FFF');
+        $this->_setStyleBody('A16:B16', '#FFDC51');
+        $this->_setStyleBody('A17:B17', '#EEB8B8');
+        $this->_setStyleBody('A18:B18', '');
+      
         $this->_phpExcel->getActiveSheet()->getRowDimension('1')->setRowHeight(90);
-        $this->_phpExcel->getActiveSheet()->getStyle('C1:D1')->getFont()->setSize(42);
-        $this->_phpExcel->getActiveSheet()->getColumnDimension('A')->setWidth(28);
-        $this->_phpExcel->getActiveSheet()->getColumnDimension('B')->setWidth(10);
-        $this->_phpExcel->getActiveSheet()->getColumnDimension('C')->setWidth(25);
-        $this->_phpExcel->getActiveSheet()->getColumnDimension('D')->setWidth(10);
+        $this->_phpExcel->getActiveSheet()->getStyle('A1:B1')->getFont()->setSize(42);
+        $this->_phpExcel->getActiveSheet()->getColumnDimension('A')->setWidth(40);
+        $this->_phpExcel->getActiveSheet()->getColumnDimension('B')->setWidth(7);
         
         $this->_getLogo();
-        
-        $this->_backgroundLogo('A1:D1');
+        $this->_backgroundLogo('A1:B1');
         
         $this->_phpExcel->setActiveSheetIndex(0)
-                    ->setCellValue('C1', 'Summary')
-                    ->setCellValue('A3', 'Open today')
+                    ->setCellValue('B1', 'Summary')
+                
+                    ->setCellValue('A3', 'Open white')
                     ->setCellValue('B3', count($this->openOrClose($args['date'], 'white', 'open', $args['carrier'])))
-                    ->setCellValue('C3', 'Closed white')
-                    ->setCellValue('D3', count($this->openOrClose($args['date'], 'white', 'close', $args['carrier'])))
-                
-                    ->setCellValue('A4', 'Pending yellow')
+                    ->setCellValue('A4', 'Open yellow')
                     ->setCellValue('B4', count($this->openOrClose($args['date'], 'yellow', 'open', $args['carrier'])))
-                    ->setCellValue('C4', 'Closed yellow')
-                    ->setCellValue('D4', count($this->openOrClose($args['date'], 'yellow', 'close', $args['carrier'])))
-                
-                    ->setCellValue('A5', 'Pending red')
+                    ->setCellValue('A5', 'Open red')
                     ->setCellValue('B5', count($this->openOrClose($args['date'], 'red', 'open', $args['carrier'])))
-                    ->setCellValue('C5', 'Closed red')
-                    ->setCellValue('D5', count($this->openOrClose($args['date'], 'red', 'close', $args['carrier'])))
+                    ->setCellValue('A6', 'Total open')
+                    ->setCellValue('B6', count($this->totalTicketsPending($args['date'], $args['carrier'])))
                 
-                    ->setCellValue('A6', 'Pending escaladed')
-                    ->setCellValue('B6', count($this->ticketEscaladed($args['date'], $args['carrier'])))
-                    ->setCellValue('C6', '')
-                    ->setCellValue('D6', '')
+                    ->setCellValue('A7', 'Closed white')
+                    ->setCellValue('B7', count($this->openOrClose($args['date'], 'white', 'close', $args['carrier'])))
+                    ->setCellValue('A8', 'Closed yellow')
+                    ->setCellValue('B8', count($this->openOrClose($args['date'], 'yellow', 'close', $args['carrier'])))
+                    ->setCellValue('A9', 'Closed red')
+                    ->setCellValue('B9', count($this->openOrClose($args['date'], 'red', 'close', $args['carrier'])))
+                    ->setCellValue('A10', 'Total closed')
+                    ->setCellValue('B10', count($this->totalTicketsClosed($args['date'], $args['carrier'])))
+//                
+                    ->setCellValue('A11', 'No activity white')
+                    ->setCellValue('B11', count($this->withoutDescription($args['date'], 'white', 'open', $args['carrier'])))
+                    ->setCellValue('A12', 'No activity yellow')
+                    ->setCellValue('B12', count($this->withoutDescription($args['date'], 'yellow', 'open', $args['carrier'])))
+                    ->setCellValue('A13', 'No activity red')
+                    ->setCellValue('B13', count($this->withoutDescription($args['date'], 'red', 'open', $args['carrier'])))
+                    ->setCellValue('A14', 'Total no activity')
+                    ->setCellValue('B14', count($this->totalWithoutDescription($args['date'], $args['carrier'])))
                 
-                    ->setCellValue('A7', 'Pending without activity')
-                    ->setCellValue('B7', count($this->withoutDescription($args['date'], $args['carrier'])))
-                    ->setCellValue('C7', '')
-                    ->setCellValue('D7', '')
-                
-                    ->setCellValue('A9', 'Total tickets pending')
-                    ->setCellValue('B9', count($this->totalTicketsPending($args['date'], $args['carrier'])))
-                    ->setCellValue('C9', 'Total tickets closed')
-                    ->setCellValue('D9', count($this->totalTicketsClosed($args['date'], $args['carrier'])));
+                    ->setCellValue('A15', 'Escalated white')
+                    ->setCellValue('B15', count($this->ticketEscaladed($args['date'], 'white', 'open', $args['carrier'])))
+                    ->setCellValue('A16', 'Escalated yellow')
+                    ->setCellValue('B16', count($this->ticketEscaladed($args['date'], 'yellow', 'open', $args['carrier'])))
+                    ->setCellValue('A17', 'Escalated red')
+                    ->setCellValue('B17', count($this->ticketEscaladed($args['date'], 'red', 'open', $args['carrier'])))
+                    ->setCellValue('A18', 'Total escalated')
+                    ->setCellValue('B18', count($this->totalTicketEscaladed($args['date'], $args['carrier'])));
         
     }
     
@@ -239,12 +225,7 @@ class Report extends Excel
                     ->setCellValue('I' . $i, $value->close_ticket)
                     ->setCellValue('J' . $i, $value->lifetime);
                 $row = $key + 3;
-                if ($params['nameSheet'] === 'Without activity') {
-                    $this->_setStyleBody('A' . $row. ':J' . $row, '');
-                } else {
-                    $this->_setStyleBody('A' . $row. ':J' . $row, $value->color);   
-
-                }    
+                $this->_setStyleBody('A' . $row. ':J' . $row, $value->color);  
                 $i++;
             }
         }
@@ -407,53 +388,89 @@ class Report extends Excel
         $objWriter->save('php://output');
     }
     
-    private function _getLifeTime($date)
-    {        
-        return "(CASE WHEN (date::text || ' ' || hour::text)::timestamp <= '$date' THEN 
-                age('$date', (date::text || ' ' || hour::text)::timestamp) ELSE
-                age((date::text || ' ' || hour::text)::timestamp, '$date' ) END) AS lifetime";
-    }
     
     
-    private function _getTickets($date)
+    /**
+     * Método para retornar el string de la consulta que contendrá el color, lifetime y tipo de carrier
+     * @param string $date Fecha de la consulta
+     * @return string
+     */
+    public function getFullTicket($date)
     {
-        $lifeTime = $this->_getLifeTime($date);
-        return "SELECT *, $this->_color FROM (SELECT *, $lifeTime FROM  (SELECT *, 
-                $this->_carrier, $this->_openOption 
-                FROM ticket WHERE id IN($this->_selectTickets)";
+        $select="SELECT *,
+                        (CASE WHEN lifetime < '1 days'::interval 
+                                THEN '#FFF' 
+                        WHEN lifetime >= '1 days'::interval AND lifetime < '2 days'::interval 
+                                THEN '#FFDC51'
+                        WHEN lifetime >= '2 days'::interval 
+                                THEN '#EEB8B8' 
+                        END
+                        ) AS color
+                FROM 
+                        (SELECT *, 
+                                (CASE WHEN (date::text || ' ' || hour::text)::timestamp <= '$date' 
+                                        THEN age('$date', (date::text || ' ' || hour::text)::timestamp) 
+                                ELSE
+                                        age((date::text || ' ' || hour::text)::timestamp, '$date' ) 
+                                END
+                                ) AS lifetime 
+                        FROM  
+                                (SELECT *, 
+                                        (CASE WHEN ticket_number LIKE '%S%' OR ticket_number LIKE '%P%' 
+                                                THEN 'Supplier' 
+                                        WHEN ticket_number LIKE '%C%' 
+                                                THEN 'Customer' 
+                                        END
+                                        ) AS carrier,
+                                        
+                                        (CASE WHEN option_open = 'etelix_to_carrier' 
+                                                THEN id_user 
+                                        END
+                                        ) AS user_open_ticket  
+                                FROM ticket 
+                                WHERE id IN(SELECT DISTINCT id_ticket FROM mail_ticket WHERE id_mail_user IN(SELECT id FROM mail_user))
+                                ) AS query1
+                        ) AS query2  ";
+        return $select;
     }
-    
+        
     /**
      * Retorna los tickets escalados
      * @param string $date
+     * @param string $color Color del ticket dependiendo de su tiempo de vida
+     * @param string $status Si el ticket es cerrado o abierto
      * @param string $carrier
      * @return array
      */
-    public function ticketEscaladed($date, $carrier = 'both')
+    public function ticketEscaladed($date, $color = 'white', $status = 'open', $carrier = 'both')
     {
+        $select = $this->getFullTicket($date);
+        $subQuery = $this->_subQuery($date, $color, $status);
         $selectCarrier = $this->_carrierInQuery($carrier);
-        $getTickets = $this->_getTickets($date);
-        
-        return Ticket::model()->findAllBySql("$getTickets ) AS tiempo) AS colores WHERE id_status = 3 AND date = '".substr($date, 0, 10)."' $selectCarrier ORDER BY id_status, date, hour ASC");
+        return Ticket::model()->findAllBySql("$select $subQuery $selectCarrier AND
+                                            id_status = 3                                              
+                                            ORDER BY id_status, date, hour ASC");
     }
-    
     
     /**
      * tickets no gestionados en la fecha seleccionada(tickets que no tienes 
      * descripciones en esa fechan de parte del equipo Etelix)
      * @param string $date Fecha para hacer la consulta
+     * @param string $color Color del ticket dependiendo de su tiempo de vida
+     * @param string $status Si el ticket es cerrado o abierto
      * @param string $carrier El tipo de carrier a consultar
      * @return array
      */
-    public function withoutDescription($date, $carrier = 'both')
-    {
+    public function withoutDescription($date, $color = 'white', $status = 'open', $carrier = 'both')
+    { 
+        $select = $this->getFullTicket($date);
+        $subQuery = $this->_subQuery($date, $color, $status);
         $selectCarrier = $this->_carrierInQuery($carrier);
-        $getTickets = $this->_getTickets($date);
-        
         return Ticket::model()
-                ->findAllBySql("$getTickets AND
-                                id NOT IN(SELECT id_ticket FROM description_ticket WHERE date = '".substr($date, 0, 10)."' GROUP BY id_ticket HAVING COUNT(id_ticket) >= 2)) AS tiempo) AS colores 
-                                WHERE date = '".substr($date, 0, 10)."' AND (close_ticket IS NULL OR close_ticket > '$date') AND option_open <> 'etelix_to_carrier' $selectCarrier ORDER BY id_status, date, hour ASC");
+                ->findAllBySql("$select $subQuery $selectCarrier AND
+                                id NOT IN(SELECT id_ticket FROM description_ticket WHERE date = '".substr($date, 0, 10)."' GROUP BY id_ticket HAVING COUNT(id_ticket) >= 2) AND
+                                option_open <> 'etelix_to_carrier' 
+                                ORDER BY id_status, date, hour ASC");
     }
     
     /**
@@ -466,10 +483,10 @@ class Report extends Excel
      */
     public function openOrClose($date, $color = 'white', $status = 'close', $carrier = 'both')
     {
+        $select = $this->getFullTicket($date);
         $subQuery = $this->_subQuery($date, $color, $status);
         $selectCarrier = $this->_carrierInQuery($carrier);
-        $getTickets = $this->_getTickets($date);
-        return Ticket::model()->findAllBySql("$getTickets ) AS tiempo) AS colores $subQuery $selectCarrier ORDER BY id_status, date, hour ASC");
+        return Ticket::model()->findAllBySql("$select $subQuery $selectCarrier ORDER BY id_status, date, hour ASC");
     }
     
     
@@ -508,7 +525,6 @@ class Report extends Excel
                 }
             break;
         }
-        
         return $subQuery;
     }
     
@@ -520,7 +536,6 @@ class Report extends Excel
     private function _carrierInQuery($carrier)
     {
         $subQuery = '';
-        
         if ($carrier != 'both') {
             $subQuery = " AND carrier = '$carrier'";
         }
@@ -536,13 +551,12 @@ class Report extends Excel
     public function totalTicketsPending($date, $carrier = 'both')
     {
         $selectCarrier = $this->_carrierInQuery($carrier);
-        $getTickets = $this->_getTickets($date);
-        $begin = "$getTickets) AS tiempo) AS colores ";
+        $select = $this->getFullTicket($date);
+        $begin = "$select ";
         $query  = " $begin WHERE lifetime >= '2 days'::interval AND date <= '".substr($date, 0, 10)."' AND (close_ticket IS NULL OR close_ticket > '$date') $selectCarrier UNION ";
         $query .= " $begin WHERE lifetime >= '1 days'::interval AND lifetime < '2 days'::interval  AND date <= '".substr($date, 0, 10)."' AND (close_ticket IS NULL OR close_ticket > '$date') $selectCarrier UNION ";
         $query .= " $begin WHERE lifetime < '1 days'::interval  AND date <= '".substr($date, 0, 10)."' AND (close_ticket IS NULL OR close_ticket > '$date') $selectCarrier UNION ";
         $query .= " $begin WHERE date = '".substr($date, 0, 10)."' AND (close_ticket IS NULL OR close_ticket > '$date') AND id NOT IN(SELECT id_ticket FROM description_ticket WHERE date = '".substr($date, 0, 10)."' GROUP BY id_ticket HAVING COUNT(id_ticket) >= 2) AND option_open <> 'etelix_to_carrier' $selectCarrier ORDER BY id_status, date, hour ASC";
-
         return Ticket::model()->findAllBySql($query);
     }
     
@@ -555,12 +569,47 @@ class Report extends Excel
     public function totalTicketsClosed($date, $carrier = 'both')
     {
         $selectCarrier = $this->_carrierInQuery($carrier);
-        $getTickets = $this->_getTickets($date);
-        $begin = "$getTickets) AS tiempo) AS colores ";
+        $select = $this->getFullTicket($date);
+        $begin = "$select ";
         $query  = " $begin WHERE lifetime >= '2 days'::interval AND substr(close_ticket::text, 1, 10) = '".substr($date, 0, 10)."' $selectCarrier UNION ";
         $query .= " $begin WHERE lifetime >= '1 days'::interval AND lifetime < '2 days'::interval AND substr(close_ticket::text, 1, 10) = '".substr($date, 0, 10)."' $selectCarrier UNION ";
         $query .= " $begin WHERE lifetime < '1 days'::interval AND substr(close_ticket::text, 1, 10) = '".substr($date, 0, 10)."' $selectCarrier ORDER BY id_status, date, hour ASC";
         return Ticket::model()->findAllBySql($query);
+    }
+    
+    /**
+     * tickets no gestionados en la fecha seleccionada(tickets que no tienes 
+     * descripciones en esa fechan de parte del equipo Etelix)
+     * @param string $date Fecha para hacer la consulta
+     * @param string $carrier El tipo de carrier a consultar
+     * @return array
+     */
+    public function totalWithoutDescription($date, $carrier = 'both')
+    { 
+        $select = $this->getFullTicket($date);
+        $selectCarrier = $this->_carrierInQuery($carrier);
+        return Ticket::model()
+                ->findAllBySql("$select WHERE date <= '".substr($date, 0, 10)."' AND
+                                (close_ticket IS NULL OR close_ticket > '$date') $selectCarrier AND
+                                id NOT IN(SELECT id_ticket FROM description_ticket WHERE date = '".substr($date, 0, 10)."' GROUP BY id_ticket HAVING COUNT(id_ticket) >= 2) AND
+                                option_open <> 'etelix_to_carrier' 
+                                ORDER BY id_status, date, hour ASC");
+    }
+    
+    /**
+     * Retorna los tickets escalados
+     * @param string $date
+     * @param string $carrier
+     * @return array
+     */
+    public function totalTicketEscaladed($date, $carrier = 'both')
+    {
+        $select = $this->getFullTicket($date);
+        $selectCarrier = $this->_carrierInQuery($carrier);
+        return Ticket::model()->findAllBySql("$select WHERE  date <= '".substr($date, 0, 10)."'
+                                            $selectCarrier AND
+                                            id_status = 3                                              
+                                            ORDER BY id_status, date, hour ASC");
     }
     
     /**
@@ -573,26 +622,39 @@ class Report extends Excel
     public function optionStatistics($option, $date, $carrier)
     {
         switch ($option) {
-            // Open Today
+            // Open white
             case '1': $statistcs = $this->openOrClose($date, 'white', 'open', $carrier); break;
-            // Pending Yellow
+            // Open Yellow
             case '2': $statistcs = $this->openOrClose($date, 'yellow', 'open', $carrier); break;
-            // Pending Red
+            // Open Red
             case '3': $statistcs = $this->openOrClose($date, 'red', 'open', $carrier); break;
-            // Pending without activity
-            case '4': $statistcs = $this->withoutDescription($date, $carrier); break;
-            // Close white
-            case '5': $statistcs = $this->openOrClose($date, 'white', 'close', $carrier); break;
+            // Closed white
+            case '4': $statistcs = $this->openOrClose($date, 'white', 'close', $carrier); break;
             // Close yellow
-            case '6': $statistcs = $this->openOrClose($date, 'yellow', 'close', $carrier); break;
+            case '5': $statistcs = $this->openOrClose($date, 'yellow', 'close', $carrier); break;
             // Close red
-            case '7': $statistcs = $this->openOrClose($date, 'red', 'close', $carrier); break;
-            // Total tickets open
-            case '8': $statistcs = $this->totalTicketsPending($date, $carrier); break;
-            // Total tickets closed
-            case '9': $statistcs = $this->totalTicketsClosed($date, $carrier); break;
-            // Tciekts escalados
-            case '10': $statistcs = $this->ticketEscaladed($date, $carrier); break;
+            case '6': $statistcs = $this->openOrClose($date, 'red', 'close', $carrier); break;
+            // No activity white
+            case '7': $statistcs = $this->withoutDescription($date, 'white', 'open', $carrier); break;
+            // No activity yellow
+            case '8': $statistcs = $this->withoutDescription($date, 'yellow', 'open', $carrier); break;
+            // No activity red
+            case '9': $statistcs = $this->withoutDescription($date, 'red', 'open', $carrier); break;
+            // Escalated whtie
+            case '10': $statistcs = $this->ticketEscaladed($date, 'white', 'open', $carrier); break;
+            // Escalated yellow
+            case '11': $statistcs = $this->ticketEscaladed($date, 'yellow', 'open', $carrier); break;
+            // Escalated red
+            case '12': $statistcs = $this->ticketEscaladed($date, 'red', 'open', $carrier); break;
+            
+            // Total abiertos
+            case '13': $statistcs = $this->totalTicketsPending($date, $carrier); break;
+            // Total cerrados
+            case '14': $statistcs = $this->totalTicketsClosed($date, $carrier); break;
+            // Total sin actividad
+            case '15': $statistcs = $this->totalWithoutDescription($date, $carrier); break;
+            // Total escalados
+            case '16': $statistcs = $this->totalTicketEscaladed($date, $carrier); break;
         }
         
         if ($statistcs !== null) {
@@ -615,7 +677,7 @@ class Report extends Excel
             case '#FFDC51': $style = 'FFFF00'; break;
             case '#EEB8B8': $style = 'FF8080';  break;
             case '#B3C9E2': $style = '808080';  break;
-            default : $style = 'FFFFCC';  break;
+            default : $style = 'C0C0C0';  break;
         }
         return $style;
     }

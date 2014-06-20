@@ -18,6 +18,7 @@
  * @property integer $id_user
  * @property string $option_open
  * @property string $close_ticket
+ * @property string $escalated_date
  *
  * The followings are the available model relations:
  * @property TicketRelation[] $ticketRelations
@@ -161,6 +162,7 @@ class Ticket extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+    
 
     /**
      *
