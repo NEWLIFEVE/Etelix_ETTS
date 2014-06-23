@@ -43,7 +43,11 @@ class Report extends Excel
             'No activity red',
             'Escalated white',
             'Escalated yellow',
-            'Escalated red'
+            'Escalated red',
+            'Total open',
+            'Total closed',
+            'Total no activity',
+            'Total escalated'
         );
         
         // Bucle para setear las hojas
@@ -469,7 +473,7 @@ class Report extends Excel
         return Ticket::model()
                 ->findAllBySql("$select $subQuery $selectCarrier AND
                                 id NOT IN(SELECT id_ticket FROM description_ticket WHERE date = '".substr($date, 0, 10)."' GROUP BY id_ticket HAVING COUNT(id_ticket) >= 2) AND
-                                option_open <> 'etelix_to_carrier' 
+                                option_open = 'etelix_to_carrier' 
                                 ORDER BY id_status, date, hour ASC");
     }
     
@@ -592,7 +596,7 @@ class Report extends Excel
                 ->findAllBySql("$select WHERE date <= '".substr($date, 0, 10)."' AND
                                 (close_ticket IS NULL OR close_ticket > '$date') $selectCarrier AND
                                 id NOT IN(SELECT id_ticket FROM description_ticket WHERE date = '".substr($date, 0, 10)."' GROUP BY id_ticket HAVING COUNT(id_ticket) >= 2) AND
-                                option_open <> 'etelix_to_carrier' 
+                                option_open = 'etelix_to_carrier' 
                                 ORDER BY id_status, date, hour ASC");
     }
     

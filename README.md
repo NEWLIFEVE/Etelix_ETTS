@@ -2,6 +2,9 @@ Etelix_ETTS
 ===========
 
 Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
+23/06/2014
+    - Corrección en consulta de reportes tickets sin actividad
+
 20/06/2014
     - Reestructurada la tabala de estadísticas, la cual quedó de la siguiente forma:
       * Opent white
