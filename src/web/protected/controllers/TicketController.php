@@ -195,8 +195,7 @@ class TicketController extends Controller
      * Pobla el datatable con los datos
      */
     public function actionDatatable()
-    {
-                
+    { 
         $date = date('Y-m-d H:i:s');
         $option = '1';
         $carrier = 'both';
@@ -261,20 +260,12 @@ class TicketController extends Controller
         
         if (isset($_POST['date']) && !empty($_POST['date'])) $date = $_POST['date'] . ' ' . date('H:i:s');
         if (isset($_POST['carrier']) && !empty($_POST['carrier'])) $carrier = $_POST['carrier'];
-               
-        $data = array(
-            'ticketCloseWhite' => count($report->openOrClose($date, 'white', 'close', $carrier)),
-            'ticketPendingWhite' => count($report->openOrClose($date, 'white', 'open', $carrier)),
-            'ticketCloseYellow' => count($report->openOrClose($date, 'yellow', 'close', $carrier)),
-            'ticketPendingYellow' => count($report->openOrClose($date, 'yellow', 'open', $carrier)),
-            'ticketCloseRed' => count($report->openOrClose($date, 'red', 'close', $carrier)),
-            'ticketPendingRed' => count($report->openOrClose($date, 'red', 'open', $carrier)),
-            'ticketWithoutDescription' => count($report->withoutDescription($date, $carrier)),
-            'totalPending' => count($report->totalTicketsPending($date, $carrier)),
-            'totalClosed' => count($report->totalTicketsClosed($date, $carrier))
-        );
         
-        echo CJSON::encode($data);
+        $statisc = array();
+        for ($i = 1; $i <= 12; $i++) {
+            $statistcs[] = count($report->optionStatistics($i, $date, $carrier));
+        }
+        echo CJSON::encode($statistcs);
     }
         
 
@@ -347,6 +338,7 @@ class TicketController extends Controller
         $modelTicket->id_status=1;
         $modelTicket->option_open=$_POST['optionOpen'];
         $modelTicket->close_ticket=null;
+        $modelTicket->escalated_date=null;
         if($modelTicket->option_open == 'etelix_to_carrier')
         {
             $modelTicket->id_gmt=null;
@@ -536,7 +528,7 @@ class TicketController extends Controller
         if (isset($_POST['data']['idTicket'])) {
             $id=$_POST['data']['idTicket'];
             $model=new Ticket;
-            $isOk=$model::model()->updateByPk($id,array('id_status'=>3));
+            $isOk=$model::model()->updateByPk($id,array('id_status'=>3, 'escalated_date'=>date('Y-m-d H:i:s')));
 
             if ($isOk) {
                 $data=self::getTicketAsArray($id);

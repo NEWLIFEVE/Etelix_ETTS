@@ -246,16 +246,24 @@ class SiteController extends Controller
         private function _matchSheetName($option)
         {
             switch ($option) {
-                case '1': return 'Open today';  break;
-                case '2': return 'Pending yellow';  break;
-                case '3': return 'Pending red';  break;
-                case '4': return 'Without activity';  break;
-                case '5': return 'Close white';  break;
-                case '6': return 'Close yellow';  break;
-                case '7': return 'Close red';  break;
-                case '8': return 'Total pending';  break;
-                case '9': return 'Total close';  break;
-                default : 'Open today'; break;
+                case '1': return 'Open white';  break;
+                case '2': return 'Open yellow';  break;
+                case '3': return 'Open red';  break;
+                case '4': return 'Closed white';  break;
+                case '5': return 'Closed yellow';  break;
+                case '6': return 'Closed red';  break;
+                case '7': return 'No activity white';  break;
+                case '8': return 'No activity yellow';  break;
+                case '9': return 'No activity red';  break;
+                case '10': return 'Escalated white';  break;
+                case '11': return 'Escalated yellow'; break;
+                case '12': return 'Escalated red'; break;
+                // Totales
+                case '13': return 'Total open'; break;
+                case '14': return 'Total closed'; break;
+                case '15': return 'Total no activity'; break;
+                case '16': return 'Total escalated'; break;
+                default : return 'Open white'; break;
             }
         }        
         

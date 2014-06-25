@@ -21,7 +21,7 @@ class Export extends TicketDesign
      * @param arrray $ids
      * @return string
      */
-    public function table($ids, $date = false,  $withoutDescription = false)
+    public function table($ids, $date = false)
     {
         if (!is_array($ids)) {
             $ids = explode (",", $ids);
@@ -31,7 +31,7 @@ class Export extends TicketDesign
         if (count($data)) {
             $table = '<table ' . $this->_cssTable . '>' . 
                     $this->_thead() .
-                    $this->_contentTable($data, $withoutDescription) .
+                    $this->_contentTable($data) .
                     '</table>';
         }
         return $table;
@@ -57,7 +57,7 @@ class Export extends TicketDesign
         $white = 'style="background: #FFF; padding:3px 7px;"';
         $yellow = 'style="background: #FFDC51; padding:3px 7px;"';
         $red = 'style="background: #EEB8B8; padding:3px 7px;"';
-        $without = 'style="background: #FDFFDF; padding:3px 7px; border-bottom:4px solid #d3d3d3;"';
+        $without = 'style="background: #d3d3d3; padding:3px 7px; border-bottom:4px solid #d3d3d3;"';
         
         $table = '<table width="100%" border="0" cellspacing="0">';
             $table .= '<caption>Ticket Summary '.$date.'</caption>';
@@ -65,40 +65,75 @@ class Export extends TicketDesign
                         . '<tr>'
                             . '<th '.$th.'>Category</th>'
                             . '<th '.$th.'>Total</th>'
-                            . '<th '.$th.'>Category</th>'
-                            . '<th '.$th.'>Total</th>'
                         . '</tr>'
                     . '</thead>';
             $table .= '<tbody>'
                         . '<tr>'
-                            . '<td '.$white.'>Open today</td>'
+                            . '<td '.$white.'>Open white</td>'
                             . '<td '.$white.'>' . count($report->openOrClose($date, 'white', 'open', $carrier)) . '</td>'
+                        . '</tr>'
+                        . '<tr>'
+                            . '<td '.$yellow.'>Open yellow</td>'
+                            . '<td '.$yellow.'>' . count($report->openOrClose($date, 'yellow', 'open', $carrier)) . '</td>'
+                        . '</tr>'
+                        . '<tr>'
+                            . '<td '.$red.'>Open red</td>'
+                            . '<td '.$red.'>' . count($report->openOrClose($date, 'red', 'open', $carrier)) . '</td>'
+                        . '</tr>'
+                        . '<tr>'
+                            . '<td '.$without.'>Total open</td>'
+                            . '<td '.$without.'>' . count($report->totalTicketsPending($date, $carrier)) . '</td>'
+                        . '</tr>'
+                    
+                        . '<tr>'
                             . '<td '.$white.'>Closed white</td>'
                             . '<td '.$white.'>' . count($report->openOrClose($date, 'white', 'close', $carrier)) . '</td>'
                         . '</tr>'
                         . '<tr>'
-                            . '<td '.$yellow.'>Pending yellow</td>'
-                            . '<td '.$yellow.'>' . count($report->openOrClose($date, 'yellow', 'open', $carrier)) . '</td>'
                             . '<td '.$yellow.'>Closed yellow</td>'
                             . '<td '.$yellow.'>' . count($report->openOrClose($date, 'yellow', 'close', $carrier)) . '</td>'
                         . '</tr>'
                         . '<tr>'
-                            . '<td '.$red.'>Pending red</td>'
-                            . '<td '.$red.'>' . count($report->openOrClose($date, 'red', 'open', $carrier)) . '</td>'
                             . '<td '.$red.'>Closed red</td>'
                             . '<td '.$red.'>' . count($report->openOrClose($date, 'red', 'close', $carrier)) . '</td>'
                         . '</tr>'
                         . '<tr>'
-                            . '<td '.$without.'>Pending without activity</td>'
-                            . '<td '.$without.'>' . count($report->withoutDescription($date, $carrier)) . '</td>'
-                            . '<td '.$without.'></td>'
-                            . '<td '.$without.'></td>'
+                            . '<td '.$without.'>Total closed</td>'
+                            . '<td '.$without.'>' . count($report->totalTicketsClosed($date, $carrier)) . '</td>'
+                        . '</tr>'
+                    
+                        . '<tr>'
+                            . '<td '.$white.'>No activity white</td>'
+                            . '<td '.$white.'>' . count($report->withoutDescription($date, 'white', 'open', $carrier)) . '</td>'
                         . '</tr>'
                         . '<tr>'
-                            . '<td style="padding:3px 7px;">Total tickets pending</td>'
-                            . '<td style="padding:3px 7px;">' . count($report->totalTicketsPending($date, $carrier)) . '</td>'
-                            . '<td style="padding:3px 7px;">Total tickets closed</td>'
-                            . '<td style="padding:3px 7px;">' . count($report->totalTicketsClosed($date, $carrier)) . '</td>'
+                            . '<td '.$yellow.'>No activity yellow</td>'
+                            . '<td '.$yellow.'>' . count($report->withoutDescription($date, 'yellow', 'open', $carrier)) . '</td>'
+                        . '</tr>'
+                        . '<tr>'
+                            . '<td '.$red.'>No activity red</td>'
+                            . '<td '.$red.'>' . count($report->withoutDescription($date, 'red', 'open', $carrier)) . '</td>'
+                        . '</tr>'
+                        . '<tr>'
+                            . '<td '.$without.'>Total no activity</td>'
+                            . '<td '.$without.'>' . count($report->totalWithoutDescription($date, $carrier)) . '</td>'
+                        . '</tr>'
+                    
+                        . '<tr>'
+                            . '<td '.$white.'>Escalated white</td>'
+                            . '<td '.$white.'>' . count($report->ticketEscaladed($date, 'white', 'open', $carrier)) . '</td>'
+                        . '</tr>'
+                        . '<tr>'
+                            . '<td '.$yellow.'>Escalated yellow</td>'
+                            . '<td '.$yellow.'>' . count($report->ticketEscaladed($date, 'yellow', 'open', $carrier)) . '</td>'
+                        . '</tr>'
+                        . '<tr>'
+                            . '<td '.$red.'>Escalated red</td>'
+                            . '<td '.$red.'>' . count($report->ticketEscaladed($date, 'red', 'open', $carrier)) . '</td>'
+                        . '</tr>'
+                        . '<tr>'
+                            . '<td '.$without.'>Total Escalated</td>'
+                            . '<td '.$without.'>' . count($report->totalTicketEscaladed($date, $carrier)) . '</td>'
                         . '</tr>'
                     . '</tbody>';
         $table .= '</table>';
@@ -111,11 +146,10 @@ class Export extends TicketDesign
      * @param array $data
      * @return string
      */
-    private function _contentTable($data, $withoutDescription = false) 
+    private function _contentTable($data) 
     {
         $contentTable = '<tbody>';
         foreach ($data as $tickets) {
-            if ($withoutDescription === true) $tickets->color = '#FDFFDF;"';
             $contentTable .= '<tr>';
                 $contentTable .= '<td ' . $this->_cssTickets($tickets->color) . ' >' . Utility::formatTicketNumber($tickets->ticket_number) . '</td>';
                 $contentTable .= $this->_defineUserOrCarrier($tickets);
@@ -190,7 +224,7 @@ class Export extends TicketDesign
                 FROM ticket
                 WHERE id IN(SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user)) AND
                 id IN(" . implode(",", $ids) . ")
-                ORDER BY id_status, id ASC) AS consulta";
+                ORDER BY id_status, date, hour ASC) AS consulta";
         return Ticket::model()->findAllBySql($sql);
     }
     
@@ -231,24 +265,12 @@ class Export extends TicketDesign
     {
         $style = 'style="padding: 3px !important; margin: 0 !important; text-align: center; color:#5A5A5A; font-size:0.88em; background:';
         switch ($color) {
-            case 'white':
-                $style .= '#FFF;"';
-                break;
-            case 'yellow':
-                $style .= '#FFDC51;"';
-                break;
-            case 'red':
-                $style .= '#EEB8B8;"';
-                break;
-            case 'green':
-                $style .= '#61CF61;"';
-                break;
-            case 'gray':
-                $style .= '#D0DEEE;"';
-                break;
-            default:
-                $style .= '#FDFFDF;"';
-                break;
+            case 'white': $style .= '#FFF;"'; break;
+            case 'yellow': $style .= '#FFDC51;"'; break;
+            case 'red': $style .= '#EEB8B8;"'; break;
+            case 'green': $style .= '#61CF61;"'; break;
+            case 'gray': $style .= '#D0DEEE;"'; break;
+            default: $style .= '#FDFFDF;"'; break;
         }
         return $style;
     }

@@ -711,6 +711,17 @@ div.pre-loader {
 .table-report {
     width: 100% !important;
     margin-bottom: 5px;
+/*    position: fixed;
+    top: 150px; 
+    background-color:white;*/
+}
+.table-report .table .separator {
+    border-top: 15px solid #d3d3d3 !important;
+    border-bottom: 15px solid #d3d3d3 !important;
+}
+.table-report .table .separator:last-child {
+    border-top: 15px solid #d3d3d3 !important;
+    border-bottom: none !important;
 }
 
 .table-report .table .red {
@@ -728,19 +739,20 @@ div.pre-loader {
     background: #FDFFDF;
 }
 .table-report .table .total {
-    border-top: 15px solid #d3d3d3;
+    background: #d3d3d3;
 }
 
+.table-report .table .escalade {
+    background: #B3C9E2;
+}
 
 .table-report .table-report-header {
     background: #16499a !important;
     padding-top: 7px !important;
 }
-
 .table-report .row {
     margin-top: 0px !important;
 }
-
 .table-report .table-report-content table thead  tr th {
    background: #e6e6e6 url(images/ui-bg_glass_75_e6e6e6_1x400.png) 50% 50% repeat-x;
    color:#555;
@@ -753,23 +765,16 @@ div.pre-loader {
    padding: 0px !important;
    line-height: 1.5;
    border: none !important;
+   font-size: 13px !important; 
+   vertical-align: middle !important; 
+   text-align: center !important;
 }
-.table-report .table-report-content table tbody  tr td:nth-child(2), 
-.table-report .table-report-content table tbody  tr td:nth-child(5) {
+.table-report .table-report-content table tbody  tr td:nth-child(2) {
    font-size: 110%;
-   text-align: justify;
-   padding-left: 10px !important;
-}
-
-.table-report .table-report-content table tbody  tr td:nth-child(1),
-.table-report .table-report-content table tbody  tr td:nth-child(3), 
-.table-report .table-report-content table tbody  tr td:nth-child(4), 
-.table-report .table-report-content table tbody  tr td:nth-child(6) {
-   text-align: center;
+   text-align: justify !important;
+   padding-left: 35px !important;
 }
 
 .table-report .table-report-header .span3.offset5 .input-control.text.span3 {
     margin-left: -15px;
 }
-
-/******* View table tickets ********/
