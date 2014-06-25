@@ -472,11 +472,13 @@ class Report extends Excel
         $selectCarrier = $this->_carrierInQuery($carrier);
         return Ticket::model()
                 ->findAllBySql("$select $subQuery $selectCarrier AND
-                                id NOT IN(SELECT id_ticket FROM description_ticket WHERE date = '".substr($date, 0, 10)."' GROUP BY id_ticket HAVING COUNT(id_ticket) >= 2) AND
-                                option_open = 'etelix_to_carrier' 
+                                id NOT IN(SELECT distinct(dt.id_ticket) 
+                                FROM description_ticket dt, cruge_authassignment ca 
+                                WHERE dt.date ='".substr($date, 0, 10)."' AND dt.id_user = ca.userid AND ca.itemname IN ('subadmin','interno') 
+                                GROUP BY dt.id_ticket  )
                                 ORDER BY id_status, date, hour ASC");
     }
-    
+  
     /**
      * Método para retornar los reportes estadísticos
      * @param string $date Fecha de la consulta
@@ -560,7 +562,7 @@ class Report extends Excel
         $query  = " $begin WHERE lifetime >= '2 days'::interval AND date <= '".substr($date, 0, 10)."' AND (close_ticket IS NULL OR close_ticket > '$date') $selectCarrier UNION ";
         $query .= " $begin WHERE lifetime >= '1 days'::interval AND lifetime < '2 days'::interval  AND date <= '".substr($date, 0, 10)."' AND (close_ticket IS NULL OR close_ticket > '$date') $selectCarrier UNION ";
         $query .= " $begin WHERE lifetime < '1 days'::interval  AND date <= '".substr($date, 0, 10)."' AND (close_ticket IS NULL OR close_ticket > '$date') $selectCarrier UNION ";
-        $query .= " $begin WHERE date = '".substr($date, 0, 10)."' AND (close_ticket IS NULL OR close_ticket > '$date') AND id NOT IN(SELECT id_ticket FROM description_ticket WHERE date = '".substr($date, 0, 10)."' GROUP BY id_ticket HAVING COUNT(id_ticket) >= 2) AND option_open <> 'etelix_to_carrier' $selectCarrier ORDER BY id_status, date, hour ASC";
+        $query .= " $begin WHERE date = '".substr($date, 0, 10)."' AND (close_ticket IS NULL OR close_ticket > '$date') AND id NOT IN(SELECT distinct(dt.id_ticket) FROM description_ticket dt, cruge_authassignment ca WHERE dt.date = '".substr($date, 0, 10)."' AND dt.id_user = ca.userid AND ca.itemname IN ('subadmin','interno') GROUP BY id_ticket) $selectCarrier ORDER BY id_status, date, hour ASC";
         return Ticket::model()->findAllBySql($query);
     }
     
