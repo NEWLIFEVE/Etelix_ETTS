@@ -2,6 +2,10 @@ Etelix_ETTS
 ===========
 
 Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
+
+25/06/2014
+    - Ahora se controla el menú por cruge
+
 23/06/2014
     - Corrección en consulta de reportes tickets sin actividad
 
