@@ -94,7 +94,6 @@
             <div class="page-region">
                 <div class="page-region-content">
                     <h1 style="border-bottom: 1px solid silver">
-                        <!--<a href="/"><i class="icon-arrow-left-3 fg-darker smaller"></i></a>-->
                         Etelix Trouble Ticket System <small class="on-right">ETELIX</small>
                     </h1>
                     <div class="grid">
