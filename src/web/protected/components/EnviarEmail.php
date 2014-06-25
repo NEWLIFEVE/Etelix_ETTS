@@ -30,16 +30,15 @@ class EnviarEmail extends CApplicationComponent
             $mailer=Yii::createComponent('application.extensions.mailer.EMailer');
             $mailer=new PHPMailer();
             $mailer->IsSMTP();
-            $mailer->Host='mail.etelix.com';
-            $mailer->Port='475';
+            $mailer->Host=Yii::app()->params['host'];
+            $mailer->Port=Yii::app()->params['port'];
 //            $mailer->SMTPSecure='tls';
-            $mailer->Username='etts@etelix.com';
+            $mailer->Username=Yii::app()->params['username'];
             $mailer->SMTPAuth=true;
-            $mailer->Password="3t3l1x.etts";
+            $mailer->Password=Yii::app()->params['password'];
+            $mailer->SetFrom('etts@etelix.com','ETELIX Trouble Ticket System (ETTS)');
             $mailer->IsSMTP();
             $mailer->IsHTML(true); 
-            $mailer->From='etts@etelix.com';
-            $mailer->FromName='ETELIX Trouble Ticket System (ETTS)';
             
             if($user!=null)
             {
