@@ -37,16 +37,30 @@
                     <?php if (!Yii::app()->user->isGuest): ?>
                         <span class="element-divider"></span>
                         <?php echo CHtml::link('<i class="icon-home on-right on-left"></i> Home', array('/site/index'), array('class' => 'element')); ?>
-                        
-                        <!-- SI SE LOGUEA COMO SUPERADMIN -->
-                        <?php // if (Yii::app()->user->checkAccess('admin')): // Solo visible al superadmin ?>
                         <?php $items = Yii::app()->user->rbac->getMenu(); ?>
-                            <?php if ($items): ?>
+                        <?php if ($items): ?>
+                            <?php for ($i = 0; $i < count($items); $i++): ?>
+                                <div class="element">
+                                    <?php echo CHtml::link('<i class="'.Utility::menuIcon($items[$i]['label']).'"></i> '.$items[$i]['label'], '#', array('class' => 'dropdown-toggle')); ?>
+                                    <?php 
+                                    if (count($items[$i]['items'])) {
+                                    $this->widget('zii.widgets.CMenu', array(
+                                            'items'=>$items[$i]['items'],
+                                            'htmlOptions'=>array(
+                                                'class'=>'dropdown-menu',
+                                                'id' => 'base-submenu',
+                                                'data-role' => 'dropdown'
+                                                ),
+                                    )); } ?>
+                                </div>
+                            <?php endfor; ?>
+                        <?php endif; ?>
+                        <!-- MENU ADMIN -->
+                        <?php if (Yii::app()->user->isSuperAdmin): ?>
                             <div class="element">
-                                    <?php  ?>
-                                    <?php echo CHtml::link('<i class="icon-user on-right on-left"></i> Manage Users', '#', array('class' => 'dropdown-toggle')); ?>
-                                    <?php $this->widget('zii.widgets.CMenu', array(
-                                        'items'=>$items[0]['items'],
+                                <?php echo CHtml::link('<i class="icon-box-add on-right on-left"></i> Tickets', '#', array('class' => 'dropdown-toggle')); ?>
+                                <?php $this->widget('zii.widgets.CMenu', array(
+                                        'items'=>Yii::app()->user->ui->AdminItemsAlternative,
                                         'htmlOptions'=>array(
                                             'class'=>'dropdown-menu',
                                             'id' => 'base-submenu',
@@ -54,7 +68,22 @@
                                             ),
                                     )); ?>
                             </div>
-                            <?php endif; ?>
+                            <div class="element">
+                                <?php echo CHtml::link('<i class="icon-user on-right on-left"></i> Manage Users', '#', array('class' => 'dropdown-toggle')); ?>
+                                <?php $this->widget('zii.widgets.CMenu', array(
+                                        'items'=>Yii::app()->user->ui->adminItems,
+                                        'htmlOptions'=>array(
+                                            'class'=>'dropdown-menu',
+                                            'id' => 'base-submenu',
+                                            'data-role' => 'dropdown'
+                                            ),
+                                    )); ?>
+                            </div>
+                        <?php endif; ?>
+                        <!-- EDIT PROFILE -->
+                        <?php if (!Yii::app()->user->checkAccess('subadmin')): ?>
+                            <?php echo CHtml::link('<i class="icon-pencil on-right on-left"></i> Edit Profile', array('/cruge/ui/editprofile'), array('class' => 'element')); ?>
+                        <?php endif; ?>
                         <?php echo CHtml::link('<i class="icon-locked on-right on-left"></i> Logout ('.Yii::app()->user->name.')', Yii::app()->user->ui->logoutUrl, array('class' => 'element')); ?>
                         <span class="element-divider"></span>
                     <?php endif; //FIN DEL LOGUEO ?> 
@@ -70,7 +99,6 @@
                     </h1>
                     <div class="grid">
                         <div class="row">
-                            <pre><?php print_r($items); ?></pre>
                             <?php echo $content; ?>
                         </div>
                     </div>

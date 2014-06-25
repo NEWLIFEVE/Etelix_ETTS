@@ -287,7 +287,6 @@ class CrugeUi extends CComponent
             array(
                 'label' => CrugeTranslator::t('admin', 'Create User')
             ,
-//                'url' => $this->getUserManagementCreateUrl()
                 'url' => array('/cruge/ui/registration')
             ),
             array(
@@ -366,69 +365,26 @@ class CrugeUi extends CComponent
     public function getAdminItemsAlternative()
     {
         return array(
-            array('label' => CrugeTranslator::t('admin', 'User Manager'),'items'=>array(
-				array(
-					'label' => CrugeTranslator::t('admin', 'Update Profile')
-				,
-					'url' => $this->getEditProfileUrl()
-				),
-				array(
-					'label' => CrugeTranslator::t('admin', 'Create User')
-				,
-					'url' => $this->getUserManagementCreateUrl()
-				),
-				array(
-					'label' => CrugeTranslator::t('admin', 'Manage Users')
-				,
-					'url' => $this->getUserManagementAdminUrl()
-				)
-			)),
-            array('label' => CrugeTranslator::t('admin', 'Custom Fields'),'items'=>array(
-				array(
-					'label' => CrugeTranslator::t('admin', 'List Profile Fields')
-				,
-					'url' => $this->getFieldsAdminListUrl()
-				),
-				array(
-					'label' => CrugeTranslator::t('admin', 'Create Profile Field')
-				,
-					'url' => $this->getFieldsAdminCreateUrl()
-				)
-			)),
-            array('label' => CrugeTranslator::t('admin', 'Roles and Assignments'),'items'=>array(
-				array(
-					'label' => CrugeTranslator::t('admin', 'Roles')
-				,
-					'url' => $this->getRbacListRolesUrl()
-				),
-				array(
-					'label' => CrugeTranslator::t('admin', 'Tasks')
-				,
-					'url' => $this->getRbacListTasksUrl()
-				),
-				array(
-					'label' => CrugeTranslator::t('admin', 'Operations')
-				,
-					'url' => $this->getRbacListOpsUrl()
-				),
-				array(
-					'label' => CrugeTranslator::t('admin', 'Assign Roles to Users')
-				,
-					'url' => $this->getRbacUsersAssignmentsUrl()
-				),
-			)),
-            array('label' => CrugeTranslator::t('admin', 'System'),'items'=>array(
-				array(
-					'label' => CrugeTranslator::t('admin', 'Sessions')
-				,
-					'url' => $this->getSessionAdminUrl()
-				),
-				array(
-					'label' => CrugeTranslator::t('admin', 'System Variables')
-				,
-					'url' => $this->getSystemUpdateUrl()
-				),
-			)),
+            array(
+                'label' => CrugeTranslator::t('admin', 'Closed')
+            ,
+                'url' => array('/ticket/adminclose')
+            ),
+            array(
+                'label' => CrugeTranslator::t('admin', 'Open TT Carrier to Etelix by Etelix')
+            ,
+                'url' => array('/ticket/createascarrier')
+            ),
+            array(
+                'label' => CrugeTranslator::t('admin', 'Open TT Etelix to Carrier')
+            ,
+                'url' => array('/ticket/createtocarrier')
+            ),
+            array(
+                'label' => CrugeTranslator::t('admin', 'Statistics')
+            ,
+                'url' => array('/ticket/statistics')
+            ),
         );
     }
 
