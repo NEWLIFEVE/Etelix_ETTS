@@ -150,7 +150,6 @@ class TicketController extends Controller
      */
     public function actionAdmin()
     {
-        
         // Css y js del datable
         Script::registerDataTable();
         // Css y js del uploadfile
@@ -278,7 +277,7 @@ class TicketController extends Controller
         }
         
         $export = new Export;
-        echo $export->printTicket($data);
+        echo $export->printTicket($data, true);
     }
 
     

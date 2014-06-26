@@ -740,6 +740,7 @@ div.pre-loader {
 }
 .table-report .table .total {
     background: #d3d3d3;
+    border-bottom: 10px solid #16499a;
 }
 
 .table-report .table .escalade {
