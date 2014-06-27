@@ -266,9 +266,16 @@ class TicketDesign
      * Retorna el detalle del ticket
      * @return string
      */
-    protected function _getDetailTicket()
+    protected function _getDetailTicket($optionalInformation = false)
     {
+        $date = Ticket::model()->findByPk($this->_properties['idTicket'])->date;
+        $hour = Ticket::model()->findByPk($this->_properties['idTicket'])->hour;
+        
+        if ($optionalInformation) $information = 'Ticket #: ' . $this->_properties['ticketNumber'] . ' Created on ' . Utility::getDayByDate($date) . ' at ' . $hour;
+        else $information = '';
+                
         return '<h2>Ticket Details</h2>
+               ' . $information . '
                <table style="border-spacing: 0; width:100%; border: solid #ccc 1px;">' . 
                 $this->_getEmails('To') .
                 $this->_getCc() .

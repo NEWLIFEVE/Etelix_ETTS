@@ -181,8 +181,8 @@ class Report extends Excel
             'J' => 'Lifetime',
         );
         foreach ($titles as $key => $value) {
-            $i = 2;
-            $this->_phpExcel->getActiveSheet()->setCellValue($key . $i, $value);
+            $numHeader = 5;
+            $this->_phpExcel->getActiveSheet()->setCellValue($key . $numHeader, $value);
         }
     }
     
@@ -192,45 +192,62 @@ class Report extends Excel
      */
     protected function _setData($params) 
     {
+        $numHeader = 5;
+        $numBody = 6;
         $sheet = new PHPExcel_Worksheet($this->_phpExcel, $params['nameSheet']);
         $this->_phpExcel->addSheet($sheet, $params['index']);
         $this->_phpExcel->setActiveSheetIndexByName($params['nameSheet']);
         $this->_phpExcel->setActiveSheetIndexByName($params['nameSheet'])->mergeCells('A1:C1');
         $this->_phpExcel->setActiveSheetIndexByName($params['nameSheet'])->mergeCells('D1:J1');
         
-        $this->_phpExcel->getActiveSheet()->freezePane('A3');
+//        $this->_phpExcel->getActiveSheet()->freezePane('A3');
         
         //Asigno los nombres de las columnas al principio
         $this->_setTitle();
         //Asigno colores a la segunda fila
-        $this->_setStyleHeader('A2:J2');
+        $this->_setStyleHeader("A$numHeader:J$numHeader");
         //Habilito un  auto tamaño en las columnas
         $this->_setAutoSize();
         
-        $i = 3;
         // La data que contendrá las hojas dependiendo de la categoria
         $data = $this->optionStatistics(($params['index'] + 1), $params['data']['date'], $params['data']['carrier']);
         if ($data !== null) {
-            $this->_phpExcel->getActiveSheet()->setAutoFilter('A2:J2');
+            $this->_phpExcel->getActiveSheet()->setAutoFilter("A$numHeader:J$numHeader");
             // Seteamos el logo
             $this->_getLogo();
             // Definiendo un Subtitulo para la hoja
             $this->_getSubTitleHeader($params['index'], $params['nameSheet']);
+            
+            $this->_phpExcel->setActiveSheetIndexByName($params['nameSheet'])->mergeCells('A2:B2');
+            $this->_phpExcel->setActiveSheetIndexByName($params['nameSheet'])->mergeCells('A3:B3');
+            $this->_phpExcel->setActiveSheetIndexByName($params['nameSheet'])->mergeCells('A4:B4');
+            
+            $this->_setStyleBody("A2:B2", '#FFF');
+            $this->_setStyleBody("A3:B3", '#FFDC51');
+            $this->_setStyleBody("A4:B4", '#EEB8B8');
+            
+            $this->_phpExcel->setActiveSheetIndex($params['index'])
+                    ->setCellValue("A2", "TT's within 24 hours");
+            $this->_phpExcel->setActiveSheetIndex($params['index'])
+                    ->setCellValue("A3", "TT's within 48 hours");
+            $this->_phpExcel->setActiveSheetIndex($params['index'])
+                    ->setCellValue("A4", "TT's with more than 48 hours");
+            
             foreach ($data as $key => $value) {
                 $this->_phpExcel->setActiveSheetIndex($params['index'])
-                    ->setCellValue('A' . $i, ($key + 1))
-                    ->setCellValue('B' . $i, $value->carrier)
-                    ->setCellValue('C' . $i, $value->user_open_ticket != null ? $value->idUser->username : Carrier::getCarriers(true, $value->id))
-                    ->setCellValue('D' . $i, Carrier::getCarriers(true, $value->id))
-                    ->setCellValue('E' . $i, $value->ticket_number)
-                    ->setCellValue('F' . $i, $value->idFailure->name)
-                    ->setCellValue('G' . $i, TestedNumber::getNumber($value->id) != false ? TestedNumber::getNumber($value->id)->idCountry->name : '')
-                    ->setCellValue('H' . $i, $value->date . '/' . $value->hour)
-                    ->setCellValue('I' . $i, $value->close_ticket)
-                    ->setCellValue('J' . $i, $value->lifetime);
-                $row = $key + 3;
+                    ->setCellValue('A' . $numBody, ($key + 1))
+                    ->setCellValue('B' . $numBody, $value->carrier)
+                    ->setCellValue('C' . $numBody, $value->user_open_ticket != null ? $value->idUser->username : Carrier::getCarriers(true, $value->id))
+                    ->setCellValue('D' . $numBody, Carrier::getCarriers(true, $value->id))
+                    ->setCellValue('E' . $numBody, $value->ticket_number)
+                    ->setCellValue('F' . $numBody, $value->idFailure->name)
+                    ->setCellValue('G' . $numBody, TestedNumber::getNumber($value->id) != false ? TestedNumber::getNumber($value->id)->idCountry->name : '')
+                    ->setCellValue('H' . $numBody, $value->date . '/' . $value->hour)
+                    ->setCellValue('I' . $numBody, $value->close_ticket)
+                    ->setCellValue('J' . $numBody, $value->lifetime);
+                $row = $key + 6;
                 $this->_setStyleBody('A' . $row. ':J' . $row, $value->color);  
-                $i++;
+                $numBody++;
             }
         }
     }
@@ -472,10 +489,9 @@ class Report extends Excel
         $selectCarrier = $this->_carrierInQuery($carrier);
         return Ticket::model()
                 ->findAllBySql("$select $subQuery $selectCarrier AND
-                                id NOT IN(SELECT distinct(dt.id_ticket) 
-                                FROM description_ticket dt, cruge_authassignment ca 
-                                WHERE dt.date ='".substr($date, 0, 10)."' AND dt.id_user = ca.userid AND ca.itemname IN ('subadmin','interno') 
-                                GROUP BY dt.id_ticket  )
+                                id NOT IN(SELECT dt.id_ticket FROM description_ticket dt, cruge_authassignment ca 
+                                WHERE dt.date = '".substr($date, 0, 10)."' AND 
+                                dt.id_user = ca.userid AND itemname NOT IN('cliente'))
                                 ORDER BY id_status, date, hour ASC");
     }
   
@@ -562,7 +578,11 @@ class Report extends Excel
         $query  = " $begin WHERE lifetime >= '2 days'::interval AND date <= '".substr($date, 0, 10)."' AND (close_ticket IS NULL OR close_ticket > '$date') $selectCarrier UNION ";
         $query .= " $begin WHERE lifetime >= '1 days'::interval AND lifetime < '2 days'::interval  AND date <= '".substr($date, 0, 10)."' AND (close_ticket IS NULL OR close_ticket > '$date') $selectCarrier UNION ";
         $query .= " $begin WHERE lifetime < '1 days'::interval  AND date <= '".substr($date, 0, 10)."' AND (close_ticket IS NULL OR close_ticket > '$date') $selectCarrier UNION ";
-        $query .= " $begin WHERE date = '".substr($date, 0, 10)."' AND (close_ticket IS NULL OR close_ticket > '$date') AND id NOT IN(SELECT distinct(dt.id_ticket) FROM description_ticket dt, cruge_authassignment ca WHERE dt.date = '".substr($date, 0, 10)."' AND dt.id_user = ca.userid AND ca.itemname IN ('subadmin','interno') GROUP BY id_ticket) $selectCarrier ORDER BY id_status, date, hour ASC";
+        $query .= " $begin WHERE date = '".substr($date, 0, 10)."' AND (close_ticket IS NULL OR close_ticket > '$date') AND 
+                           id NOT IN(SELECT dt.id_ticket FROM description_ticket dt, cruge_authassignment ca 
+                           WHERE dt.date = '".substr($date, 0, 10)."' AND 
+                           dt.id_user = ca.userid AND itemname NOT IN('cliente')) $selectCarrier ORDER BY id_status, date, hour ASC";
+
         return Ticket::model()->findAllBySql($query);
     }
     
@@ -597,8 +617,9 @@ class Report extends Excel
         return Ticket::model()
                 ->findAllBySql("$select WHERE date <= '".substr($date, 0, 10)."' AND
                                 (close_ticket IS NULL OR close_ticket > '$date') $selectCarrier AND
-                                id NOT IN(SELECT id_ticket FROM description_ticket WHERE date = '".substr($date, 0, 10)."' GROUP BY id_ticket HAVING COUNT(id_ticket) >= 2) AND
-                                option_open = 'etelix_to_carrier' 
+                                id NOT IN(SELECT dt.id_ticket FROM description_ticket dt, cruge_authassignment ca 
+                                WHERE dt.date = '".substr($date, 0, 10)."' AND 
+                                dt.id_user = ca.userid AND itemname NOT IN('cliente')) 
                                 ORDER BY id_status, date, hour ASC");
     }
     

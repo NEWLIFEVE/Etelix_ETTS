@@ -98,6 +98,7 @@
                     </h1>
                     <div class="grid">
                         <div class="row">
+                            <!--<pre><?php // print_r($items); ?></pre>-->
                             <?php echo $content; ?>
                         </div>
                     </div>

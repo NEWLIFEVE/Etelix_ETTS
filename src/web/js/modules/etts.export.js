@@ -126,29 +126,35 @@ $ETTS.export=(function(){
          * @param {obj} input
          * @returns {void}
          */
-        excelForm:function(form, input) {
-            if (input.length > 0) {
-                _window('Generating excel... <br><img src="/images/loader.GIF">');
-                setTimeout(function(){_window('The file has been generated');}, 3000);
-                setTimeout(form.submit(), 1000);
+        excelForm:function(form, input, validate) {
+            if (validate) {
+                if (input.length === 0) {
+                    return false;
+                }
             }
+            _window('Generating excel... <br><img src="/images/loader.GIF">');
+            setTimeout(function(){_window('The file has been generated');}, 3000);
+            setTimeout(form.submit(), 1000);
         },
         /**
          * Método para enviar mail
          * @param {object} settings
          * @returns {void}
          */
-        mail:function(settings) {
+        mail:function(settings, validate) {
             settings.id = _getIds(settings.id);
-            if (settings.id.length > 0) {
-                settings.success = function() {
-                                    _window('Success');
-                                   };
-                settings.beforesend = function() {
-                                        _window('Sending email...<h2><img src="/images/loader.GIF">');
-                                    };
-                _xhr(settings);
+            if (validate) {
+                if (settings.id.length === 0) {
+                    return false;
+                }
             }
+            settings.success = function() {
+                                _window('Success');
+                               };
+            settings.beforesend = function() {
+                                    _window('Sending email...<h2><img src="/images/loader.GIF">');
+                                };
+            _xhr(settings);
         }
     };
 })();

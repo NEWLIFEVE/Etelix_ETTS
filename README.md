@@ -3,12 +3,12 @@ Etelix_ETTS
 
 Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
 
+Realese 1.3.1
 25/06/2014
     - Ahora se controla el menú por cruge
-
+    - Modificacion de la consulta para los tickets sin actividad
 23/06/2014
     - Corrección en consulta de reportes tickets sin actividad
-
 20/06/2014
     - Reestructurada la tabala de estadísticas, la cual quedó de la siguiente forma:
       * Opent white
@@ -29,15 +29,11 @@ Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
       * Total escalated
     - El archivo excel tiene la hoja con el resumen de las 
       estadísticas y las opciones anteriores, excepto los totales
-
-
 18/06/2014
     - Se borró a Leandro del componente de correos
     - Escalar ticket ahora solo está visible para los usuarios internos
     - Leyenda indicando el significado de los tickets escalados
-    - Caja de email de escalar tickets solo admite formato de correo
-    
-
+    - Caja de email de escalar tickets solo admite formato de correo   
 17/06/2014
     - Interfaz para escalar tickets
 

@@ -288,11 +288,11 @@ function initExport(boton)
         settings.print = true;
         $ETTS.export.print(settings);
     } else if (boton.prop('id') === 'excel-btn') {
-        $ETTS.export.excelForm($('#form-excel'), $('.preview'));
+        $ETTS.export.excelForm($('#form-excel'), $('.preview'), true);
     } else {
         settings.async = true;
         settings.print = false;
-        $ETTS.export.mail(settings);
+        $ETTS.export.mail(settings, true);
     }
 }
 

@@ -91,7 +91,7 @@ function initExport(boton)
     } else {
         settings.async = true;
         settings.print = false;
-        $ETTS.export.mail(settings);
+        $ETTS.export.mail(settings, true);
     }
 }
 
