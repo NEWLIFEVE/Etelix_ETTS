@@ -275,10 +275,10 @@ class Export extends TicketDesign
         return $style;
     }
     
-    public function printTicket($key)
+    public function printTicket($key, $optionalInformation = false)
     {
         parent::__construct($key);
-        return $this->_getDetailTicket();
+        return $this->_getDetailTicket($optionalInformation);
     }
     
 }

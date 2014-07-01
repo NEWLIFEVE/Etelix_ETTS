@@ -139,5 +139,25 @@ abstract class Utility extends CApplicationComponent
         else
             return self::formatWeek($_date, $lang) . ' ' . $day . ' de ' . self::formatMonth($month, $lang) . ' de ' . $year;
     }
+    
+    /**
+     * Retorna el icono que contendrá los elementos del menú
+     * @param string $label
+     * @return string
+     */
+    public static function menuIcon($label)
+    {
+        $icono = '';
+        if (is_string($label)) {
+            switch (strtolower($label)) {
+                case 'tickets': 
+                case 'ticket': 
+                    $icono = 'icon-box-add on-right on-left'; break;
+                case 'manage user': 
+                case 'manage users': 
+                    $icono = 'icon-user on-right on-left'; break;
+            }
+        }
+        return $icono;
+    }
 }
-?>
