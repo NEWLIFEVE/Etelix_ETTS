@@ -144,10 +144,10 @@ return array(
                 'gCProbability'  => 100 ,
         ),
         'clientScript'=>array(
-                  'scriptMap'=>array(
-                      'jquery.js' => '/js/plugins/jquery/jquery.min.js',
-                      'jquery.yii.js' => '/js/plugins/jquery/jquery.min.js',
-                  ),
+              'scriptMap'=>array(
+                  'jquery.js' => '/js/plugins/jquery/jquery.min.js',
+                  'jquery.yii.js' => '/js/plugins/jquery/jquery.min.js',
+              ),
             ),
             
             
