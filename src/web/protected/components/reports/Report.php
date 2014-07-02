@@ -491,7 +491,8 @@ class Report extends Excel
                 ->findAllBySql("$select $subQuery $selectCarrier AND
                                 id NOT IN(SELECT dt.id_ticket FROM description_ticket dt, cruge_authassignment ca 
                                 WHERE dt.date = '".substr($date, 0, 10)."' AND 
-                                dt.id_user = ca.userid AND itemname NOT IN('cliente'))
+                                dt.id_user = ca.userid AND itemname NOT IN('cliente')) AND 
+                                id NOT IN(SELECT id_ticket FROM description_ticket WHERE id_user = 1 AND date = '".substr($date, 0, 10)."')
                                 ORDER BY id_status, date, hour ASC");
     }
     
