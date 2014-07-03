@@ -182,7 +182,7 @@ $ETTS.UI=(function(){
                         '</div>' +
                    '</div>' +
                    '<div id="preview_buttons">' +
-                        '<button  class="primary large" id="save_ticket">Send Ticket Information</button> <!--<a  href="#" id="imprimir"><i class="icon-printer on-right"></i></a>-->' +
+                        '<button  class="primary large" id="save_ticket">Send Ticket Information</button> <a  href="javascript:void(0)" id="imprimir"><i class="icon-printer on-right"></i></a>' +
                    '</div>';
     }
     
@@ -192,6 +192,7 @@ $ETTS.UI=(function(){
             else
                 select.addClass('validate[required]');
     }
+    
     function _confirmar(mensaje, aceptar, cancelar) {
             $.Dialog({
                 shadow: true,
@@ -208,6 +209,35 @@ $ETTS.UI=(function(){
                     '</div>'
             });
     }
+    
+    /**
+    * 
+    * @returns {void}
+    */
+    function _printOpenTicket() {
+        var _head   = '<!DOCTYPE html><html><meta charset="es"><head></head><body>',
+        _footer = '<script>function printPage() { window.focus(); window.print();return; }</script>'+
+              '</body></html>',
+        content = _head + designTicket() + _footer,
+        newIframe = document.createElement('iframe');
+        newIframe.width = '0';
+        newIframe.height = '0';
+        newIframe.src = 'about:blank';
+        document.body.appendChild(newIframe);
+        newIframe.contentWindow.contents = content;
+        newIframe.src = 'javascript:window["contents"]';
+        newIframe.focus();
+        newIframe.contentWindow.printPage();
+        return;
+    }
+    /**
+    * Diseño que contendrá el imprimible del ticket
+    * @returns {void}
+    */
+    function _designTicket() {
+        return '<h1>Holaaa</h1>';
+    }
+    
     return {
         
         tables:function(){
@@ -291,6 +321,11 @@ $ETTS.UI=(function(){
                 width: 510,
                 padding: 0,
                 draggable: true,
+                onShow: function(_dialog) {
+                    $('#imprimir').on('click', function(){
+                       _printOpenTicket(); 
+                    });
+                },
                 content:_ticketCompleto(clase,
                              user,
                              to,
@@ -309,8 +344,16 @@ $ETTS.UI=(function(){
                              hour)
             });
         },
+        
+        /**
+         * Valida las direccioens ip
+         * @param {object} element
+         * @returns {void}
+         */
         direccionesIp:function(element){
             $(element).on('keyup', function(e){
+                var keyNum = window.event ? window.event.keyCode : e.which;
+                
                 if ($(this).val().length === 3) {
                     if ($(this).val() > 255) {
                         $(this).val(255);
@@ -318,12 +361,17 @@ $ETTS.UI=(function(){
                     $(this).next('input').focus();
                     e.preventDefault();
                 }
+                
+                
             });
             
             $(element).on('keypress', function(e){
                 var keyNum = window.event ? window.event.keyCode : e.which;
                 
                 if (keyNum === 46) {
+                    if ($(this).val() > 255) {
+                        $(this).val(255);
+                    }
                     $(this).next('input').focus();
                     e.preventDefault();
                 } else {
