@@ -3,7 +3,7 @@ Etelix_ETTS
 
 Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
 
-02/07/2014
+03/07/2014
     - Se cambió la consulta que trae los tickets cerrados, antes traía un rango a 
       partir de la fecha de creación del ticket hasta 2 semanas, ahora el rango es a
       partir de la fecha de cierre hasta 2 semanas.
@@ -12,12 +12,14 @@ Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
     - Se paso el método estático que estaba en TicketController getTicketAsArray($params) al
       modelo(TicketModel).
 
+
+Realese 1.3.1
+
 25/06/2014
     - Ahora se controla el menú por cruge
-
+    - Modificacion de la consulta para los tickets sin actividad
 23/06/2014
     - Corrección en consulta de reportes tickets sin actividad
-
 20/06/2014
     - Reestructurada la tabala de estadísticas, la cual quedó de la siguiente forma:
       * Opent white
@@ -38,22 +40,19 @@ Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
       * Total escalated
     - El archivo excel tiene la hoja con el resumen de las 
       estadísticas y las opciones anteriores, excepto los totales
-
-
 18/06/2014
     - Se borró a Leandro del componente de correos
     - Escalar ticket ahora solo está visible para los usuarios internos
     - Leyenda indicando el significado de los tickets escalados
-    - Caja de email de escalar tickets solo admite formato de correo
-    
-
+    - Caja de email de escalar tickets solo admite formato de correo   
 17/06/2014
     - Interfaz para escalar tickets
 
+Release 1.3
 29/05/2014
     - Sub menu statistics en el menu tickets, no visible para usuarios externos
     - Reportes por pantalla contien:
-      * Tickets opens today
+      * Tickets open today
       * Tickets pendign yellow
       * Tickets pending red
       * Tickets pending without activity
@@ -62,19 +61,19 @@ Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
       * Tickets closed red
       * Total tickets pending
       * Total tickets closed
-    - Exportables para los reportes mencionados anteriormente
-    
+    - Exportables para los reportes mencionados anteriormente 
 
+Release 1.2.1
 08/05/2014
     - Exportables para los tickets(excel, imprimir y mandar por correo)
-
-28/04/2014
     - Select para filtrar los datos del datatable
     - Filtrado por color(Haciendo click en los íconos laterales)
-
-23/04/2014
-    - Dependencia a php5 -imap
     - El ícono lateral de los tickets cerrados, solo muestra los tickets de 2 semana (día actual hasta 14 dias atrás)
+
+Release 1.2
+23/04/2014
+    - Dependencia a php5-imap
+    - El ícono lateral de los tickets cerrados, solo muestra los tickets de 1 semana (día actual hasta siete dias atrás)
     - Todos los tipos de tickets se le pueden agregar mas correos
 
 22/04/2014
@@ -105,6 +104,7 @@ Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
 02/04/2014
     - Corrección en los speech del preview del ticket. No se concatenaba la falla y el pais, ahora ya lo hace.
 
+Release 1.1.9
 01/04/2014
     - Ahora el usuario interno tiene la lista de speech en ingles y español
     - Se creo un action nuevo en SpeechController(actionGetspeechsupplier) para obtener los speech de los suppliers y se borro actionGetspeechsupplier en FailureController

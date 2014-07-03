@@ -494,7 +494,7 @@ class Report extends Excel
                                 dt.id_user = ca.userid AND itemname NOT IN('cliente'))
                                 ORDER BY id_status, date, hour ASC");
     }
-    
+  
     /**
      * Método para retornar los reportes estadísticos
      * @param string $date Fecha de la consulta
@@ -582,6 +582,7 @@ class Report extends Excel
                            id NOT IN(SELECT dt.id_ticket FROM description_ticket dt, cruge_authassignment ca 
                            WHERE dt.date = '".substr($date, 0, 10)."' AND 
                            dt.id_user = ca.userid AND itemname NOT IN('cliente')) $selectCarrier ORDER BY id_status, date, hour ASC";
+
         return Ticket::model()->findAllBySql($query);
     }
     

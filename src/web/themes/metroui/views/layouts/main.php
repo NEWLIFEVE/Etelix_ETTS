@@ -105,7 +105,7 @@
                 </div>
             </div>
             <footer>
-                Copyright &copy; <?php echo date('Y'); ?> ETELIX All Rights Reserved. Version 1.1.8.1
+                Copyright &copy; <?php echo date('Y'); ?> ETELIX All Rights Reserved. Version 1.3
             </footer>
         </div>
         <script>
