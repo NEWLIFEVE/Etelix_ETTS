@@ -218,7 +218,7 @@ $ETTS.UI=(function(){
         var _head   = '<!DOCTYPE html><html><meta charset="es"><head></head><body>',
         _footer = '<script>function printPage() { window.focus(); window.print();return; }</script>'+
               '</body></html>',
-        content = _head + designTicket() + _footer,
+        content = _head + _designTicket() + _footer,
         newIframe = document.createElement('iframe');
         newIframe.width = '0';
         newIframe.height = '0';
@@ -235,7 +235,20 @@ $ETTS.UI=(function(){
     * @returns {void}
     */
     function _designTicket() {
-        return '<h1>Holaaa</h1>';
+        var information = '<h2>Ticket Details</h2>';
+        information += '<table style="border-spacing: 0; width:100%; border: solid #ccc 1px;">';
+            
+            information += '<tr>';
+                information += '<th></th>';
+            information += '</tr>';
+            
+            information += '<tr>';
+                information += '<td></td>';
+            information += '</tr>';
+            
+        information += '</table>';
+        
+        return information;               
     }
     
     return {

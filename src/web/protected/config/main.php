@@ -156,8 +156,5 @@ return array(
         // using Yii::app()->params['paramName']
 	'params'=>array(
 	// this is used in contact page
-            'IMAP_HOST'=>'{mail.etelix.com:995/pop3/ssl/novalidate-cert}INBOX',
-            'IMAP_USER'=>'etts@etelix.com',
-            'IMAP_PASS'=>'3t3l1x.etts'
-		),
+            ),
 	);
