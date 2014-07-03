@@ -1,22 +1,42 @@
 <?php
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
- * Description of ChangeStatus
+ * Description of ChangeStatus:
+ * 
+ * Componente que se encargará de cerrar automáticamente los tickets que cumplan
+ * la condiciones dadas para ejecutar el cierre automatico
  *
- * @author nelson
+ * @author Nelson Marcano
  */
 class ChangeStatus 
 {
+    /**
+     * Array de los id's del los tickets
+     * @var array 
+     */
     private $_ids;
+    
+    /**
+     * id del status
+     * @var int 
+     */
     private $_status;
+    
+    /**
+     * Fecha de búsqueda de los tickets
+     * @var string
+     */
     private $_date;
+    
+    /**
+     * Intervalo para la fecha de búsqueda
+     * @var string
+     */
     private $_interval;
+    
+    /**
+     * Descripción que ser verá en el chat del ticket al cerrar el mismo
+     * @var string 
+     */
     private $_description;
 
     /**
@@ -34,7 +54,6 @@ class ChangeStatus
         $this->_description = $description;
         $this->_ids = $this->_getTickets();
         $this->_run();
-        //print_r($this->_dataTicket(53));
     }
     
     /**
@@ -94,7 +113,7 @@ class ChangeStatus
      */
     private function _saveDescription()
     {
-        if (!empty($this->_description) && !empty($this->_ids)) {
+        if (!empty($this->_description)) {
             foreach ($this->_ids as $id) {
                 $model = new DescriptionTicket;
                 $model->id_ticket = $id;
@@ -118,19 +137,21 @@ class ChangeStatus
      */
     private function _sendMail($id)
     {
-        $data = $this->_dataTicket($id);
-        // Instancia de los componentes para manejar el subject, el cuerpo del correo y el envío del mail
-        $asunto = new Subject;
-        $cuerpoCorreo = new CuerpoCorreo($data);
-        $mailer = new EnviarEmail;
-        // Definiendo el cuerpo
-        $body = $cuerpoCorreo->getBodyCloseTicket($data['statusName']);
-        // Definiendo el asunto
-        $floor = floor(Utility::getTime($data['createDate'], $data['createHour'])/ (60 * 60 * 24));
-        $restarHoras = Utility::restarHoras($data['createHour'], date('H:i:s'), $floor);
-        $subject = $asunto->subjectCloseTicket($data['ticketNumber'], Carrier::getCarriers(true, $id), $restarHoras, 1);
-        // Envío del correo
-        $mailer->enviar($body, Mail::getNameMails($id), '', $subject);
+        if (!empty($id)) {
+            $data = $this->_dataTicket($id);
+            // Instancia de los componentes para manejar el subject, el cuerpo del correo y el envío del mail
+            $asunto = new Subject;
+            $cuerpoCorreo = new CuerpoCorreo($data);
+            $mailer = new EnviarEmail;
+            // Definiendo el cuerpo
+            $body = $cuerpoCorreo->getBodyCloseTicket($data['statusName']);
+            // Definiendo el asunto
+            $floor = floor(Utility::getTime($data['createDate'], $data['createHour'])/ (60 * 60 * 24));
+            $restarHoras = Utility::restarHoras($data['createHour'], date('H:i:s'), $floor);
+            $subject = $asunto->subjectCloseTicket($data['ticketNumber'], Carrier::getCarriers(true, $id), $restarHoras, 1);
+            // Envío del correo
+            $mailer->enviar($body, Mail::getNameMails($id), '', $subject);
+        }
     }
     
     /**
