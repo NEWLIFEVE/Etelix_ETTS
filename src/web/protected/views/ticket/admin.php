@@ -49,12 +49,12 @@
                             $carrier=Carrier::getCarriers(true, $ticket->id);
                             switch ($ticket->idStatus->id) {
                                 case '1':
-                                    // Tickes a partir de las 6:00am
-                                    if ($timeTicket <= 64800) {
+                                    // Tickes blancos
+                                    if ($timeTicket < 86400) {
                                         $color = 'only-white';
                                         echo 'class="open today '.$read.'"'; 
-                                    // Tickets de antes de las 6:00am hasta 6:00am del dia anterior
-                                    } elseif ($timeTicket > 64800 && $timeTicket <= 151200) {
+                                    // Tickets amarillos
+                                    } elseif ($timeTicket >= 86400 && $timeTicket < 172800) {
                                         $color = 'only-yellow';
                                         echo 'class="open yesterday '.$read.'"'; 
                                     } else {
@@ -65,6 +65,10 @@
                                 case '2':
                                     echo 'class="close '.$read.'"';
                                     break;
+                                case '3':
+                                    $color = 'only-scaled';
+                                    echo 'class="scaled '.$read.'"';
+                                    break;                                    
                                 }
                                 ?>>
                         <?php if ($tipoUsuario !== "C"): ?>
@@ -130,12 +134,19 @@
             <span class='texto'>TT's with more than 48 hours (<?php echo $colors['red']; ?> total)</span>
         </span>
     </a>
+    <a class='itemsocial' href='javascript:void(0)' id='escalade-btn' rel="only-scaled">
+        <span class='social'>
+            <span class="total-tickets"><?= $colors['scaled']; ?> TT's <br>(<?= $colors['percentageScaled']; ?>%)</span>
+            <span class='texto'>TT's scaled (<?= $colors['scaled']; ?> total)</span>
+        </span>
+    </a>
     <a class='itemsocial' href='javascript:void(0)' id='pinterest-btn' rel="only-green">
         <span class='social'>
             <span class="total-tickets"><?php echo $colors['green']; ?> TT's <br>(<?php echo $colors['percentageGreen']; ?>%)</span>
             <span class='texto'>TT's closed last 14 days (<?php echo $colors['green']; ?> total)</span>
         </span>
     </a>
+    
 </div>
 <div class="reportes-laterales derecha">
     <a class='itemreporte' href='javascript:void(0)' id='print-btn' rel="/site/print" title="Print tickets">
@@ -157,4 +168,3 @@
     </a>
 </div>
 </form>
-

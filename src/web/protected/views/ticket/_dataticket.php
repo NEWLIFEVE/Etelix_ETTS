@@ -1,18 +1,24 @@
+<?php $tipoUsuario=CrugeAuthassignment::getRoleUser(true); ?>
 <div id=content_detail>
     <div class="grid fluid">
-        <h3 class="ticket-information">Ticket #:<?php echo $datos->ticket_number; ?>, Created on <?php echo Utility::getDayByDate($datos->date) . ' at ' . $datos->hour; ?>  <a href="javascript:void(0)" id="print-ticket" title="Print ticket"><i class="icon-printer"></i></a></h3>
+        <h3 class="ticket-information">
+            Ticket #:<?php echo $datos->ticket_number; ?>, Created on <?php echo Utility::getDayByDate($datos->date) . ' at ' . $datos->hour; ?>  
+            <a href="javascript:void(0)" id="print-ticket" title="Print ticket"><i class="icon-printer"></i></a>&nbsp;&nbsp;
+            <?php if (($tipoUsuario=='interno' || $tipoUsuario=='subadmin') && $datos->id_status != '2'): ?> 
+            <a href="javascript:void(0)" id="escalade-ticket" title="Escalade ticket"><i class="icon-redo"></i></a>
+            <?php endif; ?>
+        </h3>
         <div class="row">
             <div class="span5">
                 <?php 
                 $optionOpen='';
                 if ($datos->option_open == 'etelix_as_carrier' || $datos->option_open == 'carrier_to_etelix') $optionOpen='true';
                 $mailByTicket=MailUser::getMails(CrugeUser2::getUserTicket($datos->id, true)->iduser, false, $optionOpen, $datos->id);
-                $tipoUsuario=CrugeAuthassignment::getRoleUser();
                 ?>
                 <input type="hidden" id="id_ticket" value="<?php echo $datos->id; ?>">
                 <input type="hidden" id="open-ticket" value="<?php echo $datos->option_open; ?>">
                 <input type="hidden" id="user-ticket" value="<?php echo CrugeUser2::getUserTicket($datos->id, true)->iduser; ?>">
-                <?php if ($datos->id_status != '2' && $tipoUsuario != 'C'): ?>
+                <?php if ($datos->id_status != '2' && ($tipoUsuario=='interno' || $tipoUsuario=='subadmin')): ?>
                 <div class="options-hide">
                     <div class="input-control select">
                         <select id="mails" multiple>
@@ -34,7 +40,7 @@
                 <?php endif; ?>
                 <div class="input-control select">
                     Response to&nbsp;  
-                    <?php if ($datos->id_status != '2' && $tipoUsuario != 'C'): ?>
+                    <?php if ($datos->id_status != '2' && ($tipoUsuario=='interno' || $tipoUsuario=='subadmin')): ?>
                     <a href="javascript:void(0)" class="a-agregar-correo" onclick="seeOptions(this)">Add more email's</a>&nbsp;&nbsp;
                     <span class="options-hide">
                         <a href="javascript:void(0)" class="a-bajar-correo" onclick="bajarCorreo(this)"><i class="icon-arrow-down"></i></a>
@@ -116,7 +122,7 @@
             </div> 
             <div class="span7">
                 Description <!--<a href="javascript:void(0);" onclick="show(this, '.mails-associates');">View mails associates </a>-->
-                <?php if ($tipoUsuario !== 'C'): ?>
+                <?php if (($tipoUsuario=='interno' || $tipoUsuario=='subadmin')): ?>
                     <a href="javascript:void(0)" id="<?php echo $datos->ticket_number; ?>" class="see-email" title="Refresh messages"><i class="icon-loop"></i></a>
                 <?php endif; ?>
                 <div class="answer-ticket">
@@ -150,7 +156,7 @@
                 <?php if ($datos->id_status != '2'): ?>
                 <div id="only-open">
                 <?php
-                if ($tipoUsuario !== 'C'):
+                if (($tipoUsuario=='interno' || $tipoUsuario=='subadmin')):
                 ?>
                 <div class="input-control select medium">
                     <select id="speech">
@@ -171,7 +177,7 @@
                 <?php endif; ?>
 
                 <div class="input-control textarea" data-role="input-control">
-                    <textarea name="answer" id="answer"></textarea>
+                    <textarea class="textarea-integrado" name="answer" id="answer"></textarea>
                 </div>
                 <div class="panel-down-textarea">
                     <div class="option-panel right">
@@ -182,16 +188,18 @@
                     </div>
                     <div class="option-panel left confirmation">
                         <div class="input-control checkbox" data-role="input-control">
-                            <?php if (CrugeAuthassignment::getRoleUser() != 'C'): ?>
+                            <?php if ($tipoUsuario=='interno' || $tipoUsuario=='subadmin'): ?>
                             <label>
                                 <input type="checkbox" id="internalAsCarrier" value="1">
                                 <span class="check"></span>  <small class="text-muted ">Respond as Carrier</small>
                             </label>
                             <?php endif; ?>
+                            <?php if ($tipoUsuario!='account_managers'): ?>
                             <label>
                                 <input type="checkbox" id="close-ticket" value="2">
                                 <span class="check"></span> <small class="text-muted ">Close TT</small>
                             </label>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>

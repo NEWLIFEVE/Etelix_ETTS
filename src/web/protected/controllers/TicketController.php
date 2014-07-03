@@ -165,8 +165,10 @@ class TicketController extends Controller
         } else {
             Script::registerJsController(array('dtable.etelix'));
         }
+        
+        Script::registerPlugins(array('tag-it.min'));
         // Css de la leyenda
-        Script::registerCss(array('leyenda'));
+        Script::registerCss(array('leyenda', 'jquery.tagit', 'tagit.ui-zendesk'));
         
         $colors=$this->_countColorsTicket();
         $color = '';
@@ -192,8 +194,7 @@ class TicketController extends Controller
      * Pobla el datatable con los datos
      */
     public function actionDatatable()
-    {
-                
+    { 
         $date = date('Y-m-d H:i:s');
         $option = '1';
         $carrier = 'both';
@@ -258,20 +259,12 @@ class TicketController extends Controller
         
         if (isset($_POST['date']) && !empty($_POST['date'])) $date = $_POST['date'] . ' ' . date('H:i:s');
         if (isset($_POST['carrier']) && !empty($_POST['carrier'])) $carrier = $_POST['carrier'];
-               
-        $data = array(
-            'ticketCloseWhite' => count($report->openOrClose($date, 'white', 'close', $carrier)),
-            'ticketPendingWhite' => count($report->openOrClose($date, 'white', 'open', $carrier)),
-            'ticketCloseYellow' => count($report->openOrClose($date, 'yellow', 'close', $carrier)),
-            'ticketPendingYellow' => count($report->openOrClose($date, 'yellow', 'open', $carrier)),
-            'ticketCloseRed' => count($report->openOrClose($date, 'red', 'close', $carrier)),
-            'ticketPendingRed' => count($report->openOrClose($date, 'red', 'open', $carrier)),
-            'ticketWithoutDescription' => count($report->withoutDescription($date, $carrier)),
-            'totalPending' => count($report->totalTicketsPending($date, $carrier)),
-            'totalClosed' => count($report->totalTicketsClosed($date, $carrier))
-        );
         
-        echo CJSON::encode($data);
+        $statisc = array();
+        for ($i = 1; $i <= 12; $i++) {
+            $statistcs[] = count($report->optionStatistics($i, $date, $carrier));
+        }
+        echo CJSON::encode($statistcs);
     }
         
 
@@ -284,7 +277,7 @@ class TicketController extends Controller
         }
         
         $export = new Export;
-        echo $export->printTicket($data);
+        echo $export->printTicket($data, true);
     }
 
     
@@ -344,6 +337,7 @@ class TicketController extends Controller
         $modelTicket->id_status=1;
         $modelTicket->option_open=$_POST['optionOpen'];
         $modelTicket->close_ticket=null;
+        $modelTicket->escalated_date=null;
         if($modelTicket->option_open == 'etelix_to_carrier')
         {
             $modelTicket->id_gmt=null;
@@ -523,6 +517,40 @@ class TicketController extends Controller
         else
             echo 'false';
     }
+    
+    /**
+     * Escalando ticket
+     * @return boolean
+     */
+    public function actionScalade()
+    {
+        if (isset($_POST['data']['idTicket'])) {
+            $id=$_POST['data']['idTicket'];
+            $model=new Ticket;
+            $isOk=$model::model()->updateByPk($id,array('id_status'=>3, 'escalated_date'=>date('Y-m-d H:i:s')));
+
+            if ($isOk) {
+                $data=self::getTicketAsArray($id);
+                $mail= new EnviarEmail;
+                $bodyEmail=new CuerpoCorreo($data);
+                $subject='URGENT ESCALATED ';
+                
+                if (isset($_POST['data']['message'])) $message=$_POST['data']['message'];
+                if (isset($_POST['data']['mails'])) $mails=$_POST['data']['mails'];
+                                
+                $html=$bodyEmail->getBodyEscaladeTicket($message);
+                $send=$mail->enviar($html, $mails, null, $subject . ' TT ' . $data['ticketNumber']);
+                
+                if ($send === true) { 
+                    echo 'true';
+                    return true;
+                } else {
+                    echo 'Error ' . $send;
+                    return false;
+                }
+            }
+        }
+    }
 
 
     /**
@@ -697,17 +725,27 @@ class TicketController extends Controller
         }
         
         $green = $model::countTicketClosed();
-        $totalTickets = $white + $yellow + $green + $red;
+        
+        if (CrugeAuthassignment::getRoleUser() != 'C') {
+            $scaled=$model::model()->count("id_status = 3");
+        } else {
+            $scaled=$model::model()->count("id_status = 3 AND id IN(SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user WHERE id_user=".Yii::app()->user->id."))");
+        }
+        
+        $totalTickets = $white + $yellow + $green + $red + $scaled;
         
         return array(
             'white'=>$white,
             'yellow'=>$yellow,
             'green'=>$green,
             'red'=>$red,
+            'scaled'=>$scaled,
             'percentageWhite'=>$totalTickets != 0 ? round(($white/$totalTickets) * 100, 1) : 0,
             'percentageYellow'=>$totalTickets != 0 ? round(($yellow/$totalTickets) * 100, 1) : 0,
             'percentageGreen'=>$totalTickets != 0 ? round(($green/$totalTickets) * 100, 1) : 0,
             'percentageRed'=>$totalTickets != 0 ? round(($red/$totalTickets) * 100, 1) : 0,
+            'percentageScaled'=>$totalTickets != 0 ? round(($scaled/$totalTickets) * 100, 1) : 0,
+            
         );
     }
 }

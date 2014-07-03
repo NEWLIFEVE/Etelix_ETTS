@@ -148,6 +148,18 @@ class MailController extends Controller
 			'model'=>$model,
 		));
 	}
+        
+        public function actionAutocomplete()
+        {
+            $mails=Ticket::model()->findAllBySql("SELECT DISTINCT mail FROM mail");
+            $data=array();
+            if ($mails != null) {
+                foreach ($mails as $key => $value) {
+                    $data[]=$value->mail;
+                }
+            }
+            echo CJSON::encode($data);
+        }
 
 	/**
 	 *Guarda los mail relacionados a usuarios y también los mails de los tickets

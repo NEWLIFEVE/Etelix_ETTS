@@ -18,6 +18,7 @@
  * @property integer $id_user
  * @property string $option_open
  * @property string $close_ticket
+ * @property string $escalated_date
  *
  * The followings are the available model relations:
  * @property TicketRelation[] $ticketRelations
@@ -161,6 +162,7 @@ class Ticket extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+    
 
     /**
      *
@@ -172,7 +174,7 @@ class Ticket extends CActiveRecord
         $conditionTicket='';
         $order='ASC';
         $sql='';
-        $onlyOpen="id_status=(SELECT id FROM status WHERE name='open') AND";
+        $onlyOpen="id_status IN(SELECT id FROM status WHERE name = 'open' OR name = 'escalated') AND";
         if ($sendMail) $onlyOpen='';
         
         /**
@@ -198,7 +200,7 @@ class Ticket extends CActiveRecord
             $sql="SELECT *
                   FROM ticket
                   WHERE id IN (SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user $conditionUser)) $conditionTicket
-                  ORDER BY id_status, id $order";
+                  ORDER BY id_status, date, hour ASC";
 
             
             // Si $returnArray esta en true, retorna un array con los datos del ticket
@@ -220,7 +222,7 @@ class Ticket extends CActiveRecord
                         FROM ticket 
                         WHERE $onlyOpen id IN (SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user $conditionUser)) $conditionTicket
                         ) t
-                  ORDER BY date $order, hour $order";
+                  ORDER BY id_status, date, hour ASC";
 
             // Si $returnArray esta en true, retorna un array con los datos del ticket
             if($returnArray)
