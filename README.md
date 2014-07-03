@@ -3,6 +3,15 @@ Etelix_ETTS
 
 Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
 
+02/07/2014
+    - Se cambió la consulta que trae los tickets cerrados, antes traía un rango a 
+      partir de la fecha de creación del ticket hasta 2 semanas, ahora el rango es a
+      partir de la fecha de cierre hasta 2 semanas.
+    - Creado componente para cerrar tickets automáticamente.
+    - Falta crear tarea en cron para que se ejecute el cierre automático
+    - Se paso el método estático que estaba en TicketController getTicketAsArray($params) al
+      modelo(TicketModel).
+
 25/06/2014
     - Ahora se controla el menú por cruge
 

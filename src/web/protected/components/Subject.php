@@ -32,14 +32,14 @@ class Subject
      * @param string $timeTicket
      * @return string
      */
-    public function subjectCloseTicket($ticketNumber, $nameCarrier, $timeTicket)
+    public function subjectCloseTicket($ticketNumber, $nameCarrier, $timeTicket, $id = false)
     {
         $idTicket=Ticket::getId($ticketNumber);
         $optionOpen=Ticket::getOptionOpen($idTicket);
         
         $user = 'Etelix';
         
-        if (CrugeAuthassignment::getRoleUser() == 'C') $user = $nameCarrier;
+        if (CrugeAuthassignment::getRoleUser(false, $id) == 'C') $user = $nameCarrier;
         
         if ($optionOpen == 'etelix_as_carrier')
             $this->_subject = 'TT '. $this->_formatTicketNumber($ticketNumber) .' '.$nameCarrier.' to Etelix, Closed TT (by '.$user.' on ETTS), <'.$ticketNumber.'> ('.$timeTicket.')';
