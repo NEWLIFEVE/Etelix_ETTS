@@ -101,7 +101,7 @@ class Ticket extends CActiveRecord
             'ticketRelations1'=>array(self::HAS_MANY, 'TicketRelation', 'id_ticket_son'),
             'testedNumbers'=>array(self::HAS_MANY, 'TestedNumber', 'id_ticket'),
             'files'=>array(self::HAS_MANY, 'File', 'id_ticket'),
-            'mailTickets'=>array(self::HAS_MANY, 'MailTicket', 'id_ticket'),
+            'mailTicket'=>array(self::HAS_MANY, 'MailTicket', 'id_ticket'),
             'descriptionTickets'=>array(self::HAS_MANY, 'DescriptionTicket', 'id_ticket'),
             'idFailure'=>array(self::BELONGS_TO, 'Failure', 'id_failure'),
             'idStatus'=>array(self::BELONGS_TO, 'Status', 'id_status'),
