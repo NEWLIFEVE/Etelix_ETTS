@@ -3,6 +3,10 @@ Etelix_ETTS
 
 Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
 
+04/07/2014
+    - Leyenda de colores en el mail de los reportes y en el resumen del excel
+    - Imprimir detalle del ticket antes de ser creado
+
 03/07/2014
     - Se cambió la consulta que trae los tickets cerrados, antes traía un rango a 
       partir de la fecha de creación del ticket hasta 2 semanas, ahora el rango es a
