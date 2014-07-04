@@ -55,9 +55,23 @@ class Export extends TicketDesign
         
         $th = 'style="padding:3px 7px; background: #e6e6e6;color:#555;border: 1px solid #d3d3d3; font-weight: normal;"';
         $white = 'style="background: #FFF; padding:3px 7px;"';
+        $white2 = 'style="background: #FFF; padding:3px 7px; border-top: 1px solid silver; border-left: 1px solid silver; border-right: 1px solid silver;"';
         $yellow = 'style="background: #FFDC51; padding:3px 7px;"';
         $red = 'style="background: #EEB8B8; padding:3px 7px;"';
-        $without = 'style="background: #d3d3d3; padding:3px 7px; border-bottom:4px solid #d3d3d3;"';
+        $without = 'style="background: #d3d3d3; padding:3px 7px; border-bottom: 10px solid #16499a;"';
+        
+        $caption = "<table width='50%' border='0' align='left' cellspacing='0'>
+                        <caption>Caption</caption>
+                        <tr>
+                            <td $white2 >TT's within 24 hours</td>
+                        </tr>
+                        <tr>
+                            <td $yellow >TT's within 48 hours</td>
+                        </tr>
+                        <tr>
+                            <td $red >TT's with more than 48 hours</td>
+                        </tr>
+                    </table><div style='clear:left;'></div><br><br>";
         
         $table = '<table width="100%" border="0" cellspacing="0">';
             $table .= '<caption>Ticket Summary '.$date.'</caption>';
@@ -138,7 +152,7 @@ class Export extends TicketDesign
                     . '</tbody>';
         $table .= '</table>';
         
-        return $table;
+        return $caption . $table;
     }
     
     /**
