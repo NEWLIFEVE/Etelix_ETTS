@@ -92,26 +92,30 @@ class Report extends Excel
         );
         
         foreach ($titles as $key => $value) {
-            $this->_phpExcel->getActiveSheet()->setCellValue($key . '2', $value);
+            $this->_phpExcel->getActiveSheet()->setCellValue($key . '5', $value);
         }
         
-        $this->_setStyleHeader('A2:B2');
-        $this->_setStyleBody('A3:B3', '#FFF');
-        $this->_setStyleBody('A4:B4', '#FFDC51');
-        $this->_setStyleBody('A5:B5', '#EEB8B8');
-        $this->_setStyleBody('A6:B6', '');
-        $this->_setStyleBody('A7:B7', '#FFF');
-        $this->_setStyleBody('A8:B8', '#FFDC51');
-        $this->_setStyleBody('A9:B9', '#EEB8B8');
-        $this->_setStyleBody('A10:B10', '');
-        $this->_setStyleBody('A11:B11', '#FFF');
-        $this->_setStyleBody('A12:B12', '#FFDC51');
-        $this->_setStyleBody('A13:B13', '#EEB8B8');
-        $this->_setStyleBody('A14:B14', '');
-        $this->_setStyleBody('A15:B15', '#FFF');
-        $this->_setStyleBody('A16:B16', '#FFDC51');
-        $this->_setStyleBody('A17:B17', '#EEB8B8');
-        $this->_setStyleBody('A18:B18', '');
+        $this->_setStyleBody('A2', '#FFF');
+        $this->_setStyleBody('A3', '#FFDC51');
+        $this->_setStyleBody('A4', '#EEB8B8');
+        
+        $this->_setStyleHeader('A5:B5');
+        $this->_setStyleBody('A6:B6', '#FFF');
+        $this->_setStyleBody('A7:B7', '#FFDC51');
+        $this->_setStyleBody('A8:B8', '#EEB8B8');
+        $this->_setStyleBody('A9:B9', '');
+        $this->_setStyleBody('A10:B10', '#FFF');
+        $this->_setStyleBody('A11:B11', '#FFDC51');
+        $this->_setStyleBody('A12:B12', '#EEB8B8');
+        $this->_setStyleBody('A13:B13', '');
+        $this->_setStyleBody('A14:B14', '#FFF');
+        $this->_setStyleBody('A15:B15', '#FFDC51');
+        $this->_setStyleBody('A16:B16', '#EEB8B8');
+        $this->_setStyleBody('A17:B17', '');
+        $this->_setStyleBody('A18:B18', '#FFF');
+        $this->_setStyleBody('A19:B19', '#FFDC51');
+        $this->_setStyleBody('A20:B20', '#EEB8B8');
+        $this->_setStyleBody('A21:B21', '');
       
         $this->_phpExcel->getActiveSheet()->getRowDimension('1')->setRowHeight(90);
         $this->_phpExcel->getActiveSheet()->getStyle('A1:B1')->getFont()->setSize(42);
@@ -124,41 +128,45 @@ class Report extends Excel
         $this->_phpExcel->setActiveSheetIndex(0)
                     ->setCellValue('B1', 'Summary')
                 
-                    ->setCellValue('A3', 'Open white')
-                    ->setCellValue('B3', count($this->openOrClose($args['date'], 'white', 'open', $args['carrier'])))
-                    ->setCellValue('A4', 'Open yellow')
-                    ->setCellValue('B4', count($this->openOrClose($args['date'], 'yellow', 'open', $args['carrier'])))
-                    ->setCellValue('A5', 'Open red')
-                    ->setCellValue('B5', count($this->openOrClose($args['date'], 'red', 'open', $args['carrier'])))
-                    ->setCellValue('A6', 'Total open')
-                    ->setCellValue('B6', count($this->totalTicketsPending($args['date'], $args['carrier'])))
+                    ->setCellValue('A2', "TT's within 24 hours")
+                    ->setCellValue('A3', "TT's within 48 hours")
+                    ->setCellValue('A4', "TT's with more than 48 hours")
                 
-                    ->setCellValue('A7', 'Closed white')
-                    ->setCellValue('B7', count($this->openOrClose($args['date'], 'white', 'close', $args['carrier'])))
-                    ->setCellValue('A8', 'Closed yellow')
-                    ->setCellValue('B8', count($this->openOrClose($args['date'], 'yellow', 'close', $args['carrier'])))
-                    ->setCellValue('A9', 'Closed red')
-                    ->setCellValue('B9', count($this->openOrClose($args['date'], 'red', 'close', $args['carrier'])))
-                    ->setCellValue('A10', 'Total closed')
-                    ->setCellValue('B10', count($this->totalTicketsClosed($args['date'], $args['carrier'])))
-//                
-                    ->setCellValue('A11', 'No activity white')
-                    ->setCellValue('B11', count($this->withoutDescription($args['date'], 'white', 'open', $args['carrier'])))
-                    ->setCellValue('A12', 'No activity yellow')
-                    ->setCellValue('B12', count($this->withoutDescription($args['date'], 'yellow', 'open', $args['carrier'])))
-                    ->setCellValue('A13', 'No activity red')
-                    ->setCellValue('B13', count($this->withoutDescription($args['date'], 'red', 'open', $args['carrier'])))
-                    ->setCellValue('A14', 'Total no activity')
-                    ->setCellValue('B14', count($this->totalWithoutDescription($args['date'], $args['carrier'])))
+                    ->setCellValue('A6', 'Open white')
+                    ->setCellValue('B6', count($this->openOrClose($args['date'], 'white', 'open', $args['carrier'])))
+                    ->setCellValue('A7', 'Open yellow')
+                    ->setCellValue('B7', count($this->openOrClose($args['date'], 'yellow', 'open', $args['carrier'])))
+                    ->setCellValue('A8', 'Open red')
+                    ->setCellValue('B8', count($this->openOrClose($args['date'], 'red', 'open', $args['carrier'])))
+                    ->setCellValue('A9', 'Total open')
+                    ->setCellValue('B9', count($this->totalTicketsPending($args['date'], $args['carrier'])))
                 
-                    ->setCellValue('A15', 'Escalated white')
-                    ->setCellValue('B15', count($this->ticketEscaladed($args['date'], 'white', 'open', $args['carrier'])))
-                    ->setCellValue('A16', 'Escalated yellow')
-                    ->setCellValue('B16', count($this->ticketEscaladed($args['date'], 'yellow', 'open', $args['carrier'])))
-                    ->setCellValue('A17', 'Escalated red')
-                    ->setCellValue('B17', count($this->ticketEscaladed($args['date'], 'red', 'open', $args['carrier'])))
-                    ->setCellValue('A18', 'Total escalated')
-                    ->setCellValue('B18', count($this->totalTicketEscaladed($args['date'], $args['carrier'])));
+                    ->setCellValue('A10', 'Closed white')
+                    ->setCellValue('B10', count($this->openOrClose($args['date'], 'white', 'close', $args['carrier'])))
+                    ->setCellValue('A11', 'Closed yellow')
+                    ->setCellValue('B11', count($this->openOrClose($args['date'], 'yellow', 'close', $args['carrier'])))
+                    ->setCellValue('A12', 'Closed red')
+                    ->setCellValue('B12', count($this->openOrClose($args['date'], 'red', 'close', $args['carrier'])))
+                    ->setCellValue('A13', 'Total closed')
+                    ->setCellValue('B13', count($this->totalTicketsClosed($args['date'], $args['carrier'])))
+                
+                    ->setCellValue('A14', 'No activity white')
+                    ->setCellValue('B14', count($this->withoutDescription($args['date'], 'white', 'open', $args['carrier'])))
+                    ->setCellValue('A15', 'No activity yellow')
+                    ->setCellValue('B15', count($this->withoutDescription($args['date'], 'yellow', 'open', $args['carrier'])))
+                    ->setCellValue('A16', 'No activity red')
+                    ->setCellValue('B16', count($this->withoutDescription($args['date'], 'red', 'open', $args['carrier'])))
+                    ->setCellValue('A17', 'Total no activity')
+                    ->setCellValue('B17', count($this->totalWithoutDescription($args['date'], $args['carrier'])))
+                
+                    ->setCellValue('A18', 'Escalated white')
+                    ->setCellValue('B18', count($this->ticketEscaladed($args['date'], 'white', 'open', $args['carrier'])))
+                    ->setCellValue('A19', 'Escalated yellow')
+                    ->setCellValue('B19', count($this->ticketEscaladed($args['date'], 'yellow', 'open', $args['carrier'])))
+                    ->setCellValue('A20', 'Escalated red')
+                    ->setCellValue('B20', count($this->ticketEscaladed($args['date'], 'red', 'open', $args['carrier'])))
+                    ->setCellValue('A21', 'Total escalated')
+                    ->setCellValue('B21', count($this->totalTicketEscaladed($args['date'], $args['carrier'])));
         
     }
     
