@@ -182,7 +182,7 @@ $ETTS.UI=(function(){
                         '</div>' +
                    '</div>' +
                    '<div id="preview_buttons">' +
-                        '<button  class="primary large" id="save_ticket">Send Ticket Information</button> <!--<a  href="#" id="imprimir"><i class="icon-printer on-right"></i></a>-->' +
+                        '<button  class="primary large" id="save_ticket">Send Ticket Information</button> <a  href="javascript:void(0)" id="imprimir"><i class="icon-printer on-right"></i></a>' +
                    '</div>';
     }
     
@@ -192,6 +192,7 @@ $ETTS.UI=(function(){
             else
                 select.addClass('validate[required]');
     }
+    
     function _confirmar(mensaje, aceptar, cancelar) {
             $.Dialog({
                 shadow: true,
@@ -208,6 +209,145 @@ $ETTS.UI=(function(){
                     '</div>'
             });
     }
+    
+    /**
+    * Muestra la vista de impresión del ticket
+    * @returns {void}
+    */
+    function _printOpenTicket(ticketDetails) {
+        var _head   = '<!DOCTYPE html><html><meta charset="es"><head></head><body>',
+        _footer = '<script>function printPage() { window.focus(); window.print();return; }</script>'+
+              '</body></html>',
+        content = _head + _designTicket(ticketDetails) + _footer,
+        newIframe = document.createElement('iframe');
+        newIframe.width = '0';
+        newIframe.height = '0';
+        newIframe.src = 'about:blank';
+        document.body.appendChild(newIframe);
+        newIframe.contentWindow.contents = content;
+        newIframe.src = 'javascript:window["contents"]';
+        newIframe.focus();
+        newIframe.contentWindow.printPage();
+        return;
+    }
+    
+    /**
+    * Diseño que contendrá el imprimible del ticket
+    * @returns {void}
+    */
+    function _designTicket(ticketDetails) {
+        var information = '<h2>Ticket Details</h2>',
+        _th = 'colspan="4" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;"',
+        _td = 'colspan="4" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;"';
+        information += '<table style="border-spacing: 0; width:100%; border: solid #ccc 1px;">';
+        
+        // To, CC, BCC
+        if (ticketDetails.to.length > 0) {
+            var temp = ticketDetails.to.map(function() {return $(this).text();}).get();
+            information += '<tr>';
+                information += '<th '+_th+' >TO</th>';
+            information += '</tr>';
+            information += '<tr>';
+                information += '<td '+_td+' >' + temp.join('<br>') + '</td>';
+            information += '</tr>';
+        }
+        if (ticketDetails.cc.length > 0) {
+            var temp = ticketDetails.cc.map(function() {return $(this).text();}).get();
+            information += '<tr>';
+                information += '<th '+_th+' >CC</th>';
+            information += '</tr>';
+            information += '<tr>';
+                information += '<td '+_td+' >' + temp.join('<br>') + '</td>';
+            information += '</tr>';
+        }
+        if (ticketDetails.bcc.length > 0) {
+            var temp = ticketDetails.bcc.map(function() {return $(this).text();}).get();
+            information += '<tr>';
+                information += '<th '+_th+' >BCC</th>';
+            information += '</tr>';
+            information += '<tr>';
+                information += '<td '+_td+' >' + temp.join('<br>') + '</td>';
+            information += '</tr>';
+        }
+
+        // Failure
+        if (ticketDetails.failure) {
+            information += '<tr>';
+                information += '<th '+_th+' >Failure</th>';
+            information += '</tr>';
+            information += '<tr>';
+                information += '<td '+_td+' >' + ticketDetails.failure + '</td>';
+            information += '</tr>';
+        }
+
+        // Ip
+        if (ticketDetails.oip && ticketDetails.dip) {
+           information += '<tr>';
+                information += '<th colspan="1" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Origination IP</th>';
+                information += '<th colspan="3" style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Destination IP</th>';
+            information += '</tr>';
+            information += '<tr>';
+                information += '<td colspan="1" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">' + ticketDetails.oip + '</td>';
+                information += '<td colspan="3" style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">' + ticketDetails.dip + '</td>';
+            information += '</tr>';
+        }
+
+        // Prefix
+        if (ticketDetails.prefix) {
+            information += '<tr>';
+                information += '<th '+_th+' >Prefix</th>';
+            information += '</tr>';
+            information += '<tr>';
+                information += '<td '+_td+' >' + ticketDetails.prefix + '</td>';
+            information += '</tr>';
+        }
+
+        // gmt
+        if (ticketDetails.gmt) {
+            information += '<tr>';
+                information += '<th '+_th+' >Gmt</th>';
+            information += '</tr>';
+            information += '<tr>';
+                information += '<td '+_td+' >' + ticketDetails.gmt + '</td>';
+            information += '</tr>';
+        }
+
+        // Tested Number
+        if (ticketDetails.number) {
+            var temp1 = ticketDetails.number.map(function() {return $(this).val();}).get(),
+            temp2 = ticketDetails.country.find(':selected').map(function() {return $(this).text();}).get(),
+            temp3 = ticketDetails.date.map(function() {return $(this).val();}).get(),
+            temp4 = ticketDetails.hour.map(function() {return $(this).val();}).get();
+    
+            information += '<tr>';
+                information += '<th style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Tested number</th>';
+                information += '<th style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Country</th>';
+                information += '<th style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Date</th>';
+                information += '<th style="color: #ffffff !important; background-color: #16499a !important; border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">Hour</th>';
+            information += '</tr>';
+            information += '<tr>';
+                information += '<td style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">' + temp1.join('<br>') + '</td>';
+                information += '<td style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">' + temp2.join('<br>') + '</td>';
+                information += '<td style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">' + temp3.join('<br>') + '</td>';
+                information += '<td style=" border-left: 1px solid #ccc; border-top: 1px solid #ccc;padding: 5px 10px; text-align: left;">' + temp4.join('<br>') + '</td>';
+            information += '</tr>';
+        }
+
+        // Description
+        if (ticketDetails.description) {
+            information += '<tr>';
+                information += '<th '+_th+' >Description</th>';
+            information += '</tr>';
+            information += '<tr>';
+                information += '<td '+_td+' >' + ticketDetails.description + '</td>';
+            information += '</tr>';
+        }
+            
+        information += '</table>';
+        
+        return information;               
+    }
+    
     return {
         
         tables:function(){
@@ -282,6 +422,23 @@ $ETTS.UI=(function(){
                              country,
                              date,
                              hour){
+            
+            var ticketDetails = {
+                'to':to,
+                'cc':cc,
+                'bcc':bbc,
+                'failure':falla,
+                'oip':originationIp,
+                'dip':destinationIp,
+                'prefix':prefijo,
+                'gmt':gmt,
+                'number':testedNumber,
+                'country':country,
+                'date':date,
+                'hour':hour,
+                'description':descripcion
+            };
+            
             $.Dialog({
                 shadow: true,
                 overlay: true,
@@ -291,6 +448,11 @@ $ETTS.UI=(function(){
                 width: 510,
                 padding: 0,
                 draggable: true,
+                onShow: function(_dialog) {
+                    $('#imprimir').on('click', function(){
+                       _printOpenTicket(ticketDetails); 
+                    });
+                },
                 content:_ticketCompleto(clase,
                              user,
                              to,
@@ -309,8 +471,16 @@ $ETTS.UI=(function(){
                              hour)
             });
         },
+        
+        /**
+         * Valida las direccioens ip
+         * @param {object} element
+         * @returns {void}
+         */
         direccionesIp:function(element){
             $(element).on('keyup', function(e){
+                var keyNum = window.event ? window.event.keyCode : e.which;
+                
                 if ($(this).val().length === 3) {
                     if ($(this).val() > 255) {
                         $(this).val(255);
@@ -318,12 +488,17 @@ $ETTS.UI=(function(){
                     $(this).next('input').focus();
                     e.preventDefault();
                 }
+                
+                
             });
             
             $(element).on('keypress', function(e){
                 var keyNum = window.event ? window.event.keyCode : e.which;
                 
                 if (keyNum === 46) {
+                    if ($(this).val() > 255) {
+                        $(this).val(255);
+                    }
                     $(this).next('input').focus();
                     e.preventDefault();
                 } else {

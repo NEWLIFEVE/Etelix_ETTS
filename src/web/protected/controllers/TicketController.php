@@ -273,7 +273,7 @@ class TicketController extends Controller
         if (isset($_POST['data'])) {
             $data = $_POST['data'];
         } else {
-            $data = self::getTicketAsArray($_POST['id']);
+            $data = Ticket::getTicketAsArray($_POST['id']);
         }
         
         $export = new Export;
@@ -405,7 +405,7 @@ class TicketController extends Controller
             $bbc=null;
             $cc=null;
 
-            $cuerpoCorreo=new CuerpoCorreo(self::getTicketAsArray($modelTicket->id));
+            $cuerpoCorreo=new CuerpoCorreo(Ticket::getTicketAsArray($modelTicket->id));
             $cuerpo=$cuerpoCorreo->getBodyOpenTicket($_POST['optionOpen']);
 
             if (isset($_POST['emails']) && $_POST['emails'] != null) $to = $_POST['emails'];
@@ -505,7 +505,7 @@ class TicketController extends Controller
         }
         
         $asunto=new Subject;
-        $cuerpoCorreo=new CuerpoCorreo(self::getTicketAsArray($id));
+        $cuerpoCorreo=new CuerpoCorreo(Ticket::getTicketAsArray($id));
         
         $body=$cuerpoCorreo->getBodyCloseTicket($statuName);
         $subject=$asunto->subjectCloseTicket($ticketNumber, Carrier::getCarriers(true, $id), Utility::restarHoras($hour, date('H:i:s'), floor(Utility::getTime($date, $hour)/ (60 * 60 * 24))));
@@ -530,7 +530,7 @@ class TicketController extends Controller
             $isOk=$model::model()->updateByPk($id,array('id_status'=>3, 'escalated_date'=>date('Y-m-d H:i:s')));
 
             if ($isOk) {
-                $data=self::getTicketAsArray($id);
+                $data=Ticket::getTicketAsArray($id);
                 $mail= new EnviarEmail;
                 $bodyEmail=new CuerpoCorreo($data);
                 $subject='URGENT ESCALATED ';
@@ -640,58 +640,7 @@ class TicketController extends Controller
             echo 'false';
         }
     }
-    
-    
-    /**
-     * Método para retornar los datos del ticket que se mostrarán al mandar un correo
-     * @param integer $idTicket
-     * @return array
-     */
-    public static function getTicketAsArray($idTicket)
-    {
-        $data=Ticket::ticketsByUsers(CrugeUser2::getUserTicket($idTicket,true)->iduser,$idTicket,false,false,true);
-        $testedNumber=TestedNumber::getTestedNumberArray($idTicket);
         
-        $datos = array(
-            'ticketNumber'=>$data->ticket_number, 
-            'username'=>CrugeUser2::getUserTicket($idTicket),
-            'emails'=>Mail::getNameMails($idTicket),
-            'failure'=>$data->idFailure->name,
-            'originationIp'=>$data->origination_ip,
-            'destinationIp'=>$data->destination_ip,
-            'prefix'=>$data->prefix,
-            'gmt'=>null,
-            'testedNumber'=>null,
-            'country'=>null,
-            'date'=>null,
-            'hour'=>null,
-            'description'=>'description',
-            'cc'=>Mail::getNameMailsCC($idTicket),
-            'bcc'=>Mail::getNameMailsBcc($idTicket),
-            'speech'=>null,
-            'idTicket'=>$idTicket,
-            'optionOpen'=>$data->option_open
-        );
-        
-        if ($testedNumber != null) {
-            $numbers = array(
-                'testedNumber'=>$testedNumber['number'],
-                'country'=>$testedNumber['country'],
-                'date'=>$testedNumber['date'],
-                'hour'=>$testedNumber['hour'],
-            );
-            
-            $datos = array_merge($datos, $numbers);
-        }
-        
-        if (isset($data->idGmt->name)) {
-            $gmt = array('gmt' => $data->idGmt->name);
-            $datos = array_merge($datos, $gmt);
-        }
-        
-        return $datos;
-    }
-    
     public function actionTestimap()
     {
         error_reporting(E_ALL & ~E_NOTICE); 
