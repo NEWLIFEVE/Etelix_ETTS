@@ -1,4 +1,5 @@
-$(document).on('ready', function(){
+function loadOnChange()
+{
     /*************************************************************************
      * 
      *                      EVENT(change)
@@ -57,6 +58,10 @@ $(document).on('ready', function(){
         }
         $ETTS.ajax.getMailsByUser($(this).val(), '#mails', '#Ticket_mail', etelixAsCarrier);
     });
+}
+
+function loadOnClick()
+{    
     /*************************************************************************
      * 
      *                      EVENT(click)
@@ -133,40 +138,10 @@ $(document).on('ready', function(){
     $(document).on('click', '._cancelar', function(){
         $ETTS.UI.removeTestedNumber($(this));
     });
-    
-    /*************************************************************************
-     * 
-     *                      EVENT(keyup)
-     * 
-     ************************************************************************/
-    // Event keyup para direccioenes ip
-    $ETTS.UI.direccionesIp($('input._ip'));
-    
-    /*************************************************************************
-     * 
-     *                      Just call the module
-     * 
-     ************************************************************************/
-    // Tooltips para bbc y cc
-    $ETTS.UI.tooltip('span.toggle', true);
-    
-    /*************************************************************************
-     * 
-     *                      Auto hidden
-     * 
-     ************************************************************************/
-    // CC y BBC
-    $('div#div-cc, div#div-bbc, .div-agregar-correo').hide();
-    
-    
-    /*************************************************************************
-     * 
-     *                      Datepicker and timeEntry
-     * 
-     ************************************************************************/
-    $('.fecha').datepicker({dateFormat: "yy-mm-dd"}); 
-    $('.hour').timeEntry({show24Hours: true, showSeconds: true});
-    
+}
+
+function loadValidation()
+{
     /*************************************************************************
      * 
      * Validate and preview ticket etelix to carrier
@@ -369,5 +344,49 @@ $(document).on('ready', function(){
             }
         }
      });
+}
+
+function load()
+{
+    loadOnChange();
+    loadOnClick();
+    loadValidation();
+    
+    /*************************************************************************
+     * 
+     *                      EVENT(keyup)
+     * 
+     ************************************************************************/
+    // Event keyup para direccioenes ip
+    $ETTS.UI.direccionesIp($('input._ip'));
+    
+    /*************************************************************************
+     * 
+     *                      Just call the module
+     * 
+     ************************************************************************/
+    // Tooltips para bbc y cc
+    $ETTS.UI.tooltip('span.toggle', true);
+    
+    /*************************************************************************
+     * 
+     *                      Auto hidden
+     * 
+     ************************************************************************/
+    // CC y BBC
+    $('div#div-cc, div#div-bbc, .div-agregar-correo').hide();
+    
+    
+    /*************************************************************************
+     * 
+     *                      Datepicker and timeEntry
+     * 
+     ************************************************************************/
+    $('.fecha').datepicker({dateFormat: "yy-mm-dd"}); 
+    $('.hour').timeEntry({show24Hours: true, showSeconds: true});
+}
+
+$(document).on('ready', function(){
+    load();
 });
 
