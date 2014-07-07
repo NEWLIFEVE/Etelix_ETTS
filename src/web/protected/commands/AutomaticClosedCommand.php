@@ -22,7 +22,7 @@ class AutomaticClosedCommand extends CConsoleCommand
         $english = "Estimated carrier,<br>your ticket has been automatically closed from $interval of having received no activity,<br>best regards";
         /**
          * Por defecto se cambiará a status 2 (closed) a los tickets con fecha actual del servidor, 
-         * y se buscarán los tickets que su tiempo de vida sea mayor o igual a diez dias
+         * y se buscarán los tickets que su tiempo de vida sea mayor o igual a @var $interval
          */
         return new ChangeStatus('2', date('Y-m-d H:i:s'), $interval, $spanish . '<br><br>' . $english);
     }

@@ -146,7 +146,7 @@ class ChangeStatus
             // Definiendo el cuerpo
             $body = $cuerpoCorreo->getBodyCloseTicket($data['statusName']);
             // Definiendo el asunto
-            $floor = floor(Utility::getTime($data['createDate'], $data['createHour'])/ (60 * 60 * 24));
+            $floor = floor(Utility::getTime($data['createDate'], $data['createHour']) / (60 * 60 * 24));
             $restarHoras = Utility::restarHoras($data['createHour'], date('H:i:s'), $floor);
             $subject = $asunto->subjectCloseTicket($data['ticketNumber'], Carrier::getCarriers(true, $id), $restarHoras, 1);
             // Envío del correo
@@ -163,7 +163,7 @@ class ChangeStatus
     {
         $data = Ticket::model()->findByPk($id);
         $testedNumber = TestedNumber::getTestedNumberArray($id);
-        $datos = array(
+        return array(
             'ticketNumber' => $data->ticket_number, 
             'username' => CrugeUser2::getUserTicket($id),
             'emails' => Mail::getNameMails($id),
@@ -186,7 +186,5 @@ class ChangeStatus
             'createHour' => $data->hour,
             'statusName' => $data->idStatus != null ? $data->idStatus->name : null
         );
-                
-        return $datos;
     }
 }
