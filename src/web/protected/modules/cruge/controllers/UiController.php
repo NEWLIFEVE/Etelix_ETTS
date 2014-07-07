@@ -96,7 +96,7 @@ class UiController extends Controller
             array(
                 'allow',
                 'actions' => self::_publicActionsList(),
-                'users' => array('*', 'subadmin'),
+                'users' => array('*'),
             ),
             array(
                 'allow',

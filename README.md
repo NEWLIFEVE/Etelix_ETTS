@@ -3,6 +3,16 @@ Etelix_ETTS
 
 Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
 
+07/07/2014
+    - Corrección de bug en cruge en protected/modules/cruge/views/ui/rbacauthitemchilditems.php, 
+      habia un salto de línea que no permitía ver los submenus selecciones en tareas tipo menú.
+    - Se cambió el método getMenu() de cruge/components/CrugeAuthManager.php para que ahora se pueda
+      usar el mismo menu para varios roles, solo hay que seleccionar el submenú que se quiere mostrar.
+    - Se BORRO el rol subadmin y se volvió a crear, ya que estaba causando error y mostraba incoherencias
+      en el menú
+    - Se habilitó el menú ManageUser para usuarios internos, el cual tiene la opción de crear usuarios y
+      editar perfil
+
 04/07/2014
     - Leyenda de colores en el mail de los reportes y en el resumen del excel
     - Imprimir detalle del ticket antes de ser creado
