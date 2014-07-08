@@ -530,7 +530,7 @@ ul.yiiPager .last
     margin-top: -5px !important;
 }
 
-select#CrugeStoredUser_id_carrier.select_carrier {
+#CrugeStoredUser_id_carrier.select_carrier, #CrugeSystem_defaultroleforregistration {
     width:390px !important;
 }
 

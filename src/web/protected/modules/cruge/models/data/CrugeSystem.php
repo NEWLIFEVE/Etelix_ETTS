@@ -152,7 +152,7 @@ class CrugeSystem extends CActiveRecord implements ICrugeSystem
             'systemnonewsessions' => CrugeTranslator::t("No Admitir Nuevas Sesiones"),
             'sessionmaxdurationmins' => CrugeTranslator::t("Minutos de Duracion de la Sesion"),
             'registerusingactivation' => CrugeTranslator::t("Activacion del usuario registrado"),
-            'defaultroleforregistration' => CrugeTranslator::t("Asignar Rol a usuarios registrados"),
+            'defaultroleforregistration' => CrugeTranslator::t("Assign role"),
             'registerusingterms' => CrugeTranslator::t("Registrarse usando terminos"),
             'registerusingtermslabel' => CrugeTranslator::t("Etiqueta"),
             'registrationonlogin' => CrugeTranslator::t("Ofrecer opción de Registrarse en pantalla de Login"),

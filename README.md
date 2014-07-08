@@ -3,6 +3,9 @@ Etelix_ETTS
 
 Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
 
+08/07/2014
+    - Ahora se puede elegir el rol en la interfaz de crear usuarios
+
 07/07/2014
     - Corrección de bug en cruge en protected/modules/cruge/views/ui/rbacauthitemchilditems.php, 
       habia un salto de línea que no permitía ver los submenus selecciones en tareas tipo menú.

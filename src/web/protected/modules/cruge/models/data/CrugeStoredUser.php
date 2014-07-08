@@ -248,6 +248,17 @@ class CrugeStoredUser extends CActiveRecord implements ICrugeStoredUser
         return parent::model($className);
     }
 
+    /**
+     * Valida si es requerido o no dependiendo del rol del usuario
+     * @return array
+     */
+    private function _validateCarrier($attr, $scene)
+    {
+        if (Yii::app()->user->checkAccess('subadmin') || Yii::app()->user->isSuperAdmin) {
+            return array($attr, 'safe', 'on' => $scene);
+        }
+        return array($attr, 'required');
+    }
 
     /**  hay un escenario llamado 'internal', que es puesto por CrugeUserManager::save()
      *   para poder guardar atributos especificos sin ser afectado por las reglas para formularios
@@ -268,7 +279,7 @@ class CrugeStoredUser extends CActiveRecord implements ICrugeStoredUser
             ),
             array('username,email', 'required'),
             array('newPassword', 'safe', 'on' => 'update'),
-            array('id_carrier', 'safe', 'on' => 'insert'),
+            $this->_validateCarrier('id_carrier', 'insert'),
             array('newPassword', 'required', 'on' => 'insert, manualcreate'),
             array('newPassword', 'length', 'min' => 6, 'max' => 20),
             array(
