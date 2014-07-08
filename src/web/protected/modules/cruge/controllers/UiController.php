@@ -212,7 +212,7 @@ class UiController extends Controller
         $data = CrugeUser2::model()->findAll();
         $users = array();
         foreach ($data as $key => $value) {
-            $lastusage = CrugeSession2::model()->findBySql("SELECT lastusage FROM cruge_session WHERE idsession = (SELECT MAX(idsession) AS idsession FROM cruge_session WHERE iduser = $value->iduser)");
+            $lastusage = CrugeSession2::model()->findBySql("SELECT lastusage FROM cruge_session WHERE idsession = (SELECT MAX(idsession) AS idsession FROM cruge_session WHERE iduser = {$value->iduser})");
             $users[] = array(
                 'iduser' => $value->iduser,
                 'username' => $value->username,
