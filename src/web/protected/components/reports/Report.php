@@ -498,7 +498,7 @@ class Report extends Excel
         return Ticket::model()
                 ->findAllBySql("$select $subQuery $selectCarrier AND
                                 id NOT IN(SELECT dt.id_ticket FROM description_ticket dt, cruge_authassignment ca 
-                                WHERE dt.date = '".substr($date, 0, 10)."' AND 
+                                WHERE dt.date <= '".substr($date, 0, 10)."' AND 
                                 dt.id_user = ca.userid AND itemname NOT IN('cliente'))
                                 ORDER BY id_status, date, hour ASC");
     }
@@ -588,7 +588,7 @@ class Report extends Excel
         $query .= " $begin WHERE lifetime < '1 days'::interval  AND date <= '".substr($date, 0, 10)."' AND (close_ticket IS NULL OR close_ticket > '$date') $selectCarrier UNION ";
         $query .= " $begin WHERE date = '".substr($date, 0, 10)."' AND (close_ticket IS NULL OR close_ticket > '$date') AND 
                            id NOT IN(SELECT dt.id_ticket FROM description_ticket dt, cruge_authassignment ca 
-                           WHERE dt.date = '".substr($date, 0, 10)."' AND 
+                           WHERE dt.date <= '".substr($date, 0, 10)."' AND 
                            dt.id_user = ca.userid AND itemname NOT IN('cliente')) $selectCarrier ORDER BY id_status, date, hour ASC";
 
         return Ticket::model()->findAllBySql($query);
@@ -626,7 +626,7 @@ class Report extends Excel
                 ->findAllBySql("$select WHERE date <= '".substr($date, 0, 10)."' AND
                                 (close_ticket IS NULL OR close_ticket > '$date') $selectCarrier AND
                                 id NOT IN(SELECT dt.id_ticket FROM description_ticket dt, cruge_authassignment ca 
-                                WHERE dt.date = '".substr($date, 0, 10)."' AND 
+                                WHERE dt.date <= '".substr($date, 0, 10)."' AND 
                                 dt.id_user = ca.userid AND itemname NOT IN('cliente')) 
                                 ORDER BY id_status, date, hour ASC");
     }
