@@ -44,12 +44,14 @@ function ajaxStatistics(date, carrier)
         data:{'date':date, 'carrier':carrier},
         success:function(data) {
             for (var i = 0; i < data.length; i++) {
-                 $('.display-data').eq(i).text(data[i]);
+                 $('.display-data').eq(i).text(data[i].totalByColors);
+                 $('.display-supplier').eq(i).text(data[i].totalByCarriers.Supplier != null ? data[i].totalByCarriers.Supplier : '');
+                 $('.display-customer').eq(i).text(data[i].totalByCarriers.Customer != null ? data[i].totalByCarriers.Customer : '');
             }
-            $('.total-data').eq(0).text(data[0] + data[1] + data[2]);
-            $('.total-data').eq(1).text(data[3] + data[4] + data[5]);
-            $('.total-data').eq(2).text(data[6] + data[7] + data[8]);
-            $('.total-data').eq(3).text(data[9] + data[10] + data[11]);
+            $('.total-data').eq(0).text(data[0].totalByColors + data[1].totalByColors + data[2].totalByColors);
+            $('.total-data').eq(1).text(data[3].totalByColors + data[4].totalByColors + data[5].totalByColors);
+            $('.total-data').eq(2).text(data[6].totalByColors + data[7].totalByColors + data[8].totalByColors);
+            $('.total-data').eq(3).text(data[9].totalByColors + data[10].totalByColors + data[11].totalByColors);
         }
     });
 }

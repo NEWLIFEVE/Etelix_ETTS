@@ -26,6 +26,8 @@
                         <tr>
                             <th>See tickets</th>                    
                             <th>Category</th>
+                            <th>Supplier</th>
+                            <th>Customer</th>
                             <th>Total</th>
                         </tr>
                     </thead>
@@ -40,6 +42,8 @@
                                 </div>
                             </td>
                             <td>Open white</td>
+                            <td class="display-supplier">&nbsp;</td>
+                            <td class="display-customer">&nbsp;</td>
                             <td class="display-data"></td>
                         </tr>
                         <tr class="yellow">
@@ -52,6 +56,8 @@
                                 </div>
                             </td>
                             <td>Open yellow</td>
+                            <td class="display-supplier">&nbsp;</td>
+                            <td class="display-customer">&nbsp;</td>
                             <td class="display-data"></td>
                         </tr>
                         <tr class="red">
@@ -64,6 +70,8 @@
                                 </div>
                             </td>
                             <td>Open red</td>
+                            <td class="display-supplier">&nbsp;</td>
+                            <td class="display-customer">&nbsp;</td>
                             <td class="display-data"></td>
                         </tr>
                         <tr class="total">
@@ -76,6 +84,8 @@
                                 </div>
                             </td>
                             <td>Total open</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
                             <td class="total-data"></td>
                         </tr>
                         
@@ -89,6 +99,8 @@
                                 </div>
                             </td>
                             <td>Closed white</td>
+                            <td class="display-supplier">&nbsp;</td>
+                            <td class="display-customer">&nbsp;</td>
                             <td class="display-data"></td>
                         </tr>
                         <tr class="yellow">
@@ -101,6 +113,8 @@
                                 </div>
                             </td>
                             <td>Closed yellow</td>
+                            <td class="display-supplier">&nbsp;</td>
+                            <td class="display-customer">&nbsp;</td>
                             <td class="display-data"></td>
                         </tr>
                         <tr class="red">
@@ -113,6 +127,8 @@
                                 </div>
                             </td>
                             <td>Closed red</td>
+                            <td class="display-supplier">&nbsp;</td>
+                            <td class="display-customer">&nbsp;</td>
                             <td class="display-data"></td>
                         </tr>
                         <tr class="total">
@@ -125,6 +141,8 @@
                                 </div>
                             </td>
                             <td>Total closed</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
                             <td class="total-data"></td>
                         </tr>
                         
@@ -138,6 +156,8 @@
                                 </div>
                             </td>
                             <td>No activity white</td>
+                            <td class="display-supplier">&nbsp;</td>
+                            <td class="display-customer">&nbsp;</td>
                             <td class="display-data"></td>
                         </tr>
                         <tr class="yellow">
@@ -150,6 +170,8 @@
                                 </div>
                             </td>
                             <td>No activity yellow</td>
+                            <td class="display-supplier">&nbsp;</td>
+                            <td class="display-customer">&nbsp;</td>
                             <td class="display-data"></td>
                         </tr>
                         <tr class="red">
@@ -162,6 +184,8 @@
                                 </div>
                             </td>
                             <td>No activity red</td>
+                            <td class="display-supplier">&nbsp;</td>
+                            <td class="display-customer">&nbsp;</td>
                             <td class="display-data"></td>
                         </tr>
                         <tr class="total">
@@ -174,6 +198,8 @@
                                 </div>
                             </td>
                             <td>Total no activity</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
                             <td class="total-data"></td>
                         </tr>
                         
@@ -187,6 +213,8 @@
                                 </div>
                             </td>
                             <td>Escalated white</td>
+                            <td class="display-supplier">&nbsp;</td>
+                            <td class="display-customer">&nbsp;</td>
                             <td class="display-data"></td>
                         </tr>
                         <tr class="yellow">
@@ -199,6 +227,8 @@
                                 </div>
                             </td>
                             <td>Escalated yellow</td>
+                            <td class="display-supplier">&nbsp;</td>
+                            <td class="display-customer">&nbsp;</td>
                             <td class="display-data"></td>
                         </tr>
                         <tr class="red">
@@ -211,6 +241,8 @@
                                 </div>
                             </td>
                             <td>Escalated red</td>
+                            <td class="display-supplier">&nbsp;</td>
+                            <td class="display-customer">&nbsp;</td>
                             <td class="display-data"></td>
                         </tr>
                         <tr class="total">
@@ -223,6 +255,8 @@
                                 </div>
                             </td>
                             <td>Total Escalated</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
                             <td class="total-data"></td>
                         </tr>
                     </tbody>

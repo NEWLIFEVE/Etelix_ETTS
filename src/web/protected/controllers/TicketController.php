@@ -260,10 +260,21 @@ class TicketController extends Controller
         if (isset($_POST['date']) && !empty($_POST['date'])) $date = $_POST['date'] . ' ' . date('H:i:s');
         if (isset($_POST['carrier']) && !empty($_POST['carrier'])) $carrier = $_POST['carrier'];
         
-        $statisc = array();
+        $statistcs = array();
         for ($i = 1; $i <= 12; $i++) {
-            $statistcs[] = count($report->optionStatistics($i, $date, $carrier));
+            $carriers = array();
+            $data = $report->optionStatistics($i, $date, $carrier);
+                        
+            foreach ($data as $value) {
+                $carriers[] = $value->carrier;
+            }
+            
+            $statistcs[] = array(
+                'totalByColors' => count($data),
+                'totalByCarriers' => array_count_values($carriers)
+            );
         }
+        
         echo CJSON::encode($statistcs);
     }
         

@@ -3,6 +3,9 @@ Etelix_ETTS
 
 Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
 
+09/07/2014
+    - Modificacion del resumen de reportes, se agregan las columnas de customer y supplier
+
 08/07/2014
     - Ahora se puede elegir el rol en la interfaz de crear usuarios
     - Se agregó datatable a manage users

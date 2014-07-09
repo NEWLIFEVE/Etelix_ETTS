@@ -133,7 +133,7 @@ class ChangeStatus
     
     /**
      * Método para manejar el envío del correo
-     * @param type $id El id del ticket
+     * @param int $id El id del ticket
      */
     private function _sendMail($id)
     {
