@@ -3,23 +3,17 @@
 
 ##Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
 
-08/07/2014
+###Release 1.3.2
 - Ahora se puede elegir el rol en la interfaz de crear usuarios
 - Se agregó datatable a manage users
 - Corrección en reporte de tickets sin actividad. Antes se busca igual al dia seleccionado, ahora se busca menor o igual al dia seleccionado
-- Corrección de bug en cruge en protected/modules/cruge/views/ui/rbacauthitemchilditems.php, 
-  habia un salto de línea que no permitía ver los submenus selecciones en tareas tipo menú.
-- Se cambió el método getMenu() de cruge/components/CrugeAuthManager.php para que ahora se pueda
-  usar el mismo menu para varios roles, solo hay que seleccionar el submenú que se quiere mostrar.
-- Se BORRO el rol subadmin y se volvió a crear, ya que estaba causando error y mostraba incoherencias
-  en el menú
-- Se habilitó el menú ManageUser para usuarios internos, el cual tiene la opción de crear usuarios y
-  editar perfil
+- Corrección de bug en cruge en protected/modules/cruge/views/ui/rbacauthitemchilditems.php, habia un salto de línea que no permitía ver los submenus selecciones en tareas tipo menú.
+- Se cambió el método getMenu() de cruge/components/CrugeAuthManager.php para que ahora se pueda usar el mismo menu para varios roles, solo hay que seleccionar el submenú que se quiere mostrar.
+- Se BORRO el rol subadmin y se volvió a crear, ya que estaba causando error y mostraba incoherencias en el menú
+- Se habilitó el menú ManageUser para usuarios internos, el cual tiene la opción de crear usuarios y editar perfil
 - Leyenda de colores en el mail de los reportes y en el resumen del excel
 - Imprimir detalle del ticket antes de ser creado
-- Se cambió la consulta que trae los tickets cerrados, antes traía un rango a 
-  partir de la fecha de creación del ticket hasta 2 semanas, ahora el rango es a
-  partir de la fecha de cierre hasta 2 semanas.
+- Se cambió la consulta que trae los tickets cerrados, antes traía un rango a partir de la fecha de creación del ticket hasta 2 semanas, ahora el rango es a partir de la fecha de cierre hasta 2 semanas.
 - Creado componente para cerrar tickets automáticamente (Falta crear tarea en cron para que se ejecute el cierre automático)
 - Se paso el método estático que estaba en TicketController getTicketAsArray($params) al
   modelo(TicketModel).
