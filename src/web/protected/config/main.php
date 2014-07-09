@@ -138,11 +138,11 @@ return array(
         'format'=>array(
         	'datetimeFormat'=>"d M, Y h:m:s a",
         	),
-        'session'=>array(
-        	'timeout'=>86400,
-                'autoStart' => true , 
-                'gCProbability'  => 100 ,
-        ),
+//        'session'=>array(
+//        	'timeout'=>86400,
+//                'autoStart' => true , 
+//                'gCProbability'  => 100 ,
+//        ),
         'clientScript'=>array(
               'scriptMap'=>array(
                   'jquery.js' => '/js/plugins/jquery/jquery.min.js',

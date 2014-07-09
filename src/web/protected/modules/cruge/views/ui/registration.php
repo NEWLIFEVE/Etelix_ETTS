@@ -15,21 +15,28 @@
         
             <legend>Account data</legend>
             
-<!--            <div class="separador-vertical"></div>
-            <?php // echo $form->labelEx($model, 'id_carrier') ?>
-            <?php // echo $form->dropDownList($model,'id_carrier', Carrier::getCarriers(),  array('empty' => 'Select carrier')); ?>
-            <span id="disable_enable">Disable</span> <input type="checkbox" id="disable_carrier" name="disable_carrier" value="ok">
-            <?php // echo $form->error($model, 'id_carrier'); ?>
-            <div class="separador-vertical"></div>-->
-            
-            
-            <div class="input-control select block">
+            <div class="input-control select">
                 <?php echo $form->labelEx($model, 'id_carrier') ?>
                 <?php echo $form->dropDownList($model,'id_carrier', Carrier::getCarriers(),  array('empty' => 'Select carrier',  'class' => 'select_carrier')); ?>
-                <div class="input-control checkbox" data-role="input-control"><label><span id="disable_enable">Disable</span> <input type="checkbox" id="disable_carrier" name="disable_carrier" value="ok"><span class="check"></span></label></div>
+                <?php if (Yii::app()->user->checkAccess('subadmin') || Yii::app()->user->isSuperAdmin): ?>
+                    <div class="input-control checkbox" data-role="input-control">
+                        <label>
+                            <span id="disable_enable">Disable</span> 
+                            <input type="checkbox" id="disable_carrier" name="disable_carrier" value="ok">
+                            <span class="check"></span>
+                        </label>
+                    </div>
+                <?php endif; ?>
                 <?php echo $form->error($model, 'id_carrier'); ?>
                 
             </div>
+            <?php if (Yii::app()->user->checkAccess('subadmin') || Yii::app()->user->isSuperAdmin): ?>
+                <div class="input-control select">
+                    <?php echo $form->labelEx($roles, 'defaultroleforregistration'); ?>
+                    <?php echo $form->dropDownList($roles, 'defaultroleforregistration'
+                            ,Yii::app()->user->rbac->getRolesAsOptions()); ?>
+                </div>
+            <?php endif; ?>
             
             <?php 
                     foreach (CrugeUtil::config()->availableAuthModes as $authmode){
@@ -41,7 +48,6 @@
                     }
             ?>
 
-<!--        <div id="content_password" class="row">   -->
                 <div class="input-control text span4">
                     <?php echo $form->labelEx($model,'newPassword'); ?>
                     <?php echo $form->textField($model,'newPassword'); ?>
@@ -71,9 +77,6 @@
                         ?>
                     </div>
                 </div>
-            <!--</div>-->
-            <!--<div></div>-->
-            <?php // echo CHtml::submitButton('Save', array('class' => 'primary large', 'name'=>'preview', 'style' => 'width:460px')); ?>
            
     </div>
 
@@ -135,8 +138,19 @@
     <div class="row buttons" style="text-align: center;">
 	<?php echo CHtml::submitButton('Save', array('class' => 'primary large', 'name'=>'preview', 'style' => 'width:500px')); ?>
     </div>
-    <?php // echo $form->errorSummary($model); ?>
     <?php $this->endWidget(); ?>
-    <!--</div>-->
 </div>
+<?php if(Yii::app()->user->hasFlash('success')): ?>
+    <script>
+    $.Dialog({
+        shadow: true,
+        overlay: false,
+        icon: '<span class="icon-rocket"></span>',
+        title: false,
+        width: 500,
+        padding: 10,
+        content:'<center><h3><?php echo Yii::app()->user->getFlash('success'); ?></h3></center>'
+    });
+    </script>
+<?php endif; ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/cruge/registration.js',CClientScript::POS_END); ?>

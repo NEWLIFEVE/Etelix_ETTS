@@ -75,8 +75,7 @@
 					$hasChildren = true;
 					$children[] = array(
 						'id'=>$child->name,
-						'text'=>"<span class='itemchildtext authitemsub {
-							$asignado} {$loop}'>"
+						'text'=>"<span class='itemchildtext authitemsub {$asignado} {$loop}'>"
 								.$rbac->getTaskText($child)."</span>".$imgPin,
 						'htmlOptions'=>array('class'=>'authitemchild'
 							,'alt'=>$child->name

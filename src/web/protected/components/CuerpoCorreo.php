@@ -68,9 +68,9 @@ class CuerpoCorreo extends TicketDesign
      * @param string $carrier
      * @return strign
      */
-    private function _carrierToEtts($carrier, $option)
+    private function _carrierToEtts($carrier, $option, $status)
     {
-        return $this->_ettsAsCarrier($carrier, $option);
+        return $this->_ettsAsCarrier($carrier, $option, $status);
     }
     
     /**
