@@ -135,10 +135,10 @@ abstract class Script
         }
         
         $path = YiiBase::getPathOfAlias('webroot') . DIRECTORY_SEPARATOR .  'js' . DIRECTORY_SEPARATOR . $controller . DIRECTORY_SEPARATOR . $action . '.js';
-        if (file_exists($path)) {
+//        if (file_exists($path)) {
             $cs->registerScriptFile(Yii::app()->baseUrl . '/js/' . $controller . '/' . $action . '.js', CClientScript::POS_END);
-        } else {
-            return false;
-        }
+//        } else {
+//            return false;
+//        }
     }
 }

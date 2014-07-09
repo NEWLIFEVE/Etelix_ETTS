@@ -81,9 +81,12 @@
                             </div>
                         <?php endif; ?>
                         <!-- EDIT PROFILE -->
-                        <?php if (!Yii::app()->user->checkAccess('subadmin')): ?>
+                        <?php if (Yii::app()->user->checkAccess('cliente') || Yii::app()->user->checkAccess('account_managers')): ?>
+                            <?php if (!Yii::app()->user->isSuperAdmin): ?>
                             <?php echo CHtml::link('<i class="icon-pencil on-right on-left"></i> Edit Profile', array('/cruge/ui/editprofile'), array('class' => 'element')); ?>
+                            <?php endif; ?>
                         <?php endif; ?>
+                        
                         <?php echo CHtml::link('<i class="icon-locked on-right on-left"></i> Logout ('.Yii::app()->user->name.')', Yii::app()->user->ui->logoutUrl, array('class' => 'element')); ?>
                         <span class="element-divider"></span>
                     <?php endif; //FIN DEL LOGUEO ?> 

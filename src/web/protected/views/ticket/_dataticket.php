@@ -188,7 +188,7 @@
                     </div>
                     <div class="option-panel left confirmation">
                         <div class="input-control checkbox" data-role="input-control">
-                            <?php if ($tipoUsuario=='interno' || $tipoUsuario=='subadmin'): ?>
+                            <?php if ($tipoUsuario=='interno' || $tipoUsuario=='subadmin' || $tipoUsuario=='admin'): ?>
                             <label>
                                 <input type="checkbox" id="internalAsCarrier" value="1">
                                 <span class="check"></span>  <small class="text-muted ">Respond as Carrier</small>

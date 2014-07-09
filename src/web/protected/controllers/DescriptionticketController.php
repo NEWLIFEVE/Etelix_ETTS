@@ -231,7 +231,7 @@ class DescriptionticketController extends Controller
                     $mailsAll=Mail::getNameMails($model->id_ticket);
                     
                     $asunto=new Subject;
-                    $cuerpoCorreo=new CuerpoCorreo(TicketController::getTicketAsArray($model->id_ticket));
+                    $cuerpoCorreo=new CuerpoCorreo(Ticket::getTicketAsArray($model->id_ticket));
                     
                     $body=$cuerpoCorreo->getBodyNewAnwer();
                     $subject=$asunto->subjectNewAnswer($ticketNumber, Utility::restarHoras($hour, date('H:i:s'), floor(Utility::getTime($date, $hour)/ (60 * 60 * 24))), $internalAsCarrier);

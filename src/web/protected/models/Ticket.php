@@ -250,7 +250,7 @@ class Ticket extends CActiveRecord
                                             FROM ticket
                                             WHERE id IN (SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user $conditionUser)) AND 
                                             id_status=2 AND 
-                                            date >= NOW()-'2 week'::interval
+                                            close_ticket >= NOW()-'2 week'::interval
                                             ORDER BY id_status, id  ASC");
     }
     
@@ -264,7 +264,7 @@ class Ticket extends CActiveRecord
                 "id IN(SELECT DISTINCT(id_ticket) "
                 . "FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user $conditionUser)) AND "
                 . "id_status = 2 AND "
-                . "date >= NOW()-'2 week'::interval"
+                . "close_ticket >= NOW()-'2 week'::interval"
                 );
     }
 
@@ -345,6 +345,56 @@ class Ticket extends CActiveRecord
     public static function getOptionOpen($idTicket)
     {
         return self::model()->findByPk($idTicket)->option_open;
+    }
+    
+    /**
+     * Método para retornar los datos del ticket que se mostrarán al mandar un correo
+     * @param integer $idTicket
+     * @return array
+     */
+    public static function getTicketAsArray($idTicket)
+    {
+        $data=self::ticketsByUsers(CrugeUser2::getUserTicket($idTicket,true)->iduser,$idTicket,false,false,true);
+        $testedNumber=TestedNumber::getTestedNumberArray($idTicket);
+        
+        $datos = array(
+            'ticketNumber'=>$data->ticket_number, 
+            'username'=>CrugeUser2::getUserTicket($idTicket),
+            'emails'=>Mail::getNameMails($idTicket),
+            'failure'=>$data->idFailure->name,
+            'originationIp'=>$data->origination_ip,
+            'destinationIp'=>$data->destination_ip,
+            'prefix'=>$data->prefix,
+            'gmt'=>null,
+            'testedNumber'=>null,
+            'country'=>null,
+            'date'=>null,
+            'hour'=>null,
+            'description'=>'description',
+            'cc'=>Mail::getNameMailsCC($idTicket),
+            'bcc'=>Mail::getNameMailsBcc($idTicket),
+            'speech'=>null,
+            'idTicket'=>$idTicket,
+            'optionOpen'=>$data->option_open
+        );
+        
+        if ($testedNumber != null) {
+            $numbers = array(
+                'testedNumber'=>$testedNumber['number'],
+                'country'=>$testedNumber['country'],
+                'date'=>$testedNumber['date'],
+                'hour'=>$testedNumber['hour'],
+            );
+            
+            $datos = array_merge($datos, $numbers);
+        }
+        
+        if (isset($data->idGmt->name)) {
+            $gmt = array('gmt' => $data->idGmt->name);
+            $datos = array_merge($datos, $gmt);
+        }
+        
+        return $datos;
     }
        
 }

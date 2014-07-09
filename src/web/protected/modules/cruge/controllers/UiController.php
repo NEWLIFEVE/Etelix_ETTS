@@ -96,7 +96,7 @@ class UiController extends Controller
             array(
                 'allow',
                 'actions' => self::_publicActionsList(),
-                'users' => array('*', 'subadmin'),
+                'users' => array('*'),
             ),
             array(
                 'allow',
@@ -204,17 +204,25 @@ class UiController extends Controller
         	$this->redirect(Yii::app()->user->ui->loginurl);
 		}
     }
-
+    
     public function actionUserManagementAdmin()
     {
-        
-        $model = Yii::app()->user->um->getSearchModelICrugeStoredUser();
-        $model->unsetAttributes();
-        if (isset($_GET[CrugeUtil::config()->postNameMappings['CrugeStoredUser']])) {
-            $model->attributes = $_GET[CrugeUtil::config()->postNameMappings['CrugeStoredUser']];
+        Script::registerDataTable();
+        Script::registerJsAction();
+        $data = CrugeUser2::model()->findAll();
+        $users = array();
+        foreach ($data as $key => $value) {
+            $lastusage = CrugeSession2::model()->findBySql("SELECT lastusage FROM cruge_session WHERE idsession = (SELECT MAX(idsession) AS idsession FROM cruge_session WHERE iduser = {$value->iduser})");
+            $users[] = array(
+                'iduser' => $value->iduser,
+                'username' => $value->username,
+                'email' => $value->email,
+                'state' => $value->state === 1 ? 'Enabled' : 'Disabled',
+                'lastusage' => isset($lastusage) ? date('Y-m-d H:i:s', $lastusage->lastusage) : ''
+            );
         }
-        $dataProvider = $model->search();
-        $this->render("usermanagementadmin", array('model' => $model, 'dataProvider' => $dataProvider));
+        
+        $this->render("usermanagementadmin", array('users' => $users));
     }
 
     public function actionEditProfile()
@@ -238,6 +246,7 @@ class UiController extends Controller
         // carga los campos definidos por el administrador
         // trayendo consigo el atributo "value" accesible mediante $xx->fieldvalue
         Yii::app()->user->um->loadUserFields($model);
+        $roles = Yii::app()->user->um->getDefaultSystem();
         $this->performAjaxValidation('crugestoreduser-form', $model);
         if (isset($_POST[CrugeUtil::config()->postNameMappings['CrugeStoredUser']])) {
             $model->attributes = $_POST[CrugeUtil::config()->postNameMappings['CrugeStoredUser']];
@@ -268,9 +277,9 @@ class UiController extends Controller
         $this->render(
             "usermanagementupdate",
             array(
-                'model' => $model
-            ,
+                'model' => $model,
                 'boolIsUserManagement' => $boolIsUserManagement,
+                'roles' => $roles
             )
         );
     }
@@ -308,13 +317,12 @@ class UiController extends Controller
     }
 
     public function actionRegistration($datakey = '')
-    {
-
-        
+    {        
         $this->layout = CrugeUtil::config()->registrationLayout;
 
-
         $model = Yii::app()->user->um->createBlankUser();
+        $roles = Yii::app()->user->um->getDefaultSystem();
+        
         $model->bypassCaptcha = false;
         $model->terminosYCondiciones = false;
         
@@ -362,10 +370,11 @@ class UiController extends Controller
 
         if (isset($_POST[CrugeUtil::config()->postNameMappings['CrugeStoredUser']])) {
             $model->attributes = $_POST[CrugeUtil::config()->postNameMappings['CrugeStoredUser']];
-//            echo '<pre>';
-//            print_r($_POST);
-//            Yii::app()->end();
             if ($model->validate()) {
+                if (Yii::app()->user->checkAccess('subadmin') || Yii::app()->user->isSuperAdmin) 
+                    $rol = $_POST['CrugeSystem']['defaultroleforregistration'];
+                else
+                    $rol = 'cliente';
                 
                 $newPwd = trim($model->newPassword);
                 Yii::app()->user->um->changePassword($model, $newPwd);
@@ -382,13 +391,20 @@ class UiController extends Controller
                     }
                     
                     $this->onNewUser($model, $newPwd);
-
-//                    $this->redirect(array('welcome'));
-                    $this->redirect(array('usermanagementadmin'));
+                    // Modificado el rol dependiendo de lo que se seleccione en el registro
+                    CrugeAuthassignment::model()->updateAll(array('itemname' => $rol), "userid = $model->primaryKey");
+                    if (Yii::app()->user->checkAccess('subadmin') || Yii::app()->user->isSuperAdmin) {
+                        $redirect = 'usermanagementadmin';
+                    } else { 
+                        $redirect = 'registration';
+                        Yii::app()->user->setFlash('success', "Success");
+                    }
+                    $this->redirect(array($redirect));
                 }
+                
             }
         }
-        $this->render("registration", array('model' => $model));
+        $this->render("registration", array('model' => $model, 'roles' => $roles));
     }
 
     /* este es un evento emitido por actionRegistration y actionUserManagementCreate

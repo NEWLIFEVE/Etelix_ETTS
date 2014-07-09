@@ -9,9 +9,9 @@ return array(
 	'preload'=>array('log'),
         'import'=>array(
         	'application.models.*',
-			'application.components.Imap.*',
-			'application.components.reports.*',
-			'application.components.*',
+                'application.components.Imap.*',
+                'application.components.reports.*',
+                'application.components.*',
 		),
 	// application components
 	'components'=>array(

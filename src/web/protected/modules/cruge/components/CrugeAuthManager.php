@@ -1872,49 +1872,31 @@ class CrugeAuthManager extends CAuthManager implements IAuthManager
         $r = array();
 
         // todas las TAREAS a las que puede acceder este usuario
-
-        // este metodo no sirve porque solo lista elementos directamente
-        // relacionados al userid y no lista aquellos derivados,
-        //$itemArray = $this->getAuthItems(CAuthItem::TYPE_TASK,$userid);
+        // esten autorizadas o no
 
         $tasklist = $this->tasks;
 
         // por tanto a lo anterior: listo todas las tareas de tipo menuitem
-        // y pregunto si el usuario tiene acceso a ellas:
         $itemArray = array();
         foreach ($tasklist as $task) {
             if ($this->isTaskMenuItem($task) && !$this->isTaskSubMenuItem($task)) {
-                if ($this->checkAccess($task->getName(), $userid)) {
-                    $itemArray[] = $task;
-                }
+                $itemArray[] = $task;
             }
         }
-
         // todas las tareas consideradas subitems, no importa
         // si estan asignadas al usuario
         //
         $allsubitems = array();
         foreach ($tasklist as $task) {
-            if ($this->isTaskSubMenuItem($task)) {
+            if ($this->isTaskSubMenuItem($task) && $this->checkAccess($task->getName(), $userid)) {
                 $allsubitems[] = $task;
-            }
-        }
-
-        // Menues de Primer Nivel
-        //
-        // busca aquellas operaciones que son tareas
-        // y que son menu items, pero que no son sub menu items
-        $r1 = array();
-        foreach ($itemArray as $item) {
-            if ($this->isTaskMenuItem($item) && !$this->isTaskSubMenuItem($item)) {
-                $r1[] = $item;
             }
         }
 
         // busca las tareas que son hijas de las primeras
         // halladas. (son hijas dada la sintaxis de descripcion del CAuthItem)
         //
-        foreach ($r1 as $menuitem) {
+        foreach ($itemArray as $menuitem) {
             // child menu items
             $items = array();
             // agrega al menuitem de 1er nivel todas los subitems (tasks)
@@ -1924,19 +1906,19 @@ class CrugeAuthManager extends CAuthManager implements IAuthManager
                 if ($this->isTaskMenuItemChild($task, $menuitem)) {
                     $items[] = array(
                         'label' => $this->getTaskText($task),
-                        'url' => $this->getTaskUrl($task, $arguments),
+                        'url' => $this->getTaskUrl($task, array()),
                     );
                 }
             }
             // top level menu
             if (!sizeof($items)) {
                 $items = null;
-            }
-            $r[] = array(
-                'label' => $this->getTaskText($menuitem),
-                'url' => '',
-                'items' => $items,
-            );
+            } else
+                $r[] = array(
+                    'label' => $this->getTaskText($menuitem),
+                    'url' => '',
+                    'items' => $items,
+                );
         }
         return $r;
     }
