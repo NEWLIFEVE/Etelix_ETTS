@@ -589,7 +589,7 @@ class Report extends Excel
         $query .= " $begin WHERE date = '".substr($date, 0, 10)."' AND (close_ticket IS NULL OR close_ticket > '$date') AND 
                            id NOT IN(SELECT dt.id_ticket FROM description_ticket dt, cruge_authassignment ca 
                            WHERE dt.date <= '".substr($date, 0, 10)."' AND 
-                           dt.id_user = ca.userid AND itemname NOT IN('cliente')) $selectCarrier ORDER BY id_status, date, hour ASC";
+                           dt.id_user = ca.userid AND itemname NOT IN('cliente')) $selectCarrier ORDER BY date, hour ASC";
         return Ticket::model()->findAllBySql($query);
     }
     
