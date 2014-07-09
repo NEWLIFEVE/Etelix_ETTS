@@ -84,8 +84,8 @@
                                 </div>
                             </td>
                             <td>Total open</td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
+                            <td class="total-supplier">&nbsp;</td>
+                            <td class="total-customer">&nbsp;</td>
                             <td class="total-data"></td>
                         </tr>
                         
@@ -141,8 +141,8 @@
                                 </div>
                             </td>
                             <td>Total closed</td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
+                            <td class="total-supplier">&nbsp;</td>
+                            <td class="total-customer">&nbsp;</td>
                             <td class="total-data"></td>
                         </tr>
                         
@@ -198,8 +198,8 @@
                                 </div>
                             </td>
                             <td>Total no activity</td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
+                            <td class="total-supplier">&nbsp;</td>
+                            <td class="total-customer">&nbsp;</td>
                             <td class="total-data"></td>
                         </tr>
                         
@@ -255,8 +255,8 @@
                                 </div>
                             </td>
                             <td>Total Escalated</td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
+                            <td class="total-supplier">&nbsp;</td>
+                            <td class="total-customer">&nbsp;</td>
                             <td class="total-data"></td>
                         </tr>
                     </tbody>
