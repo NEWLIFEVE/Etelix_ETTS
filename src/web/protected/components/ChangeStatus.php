@@ -64,30 +64,37 @@ class ChangeStatus
     {
         $ids = array();
         $data = DescriptionTicket::model()->findAllBySql(
-                "SELECT id_ticket, MAX((date::text || ' ' || hour::text)::timestamp) AS last_description 
-                FROM description_ticket
-                WHERE (id_ticket NOT IN(
-			SELECT  dt.id_ticket FROM description_ticket dt, cruge_authassignment ca 
-			WHERE dt.id_user = ca.userid AND itemname IN('cliente')  AND
-			dt.date <= '".substr($this->_date, 0, 10)."'::timestamp - '$this->_interval'::interval
-                    ) OR 
-                        id_ticket IN(
-                                SELECT id_ticket FROM description_ticket 
-                                WHERE id_user = 1 AND 
-                                date <= '".substr($this->_date, 0, 10)."'::timestamp - '$this->_interval'::interval
+                "SELECT id_ticket, MAX((date::text || ' ' || hour::text)::timestamp) AS last_description
+                 FROM description_ticket
+                 WHERE (id_ticket NOT IN(
+                    SELECT  dt.id_ticket 
+                    FROM description_ticket dt, cruge_authassignment ca
+                    WHERE dt.id_user = ca.userid AND itemname IN('cliente') AND dt.date <= '".substr($this->_date, 0, 10)."'::timestamp - '$this->_interval'::interval
+                    ) OR id_ticket IN(
+                        SELECT id_ticket
+                        FROM description_ticket
+                        WHERE id_user = 1 AND date <= '".substr($this->_date, 0, 10)."'::timestamp - '$this->_interval'::interval
                         )
-                ) AND
-                date <= '".substr($this->_date, 0, 10)."'::timestamp - '$this->_interval'::interval AND
-                id_ticket  IN(
-                        SELECT id FROM ticket 
-                        WHERE id_status IN(SELECT id FROM status WHERE name IN('open', 'escalated')) AND 
-                        id IN(SELECT id_ticket FROM mail_ticket WHERE id_mail_user IN(SELECT id FROM mail_user)) AND
-                        date <= '".substr($this->_date, 0, 10)."'::timestamp - '$this->_interval'::interval
-                )
-                GROUP BY id_ticket ORDER BY id_ticket ASC"
+                    ) AND date <= '".substr($this->_date, 0, 10)."'::timestamp - '$this->_interval'::interval AND id_ticket IN(
+                        SELECT id 
+                        FROM ticket
+                        WHERE id_status IN(
+                            SELECT id 
+                            FROM status 
+                            WHERE name IN('open', 'escalated')) AND id IN(
+                                SELECT id_ticket 
+                                FROM mail_ticket 
+                                WHERE id_mail_user IN(
+                                    SELECT id 
+                                    FROM mail_user
+                                    )
+                                ) AND date <= '".substr($this->_date, 0, 10)."'::timestamp - '$this->_interval'::interval)
+                 GROUP BY id_ticket ORDER BY id_ticket ASC"
             );
-        if ($data != null) {
-            foreach ($data as $id) {
+        if($data!=null)
+        {
+            foreach($data as $id)
+            {
                 $ids[] = $id->id_ticket;
             }
         }
