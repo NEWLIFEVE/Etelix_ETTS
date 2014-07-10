@@ -3,8 +3,15 @@
 
 ##Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
 
+10/07/2014
+    - Se creó la operación "responder-tickets" en cruge, la cual permite seleccionar a que rol se le permite responder tickets
+    - Se creó la operación "escalar-tickets" en cruge, la cual permite seleccionar a que rol se le permite escalar tickets
+    - Se creó la operación "cerrar-tickets" en cruge, la cual permite seleccionar a que rol se le permite cerrar tickets
+    - Se creó la operación "responder-como-carrier" en cruge, la cual permite seleccionar a que rol se le permite responder tickets como el carrier
+    - Se creó la operación "operacion-interno-subadmin" en cruge, la cual son las operaciones similares que tienen usuarios subadmin e internos
+
 09/07/2014
-    - Modificacion del resumen de reportes, se agregan las columnas de customer y supplier
+    - Modificación del resumen de reportes, se agregan las columnas de customer y supplier
 
 08/07/2014
 - Ahora se puede elegir el rol en la interfaz de crear usuarios
