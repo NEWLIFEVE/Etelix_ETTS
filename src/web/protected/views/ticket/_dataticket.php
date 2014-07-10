@@ -153,7 +153,7 @@
                     </div>
                 </div>
                 <p></p>-->
-                <?php if ($datos->id_status != '2'): ?>
+                <?php if ($datos->id_status != '2'  && Yii::app()->user->checkAccess('responder-tickets')): ?>
                 <div id="only-open">
                 <?php
                 if (($tipoUsuario=='interno' || $tipoUsuario=='subadmin')):
