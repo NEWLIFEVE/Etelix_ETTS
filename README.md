@@ -9,9 +9,11 @@
     - Se creó la operación "cerrar-tickets" en cruge, la cual permite seleccionar a que rol se le permite cerrar tickets
     - Se creó la operación "responder-como-carrier" en cruge, la cual permite seleccionar a que rol se le permite responder tickets como el carrier
     - Se creó la operación "operacion-interno-subadmin" en cruge, la cual son las operaciones similares que tienen usuarios subadmin e internos
+    - Agregada las columnas customer y supplier en el resumen del excel y en el mail.
+    - Los tickets escalados se muestran en negrita en el excel, en la página y por correo
 
 09/07/2014
-    - Modificación del resumen de reportes, se agregan las columnas de customer y supplier
+    - Modificación del resumen de reportes, se agregan las columnas de customer y supplier en la página
 
 08/07/2014
 - Ahora se puede elegir el rol en la interfaz de crear usuarios

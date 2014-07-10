@@ -88,7 +88,9 @@ class Report extends Excel
         
         $titles = array(
             'A' => 'Category',
-            'B' => 'Total'
+            'B' => 'Supplier',
+            'C' => 'Customer',
+            'D' => 'Total'
         );
         
         foreach ($titles as $key => $value) {
@@ -99,31 +101,34 @@ class Report extends Excel
         $this->_setStyleBody('A3', '#FFDC51');
         $this->_setStyleBody('A4', '#EEB8B8');
         
-        $this->_setStyleHeader('A5:B5');
-        $this->_setStyleBody('A6:B6', '#FFF');
-        $this->_setStyleBody('A7:B7', '#FFDC51');
-        $this->_setStyleBody('A8:B8', '#EEB8B8');
-        $this->_setStyleBody('A9:B9', '');
-        $this->_setStyleBody('A10:B10', '#FFF');
-        $this->_setStyleBody('A11:B11', '#FFDC51');
-        $this->_setStyleBody('A12:B12', '#EEB8B8');
-        $this->_setStyleBody('A13:B13', '');
-        $this->_setStyleBody('A14:B14', '#FFF');
-        $this->_setStyleBody('A15:B15', '#FFDC51');
-        $this->_setStyleBody('A16:B16', '#EEB8B8');
-        $this->_setStyleBody('A17:B17', '');
-        $this->_setStyleBody('A18:B18', '#FFF');
-        $this->_setStyleBody('A19:B19', '#FFDC51');
-        $this->_setStyleBody('A20:B20', '#EEB8B8');
-        $this->_setStyleBody('A21:B21', '');
+        $this->_setStyleHeader('A5:D5');
+        $this->_setStyleBody('A6:D6', '#FFF');
+        $this->_setStyleBody('A7:D7', '#FFDC51');
+        $this->_setStyleBody('A8:D8', '#EEB8B8');
+        $this->_setStyleBody('A9:D9', '');
+        $this->_setStyleBody('A10:D10', '#FFF');
+        $this->_setStyleBody('A11:D11', '#FFDC51');
+        $this->_setStyleBody('A12:D12', '#EEB8B8');
+        $this->_setStyleBody('A13:D13', '');
+        $this->_setStyleBody('A14:D14', '#FFF');
+        $this->_setStyleBody('A15:D15', '#FFDC51');
+        $this->_setStyleBody('A16:D16', '#EEB8B8');
+        $this->_setStyleBody('A17:D17', '');
+        $this->_setStyleBody('A18:D18', '#FFF');
+        $this->_setStyleBody('A19:D19', '#FFDC51');
+        $this->_setStyleBody('A20:D20', '#EEB8B8');
+        $this->_setStyleBody('A21:D21', '');
       
         $this->_phpExcel->getActiveSheet()->getRowDimension('1')->setRowHeight(90);
-        $this->_phpExcel->getActiveSheet()->getStyle('A1:B1')->getFont()->setSize(42);
+        $this->_phpExcel->getActiveSheet()->getStyle('A1:D1')->getFont()->setSize(42);
         $this->_phpExcel->getActiveSheet()->getColumnDimension('A')->setWidth(40);
         $this->_phpExcel->getActiveSheet()->getColumnDimension('B')->setWidth(7);
         
         $this->_getLogo();
         $this->_backgroundLogo('A1:B1');
+        
+        // $k será el conteo de carriers (supplier o customer)
+        $k = $this->countCarriers($args['date'], $args['carrier']);
         
         $this->_phpExcel->setActiveSheetIndex(0)
                     ->setCellValue('B1', 'Summary')
@@ -133,43 +138,106 @@ class Report extends Excel
                     ->setCellValue('A4', "TT's with more than 48 hours")
                 
                     ->setCellValue('A6', 'Open white')
-                    ->setCellValue('B6', count($this->openOrClose($args['date'], 'white', 'open', $args['carrier'])))
+                    ->setCellValue('B6', $k[0][0])
+                    ->setCellValue('C6', $k[0][1])
+                    ->setCellValue('D6', count($this->openOrClose($args['date'], 'white', 'open', $args['carrier'])))
                     ->setCellValue('A7', 'Open yellow')
-                    ->setCellValue('B7', count($this->openOrClose($args['date'], 'yellow', 'open', $args['carrier'])))
+                    ->setCellValue('B7', $k[1][0])
+                    ->setCellValue('C7', $k[1][1])
+                    ->setCellValue('D7', count($this->openOrClose($args['date'], 'yellow', 'open', $args['carrier'])))
                     ->setCellValue('A8', 'Open red')
-                    ->setCellValue('B8', count($this->openOrClose($args['date'], 'red', 'open', $args['carrier'])))
+                    ->setCellValue('B8', $k[2][0])
+                    ->setCellValue('C8', $k[2][1])
+                    ->setCellValue('D8', count($this->openOrClose($args['date'], 'red', 'open', $args['carrier'])))
                     ->setCellValue('A9', 'Total open')
-                    ->setCellValue('B9', count($this->totalTicketsPending($args['date'], $args['carrier'])))
+                    ->setCellValue('B9', $k[0][0]+$k[1][0]+$k[2][0])
+                    ->setCellValue('C9', $k[0][1]+$k[1][1]+$k[2][1])
+                    ->setCellValue('D9', count($this->totalTicketsPending($args['date'], $args['carrier'])))
                 
                     ->setCellValue('A10', 'Closed white')
-                    ->setCellValue('B10', count($this->openOrClose($args['date'], 'white', 'close', $args['carrier'])))
+                    ->setCellValue('B10', $k[3][0])
+                    ->setCellValue('C10', $k[3][1])
+                    ->setCellValue('D10', count($this->openOrClose($args['date'], 'white', 'close', $args['carrier'])))
                     ->setCellValue('A11', 'Closed yellow')
-                    ->setCellValue('B11', count($this->openOrClose($args['date'], 'yellow', 'close', $args['carrier'])))
+                    ->setCellValue('B11', $k[4][0])
+                    ->setCellValue('C11', $k[4][1])
+                    ->setCellValue('D11', count($this->openOrClose($args['date'], 'yellow', 'close', $args['carrier'])))
                     ->setCellValue('A12', 'Closed red')
-                    ->setCellValue('B12', count($this->openOrClose($args['date'], 'red', 'close', $args['carrier'])))
+                    ->setCellValue('B12', $k[5][0])
+                    ->setCellValue('C12', $k[5][1])
+                    ->setCellValue('D12', count($this->openOrClose($args['date'], 'red', 'close', $args['carrier'])))
                     ->setCellValue('A13', 'Total closed')
-                    ->setCellValue('B13', count($this->totalTicketsClosed($args['date'], $args['carrier'])))
+                    ->setCellValue('B13', $k[3][0]+$k[4][0]+$k[5][0])
+                    ->setCellValue('C13', $k[3][1]+$k[4][1]+$k[5][1])
+                    ->setCellValue('D13', count($this->totalTicketsClosed($args['date'], $args['carrier'])))
                 
                     ->setCellValue('A14', 'No activity white')
-                    ->setCellValue('B14', count($this->withoutDescription($args['date'], 'white', 'open', $args['carrier'])))
+                    ->setCellValue('B14', $k[6][0])
+                    ->setCellValue('C14', $k[6][1])
+                    ->setCellValue('D14', count($this->withoutDescription($args['date'], 'white', 'open', $args['carrier'])))
                     ->setCellValue('A15', 'No activity yellow')
-                    ->setCellValue('B15', count($this->withoutDescription($args['date'], 'yellow', 'open', $args['carrier'])))
+                    ->setCellValue('B15', $k[7][0])
+                    ->setCellValue('C15', $k[7][1])
+                    ->setCellValue('D15', count($this->withoutDescription($args['date'], 'yellow', 'open', $args['carrier'])))
                     ->setCellValue('A16', 'No activity red')
-                    ->setCellValue('B16', count($this->withoutDescription($args['date'], 'red', 'open', $args['carrier'])))
+                    ->setCellValue('B16', $k[8][0])
+                    ->setCellValue('C16', $k[8][1])
+                    ->setCellValue('D16', count($this->withoutDescription($args['date'], 'red', 'open', $args['carrier'])))
                     ->setCellValue('A17', 'Total no activity')
-                    ->setCellValue('B17', count($this->totalWithoutDescription($args['date'], $args['carrier'])))
+                    ->setCellValue('B17', $k[6][0]+$k[7][0]+$k[8][0])
+                    ->setCellValue('C17', $k[6][1]+$k[7][1]+$k[8][1])
+                    ->setCellValue('D17', count($this->totalWithoutDescription($args['date'], $args['carrier'])))
                 
                     ->setCellValue('A18', 'Escalated white')
-                    ->setCellValue('B18', count($this->ticketEscaladed($args['date'], 'white', 'open', $args['carrier'])))
+                    ->setCellValue('B18', $k[9][0])
+                    ->setCellValue('C18', $k[9][1])
+                    ->setCellValue('D18', count($this->ticketEscaladed($args['date'], 'white', 'open', $args['carrier'])))
                     ->setCellValue('A19', 'Escalated yellow')
-                    ->setCellValue('B19', count($this->ticketEscaladed($args['date'], 'yellow', 'open', $args['carrier'])))
+                    ->setCellValue('B19', $k[10][0])
+                    ->setCellValue('C19', $k[10][1])
+                    ->setCellValue('D19', count($this->ticketEscaladed($args['date'], 'yellow', 'open', $args['carrier'])))
                     ->setCellValue('A20', 'Escalated red')
-                    ->setCellValue('B20', count($this->ticketEscaladed($args['date'], 'red', 'open', $args['carrier'])))
+                    ->setCellValue('B20', $k[11][0])
+                    ->setCellValue('C20', $k[11][1])
+                    ->setCellValue('D20', count($this->ticketEscaladed($args['date'], 'red', 'open', $args['carrier'])))
                     ->setCellValue('A21', 'Total escalated')
-                    ->setCellValue('B21', count($this->totalTicketEscaladed($args['date'], $args['carrier'])));
+                    ->setCellValue('B21', $k[9][0]+$k[10][0]+$k[11][0])
+                    ->setCellValue('C21', $k[9][1]+$k[10][1]+$k[11][1])
+                    ->setCellValue('D21', count($this->totalTicketEscaladed($args['date'], $args['carrier'])));
         
     }
     
+    /**
+     * Retorna un array con el conteo de suppliers y customers por cada color de ticket
+     * @param string $date
+     * @param string $carrier
+     * @return array
+     */
+    public function countCarriers($date, $carrier)
+    {
+        $statistcs = array();
+        for ($i = 1; $i <= 12; $i++) {
+            $carriers = array();
+            $data = $this->optionStatistics($i, $date, $carrier);
+                        
+            foreach ($data as $value) {
+                $carriers[] = $value->carrier;
+            }
+
+            $statistcs[] = array('totalByCarriers' => array_count_values($carriers));
+        }
+        
+        // $k será el conteo de carriers (supplier o customer)
+        $k = array();
+        for ($i = 0; $i < 12; $i++) {
+            $k[] = array(
+                    isset($statistcs[$i]['totalByCarriers']['Supplier']) ? $statistcs[$i]['totalByCarriers']['Supplier'] : 0, 
+                    isset($statistcs[$i]['totalByCarriers']['Customer']) ? $statistcs[$i]['totalByCarriers']['Customer'] : 0
+                );
+        }
+        
+        return $k;
+    }
     
    /**
     * Generando los titulos de la hoja
@@ -254,7 +322,7 @@ class Report extends Excel
                     ->setCellValue('I' . $numBody, $value->close_ticket)
                     ->setCellValue('J' . $numBody, $value->lifetime);
                 $row = $key + 6;
-                $this->_setStyleBody('A' . $row. ':J' . $row, $value->color);  
+                $this->_setStyleBody('A' . $row. ':J' . $row, $value->color,  $value->id_status);  
                 $numBody++;
             }
         }
@@ -351,16 +419,30 @@ class Report extends Excel
     /**
      * Define el estilo de las filas dependiendo del color del ticket
      * @param string $cell
-     * @param string $color
+     * @param string $color El color del ticket
+     * @param int $status El estatus del ticket
      */
-    private function _setStyleBody($cell, $color)
+    private function _setStyleBody($cell, $color, $status = false)
     {
         $color = $this->_cssTickets($color);
+        $bold = false;
+        $letra = '333333';
+        
+        if ($status) {
+            if ($status == 3) {
+                $bold = true;
+                $letra = '000000';
+            } else {
+                $bold = false;
+                $letra = '333333';
+            }
+        }
+        
         $style = array(
             'font' => array(
-                'bold' => false,
+                'bold' => $bold,
                 'color' => array(
-                    'argb' => '333333'
+                    'argb' => $letra
                 ),
             ),
             'aligment' => array(

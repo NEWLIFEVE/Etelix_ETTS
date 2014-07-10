@@ -41,7 +41,7 @@
                                     </label>
                                 </div>
                             </td>
-                            <td>Open white</td>
+                            <td>Open white within 24 hours</td>
                             <td class="display-supplier">&nbsp;</td>
                             <td class="display-customer">&nbsp;</td>
                             <td class="display-data"></td>
@@ -55,7 +55,7 @@
                                     </label>
                                 </div>
                             </td>
-                            <td>Open yellow</td>
+                            <td>Open yellow within 48 hours</td>
                             <td class="display-supplier">&nbsp;</td>
                             <td class="display-customer">&nbsp;</td>
                             <td class="display-data"></td>
@@ -69,7 +69,7 @@
                                     </label>
                                 </div>
                             </td>
-                            <td>Open red</td>
+                            <td>Open red with more than 48 hours</td>
                             <td class="display-supplier">&nbsp;</td>
                             <td class="display-customer">&nbsp;</td>
                             <td class="display-data"></td>
@@ -98,7 +98,7 @@
                                     </label>
                                 </div>
                             </td>
-                            <td>Closed white</td>
+                            <td>Closed white today</td>
                             <td class="display-supplier">&nbsp;</td>
                             <td class="display-customer">&nbsp;</td>
                             <td class="display-data"></td>
@@ -112,7 +112,7 @@
                                     </label>
                                 </div>
                             </td>
-                            <td>Closed yellow</td>
+                            <td>Closed yellow today</td>
                             <td class="display-supplier">&nbsp;</td>
                             <td class="display-customer">&nbsp;</td>
                             <td class="display-data"></td>
@@ -126,7 +126,7 @@
                                     </label>
                                 </div>
                             </td>
-                            <td>Closed red</td>
+                            <td>Closed red today</td>
                             <td class="display-supplier">&nbsp;</td>
                             <td class="display-customer">&nbsp;</td>
                             <td class="display-data"></td>
@@ -155,7 +155,7 @@
                                     </label>
                                 </div>
                             </td>
-                            <td>No activity white</td>
+                            <td>No activity white today</td>
                             <td class="display-supplier">&nbsp;</td>
                             <td class="display-customer">&nbsp;</td>
                             <td class="display-data"></td>
@@ -169,7 +169,7 @@
                                     </label>
                                 </div>
                             </td>
-                            <td>No activity yellow</td>
+                            <td>No activity yellow today</td>
                             <td class="display-supplier">&nbsp;</td>
                             <td class="display-customer">&nbsp;</td>
                             <td class="display-data"></td>
@@ -183,7 +183,7 @@
                                     </label>
                                 </div>
                             </td>
-                            <td>No activity red</td>
+                            <td>No activity red today</td>
                             <td class="display-supplier">&nbsp;</td>
                             <td class="display-customer">&nbsp;</td>
                             <td class="display-data"></td>
@@ -212,7 +212,7 @@
                                     </label>
                                 </div>
                             </td>
-                            <td>Escalated white</td>
+                            <td>Escalated white today</td>
                             <td class="display-supplier">&nbsp;</td>
                             <td class="display-customer">&nbsp;</td>
                             <td class="display-data"></td>
@@ -226,7 +226,7 @@
                                     </label>
                                 </div>
                             </td>
-                            <td>Escalated yellow</td>
+                            <td>Escalated yellow today</td>
                             <td class="display-supplier">&nbsp;</td>
                             <td class="display-customer">&nbsp;</td>
                             <td class="display-data"></td>
@@ -240,7 +240,7 @@
                                     </label>
                                 </div>
                             </td>
-                            <td>Escalated red</td>
+                            <td>Escalated red today</td>
                             <td class="display-supplier">&nbsp;</td>
                             <td class="display-customer">&nbsp;</td>
                             <td class="display-data"></td>
