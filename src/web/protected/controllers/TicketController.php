@@ -228,9 +228,11 @@ class TicketController extends Controller
         
         if ($statistcs !== null) {
             foreach ($statistcs as $value) {
+                $escaleted = $value->id_status === 3 ? 'rgb(34, 20, 20)' : 'rgb(90, 90, 90)';
                 $data['aaData'][] = array(
                     $value->carrier . 
                     '<input type="hidden" value="'.$value->id.'" rel="'.$value->id.'" name="id[]">' . 
+                    '<input type="hidden" value="'.$escaleted.'"  name="id_status[]">' . 
                     '<input type="hidden" value="'.$value->color.'" name="color[]">', 
                     $value->user_open_ticket != null ? $value->idUser->username : (strlen(Carrier::getCarriers(true, $value->id)) <= 9 ? Carrier::getCarriers(true, $value->id) : substr(Carrier::getCarriers(true, $value->id), 0, 9) .'...'),
                     strlen(Carrier::getCarriers(true, $value->id)) <= 9 ? Carrier::getCarriers(true, $value->id) : substr(Carrier::getCarriers(true, $value->id), 0, 9) .'...', 

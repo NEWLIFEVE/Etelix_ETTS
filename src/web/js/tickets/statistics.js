@@ -82,9 +82,10 @@ function ajaxStatistics(date, carrier)
 function changeBackground()
 {
     $('#tbl-datatable tbody tr').each(function(i){
-        $('#tbl-datatable tbody tr')
-                .eq(i)
-                .css('background', $(this).find('td').find('input[name="color[]"]').val());
+        $('#tbl-datatable tbody tr').eq(i).css({
+                        'background': $(this).find('td').find('input[name="color[]"]').val(),
+                        'color': $(this).find('td').find('input[name="id_status[]"]').val()
+                    });
     });
 }
 
