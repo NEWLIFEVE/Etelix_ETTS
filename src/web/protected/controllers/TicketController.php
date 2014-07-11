@@ -10,6 +10,12 @@ class TicketController extends Controller
      */
     public $layout='//layouts/column2';
     
+    public function init()
+    {
+        parent::beforeAction($this);
+    }
+
+
     /**
      * @access public
      * @return array

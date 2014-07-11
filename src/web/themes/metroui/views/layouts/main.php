@@ -41,9 +41,9 @@
                         <?php if ($items): ?>
                             <?php for ($i = 0; $i < count($items); $i++): ?>
                                 <div class="element">
-                                    <?php echo CHtml::link('<i class="'.Utility::menuIcon($items[$i]['label']).'"></i> '.$items[$i]['label'], '#', array('class' => 'dropdown-toggle')); ?>
+                                    <?php echo CHtml::link('<i class="'.Utility::menuIcon($items[$i]['label']).'"></i> '.$items[$i]['label'], !isset($items[$i]['items']) ? $items[$i]['url'] : '#', array('class' => 'dropdown-toggle')); ?>
                                     <?php 
-                                    if (count($items[$i]['items'])) {
+                                    if (isset($items[$i]['items'])) {
                                     $this->widget('zii.widgets.CMenu', array(
                                             'items'=>$items[$i]['items'],
                                             'htmlOptions'=>array(
@@ -101,7 +101,7 @@
                     </h1>
                     <div class="grid">
                         <div class="row">
-                            <!--<pre><?php // print_r($items); ?></pre>-->
+                            <pre><?php print_r($items); ?></pre>
                             <?php echo $content; ?>
                         </div>
                     </div>

@@ -779,3 +779,19 @@ div.pre-loader {
 .table-report .table-report-header .span3.offset5 .input-control.text.span3 {
     margin-left: -15px;
 }
+
+.content-radio {
+    width: 100%;
+}
+
+.content-radio .input-statistics {
+    width: 58% !important; 
+    text-align: right; 
+    float: left;
+}
+
+.content-radio .link-statistics {
+    width: 42% !important; 
+    padding: 8px 0; 
+    float: left;
+}

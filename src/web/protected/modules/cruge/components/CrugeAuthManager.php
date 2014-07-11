@@ -1870,12 +1870,12 @@ class CrugeAuthManager extends CAuthManager implements IAuthManager
         }
 
         $r = array();
-
+        
         // todas las TAREAS a las que puede acceder este usuario
         // esten autorizadas o no
 
         $tasklist = $this->tasks;
-
+        
         // por tanto a lo anterior: listo todas las tareas de tipo menuitem
         $itemArray = array();
         foreach ($tasklist as $task) {
@@ -1899,6 +1899,7 @@ class CrugeAuthManager extends CAuthManager implements IAuthManager
         foreach ($itemArray as $menuitem) {
             // child menu items
             $items = array();
+            
             // agrega al menuitem de 1er nivel todas los subitems (tasks)
             // sin importar si fueron otorgadas al usuario con checkAccess
             //
@@ -1912,18 +1913,39 @@ class CrugeAuthManager extends CAuthManager implements IAuthManager
             }
             // top level menu
             if (!sizeof($items)) {
-                $items = null;
-            } else
+                //$items = null;
+                if (Yii::app()->user->isSuperAdmin) {
+                    $items = null;
+                } else {
+                    $r[] = array(
+                        'label' => $this->getLabelMenu($menuitem->getDescription()),
+                        'url' => $this->getUrlMenu($menuitem->getDescription()),
+                    );
+                }
+            } else {
                 $r[] = array(
                     'label' => $this->getTaskText($menuitem),
                     'url' => '',
                     'items' => $items,
                 );
+            }
         }
         return $r;
     }
 
-
+    public function getLabelMenu($description)
+    {
+        $description = explode('.', $description);
+        return ltrim($description[0], ':');
+    }
+    
+    public function getUrlMenu($description)
+    {
+        $description = explode('.', $description);
+        $d = '/' . preg_replace('/_/', '/', $description[1]);
+        return $d;
+    }
+    
     /**
      * enumControllers
      *    lista los nombres de los controllers declarados.

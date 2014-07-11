@@ -20,4 +20,25 @@ class Controller extends CController
 	 * for more details on how to specify this property.
 	 */
 	public $breadcrumbs=array();
+        
+        /*
+        * Antes de que se ejecute una acción
+        */
+        public function beforeAction($action) 
+        {
+            //Yii::log(__METHOD__ . ' isGuest: ' . (Yii::app()->getUser()->isGuest ? 'Si' : 'No'));
+
+            // Cada vez que se ejecuta una acción se actualiza el tiempo de expiración
+            // TODO: integrar con cruge o mejorar
+            $sys = Yii::app()->user->um->getDefaultSystem();
+            $duration = $sys->getn('sessionmaxdurationmins');
+            // Encuentra la última sesión y actualiza la fecha de expiración
+            $model = CrugeSession::model()->findLast(Yii::app()->user->id);
+            if ($model != null) {
+                $model->expire = CrugeUtil::makeExpirationDateTime($duration);
+                $model->save();
+            }
+
+            return true;
+        }
 }

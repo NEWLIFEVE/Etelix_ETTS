@@ -3,6 +3,12 @@
 
 ##Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
 
+11/07/2014
+- A la tabla de estadísticas se le agrego un ancla para llegar rápidamente al datatable
+- Ahora se pueden crear menus de un solo elemento en cruge. La sintaxis es:
+    nombre: "menu_nombre_menu"
+    descripción: ":Label menu .controller_action"
+
 10/07/2014
 - Se creó la operación "responder-tickets" en cruge, la cual permite seleccionar a que rol se le permite responder tickets
 - Se creó la operación "escalar-tickets" en cruge, la cual permite seleccionar a que rol se le permite escalar tickets

@@ -34,11 +34,18 @@
                     <tbody>
                         <tr class="white">
                             <td>
-                                <div title="Open white" class="input-control radio default-style">
-                                    <label>
-                                        <input checked="checked" type="radio" name="rb-report" id="report-1" value="1">
-                                        <span class="check"></span>
-                                    </label>
+                                <div class="content-radio">
+                                    <div class="input-statistics">
+                                        <div class="input-control radio default-style">
+                                            <label>
+                                                <input checked="checked" type="radio" name="rb-report" id="report-1" value="1">
+                                                <span class="check"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="link-statistics">
+                                        <a href="#table-statistisc" title="Go to the table" class="go-link"><i class="icon-arrow-down-5"></i></a>
+                                    </div>
                                 </div>
                             </td>
                             <td>Open white within 24 hours</td>
@@ -48,11 +55,18 @@
                         </tr>
                         <tr class="yellow">
                             <td>
-                                <div title="Open yellow" class="input-control radio default-style">
-                                    <label>
-                                        <input type="radio" name="rb-report" id="report-2" value="2">
-                                        <span class="check"></span>
-                                    </label>
+                                <div class="content-radio">
+                                    <div class="input-statistics">
+                                        <div class="input-control radio default-style">
+                                            <label>
+                                                <input type="radio" name="rb-report" id="report-2" value="2">
+                                                <span class="check"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="link-statistics">
+                                        <a href="#table-statistisc" title="Go to the table" class="go-link"><i class="icon-arrow-down-5"></i></a>
+                                    </div>
                                 </div>
                             </td>
                             <td>Open yellow within 48 hours</td>
@@ -62,11 +76,18 @@
                         </tr>
                         <tr class="red">
                             <td>
-                                <div title="Open red" class="input-control radio default-style">
-                                    <label>
-                                        <input type="radio" name="rb-report" id="report-3" value="3">
-                                        <span class="check"></span>
-                                    </label>
+                                <div class="content-radio">
+                                    <div class="input-statistics">
+                                        <div class="input-control radio default-style">
+                                            <label>
+                                                <input type="radio" name="rb-report" id="report-3" value="3">
+                                                <span class="check"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="link-statistics">
+                                        <a href="#table-statistisc" title="Go to the table" class="go-link"><i class="icon-arrow-down-5"></i></a>
+                                    </div>
                                 </div>
                             </td>
                             <td>Open red with more than 48 hours</td>
@@ -76,11 +97,18 @@
                         </tr>
                         <tr class="total">
                             <td>
-                                <div title="Total open" class="input-control radio default-style">
-                                    <label>
-                                        <input type="radio" name="rb-report" id="report-4" value="13">
-                                        <span class="check"></span>
-                                    </label>
+                                <div class="content-radio">
+                                    <div class="input-statistics">
+                                        <div class="input-control radio default-style">
+                                            <label>
+                                                <input type="radio" name="rb-report" id="report-4" value="13">
+                                                <span class="check"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="link-statistics">
+                                        <a href="#table-statistisc" title="Go to the table" class="go-link"><i class="icon-arrow-down-5"></i></a>
+                                    </div>
                                 </div>
                             </td>
                             <td>Total open</td>
@@ -91,11 +119,18 @@
                         
                         <tr class="white">
                             <td>
-                                <div title="Closed white" class="input-control radio default-style">
-                                    <label>
-                                        <input type="radio" name="rb-report" id="report-5" value="4">
-                                        <span class="check"></span>
-                                    </label>
+                                <div class="content-radio">
+                                    <div class="input-statistics">
+                                        <div class="input-control radio default-style">
+                                            <label>
+                                                <input type="radio" name="rb-report" id="report-5" value="4">
+                                                <span class="check"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="link-statistics">
+                                        <a href="#table-statistisc" title="Go to the table" class="go-link"><i class="icon-arrow-down-5"></i></a>
+                                    </div>
                                 </div>
                             </td>
                             <td>Closed white today</td>
@@ -105,11 +140,18 @@
                         </tr>
                         <tr class="yellow">
                             <td>
-                                <div title="Closed yellow" class="input-control radio default-style">
-                                    <label>
-                                        <input type="radio" name="rb-report" id="report-6" value="5">
-                                        <span class="check"></span>
-                                    </label>
+                                <div class="content-radio">
+                                    <div class="input-statistics">
+                                        <div class="input-control radio default-style">
+                                            <label>
+                                                <input type="radio" name="rb-report" id="report-6" value="5">
+                                                <span class="check"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="link-statistics">
+                                        <a href="#table-statistisc" title="Go to the table" class="go-link"><i class="icon-arrow-down-5"></i></a>
+                                    </div>
                                 </div>
                             </td>
                             <td>Closed yellow today</td>
@@ -119,11 +161,18 @@
                         </tr>
                         <tr class="red">
                             <td>
-                                <div title="Closed red" class="input-control radio default-style">
-                                    <label>
-                                        <input type="radio" name="rb-report" id="report-7" value="6">
-                                        <span class="check"></span>
-                                    </label>
+                                <div class="content-radio">
+                                    <div class="input-statistics">
+                                        <div class="input-control radio default-style">
+                                            <label>
+                                                <input type="radio" name="rb-report" id="report-7" value="6">
+                                                <span class="check"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="link-statistics">
+                                        <a href="#table-statistisc" title="Go to the table" class="go-link"><i class="icon-arrow-down-5"></i></a>
+                                    </div>
                                 </div>
                             </td>
                             <td>Closed red today</td>
@@ -133,11 +182,18 @@
                         </tr>
                         <tr class="total">
                             <td>
-                                <div title="Total closed" class="input-control radio default-style">
-                                    <label>
-                                        <input type="radio" name="rb-report" id="report-8" value="14">
-                                        <span class="check"></span>
-                                    </label>
+                                <div class="content-radio">
+                                    <div class="input-statistics">
+                                        <div class="input-control radio default-style">
+                                            <label>
+                                                <input type="radio" name="rb-report" id="report-8" value="14">
+                                                <span class="check"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="link-statistics">
+                                        <a href="#table-statistisc" title="Go to the table" class="go-link"><i class="icon-arrow-down-5"></i></a>
+                                    </div>
                                 </div>
                             </td>
                             <td>Total closed</td>
@@ -148,11 +204,18 @@
                         
                         <tr class="white">
                             <td>
-                                <div title="No activity white" class="input-control radio default-style">
-                                    <label>
-                                        <input type="radio" name="rb-report" id="report-9" value="7">
-                                        <span class="check"></span>
-                                    </label>
+                                <div class="content-radio">
+                                    <div class="input-statistics">
+                                        <div class="input-control radio default-style">
+                                            <label>
+                                                <input type="radio" name="rb-report" id="report-9" value="7">
+                                                <span class="check"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="link-statistics">
+                                        <a href="#table-statistisc" title="Go to the table" class="go-link"><i class="icon-arrow-down-5"></i></a>
+                                    </div>
                                 </div>
                             </td>
                             <td>No activity white today</td>
@@ -162,11 +225,18 @@
                         </tr>
                         <tr class="yellow">
                             <td>
-                                <div title="No activity yellow" class="input-control radio default-style">
-                                    <label>
-                                        <input type="radio" name="rb-report" id="report-10" value="8">
-                                        <span class="check"></span>
-                                    </label>
+                                <div class="content-radio">
+                                    <div class="input-statistics">
+                                        <div class="input-control radio default-style">
+                                            <label>
+                                                <input type="radio" name="rb-report" id="report-10" value="8">
+                                                <span class="check"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="link-statistics">
+                                        <a href="#table-statistisc" title="Go to the table" class="go-link"><i class="icon-arrow-down-5"></i></a>
+                                    </div>
                                 </div>
                             </td>
                             <td>No activity yellow today</td>
@@ -176,11 +246,18 @@
                         </tr>
                         <tr class="red">
                             <td>
-                                <div title="No activity red" class="input-control radio default-style">
-                                    <label>
-                                        <input type="radio" name="rb-report" id="report-11" value="9">
-                                        <span class="check"></span>
-                                    </label>
+                                <div class="content-radio">
+                                    <div class="input-statistics">
+                                        <div class="input-control radio default-style">
+                                            <label>
+                                                <input type="radio" name="rb-report" id="report-11" value="9">
+                                                <span class="check"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="link-statistics">
+                                        <a href="#table-statistisc" title="Go to the table" class="go-link"><i class="icon-arrow-down-5"></i></a>
+                                    </div>
                                 </div>
                             </td>
                             <td>No activity red today</td>
@@ -190,11 +267,18 @@
                         </tr>
                         <tr class="total">
                             <td>
-                                <div title="Total no activity" class="input-control radio default-style">
-                                    <label>
-                                        <input type="radio" name="rb-report" id="report-12" value="15">
-                                        <span class="check"></span>
-                                    </label>
+                                <div class="content-radio">
+                                    <div class="input-statistics">
+                                        <div class="input-control radio default-style">
+                                            <label>
+                                                <input type="radio" name="rb-report" id="report-12" value="15">
+                                                <span class="check"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="link-statistics">
+                                        <a href="#table-statistisc" title="Go to the table" class="go-link"><i class="icon-arrow-down-5"></i></a>
+                                    </div>
                                 </div>
                             </td>
                             <td>Total no activity</td>
@@ -205,11 +289,18 @@
                         
                         <tr class="white">
                             <td>
-                                <div title="Escalated white" class="input-control radio default-style">
-                                    <label>
-                                        <input type="radio" name="rb-report" id="report-13" value="10">
-                                        <span class="check"></span>
-                                    </label>
+                                <div class="content-radio">
+                                    <div class="input-statistics">
+                                        <div class="input-control radio default-style">
+                                            <label>
+                                                <input type="radio" name="rb-report" id="report-13" value="10">
+                                                <span class="check"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="link-statistics">
+                                        <a href="#table-statistisc" title="Go to the table" class="go-link"><i class="icon-arrow-down-5"></i></a>
+                                    </div>
                                 </div>
                             </td>
                             <td>Escalated white today</td>
@@ -219,11 +310,18 @@
                         </tr>
                         <tr class="yellow">
                             <td>
-                                <div title="Escalated yellow" class="input-control radio default-style">
-                                    <label>
-                                        <input type="radio" name="rb-report" id="report-14" value="11">
-                                        <span class="check"></span>
-                                    </label>
+                                <div class="content-radio">
+                                    <div class="input-statistics">
+                                        <div class="input-control radio default-style">
+                                            <label>
+                                                <input type="radio" name="rb-report" id="report-14" value="11">
+                                                <span class="check"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="link-statistics">
+                                        <a href="#table-statistisc" title="Go to the table" class="go-link"><i class="icon-arrow-down-5"></i></a>
+                                    </div>
                                 </div>
                             </td>
                             <td>Escalated yellow today</td>
@@ -233,11 +331,18 @@
                         </tr>
                         <tr class="red">
                             <td>
-                                <div title="Escalated red" class="input-control radio default-style">
-                                    <label>
-                                        <input type="radio" name="rb-report" id="report-15" value="12">
-                                        <span class="check"></span>
-                                    </label>
+                                <div class="content-radio">
+                                    <div class="input-statistics">
+                                        <div class="input-control radio default-style">
+                                            <label>
+                                                <input type="radio" name="rb-report" id="report-15" value="12">
+                                                <span class="check"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="link-statistics">
+                                        <a href="#table-statistisc" title="Go to the table" class="go-link"><i class="icon-arrow-down-5"></i></a>
+                                    </div>
                                 </div>
                             </td>
                             <td>Escalated red today</td>
@@ -247,11 +352,18 @@
                         </tr>
                         <tr class="total">
                             <td>
-                                <div title="Total escalated" class="input-control radio default-style">
-                                    <label>
-                                        <input type="radio" name="rb-report" id="report-16" value="16">
-                                        <span class="check"></span>
-                                    </label>
+                                <div class="content-radio">
+                                    <div class="input-statistics">
+                                        <div class="input-control radio default-style">
+                                            <label>
+                                                <input type="radio" name="rb-report" id="report-16" value="16">
+                                                <span class="check"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="link-statistics">
+                                        <a href="#table-statistisc" title="Go to the table" class="go-link"><i class="icon-arrow-down-5"></i></a>
+                                    </div>
                                 </div>
                             </td>
                             <td>Total Escalated</td>

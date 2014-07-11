@@ -1,4 +1,4 @@
-<div id="demo">
+<div id="table-statistisc">
     <table cellpadding="0" cellspacing="0" border="0" class="display" id="tbl-datatable" width="100%">
         <thead>
             <th>Type</th>
