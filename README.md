@@ -4,16 +4,36 @@
 ##Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
 
 10/07/2014
-    - Se creó la operación "responder-tickets" en cruge, la cual permite seleccionar a que rol se le permite responder tickets
-    - Se creó la operación "escalar-tickets" en cruge, la cual permite seleccionar a que rol se le permite escalar tickets
-    - Se creó la operación "cerrar-tickets" en cruge, la cual permite seleccionar a que rol se le permite cerrar tickets
-    - Se creó la operación "responder-como-carrier" en cruge, la cual permite seleccionar a que rol se le permite responder tickets como el carrier
-    - Se creó la operación "operacion-interno-subadmin" en cruge, la cual son las operaciones similares que tienen usuarios subadmin e internos
-    - Agregada las columnas customer y supplier en el resumen del excel y en el mail.
-    - Los tickets escalados se muestran en negrita en el excel, en la página y por correo
+- Se creó la operación "responder-tickets" en cruge, la cual permite seleccionar a que rol se le permite responder tickets
+- Se creó la operación "escalar-tickets" en cruge, la cual permite seleccionar a que rol se le permite escalar tickets
+- Se creó la operación "cerrar-tickets" en cruge, la cual permite seleccionar a que rol se le permite cerrar tickets
+- Se creó la operación "responder-como-carrier" en cruge, la cual permite seleccionar a que rol se le permite responder tickets como el carrier
+- Se creó la operación "operacion-interno-subadmin" en cruge, la cual son las operaciones similares que tienen usuarios subadmin e internos
+- Agregada las columnas customer y supplier en el resumen del excel y en el mail.
+- Los tickets escalados se muestran en negrita en el excel, en la página y por correo
+- La columna categoría de las estadísticas quedó de la siguiente forma:
+    * Open white within 24 hours
+    * Open yellow within 48 hours
+    * Open red with more than 48 hours
+    * Total open
+    ==================================
+    * Closed white today
+    * Closed yellow today
+    * Closed red today
+    * Total closed
+    ==================================
+    * No activity white today
+    * No activity yellow today
+    * No activity red today
+    * Total no activity
+    ==================================
+    * Escalated white today
+    * Escalated yellow today
+    * Escalated red today
+    * Total Escalated
 
 09/07/2014
-    - Modificación del resumen de reportes, se agregan las columnas de customer y supplier en la página
+- Modificación del resumen de reportes, se agregan las columnas de customer y supplier en la página
 
 08/07/2014
 - Ahora se puede elegir el rol en la interfaz de crear usuarios
