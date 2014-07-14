@@ -43,36 +43,48 @@ function ajaxStatistics(date, carrier)
         dataType:'json',
         data:{'date':date, 'carrier':carrier},
         success:function(data) {
+            // Con el ciclo seteamos las cantidades separadas por tipo de carrier
             for (var i = 0; i < data.length; i++) {
-                 $('.display-data').eq(i).text(data[i].totalByColors);
-                 $('.display-supplier').eq(i).text(data[i].totalByCarriers.Supplier != null ? data[i].totalByCarriers.Supplier : 0);
-                 $('.display-customer').eq(i).text(data[i].totalByCarriers.Customer != null ? data[i].totalByCarriers.Customer : 0);
+                var a = $('.display-data').eq(i).text(data[i].totalByColors),
+                b = $('.subtract-one-day').eq(i).text(data[i].subtractOneDay),
+                c = $('.subtract-seven-days').eq(i).text(data[i].subtractSevenDays),
+                d = $('.display-supplier').eq(i).text(data[i].totalByCarriers.Supplier != null ? data[i].totalByCarriers.Supplier : 0),
+                e = $('.display-customer').eq(i).text(data[i].totalByCarriers.Customer != null ? data[i].totalByCarriers.Customer : 0);
+                checkMargin(a.text(), b.text(), $('.arrow'), i);   
+                checkMargin(a.text(), c.text(), $('.arrow2'), i);   
             }
-            $('.total-data').eq(0).text(data[0].totalByColors + data[1].totalByColors + data[2].totalByColors);
-            $('.total-data').eq(1).text(data[3].totalByColors + data[4].totalByColors + data[5].totalByColors);
-            $('.total-data').eq(2).text(data[6].totalByColors + data[7].totalByColors + data[8].totalByColors);
-            $('.total-data').eq(3).text(data[9].totalByColors + data[10].totalByColors + data[11].totalByColors);
-            var totalSupplier1 = parseInt($('.display-supplier').eq(0).html()) + parseInt($('.display-supplier').eq(1).html()) + parseInt($('.display-supplier').eq(2).html()),
-                totalSupplier2 = parseInt($('.display-supplier').eq(3).html()) + parseInt($('.display-supplier').eq(4).html()) + parseInt($('.display-supplier').eq(5).html()),
-                totalSupplier3 = parseInt($('.display-supplier').eq(6).html()) + parseInt($('.display-supplier').eq(7).html()) + parseInt($('.display-supplier').eq(8).html()),
-                totalSupplier4 = parseInt($('.display-supplier').eq(9).html()) + parseInt($('.display-supplier').eq(10).html()) + parseInt($('.display-supplier').eq(11).html()),
-                totalCustomer1 = parseInt($('.display-customer').eq(0).html()) + parseInt($('.display-customer').eq(1).html()) + parseInt($('.display-customer').eq(2).html()),
-                totalCustomer2 = parseInt($('.display-customer').eq(3).html()) + parseInt($('.display-customer').eq(4).html()) + parseInt($('.display-customer').eq(5).html()),
-                totalCustomer3 = parseInt($('.display-customer').eq(6).html()) + parseInt($('.display-customer').eq(7).html()) + parseInt($('.display-customer').eq(8).html()),
-                totalCustomer4 = parseInt($('.display-customer').eq(9).html()) + parseInt($('.display-customer').eq(10).html()) + parseInt($('.display-customer').eq(11).html());
-           
-            $('.total-supplier').eq(0).text(totalSupplier1);
-            $('.total-supplier').eq(1).text(totalSupplier2);
-            $('.total-supplier').eq(2).text(totalSupplier3);
-            $('.total-supplier').eq(3).text(totalSupplier4);
             
-            $('.total-customer').eq(0).text(totalCustomer1);
-            $('.total-customer').eq(1).text(totalCustomer2);
-            $('.total-customer').eq(2).text(totalCustomer3);
-            $('.total-customer').eq(3).text(totalCustomer4);
-                       
+            // Se setean los totales
+            for (var i = 0; i < 4; i++) {
+                var a = $('.total-data').eq(i).text(data[i * 3].totalByColors + data[(i * 3) + 1].totalByColors + data[(i * 3) + 2].totalByColors),
+                b = $('.total-one-day').eq(i).text(data[i * 3].subtractOneDay + data[(i * 3) + 1].subtractOneDay + data[(i * 3) + 2].subtractOneDay),
+                c = $('.total-seven-days').eq(i).text(data[i * 3].subtractSevenDays + data[(i * 3) + 1].subtractSevenDays + data[(i * 3) + 2].subtractSevenDays),
+                d = $('.total-supplier').eq(i).text(parseInt($('.display-supplier').eq(i * 3).html()) + parseInt($('.display-supplier').eq((i * 3) + 1).html()) + parseInt($('.display-supplier').eq((i * 3) + 2).html())),
+                e = $('.total-customer').eq(i).text(parseInt($('.display-customer').eq(i * 3).html()) + parseInt($('.display-customer').eq((i * 3) + 1).html()) + parseInt($('.display-customer').eq((i * 3) + 2).html()));
+                checkMargin(a.text(), b.text(), $('.total-arrow'), i); 
+                checkMargin(a.text(), c.text(), $('.total-arrow2'), i); 
+            }         
         }
     });
+}
+
+/**
+ * 
+ * @param {int} a
+ * @param {int} b
+ * @param {object} div
+ * @param {int} index
+ * @returns {void}
+ */
+function checkMargin(a, b, div, index)
+{
+    if (parseInt(a) > parseInt(b)) {
+        div.eq(index).html('<i class="icon-arrow-down fg-red"></i>');
+    } else if (parseInt(a) < parseInt(b)) {
+        div.eq(index).html('<i class="icon-arrow-up fg-green"></i>');
+    } else if (parseInt(a) === parseInt(b)) {
+        div.eq(index).html('<div class="rot90"><i class="icon-pause-2"></i></div>');
+    } 
 }
 
 /**
@@ -117,6 +129,10 @@ function initExport(boton)
     }
 }
 
+/**
+ * Función para mostrar el ancla en la primera tabla de estadísticas
+ * @returns {void}
+ */
 function goLink()
 {
     $('input[type="radio"]').each(function(i){
@@ -128,31 +144,29 @@ function goLink()
     });
 }
 
+/**
+ * Función para animar el scroll al darle click al ancla de la primera tabla de estadísticas
+ * @returns {void}
+ */
 function animatedScrolling()
 {
-     $('a[href*=#]').click(function() {
+    $('a[href*=#]').click(function() {
+        if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'')
+             && location.hostname == this.hostname) {
+            var $target = $(this.hash);
 
-     if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'')
-         && location.hostname == this.hostname) {
+            $target = $target.length && $target || $('[name=' + this.hash.slice(1) +']');
 
-             var $target = $(this.hash);
-
-             $target = $target.length && $target || $('[name=' + this.hash.slice(1) +']');
-
-             if ($target.length) {
+            if ($target.length) {
 
                  var targetOffset = $target.offset().top;
 
                  $('html,body').animate({scrollTop: targetOffset}, 1000);
 
                  return false;
-
             }
-
-       }
-
+        }
    });
-
 }
 
 function load()

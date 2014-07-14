@@ -29,6 +29,10 @@
                             <th>Supplier</th>
                             <th>Customer</th>
                             <th>Total</th>
+                            <th></th>
+                            <th>Previous Day</th>
+                            <th></th>
+                            <th>A Week Ago</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -52,6 +56,10 @@
                             <td class="display-supplier">&nbsp;</td>
                             <td class="display-customer">&nbsp;</td>
                             <td class="display-data"></td>
+                            <td class="arrow"></td>
+                            <td class="subtract-one-day"></td>
+                            <td class="arrow2"></td>
+                            <td class="subtract-seven-days"></td>
                         </tr>
                         <tr class="yellow">
                             <td>
@@ -73,6 +81,10 @@
                             <td class="display-supplier">&nbsp;</td>
                             <td class="display-customer">&nbsp;</td>
                             <td class="display-data"></td>
+                            <td class="arrow"></td>
+                            <td class="subtract-one-day"></td>
+                            <td class="arrow2"></td>
+                            <td class="subtract-seven-days"></td>
                         </tr>
                         <tr class="red">
                             <td>
@@ -94,6 +106,10 @@
                             <td class="display-supplier">&nbsp;</td>
                             <td class="display-customer">&nbsp;</td>
                             <td class="display-data"></td>
+                            <td class="arrow"></td>
+                            <td class="subtract-one-day"></td>
+                            <td class="arrow2"></td>
+                            <td class="subtract-seven-days"></td>
                         </tr>
                         <tr class="total">
                             <td>
@@ -115,6 +131,10 @@
                             <td class="total-supplier">&nbsp;</td>
                             <td class="total-customer">&nbsp;</td>
                             <td class="total-data"></td>
+                            <td class="total-arrow"></td>
+                            <td class="total-one-day"></td>
+                            <td class="total-arrow2"></td>
+                            <td class="total-seven-days"></td>
                         </tr>
                         
                         <tr class="white">
@@ -137,6 +157,10 @@
                             <td class="display-supplier">&nbsp;</td>
                             <td class="display-customer">&nbsp;</td>
                             <td class="display-data"></td>
+                            <td class="arrow"></td>
+                            <td class="subtract-one-day"></td>
+                            <td class="arrow2"></td>
+                            <td class="subtract-seven-days"></td>
                         </tr>
                         <tr class="yellow">
                             <td>
@@ -158,6 +182,10 @@
                             <td class="display-supplier">&nbsp;</td>
                             <td class="display-customer">&nbsp;</td>
                             <td class="display-data"></td>
+                            <td class="arrow"></td>
+                            <td class="subtract-one-day"></td>
+                            <td class="arrow2"></td>
+                            <td class="subtract-seven-days"></td>
                         </tr>
                         <tr class="red">
                             <td>
@@ -179,6 +207,10 @@
                             <td class="display-supplier">&nbsp;</td>
                             <td class="display-customer">&nbsp;</td>
                             <td class="display-data"></td>
+                            <td class="arrow"></td>
+                            <td class="subtract-one-day"></td>
+                            <td class="arrow2"></td>
+                            <td class="subtract-seven-days"></td>
                         </tr>
                         <tr class="total">
                             <td>
@@ -200,6 +232,10 @@
                             <td class="total-supplier">&nbsp;</td>
                             <td class="total-customer">&nbsp;</td>
                             <td class="total-data"></td>
+                            <td class="total-arrow"></td>
+                            <td class="total-one-day"></td>
+                            <td class="total-arrow2"></td>
+                            <td class="total-seven-days"></td>
                         </tr>
                         
                         <tr class="white">
@@ -222,6 +258,10 @@
                             <td class="display-supplier">&nbsp;</td>
                             <td class="display-customer">&nbsp;</td>
                             <td class="display-data"></td>
+                            <td class="arrow"></td>
+                            <td class="subtract-one-day"></td>
+                            <td class="arrow2"></td>
+                            <td class="subtract-seven-days"></td>
                         </tr>
                         <tr class="yellow">
                             <td>
@@ -243,6 +283,10 @@
                             <td class="display-supplier">&nbsp;</td>
                             <td class="display-customer">&nbsp;</td>
                             <td class="display-data"></td>
+                            <td class="arrow"></td>
+                            <td class="subtract-one-day"></td>
+                            <td class="arrow2"></td>
+                            <td class="subtract-seven-days"></td>
                         </tr>
                         <tr class="red">
                             <td>
@@ -264,6 +308,10 @@
                             <td class="display-supplier">&nbsp;</td>
                             <td class="display-customer">&nbsp;</td>
                             <td class="display-data"></td>
+                            <td class="arrow"></td>
+                            <td class="subtract-one-day"></td>
+                            <td class="arrow2"></td>
+                            <td class="subtract-seven-days"></td>
                         </tr>
                         <tr class="total">
                             <td>
@@ -285,6 +333,10 @@
                             <td class="total-supplier">&nbsp;</td>
                             <td class="total-customer">&nbsp;</td>
                             <td class="total-data"></td>
+                            <td class="total-arrow"></td>
+                            <td class="total-one-day"></td>
+                            <td class="total-arrow2"></td>
+                            <td class="total-seven-days"></td>
                         </tr>
                         
                         <tr class="white">
@@ -307,6 +359,10 @@
                             <td class="display-supplier">&nbsp;</td>
                             <td class="display-customer">&nbsp;</td>
                             <td class="display-data"></td>
+                            <td class="arrow"></td>
+                            <td class="subtract-one-day"></td>
+                            <td class="arrow2"></td>
+                            <td class="subtract-seven-days"></td>
                         </tr>
                         <tr class="yellow">
                             <td>
@@ -328,6 +384,10 @@
                             <td class="display-supplier">&nbsp;</td>
                             <td class="display-customer">&nbsp;</td>
                             <td class="display-data"></td>
+                            <td class="arrow"></td>
+                            <td class="subtract-one-day"></td>
+                            <td class="arrow2"></td>
+                            <td class="subtract-seven-days"></td>
                         </tr>
                         <tr class="red">
                             <td>
@@ -349,6 +409,10 @@
                             <td class="display-supplier">&nbsp;</td>
                             <td class="display-customer">&nbsp;</td>
                             <td class="display-data"></td>
+                            <td class="arrow"></td>
+                            <td class="subtract-one-day"></td>
+                            <td class="arrow2"></td>
+                            <td class="subtract-seven-days"></td>
                         </tr>
                         <tr class="total">
                             <td>
@@ -370,6 +434,10 @@
                             <td class="total-supplier">&nbsp;</td>
                             <td class="total-customer">&nbsp;</td>
                             <td class="total-data"></td>
+                            <td class="total-arrow"></td>
+                            <td class="total-one-day"></td>
+                            <td class="total-arrow2"></td>
+                            <td class="total-seven-days"></td>
                         </tr>
                     </tbody>
                 </table>

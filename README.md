@@ -3,6 +3,11 @@
 
 ##Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
 
+14/07/2014
+- Se borró el import de controllers en el config ya que gasta memoria innecesaria
+- Se pasó el método estático blinkTr($idTicket) que se encontraba en DescriptionTickeController al modelo DescriptionTicket
+- Columna que muestra la diferencia en tickets del día y la semana anterior
+
 11/07/2014
 - A la tabla de estadísticas se le agrego un ancla para llegar rápidamente al datatable
 - Ahora se pueden crear menus de un solo elemento en cruge. La sintaxis es:

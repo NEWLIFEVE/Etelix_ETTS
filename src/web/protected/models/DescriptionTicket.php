@@ -186,4 +186,35 @@ class DescriptionTicket extends CActiveRecord
         
         return $isOk;
     }
+    
+    /**
+     * 
+     * @param int $idTicket
+     * @return string
+     */
+    public static function blinkTr($idTicket)
+    {
+        $userLogin=CrugeAuthassignment::getRoleUser();
+        $lastDescription=self::lastDescription($idTicket);
+        
+        if($lastDescription!=null)
+        {
+            if($userLogin=='C')
+            {
+                if($lastDescription->read_carrier == '0') 
+                {
+                    return 'blink';
+                }
+                return '';
+            }
+            else
+            {
+                if($lastDescription->read_internal == '0')
+                {
+                    return 'blink';
+                }
+                return '';
+            }
+        }
+    }
 }
