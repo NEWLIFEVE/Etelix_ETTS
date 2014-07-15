@@ -802,3 +802,17 @@ div.pre-loader {
 	rotation: 90deg;
 	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
 }
+
+.diagram {
+    width:90px; 
+    height: 90px; 
+    background: #FFF;
+}
+.diagram .diagram-yellow, .diagram .diagram-white, .diagram .diagram-red {
+    height:30px; 
+    float: left; 
+    clear: left;
+}
+.diagram .diagram-white {
+    border: 1px solid silver;
+}

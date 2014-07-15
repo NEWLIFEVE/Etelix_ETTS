@@ -87,6 +87,11 @@ function checkMargin(a, b, div, index)
     } 
 }
 
+function diagram()
+{
+    
+}
+
 /**
  * Cambio de los colores de los tr dependiendo del color del ticket
  * @returns {void}
@@ -96,7 +101,8 @@ function changeBackground()
     $('#tbl-datatable tbody tr').each(function(i){
         $('#tbl-datatable tbody tr').eq(i).css({
                         'background': $(this).find('td').find('input[name="color[]"]').val(),
-                        'color': $(this).find('td').find('input[name="id_status[]"]').val()
+                        'color': $(this).find('td').find('input[name="id_status[]"]').val(),
+                        'fontWeight': $(this).find('td').find('input[name="id_status[]"]').attr('rel')
                     });
     });
 }

@@ -3,6 +3,11 @@
 
 ##Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
 
+15/07/2014
+- Se agregaron las columnas "previous day" y "a week ago" en el excel y en el correo.
+- Los reportes ahora se ordenan por "carrier, date, hour".
+- A los tickets escalados se le puso font-weigth bold para que se notaran más en datatable
+
 14/07/2014
 - Se borró el import de controllers en el config ya que gasta memoria innecesaria
 - Se pasó el método estático blinkTr($idTicket) que se encontraba en DescriptionTickeController al modelo DescriptionTicket

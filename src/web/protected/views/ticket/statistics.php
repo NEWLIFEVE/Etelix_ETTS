@@ -130,7 +130,11 @@
                             <td>Total open</td>
                             <td class="total-supplier">&nbsp;</td>
                             <td class="total-customer">&nbsp;</td>
-                            <td class="total-data"></td>
+                            <td class="total-data" <!--title="<div class='diagram'>
+                                <div class='diagram-yellow'></div>
+                                <div class='diagram-white'></div>
+                                <div class='diagram-red'></div>
+                            </div>"-->></td>
                             <td class="total-arrow"></td>
                             <td class="total-one-day"></td>
                             <td class="total-arrow2"></td>
