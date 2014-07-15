@@ -31,7 +31,7 @@ class ReportCommand extends CConsoleCommand
         $table = $export->tableSummary();
         if ($table !== null) {
             $mail = new EnviarEmail;
-            if(!YII_DEBUG) $Address='noc@etelix.com';
+            if(!YII_DEBUG) $Address='revista@etelix.com';
             else $Address='auto@sacet.biz';
             $mail->enviar($table, $Address, '', strtoupper($nameReport), 'uploads/' . $nameReport . '.xlsx');   
         } 
