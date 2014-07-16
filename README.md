@@ -3,6 +3,10 @@
 
 ##Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
 
+16/07/2014
+- El cambio del menu de un solo elemento (11/07/2014) está causando conflictos y se dejó como estaba antes de esa modificación
+- Se colocó la imagen de up y down en el excel y el correo
+
 15/07/2014
 - Se agregaron las columnas "previous day" y "a week ago" en el excel y en el correo.
 - Los reportes ahora se ordenan por "carrier, date, hour".

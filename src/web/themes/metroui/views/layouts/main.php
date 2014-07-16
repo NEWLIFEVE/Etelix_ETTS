@@ -41,7 +41,7 @@
                         <?php if ($items): ?>
                             <?php for ($i = 0; $i < count($items); $i++): ?>
                                 <div class="element">
-                                    <?php echo CHtml::link('<i class="'.Utility::menuIcon($items[$i]['label']).'"></i> '.$items[$i]['label'], !isset($items[$i]['items']) ? $items[$i]['url'] : '#', array('class' => 'dropdown-toggle')); ?>
+                                    <?php echo CHtml::link('<i class="'.Utility::menuIcon($items[$i]['label']).'"></i> '.$items[$i]['label'], '#', array('class' => 'dropdown-toggle')); ?>
                                     <?php 
                                     if (isset($items[$i]['items'])) {
                                     $this->widget('zii.widgets.CMenu', array(

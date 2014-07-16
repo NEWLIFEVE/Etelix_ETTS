@@ -1913,15 +1913,15 @@ class CrugeAuthManager extends CAuthManager implements IAuthManager
             }
             // top level menu
             if (!sizeof($items)) {
-                //$items = null;
-                if (Yii::app()->user->isSuperAdmin) {
-                    $items = null;
-                } else {
-                    $r[] = array(
-                        'label' => $this->getLabelMenu($menuitem->getDescription()),
-                        'url' => $this->getUrlMenu($menuitem->getDescription()),
-                    );
-                }
+                $items = null;
+//                if (Yii::app()->user->isSuperAdmin) {
+//                    $items = null;
+//                } else {
+//                    $r[] = array(
+//                        'label' => $this->getLabelMenu($menuitem->getDescription()),
+//                        'url' => $this->getUrlMenu($menuitem->getDescription()),
+//                    );
+//                }
             } else {
                 $r[] = array(
                     'label' => $this->getTaskText($menuitem),
