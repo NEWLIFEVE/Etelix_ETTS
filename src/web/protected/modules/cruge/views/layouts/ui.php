@@ -20,12 +20,12 @@
 //	if(Yii::app()->user->isSuperAdmin)
 //		echo Yii::app()->user->ui->superAdminNote();
 ?>
-<div class="container">
-	<div class="span-19">
-		<div id="content">
+<!--<div class="container">-->
+	<!--<div class="span12">-->
+		<!--<div id="content">-->
 			<?php echo $content; ?>
-		</div><!-- content -->
-	</div>
+		<!--</div> content -->
+	<!--</div>-->
 	<?php // if(Yii::app()->user->checkAccess('admin')) { ?>	
 <!--	<div class="span-5 last">
 		<div id="sidebar">
@@ -43,5 +43,5 @@
 	</div>-->
 	<?php // } ?>
 	
-</div>
+<!--</div>-->
 <?php $this->endContent(); ?>

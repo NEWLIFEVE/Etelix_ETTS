@@ -22,7 +22,7 @@ var plugins = [
     'dialog',
     'notify',
     'listview',
-//    'treeview',
+    'treeview',
     'fluentmenu',
     'hint'
 
