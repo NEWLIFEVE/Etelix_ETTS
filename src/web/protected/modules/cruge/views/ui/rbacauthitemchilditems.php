@@ -24,10 +24,13 @@
 	$treeDataOps = array();
 
 	
-
+        /*
 	$iconPin = Yii::app()->user->ui->getResource('pin.png');
 	$imgPin = "<img class='pin-on' src='{$iconPin}' title='"
 		.CrugeTranslator::t("Click para asignar/desasignar el item")."'>";
+         * 
+         */
+        $imgPin = '&nbsp;';
 
 	//  LISTA DE ROLES 
 	//		si hay roles definidos y la vista no es para un TASK.
@@ -40,7 +43,7 @@
 			$treeDataRoles[] = array(
 				'id'=>$item->name,
 				'text'=>"<span class='{$asignado} {$loop}'>".$item->name
-					."</span>".$imgPin,
+					."</span>".$imgPin . "<input type='checkbox' name='assignRoles' class='{$asignado}'>",
 				'htmlOptions'=>array('class'=>'authitem',
 					'alt'=>$item->name),
 			);
@@ -71,7 +74,7 @@
 					$children[] = array(
 						'id'=>$child->name,
 						'text'=>"<span class='itemchildtext authitemsub {$asignado} {$loop}'>"
-								.$rbac->getTaskText($child)."</span>".$imgPin,
+								.$rbac->getTaskText($child)."</span>".$imgPin . "<input type='checkbox' name='assignRoles' class='{$asignado}'>",
 						'htmlOptions'=>array('class'=>'authitemchild'
 							,'alt'=>$child->name
 							, 'title'=>$child->name),
@@ -84,7 +87,7 @@
 					'id'=>$topTask->name,
 					'text'=>"<span class='itemtext authitemtop {$asignado} {
 						$loop}'>".$text
-						."</span>".$imgPin,
+						."</span>".$imgPin . "<input type='checkbox' name='assignRoles' class='{$asignado}'>",
 					'expanded'=>false,
 					'hasChildren'=>$hasChildren,
 					'children'=>$children,
@@ -104,7 +107,7 @@
 				$treeDataError[] = array(
 					'id'=>$orpTask->name,
 					'text'=>"<span class='{$asignado} {$loop}'>".
-						$rbac->getTaskText($orpTask)."</span>".$imgPin,
+						$rbac->getTaskText($orpTask)."</span>".$imgPin . "<input type='checkbox' name='assignRoles' class='{$asignado}'>",
 					'expanded'=>false,
 					'hasChildren'=>false,
 					'htmlOptions'=>array('class'=>'authitem'
@@ -122,7 +125,7 @@
 				$treeDataRegular[] = array(
 					'id'=>$task->name,
 					'text'=>"<span class='{$asignado} {$loop}'>".
-						$task->name."</span>".$imgPin,
+						$task->name."</span>".$imgPin . "<input type='checkbox' name='assignRoles' class='{$asignado}'>",
 					'expanded'=>false,
 					'hasChildren'=>false,
 					'htmlOptions'=>array('class'=>'authitem',
@@ -161,7 +164,7 @@
 				$childs[] = array(
 					'id'=>$item->name,
 					'text'=>"<span class='{$asignado} {$loop}'>".
-						$item->name."</span>".$imgPin,
+						$item->name."</span>".$imgPin . "<input type='checkbox' name='assignRoles' class='{$asignado}'>",
 					'htmlOptions'=>array('class'=>'authitem',
 						'alt'=>$item->name),
 				);
@@ -337,10 +340,15 @@
     </div>
 </div>
 <script>
-	$('img.pin-on').each(function(){
-		var img = $(this);
-		img.css("cursor","pointer");
-		img.click(function(){
+	$('input[name="assignRoles"]').each(function(){
+		var checkbox = $(this);
+		checkbox.css("cursor", "pointer");
+                
+                if (checkbox.attr('class') !== '') {
+                    checkbox.prop('checked', true);
+                }
+                
+		checkbox.click(function(){
 
 			// el atributo alt del LI tiene el nombre del item que representa.
 			var _li = $(this).parent();
@@ -385,8 +393,10 @@
 					// json con la data del item
 					if(data.result == true){
 						span.addClass("text-info");
+                                                checkbox.prop('checked', true);
 					}else{
 						span.removeClass("text-info");
+                                                checkbox.prop('checked', false);
 					}
 				},
 				error: function(jqXHR, textStatus, errorThrown){

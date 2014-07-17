@@ -3,6 +3,13 @@
 
 ##Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
 
+17/07/2014
+- Modificación de estilos en:
+    *cruge/ui/rbaclistroles
+    *cruge/ui/rbaclisttasks
+    *cruge/ui/rbaclistops
+    *cruge/ui/rbacauthitemchilditems/id/subadmin (Se agregó checbox a los items)
+
 16/07/2014
 - El cambio del menu de un solo elemento (11/07/2014) está causando conflictos y se dejó como estaba antes de esa modificación
 - Se colocó la imagen de up y down en el excel y el correo

@@ -816,3 +816,7 @@ div.pre-loader {
 .diagram .diagram-white {
     border: 1px solid silver;
 }
+
+/*.metro .dropdown-menu li span {
+  padding: 8px 32px !important;
+}*/
