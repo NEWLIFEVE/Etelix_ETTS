@@ -3,6 +3,9 @@
 
 ##Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
 
+- Corrección en las flechas de los reportes (Se invirtió el color de las mismas)
+- Corregido el error al momento de crear y responder tickets
+
 ##Release 1.4
 - Modificación de estilos en:
     *cruge/ui/rbaclistroles
