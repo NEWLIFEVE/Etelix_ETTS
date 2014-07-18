@@ -3,6 +3,9 @@
 
 ##Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
 
+18/07/2014
+- Corrección en las flchas del reporte (Arriba es rojo y abajo verde)
+
 17/07/2014
 - Modificación de estilos en:
     *cruge/ui/rbaclistroles

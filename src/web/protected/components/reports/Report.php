@@ -322,7 +322,7 @@ class Report extends Excel
                     throw new Exception('Faltan las coordenadas para mostrar las imagenes up o down');
                 }
             } else {
-                return "<img src='$image' alt='". substr($image, -3) ."' />";
+                return "<img src='$image' alt='". substr($image, 0, -4) ."' />";
             }
             
         } else {
