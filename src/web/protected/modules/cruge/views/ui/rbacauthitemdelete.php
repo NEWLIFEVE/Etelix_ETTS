@@ -1,4 +1,4 @@
-<h1><?php echo ucwords(CrugeTranslator::t("eliminar"));?></h1>
+<h2><?php echo ucwords(CrugeTranslator::t("Delete"));?></h2>
 <div class="form">
 <?php
 	/*

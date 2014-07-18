@@ -1,5 +1,5 @@
 <div class="form">
-<h1><?php echo ucwords(CrugeTranslator::t("sesiones de usuario"));?></h1>
+<h2><?php echo ucwords(CrugeTranslator::t("user sessions"));?></h2>
 <?php 
 $this->widget(Yii::app()->user->ui->CGridViewClass, array(
     'dataProvider'=>$dataProvider,

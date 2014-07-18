@@ -1,70 +1,66 @@
 <?php 
-	/*
-		maneja la asignacion masiva de usuarios a un rol seleccionado.
-	*/
-	$rbac = Yii::app()->user->rbac;
-	$ui = Yii::app()->user->ui;
-	Yii::app()->clientScript->registerCoreScript('jquery');
-	$loaderSrc = Yii::app()->user->ui->getResource('loading.gif');
-	$loaderImg = "<img src='{$loaderSrc}'>";
+    /*
+            maneja la asignacion masiva de usuarios a un rol seleccionado.
+    */
+    $rbac = Yii::app()->user->rbac;
+    $ui = Yii::app()->user->ui;
+    $loaderSrc = Yii::app()->user->ui->getResource('loading.gif');
+    $loaderImg = "<img src='{$loaderSrc}'>";
 
-	$selectedUserGetter = 'username';
+    $selectedUserGetter = 'username';
 ?>
 <div class='form'>
-<div class='crugepanel user-assignments-role-list'>
-	<h2><?php echo ucfirst(CrugeTranslator::t("roles available"));?></h2>
-	<p><?php echo ucfirst(CrugeTranslator::t("Click on a role to see the users assigned to it"));?></p>
-	<ul class='auth-item'>
-	<?php 
-		$loader = "<span class='loader'></span>";
-		
-		foreach($rbac->roles as $rol){
-			echo "<li alt='".$rol->name."'>".$rol->name.$loader."</li>";
-		}
-	?>
-	</ul>
-</div>
+    <h2><?php echo ucfirst(CrugeTranslator::t("roles available"));?></h2>
+    <p><?php echo ucfirst(CrugeTranslator::t("Click on a role to see the users assigned to it"));?></p>
+    <div class='crugepanel user-assignments-detail'>
+        <div class='crugepanel user-assignments-role-list'>
+            <ul class='auth-item'>
+            <?php 
+            $loader = "<span class='loader'></span>";
+            foreach($rbac->roles as $rol){
+                echo "<li alt='".$rol->name."'>".$rol->name.$loader."</li>";
+            }
+            ?>
+            </ul>
+        </div>
 
-
-<div class='crugepanel user-assignments-detail'>
-	<h6><div id='mostrarSeleccion'></div></h6>
-	
-	<div id='lista1' class='lista'>
-	<div id='revocarSeleccion' class='boton'>
-		<?php echo CrugeTranslator::t("revocar seleccion") ?>
-	</div>
-	<?php 
-		$this->widget(Yii::app()->user->ui->CGridViewClass, array(
-			'id'=>'_lista1',
-			'selectableRows'=>2,
-			'dataProvider'=>$roleUsersDataProvider,
-			'columns'=>array(
-				array(
-					'class'=>'CCheckBoxColumn'
-				),
-				$selectedUserGetter,
-			),
-		));
-	?>	
-	</div>
-	<div id='lista2' class='lista'>
-	<div id='asignarSeleccion' class='boton'>
-		<?php echo CrugeTranslator::t("asignar seleccion");?></div>
-	<?php 
-		$this->widget(Yii::app()->user->ui->CGridViewClass, array(
-			'id'=>'_lista2',
-			'selectableRows'=>2,
-			'dataProvider'=>$allUsersDataProvider,
-			'columns'=>array(
-				array(
-					'class'=>'CCheckBoxColumn'
-				),
-				$selectedUserGetter,
-			),
-		));
-	?>	
-	</div>
-</div>
+        <div id='lista1' class='lista'>
+            <div id='revocarSeleccion' class='boton'>
+                <?php echo CrugeTranslator::t("revoke selection") ?>
+            </div>
+            <?php 
+                $this->widget(Yii::app()->user->ui->CGridViewClass, array(
+                    'id'=>'_lista1',
+                    'selectableRows'=>2,
+                    'dataProvider'=>$roleUsersDataProvider,
+                    'columns'=>array(
+                            array(
+                                    'class'=>'CCheckBoxColumn'
+                            ),
+                            $selectedUserGetter,
+                    ),
+                ));
+            ?>	
+        </div>
+        <div id='lista2' class='lista'>
+            <div id='asignarSeleccion' class='boton'>
+                <?php echo CrugeTranslator::t("assign selection");?>
+            </div>
+            <?php 
+                $this->widget(Yii::app()->user->ui->CGridViewClass, array(
+                    'id'=>'_lista2',
+                    'selectableRows'=>2,
+                    'dataProvider'=>$allUsersDataProvider,
+                    'columns'=>array(
+                            array(
+                                    'class'=>'CCheckBoxColumn'
+                            ),
+                            $selectedUserGetter,
+                    ),
+                ));
+            ?>	
+        </div>
+    </div>
 </div>
 
 <script>

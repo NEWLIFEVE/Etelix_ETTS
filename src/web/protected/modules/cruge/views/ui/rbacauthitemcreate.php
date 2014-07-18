@@ -4,5 +4,5 @@
 	*/
 	
 ?>
-<h1><?php echo ucwords(CrugeTranslator::t("Creando")." ".CrugeTranslator::t($model->categoria));?></h1>
+<h2><?php echo ucwords(CrugeTranslator::t("Create")." ".CrugeTranslator::t($model->categoria));?></h2>
 <?php $this->renderPartial('_authitemform',array('model'=>$model),false);?>
