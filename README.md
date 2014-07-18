@@ -4,7 +4,9 @@
 ##Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
 
 18/07/2014
-- Corrección en las flchas del reporte (Arriba es rojo y abajo verde)
+- Corrección en las flechas del reporte (Arriba es rojo y abajo verde)
+- Corrección en el modelo Carrier.php en el método "getCarriers($returnNameCarrier = false, $idTicket = false)", si no encontraba carier daba error. Ya se solucionó 
+- Corrección el controlador DescriptionticketController.php, se pasó el método "getUserNewDescription($etelixAsCustomer=false, $idTicket=false)" al modelo. Esto soluciona el error que daba al intentar crear un ticket
 
 17/07/2014
 - Modificación de estilos en:

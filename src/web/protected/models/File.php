@@ -13,6 +13,7 @@
  * @property integer $id_description_ticket 
  *
  * The followings are the available model relations:
+ * @property DescriptionTicket $idDescriptionTicket
  * @property Ticket $idTicket
  */
 class File extends CActiveRecord

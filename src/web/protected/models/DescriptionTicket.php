@@ -174,7 +174,7 @@ class DescriptionTicket extends CActiveRecord
             $model->id_user=Yii::app()->user->id;
         }
         
-        $optionRead=DescriptionticketController::getUserNewDescription($etelixAsCarrier);
+        $optionRead=self::getUserNewDescription($etelixAsCarrier);
         $model->read_carrier=$optionRead['read_carrier'];
         $model->read_internal=$optionRead['read_internal'];
         $model->response_by=Yii::app()->user->id;
@@ -214,6 +214,31 @@ class DescriptionTicket extends CActiveRecord
                     return 'blink';
                 }
                 return '';
+            }
+        }
+    }
+    
+    /**
+     * @param boolean $etelixAsCustomer
+     * @param int $idTicket
+     * @return array
+     */
+    public static function getUserNewDescription($etelixAsCustomer=false, $idTicket=false)
+    {
+        $userLogIn=CrugeAuthassignment::getRoleUser(false, $idTicket);
+        if ($etelixAsCustomer) 
+        {
+            return array('read_carrier'=>'0','read_internal'=>'0');
+        } 
+        else 
+        {
+            if($userLogIn === 'C')
+            {
+                return array('read_carrier'=>'1','read_internal'=>'0');
+            } 
+            else 
+            {
+                return array('read_carrier'=>'0','read_internal'=>'1');
             }
         }
     }

@@ -12,26 +12,24 @@
  * @property string $date
  * @property string $machine_ip
  * @property string $hour
- * @property integer $prefix
  * @property integer $id_gmt
  * @property string $ticket_number
+ * @property string $prefix
  * @property integer $id_user
  * @property string $option_open
  * @property string $close_ticket
  * @property string $escalated_date
  *
  * The followings are the available model relations:
+ * @property MailTicket[] $mailTicket
  * @property TicketRelation[] $ticketRelations
  * @property TicketRelation[] $ticketRelations1
  * @property TestedNumber[] $testedNumbers
  * @property File[] $files
- * @property MailTicket[] $mailTickets
  * @property DescriptionTicket[] $descriptionTickets
  * @property Failure $idFailure
- * @property Status $idStatus
- * @property Ticket $idTicket
- * @property Ticket[] $tickets
  * @property Gmt $idGmt
+ * @property Status $idStatus
  */
 class Ticket extends CActiveRecord
 {
@@ -82,7 +80,7 @@ class Ticket extends CActiveRecord
             array('id_failure, id_status, id_gmt', 'numerical', 'integerOnly'=>true),
             array('origination_ip, destination_ip, machine_ip', 'length', 'max'=>64),
             array('ticket_number', 'length', 'max'=>50),
-            array('hour', 'safe'),
+            array('hour, close_ticket, escalated_date', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, id_failure, id_status, origination_ip, destination_ip, date, machine_ip, hour, prefix, id_gmt, ticket_number', 'safe', 'on'=>'search'),
@@ -97,18 +95,18 @@ class Ticket extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-            'ticketRelations'=>array(self::HAS_MANY, 'TicketRelation', 'id_ticket_father'),
-            'ticketRelations1'=>array(self::HAS_MANY, 'TicketRelation', 'id_ticket_son'),
-            'testedNumbers'=>array(self::HAS_MANY, 'TestedNumber', 'id_ticket'),
-            'files'=>array(self::HAS_MANY, 'File', 'id_ticket'),
-            'mailTicket'=>array(self::HAS_MANY, 'MailTicket', 'id_ticket'),
-            'descriptionTickets'=>array(self::HAS_MANY, 'DescriptionTicket', 'id_ticket'),
-            'idFailure'=>array(self::BELONGS_TO, 'Failure', 'id_failure'),
-            'idStatus'=>array(self::BELONGS_TO, 'Status', 'id_status'),
-            'idGmt'=>array(self::BELONGS_TO, 'Gmt', 'id_gmt'),
-            'idUser'=>array(self::BELONGS_TO, 'CrugeUser2', 'id_user'),
-            );
-    }
+                    'mailTicket' => array(self::HAS_MANY, 'MailTicket', 'id_ticket'),
+                    'ticketRelations' => array(self::HAS_MANY, 'TicketRelation', 'id_ticket_father'),
+                    'ticketRelations1' => array(self::HAS_MANY, 'TicketRelation', 'id_ticket_son'),
+                    'testedNumbers' => array(self::HAS_MANY, 'TestedNumber', 'id_ticket'),
+                    'files' => array(self::HAS_MANY, 'File', 'id_ticket'),
+                    'descriptionTickets' => array(self::HAS_MANY, 'DescriptionTicket', 'id_ticket'),
+                    'idFailure' => array(self::BELONGS_TO, 'Failure', 'id_failure'),
+                    'idGmt' => array(self::BELONGS_TO, 'Gmt', 'id_gmt'),
+                    'idStatus' => array(self::BELONGS_TO, 'Status', 'id_status'),
+                    'idUser'=>array(self::BELONGS_TO, 'CrugeUser2', 'id_user'),
+                );
+        }
 
 	/**
 	 * @return array customized attribute labels (name=>label)
@@ -116,18 +114,18 @@ class Ticket extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-            'id'=>'ID',
-            'id_failure'=>'Id Failure',
-            'id_status'=>'Id Status',
-            'origination_ip'=>'Origination Ip',
-            'destination_ip'=>'Destination Ip',
-            'date'=>'Date',
-            'machine_ip'=>'Machine Ip',
-            'hour'=>'Hour',
-            'prefix'=>'Prefix',
-            'id_gmt'=>'Id Gmt',
-            'ticket_number'=>'Ticket Number',
-            );
+                    'id'=>'ID',
+                    'id_failure'=>'Id Failure',
+                    'id_status'=>'Id Status',
+                    'origination_ip'=>'Origination Ip',
+                    'destination_ip'=>'Destination Ip',
+                    'date'=>'Date',
+                    'machine_ip'=>'Machine Ip',
+                    'hour'=>'Hour',
+                    'prefix'=>'Prefix',
+                    'id_gmt'=>'Id Gmt',
+                    'ticket_number'=>'Ticket Number',
+                );
     }
 
 	/**

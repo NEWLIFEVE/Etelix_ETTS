@@ -13,14 +13,16 @@
  * @property integer $status
  *
  * The followings are the available model relations:
+ * @property DestinationSupplier[] $destinationSuppliers
  * @property Contrato[] $contratos
- * @property AccountingDocument[] $accountingDocuments
- * @property AccountingDocumentTemp[] $accountingDocumentTemps
- * @property CarrierManagers[] $carrierManagers
- * @property CarrierGroups $idCarrierGroups
  * @property Balance[] $balances
  * @property Balance[] $balances1
- * @property DestinationSupplier[] $destinationSuppliers
+ * @property AccountingDocument[] $accountingDocuments
+ * @property CarrierManagers[] $carrierManagers
+ * @property AccountingDocumentTemp[] $accountingDocumentTemps
+ * @property CarrierGroups $idCarrierGroups
+ * @property BalanceTime[] $balanceTimes
+ * @property BalanceTime[] $balanceTimes1
  */
 class Carrier extends CActiveRecord
 {
@@ -58,14 +60,16 @@ class Carrier extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'contratos' => array(self::HAS_MANY, 'Contrato', 'id_carrier'),
-			'accountingDocuments' => array(self::HAS_MANY, 'AccountingDocument', 'id_carrier'),
-			'accountingDocumentTemps' => array(self::HAS_MANY, 'AccountingDocumentTemp', 'id_carrier'),
-			'carrierManagers' => array(self::HAS_MANY, 'CarrierManagers', 'id_carrier'),
-			'idCarrierGroups' => array(self::BELONGS_TO, 'CarrierGroups', 'id_carrier_groups'),
-			'balances' => array(self::HAS_MANY, 'Balance', 'id_carrier_supplier'),
-			'balances1' => array(self::HAS_MANY, 'Balance', 'id_carrier_customer'),
 			'destinationSuppliers' => array(self::HAS_MANY, 'DestinationSupplier', 'id_carrier'),
+			'contratos' => array(self::HAS_MANY, 'Contrato', 'id_carrier'),
+			'balances' => array(self::HAS_MANY, 'Balance', 'id_carrier_customer'),
+			'balances1' => array(self::HAS_MANY, 'Balance', 'id_carrier_supplier'),
+			'accountingDocuments' => array(self::HAS_MANY, 'AccountingDocument', 'id_carrier'),
+			'carrierManagers' => array(self::HAS_MANY, 'CarrierManagers', 'id_carrier'),
+			'accountingDocumentTemps' => array(self::HAS_MANY, 'AccountingDocumentTemp', 'id_carrier'),
+			'idCarrierGroups' => array(self::BELONGS_TO, 'CarrierGroups', 'id_carrier_groups'),
+			'balanceTimes' => array(self::HAS_MANY, 'BalanceTime', 'id_carrier_customer'),
+			'balanceTimes1' => array(self::HAS_MANY, 'BalanceTime', 'id_carrier_supplier'),
 		);
 	}
 
@@ -160,7 +164,9 @@ class Carrier extends CActiveRecord
             
             if($idCarrier!=null)
             {
-                return self::model()->find("id = $idCarrier")->name;
+                $carrier =  self::model()->find("id = $idCarrier");
+                if ($carrier!=null) return $carrier->name;
+                else return '';
             }
             else
             {

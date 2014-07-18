@@ -185,7 +185,7 @@ class DescriptionticketController extends Controller
             $model->date=date('Y-m-d');
             $model->hour=date('H:i:s');
             $model->id_speech=$speech;
-            $optionRead=self::getUserNewDescription();
+            $optionRead=DescriptionTicket::getUserNewDescription();
             $model->read_carrier=$optionRead['read_carrier'];
             $model->read_internal=$optionRead['read_internal'];
             
@@ -261,28 +261,5 @@ class DescriptionticketController extends Controller
         }
     }
     
-    /**
-     * @param boolean $etelixAsCustomer
-     * @param int $idTicket
-     * @return array
-     */
-    public static function getUserNewDescription($etelixAsCustomer=false, $idTicket=false)
-    {
-        $userLogIn=CrugeAuthassignment::getRoleUser(false, $idTicket);
-        if ($etelixAsCustomer) 
-        {
-            return array('read_carrier'=>'0','read_internal'=>'0');
-        } 
-        else 
-        {
-            if($userLogIn === 'C')
-            {
-                return array('read_carrier'=>'1','read_internal'=>'0');
-            } 
-            else 
-            {
-                return array('read_carrier'=>'0','read_internal'=>'1');
-            }
-        }
-    }
+    
 }

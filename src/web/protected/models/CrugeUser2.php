@@ -62,6 +62,7 @@ class CrugeUser2 extends CActiveRecord
 			'mailUsers' => array(self::HAS_MANY, 'MailUser', 'id_user'),
 			'crugeFieldvalues' => array(self::HAS_MANY, 'CrugeFieldvalue', 'iduser'),
 			'crugeAuthitems' => array(self::MANY_MANY, 'CrugeAuthitem', 'cruge_authassignment(userid, itemname)'),
+                        'descriptionTickets' => array(self::HAS_MANY, 'DescriptionTicket', 'id_user'),
 		);
 	}
 
