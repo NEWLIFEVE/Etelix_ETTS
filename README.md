@@ -3,6 +3,7 @@
 
 ##Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
 
+##Release 1.4.1
 - Corrección en las flechas de los reportes (Se invirtió el color de las mismas)
 - Corregido el error al momento de crear y responder tickets
 
