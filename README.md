@@ -3,6 +3,54 @@
 
 ##Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
 
+##Release 1.4
+- Modificación de estilos en:
+    *cruge/ui/rbaclistroles
+    *cruge/ui/rbaclisttasks
+    *cruge/ui/rbaclistops
+    *cruge/ui/rbacauthitemchilditems/id/subadmin (Se agregó checbox a los items)
+- El cambio del menu de un solo elemento (11/07/2014) está causando conflictos y se dejó como estaba antes de esa modificación
+- Se colocó la imagen de up y down en el excel y el correo
+- Modificación en rbacauthitemchilditems (asignar/desasignar items) al tema metro ui
+- Se agregaron las columnas "previous day" y "a week ago" en el excel y en el correo.
+- Los reportes ahora se ordenan por "carrier, date, hour".
+- A los tickets escalados se le puso font-weigth bold para que se notaran más en datatable
+- Se borró el import de controllers en el config ya que gasta memoria innecesaria
+- Se pasó el método estático blinkTr($idTicket) que se encontraba en DescriptionTickeController al modelo DescriptionTicket
+- Columna que muestra la diferencia en tickets del día y la semana anterior
+- A la tabla de estadísticas se le agrego un ancla para llegar rápidamente al datatable
+- Ahora se pueden crear menus de un solo elemento en cruge. La sintaxis es:
+    nombre: "menu_nombre_menu"
+    descripción: ":Label menu .controller_action"
+- Se creó la operación "responder-tickets" en cruge, la cual permite seleccionar a que rol se le permite responder tickets
+- Se creó la operación "escalar-tickets" en cruge, la cual permite seleccionar a que rol se le permite escalar tickets
+- Se creó la operación "cerrar-tickets" en cruge, la cual permite seleccionar a que rol se le permite cerrar tickets
+- Se creó la operación "responder-como-carrier" en cruge, la cual permite seleccionar a que rol se le permite responder tickets como el carrier
+- Se creó la operación "operacion-interno-subadmin" en cruge, la cual son las operaciones similares que tienen usuarios subadmin e internos
+- Agregada las columnas customer y supplier en el resumen del excel y en el mail.
+- Los tickets escalados se muestran en negrita en el excel, en la página y por correo
+- La columna categoría de las estadísticas quedó de la siguiente forma:
+    * Open white within 24 hours
+    * Open yellow within 48 hours
+    * Open red with more than 48 hours
+    * Total open
+    ==================================
+    * Closed white today
+    * Closed yellow today
+    * Closed red today
+    * Total closed
+    ==================================
+    * No activity white today
+    * No activity yellow today
+    * No activity red today
+    * Total no activity
+    ==================================
+    * Escalated white today
+    * Escalated yellow today
+    * Escalated red today
+    * Total Escalated
+- Modificación del resumen de reportes, se agregan las columnas de customer y supplier en la página
+
 ###Release 1.3.2
 - Ahora se puede elegir el rol en la interfaz de crear usuarios
 - Se agregó datatable a manage users

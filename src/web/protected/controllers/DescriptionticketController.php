@@ -285,35 +285,4 @@ class DescriptionticketController extends Controller
             }
         }
     }
-    
-    /**
-     * 
-     * @param int $idTicket
-     * @return string
-     */
-    public static function blinkTr($idTicket)
-    {
-        $userLogin=CrugeAuthassignment::getRoleUser();
-        $lastDescription=DescriptionTicket::lastDescription($idTicket);
-        
-        if($lastDescription!=null)
-        {
-            if($userLogin=='C')
-            {
-                if($lastDescription->read_carrier == '0') 
-                {
-                    return 'blink';
-                }
-                return '';
-            }
-            else
-            {
-                if($lastDescription->read_internal == '0')
-                {
-                    return 'blink';
-                }
-                return '';
-            }
-        }
-    }
 }

@@ -25,11 +25,12 @@
 	if($data->type == CAuthItem::TYPE_TASK){
 		$extra='';
 		if($rbac->isTaskTopMenuItem($data))
-			$extra = 'border: 2px solid gray;';
+			//$extra = 'border: 2px solid gray;';
+			$extra = '';
 		if($rbac->isTaskMenuItem($data))	
-			$colorEspecialBkTaskTipoMenuitem="style='background-color: #ffffe0;{$extra}'";
+			$colorEspecialBkTaskTipoMenuitem="style='background-color: rgba(0,0,0,0.2);{$extra}'";
 		if($rbac->isTaskSubMenuItem($data)){	
-			$colorEspecialBkTaskTipoMenuitem="style='background-color: #e0ffff;{$extra}'";
+			$colorEspecialBkTaskTipoMenuitem="style='background-color: #eff4ff;{$extra}'";
 			if(!$rbac->getParentMenuAuthItem($data))
 				$colorEspecialBkTaskTipoMenuitem="style='background-color: #ffaaaa;{$extra}'";
 		}
@@ -128,18 +129,21 @@
 	<div class='col operacion operacion-eliminar'>
 		<?php 
 			$url = '#';
-			$imagen = 'delete-off.png';
+			//$imagen = 'delete-off.png';
+			$imagen = 'icon-cancel-2 fg-gray';
 			$titulo='no puede eliminar porque tiene asignaciones';
 			if($asignaciones == 0)
 			{
 				$titulo='eliminar';
 				$url = Yii::app()->user->ui->getRbacAuthItemDeleteUrl($data->name);
-				$imagen = 'delete.png';
+				//$imagen = 'delete.png';
+				$imagen = 'icon-cancel-2 fg-red';
 			}
-			echo CHtml::link(CHtml::image(
-				Yii::app()->user->ui->getResource($imagen)),$url
-				,array('title'=>CrugeTranslator::t($titulo))
-				);
+                        echo CHtml::link("<i class='$imagen'></i>", $url, array('title' => CrugeTranslator::t($titulo)));
+//			echo CHtml::link(CHtml::image(
+//				Yii::app()->user->ui->getResource($imagen)),$url
+//				,array('title'=>CrugeTranslator::t($titulo))
+//				);
 		?>
 	</div>
 	

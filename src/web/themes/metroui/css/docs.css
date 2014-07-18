@@ -779,3 +779,44 @@ div.pre-loader {
 .table-report .table-report-header .span3.offset5 .input-control.text.span3 {
     margin-left: -15px;
 }
+
+.content-radio {
+    width: 100%;
+}
+
+.content-radio .input-statistics {
+    width: 58% !important; 
+    text-align: right; 
+    float: left;
+}
+
+.content-radio .link-statistics {
+    width: 42% !important; 
+    padding: 8px 0; 
+    float: left;
+}
+
+.rot90 {
+	-webkit-transform: rotate(90deg);
+	-moz-transform: rotate(90deg);
+	rotation: 90deg;
+	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
+}
+
+.diagram {
+    width:90px; 
+    height: 90px; 
+    background: #FFF;
+}
+.diagram .diagram-yellow, .diagram .diagram-white, .diagram .diagram-red {
+    height:30px; 
+    float: left; 
+    clear: left;
+}
+.diagram .diagram-white {
+    border: 1px solid silver;
+}
+
+/*.metro .dropdown-menu li span {
+  padding: 8px 32px !important;
+}*/

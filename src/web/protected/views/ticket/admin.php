@@ -45,7 +45,7 @@
                 <?php foreach (Ticket::ticketsByUsers(Yii::app()->user->id, false) as $ticket): ?>
                     <tr <?php
                             $timeTicket = Utility::getTime($ticket->date, $ticket->hour);
-                            $read=DescriptionticketController::blinkTr($ticket->id);
+                            $read=DescriptionTicket::blinkTr($ticket->id);
                             $carrier=Carrier::getCarriers(true, $ticket->id);
                             switch ($ticket->idStatus->id) {
                                 case '1':

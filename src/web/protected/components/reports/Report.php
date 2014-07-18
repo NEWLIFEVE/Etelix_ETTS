@@ -88,7 +88,13 @@ class Report extends Excel
         
         $titles = array(
             'A' => 'Category',
-            'B' => 'Total'
+            'B' => 'Supplier',
+            'C' => 'Customer',
+            'D' => 'Total',
+            'E' => '',
+            'F' => 'Previous Day',
+            'G' => '',
+            'H' => 'A Week Ago',
         );
         
         foreach ($titles as $key => $value) {
@@ -99,32 +105,43 @@ class Report extends Excel
         $this->_setStyleBody('A3', '#FFDC51');
         $this->_setStyleBody('A4', '#EEB8B8');
         
-        $this->_setStyleHeader('A5:B5');
-        $this->_setStyleBody('A6:B6', '#FFF');
-        $this->_setStyleBody('A7:B7', '#FFDC51');
-        $this->_setStyleBody('A8:B8', '#EEB8B8');
-        $this->_setStyleBody('A9:B9', '');
-        $this->_setStyleBody('A10:B10', '#FFF');
-        $this->_setStyleBody('A11:B11', '#FFDC51');
-        $this->_setStyleBody('A12:B12', '#EEB8B8');
-        $this->_setStyleBody('A13:B13', '');
-        $this->_setStyleBody('A14:B14', '#FFF');
-        $this->_setStyleBody('A15:B15', '#FFDC51');
-        $this->_setStyleBody('A16:B16', '#EEB8B8');
-        $this->_setStyleBody('A17:B17', '');
-        $this->_setStyleBody('A18:B18', '#FFF');
-        $this->_setStyleBody('A19:B19', '#FFDC51');
-        $this->_setStyleBody('A20:B20', '#EEB8B8');
-        $this->_setStyleBody('A21:B21', '');
+        $this->_setStyleHeader('A5:H5');
+        $this->_setStyleBody('A6:H6', '#FFF');
+        $this->_setStyleBody('A7:H7', '#FFDC51');
+        $this->_setStyleBody('A8:H8', '#EEB8B8');
+        $this->_setStyleBody('A9:H9', '');
+        $this->_setStyleBody('A10:H10', '#FFF');
+        $this->_setStyleBody('A11:H11', '#FFDC51');
+        $this->_setStyleBody('A12:H12', '#EEB8B8');
+        $this->_setStyleBody('A13:H13', '');
+        $this->_setStyleBody('A14:H14', '#FFF');
+        $this->_setStyleBody('A15:H15', '#FFDC51');
+        $this->_setStyleBody('A16:H16', '#EEB8B8');
+        $this->_setStyleBody('A17:H17', '');
+        $this->_setStyleBody('A18:H18', '#FFF');
+        $this->_setStyleBody('A19:H19', '#FFDC51');
+        $this->_setStyleBody('A20:H20', '#EEB8B8');
+        $this->_setStyleBody('A21:H21', '');
       
         $this->_phpExcel->getActiveSheet()->getRowDimension('1')->setRowHeight(90);
-        $this->_phpExcel->getActiveSheet()->getStyle('A1:B1')->getFont()->setSize(42);
+        $this->_phpExcel->getActiveSheet()->getStyle('A1:H1')->getFont()->setSize(42);
         $this->_phpExcel->getActiveSheet()->getColumnDimension('A')->setWidth(40);
-        $this->_phpExcel->getActiveSheet()->getColumnDimension('B')->setWidth(7);
-        
+        $this->_phpExcel->getActiveSheet()->getColumnDimension('B')->setWidth(8);
+        $this->_phpExcel->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
+        $this->_phpExcel->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
+        $this->_phpExcel->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
+        $this->_phpExcel->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
+        $this->_phpExcel->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
+        $this->_phpExcel->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
         $this->_getLogo();
         $this->_backgroundLogo('A1:B1');
+     
+        // $k será el conteo de carriers (supplier o customer)
+        $k = $this->countCarriers($args['date'], $args['carrier']);
         
+        $intervals = $this->setIntervalDays($args);
+        
+                
         $this->_phpExcel->setActiveSheetIndex(0)
                     ->setCellValue('B1', 'Summary')
                 
@@ -133,43 +150,259 @@ class Report extends Excel
                     ->setCellValue('A4', "TT's with more than 48 hours")
                 
                     ->setCellValue('A6', 'Open white')
-                    ->setCellValue('B6', count($this->openOrClose($args['date'], 'white', 'open', $args['carrier'])))
+                    ->setCellValue('B6', $k[0][0])
+                    ->setCellValue('C6', $k[0][1])
+                    ->setCellValue('D6', $temp1 = count($this->openOrClose($args['date'], 'white', 'open', $args['carrier'])))
+                    ->setCellValue('E6', $this->checkLowerOrHigher($temp1, $intervals['wo1Day'], 'E6', true))
+                    ->setCellValue('F6', $intervals['wo1Day'])
+                    ->setCellValue('G6', $this->checkLowerOrHigher($temp1, $intervals['wo1Week'], 'G6', true))
+                    ->setCellValue('H6', $intervals['wo1Week'])
+                    
                     ->setCellValue('A7', 'Open yellow')
-                    ->setCellValue('B7', count($this->openOrClose($args['date'], 'yellow', 'open', $args['carrier'])))
+                    ->setCellValue('B7', $k[1][0])
+                    ->setCellValue('C7', $k[1][1])
+                    ->setCellValue('D7', $temp1 = count($this->openOrClose($args['date'], 'yellow', 'open', $args['carrier'])))
+                    ->setCellValue('E7', $this->checkLowerOrHigher($temp1, $intervals['yo1Day'], 'E7', true))
+                    ->setCellValue('F7', $intervals['yo1Day'])
+                    ->setCellValue('G7', $this->checkLowerOrHigher($temp1, $intervals['yo1Week'], 'G7', true))
+                    ->setCellValue('H7', $intervals['yo1Week'])
+                    
                     ->setCellValue('A8', 'Open red')
-                    ->setCellValue('B8', count($this->openOrClose($args['date'], 'red', 'open', $args['carrier'])))
+                    ->setCellValue('B8', $k[2][0])
+                    ->setCellValue('C8', $k[2][1])
+                    ->setCellValue('D8', $temp1 = count($this->openOrClose($args['date'], 'red', 'open', $args['carrier'])))
+                    ->setCellValue('E8', $this->checkLowerOrHigher($temp1, $intervals['ro1Day'], 'E8', true))
+                    ->setCellValue('F8', $intervals['ro1Day'])
+                    ->setCellValue('G8', $this->checkLowerOrHigher($temp1, $intervals['ro1Week'], 'G8', true))
+                    ->setCellValue('H8', $intervals['ro1Week'])
+                    
                     ->setCellValue('A9', 'Total open')
-                    ->setCellValue('B9', count($this->totalTicketsPending($args['date'], $args['carrier'])))
+                    ->setCellValue('B9', $k[0][0]+$k[1][0]+$k[2][0])
+                    ->setCellValue('C9', $k[0][1]+$k[1][1]+$k[2][1])
+                    ->setCellValue('D9', $temp1 = count($this->totalTicketsPending($args['date'], $args['carrier'])))
+                    ->setCellValue('E9', $this->checkLowerOrHigher($temp1, $intervals['to1Day'], 'E9', true))
+                    ->setCellValue('F9', $intervals['to1Day'])
+                    ->setCellValue('G9', $this->checkLowerOrHigher($temp1, $intervals['to1Week'], 'G9', true))
+                    ->setCellValue('H9', $intervals['to1Week'])
                 
                     ->setCellValue('A10', 'Closed white')
-                    ->setCellValue('B10', count($this->openOrClose($args['date'], 'white', 'close', $args['carrier'])))
+                    ->setCellValue('B10', $k[3][0])
+                    ->setCellValue('C10', $k[3][1])
+                    ->setCellValue('D10', $temp1 = count($this->openOrClose($args['date'], 'white', 'close', $args['carrier'])))
+                    ->setCellValue('E10', $this->checkLowerOrHigher($temp1, $intervals['wc1Day'], 'E10', true))
+                    ->setCellValue('F10', $intervals['wc1Day'])
+                    ->setCellValue('G10', $this->checkLowerOrHigher($temp1, $intervals['wc1Week'], 'G10', true))
+                    ->setCellValue('H10', $intervals['wc1Day'])
+                    
                     ->setCellValue('A11', 'Closed yellow')
-                    ->setCellValue('B11', count($this->openOrClose($args['date'], 'yellow', 'close', $args['carrier'])))
+                    ->setCellValue('B11', $k[4][0])
+                    ->setCellValue('C11', $k[4][1])
+                    ->setCellValue('D11', $temp1 = count($this->openOrClose($args['date'], 'yellow', 'close', $args['carrier'])))
+                    ->setCellValue('E11', $this->checkLowerOrHigher($temp1, $intervals['yc1Day'], 'E11', true))
+                    ->setCellValue('F11', $intervals['yc1Day'])
+                    ->setCellValue('G11', $this->checkLowerOrHigher($temp1, $intervals['yc1Week'], 'G11', true))
+                    ->setCellValue('H11', $intervals['yc1Week'])
+                    
                     ->setCellValue('A12', 'Closed red')
-                    ->setCellValue('B12', count($this->openOrClose($args['date'], 'red', 'close', $args['carrier'])))
+                    ->setCellValue('B12', $k[5][0])
+                    ->setCellValue('C12', $k[5][1])
+                    ->setCellValue('D12', $temp1 = count($this->openOrClose($args['date'], 'red', 'close', $args['carrier'])))
+                    ->setCellValue('E12', $this->checkLowerOrHigher($temp1, $intervals['rc1Day'], 'E12', true))
+                    ->setCellValue('F12', $intervals['rc1Day'])
+                    ->setCellValue('G12', $this->checkLowerOrHigher($temp1, $intervals['rc1Week'], 'G12', true))
+                    ->setCellValue('H12', $intervals['rc1Week'])
+                    
                     ->setCellValue('A13', 'Total closed')
-                    ->setCellValue('B13', count($this->totalTicketsClosed($args['date'], $args['carrier'])))
+                    ->setCellValue('B13', $k[3][0]+$k[4][0]+$k[5][0])
+                    ->setCellValue('C13', $k[3][1]+$k[4][1]+$k[5][1])
+                    ->setCellValue('D13', $temp1 = count($this->totalTicketsClosed($args['date'], $args['carrier'])))
+                    ->setCellValue('E13', $this->checkLowerOrHigher($temp1, $intervals['tc1Day'], 'E13', true))
+                    ->setCellValue('F13', $intervals['tc1Day'])
+                    ->setCellValue('G13', $this->checkLowerOrHigher($temp1, $intervals['tc1Week'], 'G13', true))
+                    ->setCellValue('H13', $intervals['tc1Week'])
                 
                     ->setCellValue('A14', 'No activity white')
-                    ->setCellValue('B14', count($this->withoutDescription($args['date'], 'white', 'open', $args['carrier'])))
+                    ->setCellValue('B14', $k[6][0])
+                    ->setCellValue('C14', $k[6][1])
+                    ->setCellValue('D14', $temp1 = count($this->withoutDescription($args['date'], 'white', 'open', $args['carrier'])))
+                    ->setCellValue('E14', $this->checkLowerOrHigher($temp1, $intervals['naW1Day'], 'E14', true))
+                    ->setCellValue('F14', $intervals['naW1Day'])
+                    ->setCellValue('G14', $this->checkLowerOrHigher($temp1, $intervals['naW1Week'], 'G14', true))
+                    ->setCellValue('H14', $intervals['naW1Week'])
+                    
                     ->setCellValue('A15', 'No activity yellow')
-                    ->setCellValue('B15', count($this->withoutDescription($args['date'], 'yellow', 'open', $args['carrier'])))
+                    ->setCellValue('B15', $k[7][0])
+                    ->setCellValue('C15', $k[7][1])
+                    ->setCellValue('D15', $temp1 = count($this->withoutDescription($args['date'], 'yellow', 'open', $args['carrier'])))
+                    ->setCellValue('E15', $this->checkLowerOrHigher($temp1, $intervals['naY1Day'], 'E15', true))
+                    ->setCellValue('F15', $intervals['naY1Day'])
+                    ->setCellValue('G15', $this->checkLowerOrHigher($temp1, $intervals['naY1Week'], 'G15', true))
+                    ->setCellValue('H15', $intervals['naY1Week'])
+                    
                     ->setCellValue('A16', 'No activity red')
-                    ->setCellValue('B16', count($this->withoutDescription($args['date'], 'red', 'open', $args['carrier'])))
+                    ->setCellValue('B16', $k[8][0])
+                    ->setCellValue('C16', $k[8][1])
+                    ->setCellValue('D16', $temp1 = count($this->withoutDescription($args['date'], 'red', 'open', $args['carrier'])))
+                    ->setCellValue('E16', $this->checkLowerOrHigher($temp1, $intervals['naR1Day'], 'E16', true))
+                    ->setCellValue('F16', $intervals['naR1Day'])
+                    ->setCellValue('G16', $this->checkLowerOrHigher($temp1, $intervals['naR1Week'], 'G16', true))
+                    ->setCellValue('H16', $intervals['naR1Week'])
+                    
                     ->setCellValue('A17', 'Total no activity')
-                    ->setCellValue('B17', count($this->totalWithoutDescription($args['date'], $args['carrier'])))
+                    ->setCellValue('B17', $k[6][0]+$k[7][0]+$k[8][0])
+                    ->setCellValue('C17', $k[6][1]+$k[7][1]+$k[8][1])
+                    ->setCellValue('D17', $temp1 = count($this->totalWithoutDescription($args['date'], $args['carrier'])))
+                    ->setCellValue('E17', $this->checkLowerOrHigher($temp1, $intervals['tna1Day'], 'E17', true))
+                    ->setCellValue('F17', $intervals['tna1Day'])
+                    ->setCellValue('G17', $this->checkLowerOrHigher($temp1, $intervals['tna1Week'], 'G17', true))
+                    ->setCellValue('H17', $intervals['tna1Week'])
                 
                     ->setCellValue('A18', 'Escalated white')
-                    ->setCellValue('B18', count($this->ticketEscaladed($args['date'], 'white', 'open', $args['carrier'])))
+                    ->setCellValue('B18', $k[9][0])
+                    ->setCellValue('C18', $k[9][1])
+                    ->setCellValue('D18', $temp1 = count($this->ticketEscaladed($args['date'], 'white', 'open', $args['carrier'])))
+                    ->setCellValue('E18', $this->checkLowerOrHigher($temp1, $intervals['eW1Day'], 'E18', true))
+                    ->setCellValue('F18', $intervals['eW1Day'])
+                    ->setCellValue('G18', $this->checkLowerOrHigher($temp1, $intervals['eW1Week'], 'G18', true))
+                    ->setCellValue('H18', $intervals['eW1Week'])
+                    
                     ->setCellValue('A19', 'Escalated yellow')
-                    ->setCellValue('B19', count($this->ticketEscaladed($args['date'], 'yellow', 'open', $args['carrier'])))
+                    ->setCellValue('B19', $k[10][0])
+                    ->setCellValue('C19', $k[10][1])
+                    ->setCellValue('D19', $temp1 = count($this->ticketEscaladed($args['date'], 'yellow', 'open', $args['carrier'])))
+                    ->setCellValue('E19', $this->checkLowerOrHigher($temp1, $intervals['eY1Day'], 'E19', true))
+                    ->setCellValue('F19', $intervals['eY1Day'])
+                    ->setCellValue('G19', $this->checkLowerOrHigher($temp1, $intervals['eY1Week'], 'G19', true))
+                    ->setCellValue('H19', $intervals['eY1Week'])
+                    
                     ->setCellValue('A20', 'Escalated red')
-                    ->setCellValue('B20', count($this->ticketEscaladed($args['date'], 'red', 'open', $args['carrier'])))
+                    ->setCellValue('B20', $k[11][0])
+                    ->setCellValue('C20', $k[11][1])
+                    ->setCellValue('D20', $temp1 = count($this->ticketEscaladed($args['date'], 'red', 'open', $args['carrier'])))
+                    ->setCellValue('E20', $this->checkLowerOrHigher($temp1, $intervals['eR1Day'], 'E20', true))
+                    ->setCellValue('F20', $intervals['eR1Day'])
+                    ->setCellValue('G20', $this->checkLowerOrHigher($temp1, $intervals['eR1Week'], 'G20', true))
+                    ->setCellValue('H20', $intervals['eR1Week'])
+                    
                     ->setCellValue('A21', 'Total escalated')
-                    ->setCellValue('B21', count($this->totalTicketEscaladed($args['date'], $args['carrier'])));
+                    ->setCellValue('B21', $k[9][0]+$k[10][0]+$k[11][0])
+                    ->setCellValue('C21', $k[9][1]+$k[10][1]+$k[11][1])
+                    ->setCellValue('D21', $temp1 = count($this->totalTicketEscaladed($args['date'], $args['carrier'])))
+                    ->setCellValue('E21', $this->checkLowerOrHigher($temp1, $intervals['te1Day'], 'E21', true))
+                    ->setCellValue('F21', $intervals['te1Day'])
+                    ->setCellValue('G21', $this->checkLowerOrHigher($temp1, $intervals['te1Week'], 'G21', true))
+                    ->setCellValue('H21', $intervals['te1Week']);
         
     }
     
+    public function checkLowerOrHigher($a, $b, $coordinate = false, $excel = false)
+    {
+        $a = (int) $a;
+        $b = (int) $b;
+        if (is_int($a) && is_int($b)) {
+            if ($a > $b) { 
+                $image = 'down.png'; 
+            } elseif ($a < $b) {
+                $image = 'up.png';
+            } elseif ($a === $b) {
+                $image = 'equals.png';
+            }
+            
+            if ($excel === true) {
+                if ($coordinate) {
+                    if (!is_string($coordinate))
+                        throw new Exception("Las coordenas deben ser string: $coordinate");
+
+                    $objDrawing = new PHPExcel_Worksheet_Drawing();
+                    $objDrawing->setPath('images/' . $image);
+                    $objDrawing->setCoordinates($coordinate);
+                    $objDrawing->setOffsetX(10);
+                    $objDrawing->setWorksheet($this->_phpExcel->getActiveSheet());
+                } else {
+                    throw new Exception('Faltan las coordenadas para mostrar las imagenes up o down');
+                }
+            } else {
+                return "<img src='$image' alt='". substr($image, -3) ."' />";
+            }
+            
+        } else {
+            throw new Exception("No son numeros al momento de comparar los dias y las semanas en los reportes. a = $a y b = $b");
+        }
+    }
+    
+    public function setIntervalDays($args)
+    {
+        if (isset($args['date']) && isset($args['carrier'])) {
+            return array(
+                'wo1Day'   => count($this->openOrClose(date('Y-m-d H:i:s', strtotime($args['date'] .' - 1 day')), 'white', 'open', $args['carrier'])),
+                'wo1Week'  => count($this->openOrClose(date('Y-m-d H:i:s', strtotime($args['date'] .' - 7 day')), 'white', 'open', $args['carrier'])),
+                'yo1Day'   => count($this->openOrClose(date('Y-m-d H:i:s', strtotime($args['date'] .' - 1 day')), 'yellow', 'open', $args['carrier'])),
+                'yo1Week'  => count($this->openOrClose(date('Y-m-d H:i:s', strtotime($args['date'] .' - 7 day')), 'yellow', 'open', $args['carrier'])),
+                'ro1Day'   => count($this->openOrClose(date('Y-m-d H:i:s', strtotime($args['date'] .' - 1 day')), 'red', 'open', $args['carrier'])),
+                'ro1Week'  => count($this->openOrClose(date('Y-m-d H:i:s', strtotime($args['date'] .' - 7 day')), 'red', 'open', $args['carrier'])),
+                'to1Day'   => count($this->totalTicketsPending(date('Y-m-d H:i:s', strtotime($args['date'] .' - 1 day')), $args['carrier'])),
+                'to1Week'  => count($this->totalTicketsPending(date('Y-m-d H:i:s', strtotime($args['date'] .' - 7 day')), $args['carrier'])),
+                'wc1Day'   => count($this->openOrClose(date('Y-m-d H:i:s', strtotime($args['date'] .' - 1 day')), 'white', 'close', $args['carrier'])),
+                'wc1Week'  => count($this->openOrClose(date('Y-m-d H:i:s', strtotime($args['date'] .' - 7 day')), 'white', 'close', $args['carrier'])),
+                'yc1Day'   => count($this->openOrClose(date('Y-m-d H:i:s', strtotime($args['date'] .' - 1 day')), 'yellow', 'close', $args['carrier'])),
+                'yc1Week'  => count($this->openOrClose(date('Y-m-d H:i:s', strtotime($args['date'] .' - 7 day')), 'yellow', 'close', $args['carrier'])),
+                'rc1Day'   => count($this->openOrClose(date('Y-m-d H:i:s', strtotime($args['date'] .' - 1 day')), 'red', 'close', $args['carrier'])),
+                'rc1Week'  => count($this->openOrClose(date('Y-m-d H:i:s', strtotime($args['date'] .' - 7 day')), 'red', 'close', $args['carrier'])),
+                'tc1Day'   => count($this->totalTicketsClosed(date('Y-m-d H:i:s', strtotime($args['date'] .' - 1 day')), $args['carrier'])),
+                'tc1Week'  => count($this->totalTicketsClosed(date('Y-m-d H:i:s', strtotime($args['date'] .' - 7 day')), $args['carrier'])),
+                'naW1Day'  => count($this->withoutDescription(date('Y-m-d H:i:s', strtotime($args['date'] .' - 1 day')), 'white', 'open', $args['carrier'])),
+                'naW1Week' => count($this->withoutDescription(date('Y-m-d H:i:s', strtotime($args['date'] .' - 7 day')), 'white', 'open', $args['carrier'])),
+                'naY1Day'  => count($this->withoutDescription(date('Y-m-d H:i:s', strtotime($args['date'] .' - 1 day')), 'yellow', 'open', $args['carrier'])),
+                'naY1Week' => count($this->withoutDescription(date('Y-m-d H:i:s', strtotime($args['date'] .' - 7 day')), 'yellow', 'open', $args['carrier'])),
+                'naR1Day'  => count($this->withoutDescription(date('Y-m-d H:i:s', strtotime($args['date'] .' - 1 day')), 'red', 'open', $args['carrier'])),
+                'naR1Week' => count($this->withoutDescription(date('Y-m-d H:i:s', strtotime($args['date'] .' - 7 day')), 'red', 'open', $args['carrier'])),
+                'tna1Day'  => count($this->totalWithoutDescription(date('Y-m-d H:i:s', strtotime($args['date'] .' - 1 day')), $args['carrier'])),
+                'tna1Week' => count($this->totalWithoutDescription(date('Y-m-d H:i:s', strtotime($args['date'] .' - 7 day')), $args['carrier'])),
+                'eW1Day'   => count($this->ticketEscaladed(date('Y-m-d H:i:s', strtotime($args['date'] .' - 1 day')), 'white', 'open', $args['carrier'])),
+                'eW1Week'  => count($this->ticketEscaladed(date('Y-m-d H:i:s', strtotime($args['date'] .' - 7 day')), 'white', 'open', $args['carrier'])),
+                'eY1Day'   => count($this->ticketEscaladed(date('Y-m-d H:i:s', strtotime($args['date'] .' - 1 day')), 'yellow', 'open', $args['carrier'])),
+                'eY1Week'  => count($this->ticketEscaladed(date('Y-m-d H:i:s', strtotime($args['date'] .' - 7 day')), 'yellow', 'open', $args['carrier'])),
+                'eR1Day'   => count($this->ticketEscaladed(date('Y-m-d H:i:s', strtotime($args['date'] .' - 1 day')), 'red', 'open', $args['carrier'])),
+                'eR1Week'  => count($this->ticketEscaladed(date('Y-m-d H:i:s', strtotime($args['date'] .' - 7 day')), 'red', 'open', $args['carrier'])),
+                'te1Day'   => count($this->totalTicketEscaladed(date('Y-m-d H:i:s', strtotime($args['date'] .' - 1 day')), $args['carrier'])),
+                'te1Week'  => count($this->totalTicketEscaladed(date('Y-m-d H:i:s', strtotime($args['date'] .' - 7 day')), $args['carrier']))
+            );
+        } else {
+            throw new Exception('No existe date o carrier');
+        }
+    }
+    
+    /**
+     * Retorna un array con el conteo de suppliers y customers por cada color de ticket
+     * @param string $date
+     * @param string $carrier
+     * @return array
+     */
+    public function countCarriers($date, $carrier)
+    {
+        $statistcs = array();
+        for ($i = 1; $i <= 12; $i++) {
+            $carriers = array();
+            $data = $this->optionStatistics($i, $date, $carrier);
+                        
+            foreach ($data as $value) {
+                $carriers[] = $value->carrier;
+            }
+
+            $statistcs[] = array('totalByCarriers' => array_count_values($carriers));
+        }
+        
+        // $k será el conteo de carriers (supplier o customer)
+        $k = array();
+        for ($i = 0; $i < 12; $i++) {
+            $k[] = array(
+                    isset($statistcs[$i]['totalByCarriers']['Supplier']) ? $statistcs[$i]['totalByCarriers']['Supplier'] : 0, 
+                    isset($statistcs[$i]['totalByCarriers']['Customer']) ? $statistcs[$i]['totalByCarriers']['Customer'] : 0
+                );
+        }
+        
+        return $k;
+    }
     
    /**
     * Generando los titulos de la hoja
@@ -254,7 +487,7 @@ class Report extends Excel
                     ->setCellValue('I' . $numBody, $value->close_ticket)
                     ->setCellValue('J' . $numBody, $value->lifetime);
                 $row = $key + 6;
-                $this->_setStyleBody('A' . $row. ':J' . $row, $value->color);  
+                $this->_setStyleBody('A' . $row. ':J' . $row, $value->color,  $value->id_status);  
                 $numBody++;
             }
         }
@@ -351,16 +584,30 @@ class Report extends Excel
     /**
      * Define el estilo de las filas dependiendo del color del ticket
      * @param string $cell
-     * @param string $color
+     * @param string $color El color del ticket
+     * @param int $status El estatus del ticket
      */
-    private function _setStyleBody($cell, $color)
+    private function _setStyleBody($cell, $color, $status = false)
     {
         $color = $this->_cssTickets($color);
+        $bold = false;
+        $letra = '333333';
+        
+        if ($status) {
+            if ($status == 3) {
+                $bold = true;
+                $letra = '000000';
+            } else {
+                $bold = false;
+                $letra = '333333';
+            }
+        }
+        
         $style = array(
             'font' => array(
-                'bold' => false,
+                'bold' => $bold,
                 'color' => array(
-                    'argb' => '333333'
+                    'argb' => $letra
                 ),
             ),
             'aligment' => array(
@@ -478,7 +725,7 @@ class Report extends Excel
         $selectCarrier = $this->_carrierInQuery($carrier);
         return Ticket::model()->findAllBySql("$select $subQuery $selectCarrier AND
                                             id_status = 3                                              
-                                            ORDER BY id_status, date, hour ASC");
+                                            ORDER BY color ASC, carrier ASC");
     }
     
     /**
@@ -500,7 +747,7 @@ class Report extends Excel
                                 id NOT IN(SELECT dt.id_ticket FROM description_ticket dt, cruge_authassignment ca 
                                 WHERE dt.date <= '".substr($date, 0, 10)."' AND 
                                 dt.id_user = ca.userid AND itemname NOT IN('cliente'))
-                                ORDER BY id_status, date, hour ASC");
+                                ORDER BY color ASC, carrier ASC");
     }
   
     /**
@@ -516,7 +763,7 @@ class Report extends Excel
         $select = $this->getFullTicket($date);
         $subQuery = $this->_subQuery($date, $color, $status);
         $selectCarrier = $this->_carrierInQuery($carrier);
-        return Ticket::model()->findAllBySql("$select $subQuery $selectCarrier ORDER BY id_status, date, hour ASC");
+        return Ticket::model()->findAllBySql("$select $subQuery $selectCarrier ORDER BY color ASC, carrier ASC");
     }
     
     
@@ -589,7 +836,7 @@ class Report extends Excel
         $query .= " $begin WHERE date = '".substr($date, 0, 10)."' AND (close_ticket IS NULL OR close_ticket > '$date') AND 
                            id NOT IN(SELECT dt.id_ticket FROM description_ticket dt, cruge_authassignment ca 
                            WHERE dt.date <= '".substr($date, 0, 10)."' AND 
-                           dt.id_user = ca.userid AND itemname NOT IN('cliente')) $selectCarrier ORDER BY date, hour ASC";
+                           dt.id_user = ca.userid AND itemname NOT IN('cliente')) $selectCarrier ORDER BY color ASC, carrier ASC";
         return Ticket::model()->findAllBySql($query);
     }
     
@@ -606,7 +853,7 @@ class Report extends Excel
         $begin = "$select ";
         $query  = " $begin WHERE lifetime >= '2 days'::interval AND substr(close_ticket::text, 1, 10) = '".substr($date, 0, 10)."' $selectCarrier UNION ";
         $query .= " $begin WHERE lifetime >= '1 days'::interval AND lifetime < '2 days'::interval AND substr(close_ticket::text, 1, 10) = '".substr($date, 0, 10)."' $selectCarrier UNION ";
-        $query .= " $begin WHERE lifetime < '1 days'::interval AND substr(close_ticket::text, 1, 10) = '".substr($date, 0, 10)."' $selectCarrier ORDER BY id_status, date, hour ASC";
+        $query .= " $begin WHERE lifetime < '1 days'::interval AND substr(close_ticket::text, 1, 10) = '".substr($date, 0, 10)."' $selectCarrier ORDER BY color ASC, carrier ASC";
         return Ticket::model()->findAllBySql($query);
     }
     
@@ -627,7 +874,7 @@ class Report extends Excel
                                 id NOT IN(SELECT dt.id_ticket FROM description_ticket dt, cruge_authassignment ca 
                                 WHERE dt.date <= '".substr($date, 0, 10)."' AND 
                                 dt.id_user = ca.userid AND itemname NOT IN('cliente')) 
-                                ORDER BY id_status, date, hour ASC");
+                                ORDER BY color ASC, carrier ASC");
     }
     
     /**
@@ -643,7 +890,7 @@ class Report extends Excel
         return Ticket::model()->findAllBySql("$select WHERE  date <= '".substr($date, 0, 10)."'
                                             $selectCarrier AND
                                             id_status = 3                                              
-                                            ORDER BY id_status, date, hour ASC");
+                                            ORDER BY color ASC, carrier ASC");
     }
     
     /**

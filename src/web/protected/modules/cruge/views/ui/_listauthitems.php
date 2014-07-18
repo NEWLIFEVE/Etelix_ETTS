@@ -1,10 +1,10 @@
 <?php 
 $this->widget('zii.widgets.CListView', array(
 	'id'=>'list-auth-items',
-    'dataProvider'=>$dataProvider,
-	'afterAjaxUpdate'=>'crugeListAuthItemFunctions',
-    'itemView'=>'_authitem',
-    'sortableAttributes'=>array(
+        'dataProvider'=>$dataProvider,
+        'afterAjaxUpdate'=>'crugeListAuthItemFunctions',
+        'itemView'=>'_authitem',
+        'sortableAttributes'=>array(
         'name',
     ),
 ));	
@@ -15,7 +15,8 @@ $this->widget('zii.widgets.CListView', array(
 <script>
 	crugeListAuthItemFunctions = function(){
 	$('#list-auth-items .referencias').each(function(){
-		$(this).click(function(){
+		$(this).click(function(e){
+                        e.preventDefault();
 			$(this).parent().find('ul').toggle('slow');
 		});
 	});

@@ -43,7 +43,7 @@
                                 <div class="element">
                                     <?php echo CHtml::link('<i class="'.Utility::menuIcon($items[$i]['label']).'"></i> '.$items[$i]['label'], '#', array('class' => 'dropdown-toggle')); ?>
                                     <?php 
-                                    if (count($items[$i]['items'])) {
+                                    if (isset($items[$i]['items'])) {
                                     $this->widget('zii.widgets.CMenu', array(
                                             'items'=>$items[$i]['items'],
                                             'htmlOptions'=>array(
@@ -108,7 +108,7 @@
                 </div>
             </div>
             <footer>
-                Copyright &copy; <?php echo date('Y'); ?> ETELIX All Rights Reserved. Version 1.3.2
+                Copyright &copy; <?php echo date('Y'); ?> ETELIX All Rights Reserved. Version 1.4
             </footer>
         </div>
         <script>

@@ -26,204 +26,422 @@
                         <tr>
                             <th>See tickets</th>                    
                             <th>Category</th>
+                            <th>Supplier</th>
+                            <th>Customer</th>
                             <th>Total</th>
+                            <th></th>
+                            <th>Previous Day</th>
+                            <th></th>
+                            <th>A Week Ago</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr class="white">
                             <td>
-                                <div title="Open white" class="input-control radio default-style">
-                                    <label>
-                                        <input checked="checked" type="radio" name="rb-report" id="report-1" value="1">
-                                        <span class="check"></span>
-                                    </label>
+                                <div class="content-radio">
+                                    <div class="input-statistics">
+                                        <div class="input-control radio default-style">
+                                            <label>
+                                                <input checked="checked" type="radio" name="rb-report" id="report-1" value="1">
+                                                <span class="check"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="link-statistics">
+                                        <a href="#table-statistisc" title="Go to the table" class="go-link"><i class="icon-arrow-down-5"></i></a>
+                                    </div>
                                 </div>
                             </td>
-                            <td>Open white</td>
+                            <td>Open white within 24 hours</td>
+                            <td class="display-supplier">&nbsp;</td>
+                            <td class="display-customer">&nbsp;</td>
                             <td class="display-data"></td>
+                            <td class="arrow"></td>
+                            <td class="subtract-one-day"></td>
+                            <td class="arrow2"></td>
+                            <td class="subtract-seven-days"></td>
                         </tr>
                         <tr class="yellow">
                             <td>
-                                <div title="Open yellow" class="input-control radio default-style">
-                                    <label>
-                                        <input type="radio" name="rb-report" id="report-2" value="2">
-                                        <span class="check"></span>
-                                    </label>
+                                <div class="content-radio">
+                                    <div class="input-statistics">
+                                        <div class="input-control radio default-style">
+                                            <label>
+                                                <input type="radio" name="rb-report" id="report-2" value="2">
+                                                <span class="check"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="link-statistics">
+                                        <a href="#table-statistisc" title="Go to the table" class="go-link"><i class="icon-arrow-down-5"></i></a>
+                                    </div>
                                 </div>
                             </td>
-                            <td>Open yellow</td>
+                            <td>Open yellow within 48 hours</td>
+                            <td class="display-supplier">&nbsp;</td>
+                            <td class="display-customer">&nbsp;</td>
                             <td class="display-data"></td>
+                            <td class="arrow"></td>
+                            <td class="subtract-one-day"></td>
+                            <td class="arrow2"></td>
+                            <td class="subtract-seven-days"></td>
                         </tr>
                         <tr class="red">
                             <td>
-                                <div title="Open red" class="input-control radio default-style">
-                                    <label>
-                                        <input type="radio" name="rb-report" id="report-3" value="3">
-                                        <span class="check"></span>
-                                    </label>
+                                <div class="content-radio">
+                                    <div class="input-statistics">
+                                        <div class="input-control radio default-style">
+                                            <label>
+                                                <input type="radio" name="rb-report" id="report-3" value="3">
+                                                <span class="check"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="link-statistics">
+                                        <a href="#table-statistisc" title="Go to the table" class="go-link"><i class="icon-arrow-down-5"></i></a>
+                                    </div>
                                 </div>
                             </td>
-                            <td>Open red</td>
+                            <td>Open red with more than 48 hours</td>
+                            <td class="display-supplier">&nbsp;</td>
+                            <td class="display-customer">&nbsp;</td>
                             <td class="display-data"></td>
+                            <td class="arrow"></td>
+                            <td class="subtract-one-day"></td>
+                            <td class="arrow2"></td>
+                            <td class="subtract-seven-days"></td>
                         </tr>
                         <tr class="total">
                             <td>
-                                <div title="Total open" class="input-control radio default-style">
-                                    <label>
-                                        <input type="radio" name="rb-report" id="report-4" value="13">
-                                        <span class="check"></span>
-                                    </label>
+                                <div class="content-radio">
+                                    <div class="input-statistics">
+                                        <div class="input-control radio default-style">
+                                            <label>
+                                                <input type="radio" name="rb-report" id="report-4" value="13">
+                                                <span class="check"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="link-statistics">
+                                        <a href="#table-statistisc" title="Go to the table" class="go-link"><i class="icon-arrow-down-5"></i></a>
+                                    </div>
                                 </div>
                             </td>
                             <td>Total open</td>
-                            <td class="total-data"></td>
+                            <td class="total-supplier">&nbsp;</td>
+                            <td class="total-customer">&nbsp;</td>
+                            <td class="total-data" <!--title="<div class='diagram'>
+                                <div class='diagram-yellow'></div>
+                                <div class='diagram-white'></div>
+                                <div class='diagram-red'></div>
+                            </div>"-->></td>
+                            <td class="total-arrow"></td>
+                            <td class="total-one-day"></td>
+                            <td class="total-arrow2"></td>
+                            <td class="total-seven-days"></td>
                         </tr>
                         
                         <tr class="white">
                             <td>
-                                <div title="Closed white" class="input-control radio default-style">
-                                    <label>
-                                        <input type="radio" name="rb-report" id="report-5" value="4">
-                                        <span class="check"></span>
-                                    </label>
+                                <div class="content-radio">
+                                    <div class="input-statistics">
+                                        <div class="input-control radio default-style">
+                                            <label>
+                                                <input type="radio" name="rb-report" id="report-5" value="4">
+                                                <span class="check"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="link-statistics">
+                                        <a href="#table-statistisc" title="Go to the table" class="go-link"><i class="icon-arrow-down-5"></i></a>
+                                    </div>
                                 </div>
                             </td>
-                            <td>Closed white</td>
+                            <td>Closed white today</td>
+                            <td class="display-supplier">&nbsp;</td>
+                            <td class="display-customer">&nbsp;</td>
                             <td class="display-data"></td>
+                            <td class="arrow"></td>
+                            <td class="subtract-one-day"></td>
+                            <td class="arrow2"></td>
+                            <td class="subtract-seven-days"></td>
                         </tr>
                         <tr class="yellow">
                             <td>
-                                <div title="Closed yellow" class="input-control radio default-style">
-                                    <label>
-                                        <input type="radio" name="rb-report" id="report-6" value="5">
-                                        <span class="check"></span>
-                                    </label>
+                                <div class="content-radio">
+                                    <div class="input-statistics">
+                                        <div class="input-control radio default-style">
+                                            <label>
+                                                <input type="radio" name="rb-report" id="report-6" value="5">
+                                                <span class="check"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="link-statistics">
+                                        <a href="#table-statistisc" title="Go to the table" class="go-link"><i class="icon-arrow-down-5"></i></a>
+                                    </div>
                                 </div>
                             </td>
-                            <td>Closed yellow</td>
+                            <td>Closed yellow today</td>
+                            <td class="display-supplier">&nbsp;</td>
+                            <td class="display-customer">&nbsp;</td>
                             <td class="display-data"></td>
+                            <td class="arrow"></td>
+                            <td class="subtract-one-day"></td>
+                            <td class="arrow2"></td>
+                            <td class="subtract-seven-days"></td>
                         </tr>
                         <tr class="red">
                             <td>
-                                <div title="Closed red" class="input-control radio default-style">
-                                    <label>
-                                        <input type="radio" name="rb-report" id="report-7" value="6">
-                                        <span class="check"></span>
-                                    </label>
+                                <div class="content-radio">
+                                    <div class="input-statistics">
+                                        <div class="input-control radio default-style">
+                                            <label>
+                                                <input type="radio" name="rb-report" id="report-7" value="6">
+                                                <span class="check"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="link-statistics">
+                                        <a href="#table-statistisc" title="Go to the table" class="go-link"><i class="icon-arrow-down-5"></i></a>
+                                    </div>
                                 </div>
                             </td>
-                            <td>Closed red</td>
+                            <td>Closed red today</td>
+                            <td class="display-supplier">&nbsp;</td>
+                            <td class="display-customer">&nbsp;</td>
                             <td class="display-data"></td>
+                            <td class="arrow"></td>
+                            <td class="subtract-one-day"></td>
+                            <td class="arrow2"></td>
+                            <td class="subtract-seven-days"></td>
                         </tr>
                         <tr class="total">
                             <td>
-                                <div title="Total closed" class="input-control radio default-style">
-                                    <label>
-                                        <input type="radio" name="rb-report" id="report-8" value="14">
-                                        <span class="check"></span>
-                                    </label>
+                                <div class="content-radio">
+                                    <div class="input-statistics">
+                                        <div class="input-control radio default-style">
+                                            <label>
+                                                <input type="radio" name="rb-report" id="report-8" value="14">
+                                                <span class="check"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="link-statistics">
+                                        <a href="#table-statistisc" title="Go to the table" class="go-link"><i class="icon-arrow-down-5"></i></a>
+                                    </div>
                                 </div>
                             </td>
                             <td>Total closed</td>
+                            <td class="total-supplier">&nbsp;</td>
+                            <td class="total-customer">&nbsp;</td>
                             <td class="total-data"></td>
+                            <td class="total-arrow"></td>
+                            <td class="total-one-day"></td>
+                            <td class="total-arrow2"></td>
+                            <td class="total-seven-days"></td>
                         </tr>
                         
                         <tr class="white">
                             <td>
-                                <div title="No activity white" class="input-control radio default-style">
-                                    <label>
-                                        <input type="radio" name="rb-report" id="report-9" value="7">
-                                        <span class="check"></span>
-                                    </label>
+                                <div class="content-radio">
+                                    <div class="input-statistics">
+                                        <div class="input-control radio default-style">
+                                            <label>
+                                                <input type="radio" name="rb-report" id="report-9" value="7">
+                                                <span class="check"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="link-statistics">
+                                        <a href="#table-statistisc" title="Go to the table" class="go-link"><i class="icon-arrow-down-5"></i></a>
+                                    </div>
                                 </div>
                             </td>
-                            <td>No activity white</td>
+                            <td>No activity white today</td>
+                            <td class="display-supplier">&nbsp;</td>
+                            <td class="display-customer">&nbsp;</td>
                             <td class="display-data"></td>
+                            <td class="arrow"></td>
+                            <td class="subtract-one-day"></td>
+                            <td class="arrow2"></td>
+                            <td class="subtract-seven-days"></td>
                         </tr>
                         <tr class="yellow">
                             <td>
-                                <div title="No activity yellow" class="input-control radio default-style">
-                                    <label>
-                                        <input type="radio" name="rb-report" id="report-10" value="8">
-                                        <span class="check"></span>
-                                    </label>
+                                <div class="content-radio">
+                                    <div class="input-statistics">
+                                        <div class="input-control radio default-style">
+                                            <label>
+                                                <input type="radio" name="rb-report" id="report-10" value="8">
+                                                <span class="check"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="link-statistics">
+                                        <a href="#table-statistisc" title="Go to the table" class="go-link"><i class="icon-arrow-down-5"></i></a>
+                                    </div>
                                 </div>
                             </td>
-                            <td>No activity yellow</td>
+                            <td>No activity yellow today</td>
+                            <td class="display-supplier">&nbsp;</td>
+                            <td class="display-customer">&nbsp;</td>
                             <td class="display-data"></td>
+                            <td class="arrow"></td>
+                            <td class="subtract-one-day"></td>
+                            <td class="arrow2"></td>
+                            <td class="subtract-seven-days"></td>
                         </tr>
                         <tr class="red">
                             <td>
-                                <div title="No activity red" class="input-control radio default-style">
-                                    <label>
-                                        <input type="radio" name="rb-report" id="report-11" value="9">
-                                        <span class="check"></span>
-                                    </label>
+                                <div class="content-radio">
+                                    <div class="input-statistics">
+                                        <div class="input-control radio default-style">
+                                            <label>
+                                                <input type="radio" name="rb-report" id="report-11" value="9">
+                                                <span class="check"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="link-statistics">
+                                        <a href="#table-statistisc" title="Go to the table" class="go-link"><i class="icon-arrow-down-5"></i></a>
+                                    </div>
                                 </div>
                             </td>
-                            <td>No activity red</td>
+                            <td>No activity red today</td>
+                            <td class="display-supplier">&nbsp;</td>
+                            <td class="display-customer">&nbsp;</td>
                             <td class="display-data"></td>
+                            <td class="arrow"></td>
+                            <td class="subtract-one-day"></td>
+                            <td class="arrow2"></td>
+                            <td class="subtract-seven-days"></td>
                         </tr>
                         <tr class="total">
                             <td>
-                                <div title="Total no activity" class="input-control radio default-style">
-                                    <label>
-                                        <input type="radio" name="rb-report" id="report-12" value="15">
-                                        <span class="check"></span>
-                                    </label>
+                                <div class="content-radio">
+                                    <div class="input-statistics">
+                                        <div class="input-control radio default-style">
+                                            <label>
+                                                <input type="radio" name="rb-report" id="report-12" value="15">
+                                                <span class="check"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="link-statistics">
+                                        <a href="#table-statistisc" title="Go to the table" class="go-link"><i class="icon-arrow-down-5"></i></a>
+                                    </div>
                                 </div>
                             </td>
                             <td>Total no activity</td>
+                            <td class="total-supplier">&nbsp;</td>
+                            <td class="total-customer">&nbsp;</td>
                             <td class="total-data"></td>
+                            <td class="total-arrow"></td>
+                            <td class="total-one-day"></td>
+                            <td class="total-arrow2"></td>
+                            <td class="total-seven-days"></td>
                         </tr>
                         
                         <tr class="white">
                             <td>
-                                <div title="Escalated white" class="input-control radio default-style">
-                                    <label>
-                                        <input type="radio" name="rb-report" id="report-13" value="10">
-                                        <span class="check"></span>
-                                    </label>
+                                <div class="content-radio">
+                                    <div class="input-statistics">
+                                        <div class="input-control radio default-style">
+                                            <label>
+                                                <input type="radio" name="rb-report" id="report-13" value="10">
+                                                <span class="check"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="link-statistics">
+                                        <a href="#table-statistisc" title="Go to the table" class="go-link"><i class="icon-arrow-down-5"></i></a>
+                                    </div>
                                 </div>
                             </td>
-                            <td>Escalated white</td>
+                            <td>Escalated white today</td>
+                            <td class="display-supplier">&nbsp;</td>
+                            <td class="display-customer">&nbsp;</td>
                             <td class="display-data"></td>
+                            <td class="arrow"></td>
+                            <td class="subtract-one-day"></td>
+                            <td class="arrow2"></td>
+                            <td class="subtract-seven-days"></td>
                         </tr>
                         <tr class="yellow">
                             <td>
-                                <div title="Escalated yellow" class="input-control radio default-style">
-                                    <label>
-                                        <input type="radio" name="rb-report" id="report-14" value="11">
-                                        <span class="check"></span>
-                                    </label>
+                                <div class="content-radio">
+                                    <div class="input-statistics">
+                                        <div class="input-control radio default-style">
+                                            <label>
+                                                <input type="radio" name="rb-report" id="report-14" value="11">
+                                                <span class="check"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="link-statistics">
+                                        <a href="#table-statistisc" title="Go to the table" class="go-link"><i class="icon-arrow-down-5"></i></a>
+                                    </div>
                                 </div>
                             </td>
-                            <td>Escalated yellow</td>
+                            <td>Escalated yellow today</td>
+                            <td class="display-supplier">&nbsp;</td>
+                            <td class="display-customer">&nbsp;</td>
                             <td class="display-data"></td>
+                            <td class="arrow"></td>
+                            <td class="subtract-one-day"></td>
+                            <td class="arrow2"></td>
+                            <td class="subtract-seven-days"></td>
                         </tr>
                         <tr class="red">
                             <td>
-                                <div title="Escalated red" class="input-control radio default-style">
-                                    <label>
-                                        <input type="radio" name="rb-report" id="report-15" value="12">
-                                        <span class="check"></span>
-                                    </label>
+                                <div class="content-radio">
+                                    <div class="input-statistics">
+                                        <div class="input-control radio default-style">
+                                            <label>
+                                                <input type="radio" name="rb-report" id="report-15" value="12">
+                                                <span class="check"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="link-statistics">
+                                        <a href="#table-statistisc" title="Go to the table" class="go-link"><i class="icon-arrow-down-5"></i></a>
+                                    </div>
                                 </div>
                             </td>
-                            <td>Escalated red</td>
+                            <td>Escalated red today</td>
+                            <td class="display-supplier">&nbsp;</td>
+                            <td class="display-customer">&nbsp;</td>
                             <td class="display-data"></td>
+                            <td class="arrow"></td>
+                            <td class="subtract-one-day"></td>
+                            <td class="arrow2"></td>
+                            <td class="subtract-seven-days"></td>
                         </tr>
                         <tr class="total">
                             <td>
-                                <div title="Total escalated" class="input-control radio default-style">
-                                    <label>
-                                        <input type="radio" name="rb-report" id="report-16" value="16">
-                                        <span class="check"></span>
-                                    </label>
+                                <div class="content-radio">
+                                    <div class="input-statistics">
+                                        <div class="input-control radio default-style">
+                                            <label>
+                                                <input type="radio" name="rb-report" id="report-16" value="16">
+                                                <span class="check"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="link-statistics">
+                                        <a href="#table-statistisc" title="Go to the table" class="go-link"><i class="icon-arrow-down-5"></i></a>
+                                    </div>
                                 </div>
                             </td>
                             <td>Total Escalated</td>
+                            <td class="total-supplier">&nbsp;</td>
+                            <td class="total-customer">&nbsp;</td>
                             <td class="total-data"></td>
+                            <td class="total-arrow"></td>
+                            <td class="total-one-day"></td>
+                            <td class="total-arrow2"></td>
+                            <td class="total-seven-days"></td>
                         </tr>
                     </tbody>
                 </table>

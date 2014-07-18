@@ -9,7 +9,7 @@
 	color: black;
 	background-color: rgb(255,255,100);
 	text-align: center;
-	border-radius: 5px;
+	border-radius: 0px;
 	position: absolute;
 	left: 45%;
 	top: 0px;
@@ -19,7 +19,7 @@
 .crugepanel {
 	background-color: white;
 	padding: 10px;
-	border-radius: 5px;
+	border-radius: 0px;
 	border: 1px dotted #aaa;
 	box-shadow: 3px 3px 5px #eee;
 	display: block;
@@ -41,26 +41,46 @@ img.iconhelp{
 	background-color: white;
 	border: 2px solid white;
 	box-shadow: 3px 3px 5px #eee;
-	border-radius: 5px;
+	border-radius: 0px;
 	width: 24px;
 }
 
 
 .auth-item-create-button {
-	border: 1px dotted #aaa;
-	box-shadow: 3px 3px 5px #eee;
-	border-radius: 5px;
-	padding: 5px;
-	background-color: rgb(255,255,240);
-	text-align: center;
-	width: 120px;
-	margin: 10px;
-	margin-left: 0px;
+    /*
+    border: 1px dotted #aaa;
+    box-shadow: 3px 3px 5px #eee;
+    border-radius: 0px;
+    padding: 5px;
+    background-color: rgb(255,255,240);
+    text-align: center;
+    width: 120px;
+    margin: 10px;
+    margin-left: 0px;*/
+    display: block;
+    width: 100%;
+    height: 100px;
+    text-align: center;
+    background: #16499a;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+}
+.auth-item-create-button:hover {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.auth-item-create-button .enlace {
+    vertical-align: middle;
+    line-height: 100px;
+    color: #fff !important;
+    display: block; 
+    width: 100%; 
+    height: 100%;
 }
 
 div.form .form-group {
 	border: 1px dotted #aaa;
-	border-radius: 5px;
+	border-radius: 0px;
 	overflow: auto;
 	padding: 10px;
 	margin-bottom: 10px;
@@ -100,7 +120,7 @@ div.form  .hint {
 
 div.form .field-group{
 	border: 1px dotted #eee;
-	border-radius: 5px;
+	border-radius: 0px;
 	overflow: auto;
 	clear: both;
 	padding: 5px;
@@ -109,7 +129,7 @@ div.form .field-group{
 
 div.form .form-group-vert {
 	border: 1px dotted #aaa;
-	border-radius: 5px;
+	border-radius: 0px;
 	overflow: auto;
 	padding: 10px;
 	margin-bottom: 10px;
@@ -124,25 +144,45 @@ div.form .form-group-vert .col {
 
 
 #list-auth-items{
-	border: 1px solid red;
-	padding: 10px;
-	border: 1px solid #efefef;
-	border-radius: 5px;
-	box-shadow: 3px 3px 5px #eee;
+    /*
+    border: 1px solid red;
+    padding: 10px;
+    border: 1px solid #efefef;
+    border-radius: 0px;
+    box-shadow: 3px 3px 5px #eee;*/
+    padding: 20px 40px 20px 60px;
+    border: 1px #ccc solid;
+    position: relative;
+    background-color: #fdfdfd !important;
 }
 #list-auth-items .row{
-	background-color: #efefef;
-	padding: 5px;
-	border-radius: 5px;
-	margin-bottom: 10px;
-	display: block;
-	width: 70%;
-	overflow: auto;
+    /*
+    background-color: #efefef;
+    padding: 5px;
+    border-radius: 0px;
+    margin-bottom: 10px;
+    display: block;
+    width: 70%;
+    overflow: auto;*/
+    border: 4px transparent solid;
+    width: 70%;
+    height: auto;
+    position: relative;
+    display: block;
+    cursor: pointer;
+    color: inherit;
+    margin: 0 0 10px 0;
+    padding: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3), 0 3px 8px rgba(0, 0, 0, 0.2);
 }
+#list-auth-items .row:hover{
+    border: 4px #0072c6 solid;
+}
+
 #list-auth-items .col{
-	text-align: left;
-	margin-bottom: 3px;
-	min-width: 100px;
+    text-align: left;
+    margin-bottom: 3px;
+    /*min-width: 100px;*/
 }
 
 #list-auth-items hr {
@@ -150,14 +190,19 @@ div.form .form-group-vert .col {
 }
 
 #list-auth-items .authname{
-	font-weight: bold;
-	background-color: #ddd;
-	border-radius: 5px;
-	padding: 3px;
+    /*
+    font-weight: bold;
+    background-color: #ddd;
+    border-radius: 0px;
+    padding: 3px;*/
+    background-color: #6badf6;
+    padding: 3px;
+    color: #FFF;
 }
 
 #list-auth-items .operacion{
 	float: left;
+        margin: 5px 8px 5px 0;
 }
 #list-auth-items .operacion-eliminar{
 	float: right;
@@ -211,7 +256,7 @@ ul.auth-item  li {
 	padding: 5px;
 	min-width: 150px;
 	
-	border-radius: 5px;
+	border-radius: 0px;
 	box-shadow: 3px 3px 5px #eee;
 }
 
@@ -279,7 +324,7 @@ div.user-assignments-detail .lista{
 	width: 40%;
 	padding: 10px;
 	border: 1px solid #eee;
-	border-radius: 5px;
+	border-radius: 0px;
 }
 
 div.user-assignments-detail .boton {
@@ -301,4 +346,9 @@ div.user-assignments-detail #lista1 .boton {
 }
 div.user-assignments-detail #lista2 .boton {
 	background-image: url("hand.png");
+}
+
+.metro .filter-controller {
+    width: 100%; 
+    height: 40px;
 }

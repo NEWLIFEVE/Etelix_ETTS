@@ -6,7 +6,7 @@
 	//
 	// $model: instancia de CAuthItem
 	//
-	Yii::app()->clientScript->registerCoreScript('jquery');
+	// Yii::app()->clientScript->registerCoreScript('jquery');
 	$rbac = Yii::app()->user->rbac;
 	$roles = $rbac->getRoles();
 	$tareas = $rbac->getTasks();
@@ -23,16 +23,14 @@
 	// OPERATIONS
 	$treeDataOps = array();
 
-	// titulos
-	echo "<h2>".ucfirst($model->name)." (".
-		CrugeTranslator::t($rbac->getAuthItemTypeName($model->type)).")</h2>";
-	echo "<h3 class='hint'>".$model->description."</h3>";
-	echo "<p>".ucfirst(CrugeTranslator::t(
-	"click an item to enable or disable"))."</p>";
-
+	
+        /*
 	$iconPin = Yii::app()->user->ui->getResource('pin.png');
 	$imgPin = "<img class='pin-on' src='{$iconPin}' title='"
 		.CrugeTranslator::t("Click para asignar/desasignar el item")."'>";
+         * 
+         */
+        $imgPin = '&nbsp;';
 
 	//  LISTA DE ROLES 
 	//		si hay roles definidos y la vista no es para un TASK.
@@ -40,12 +38,12 @@
 	if((count($roles) > 0) && ($model->type != CAuthItem::TYPE_TASK)){
 		
 		foreach($roles as $item){
-			$asignado = isset($childrens[$item->name]) ? 'checked' : '';
-			$loop = $rbac->detectLoop($model->name,$item->name) ? "loop" : "" ;
+			$asignado = isset($childrens[$item->name]) ? 'text-info' : '';
+			$loop = $rbac->detectLoop($model->name,$item->name) ? "text-alert" : "" ;
 			$treeDataRoles[] = array(
 				'id'=>$item->name,
 				'text'=>"<span class='{$asignado} {$loop}'>".$item->name
-					."</span>".$imgPin,
+					."</span>".$imgPin . "<input type='checkbox' name='assignRoles' class='{$asignado}'>",
 				'htmlOptions'=>array('class'=>'authitem',
 					'alt'=>$item->name),
 			);
@@ -69,27 +67,27 @@
 				if(isset($taskinfo['childmenu'][$topTask->name]))
 				foreach($taskinfo['childmenu'][$topTask->name] as $child){
 					$asignado = isset($childrens[$child->name]) ? 
-						'checked' : '';
+						'text-info' : '';
 					$loop = $rbac->detectLoop($model->name,$child->name) ? 
-						"loop" : "" ;
+						"text-alert" : "" ;
 					$hasChildren = true;
 					$children[] = array(
 						'id'=>$child->name,
 						'text'=>"<span class='itemchildtext authitemsub {$asignado} {$loop}'>"
-								.$rbac->getTaskText($child)."</span>".$imgPin,
+								.$rbac->getTaskText($child)."</span>".$imgPin . "<input type='checkbox' name='assignRoles' class='{$asignado}'>",
 						'htmlOptions'=>array('class'=>'authitemchild'
 							,'alt'=>$child->name
 							, 'title'=>$child->name),
 					);
 				}
-				$asignado = isset($childrens[$topTask->name]) ? 'checked' : '';
+				$asignado = isset($childrens[$topTask->name]) ? 'text-info' : '';
 				$loop = $rbac->detectLoop($model->name,$topTask->name) ? 
-						"loop" : "" ;
+						"text-alert" : "" ;
 				$treeDataMenu[] = array(
 					'id'=>$topTask->name,
 					'text'=>"<span class='itemtext authitemtop {$asignado} {
 						$loop}'>".$text
-						."</span>".$imgPin,
+						."</span>".$imgPin . "<input type='checkbox' name='assignRoles' class='{$asignado}'>",
 					'expanded'=>false,
 					'hasChildren'=>$hasChildren,
 					'children'=>$children,
@@ -103,13 +101,13 @@
 		// nodos padre no existen. (tienen su sintaxis de descripcion errada).
 		if(count($taskinfo['orphan'])>0)
 			foreach($taskinfo['orphan'] as $orpTask){
-				$asignado = isset($childrens[$orpTask->name]) ? 'checked' : '';
+				$asignado = isset($childrens[$orpTask->name]) ? 'text-info' : '';
 				$loop = $rbac->detectLoop($model->name,$orpTask->name) ? 
-						"loop" : "" ;
+						"text-alert" : "" ;
 				$treeDataError[] = array(
 					'id'=>$orpTask->name,
 					'text'=>"<span class='{$asignado} {$loop}'>".
-						$rbac->getTaskText($orpTask)."</span>".$imgPin,
+						$rbac->getTaskText($orpTask)."</span>".$imgPin . "<input type='checkbox' name='assignRoles' class='{$asignado}'>",
 					'expanded'=>false,
 					'hasChildren'=>false,
 					'htmlOptions'=>array('class'=>'authitem'
@@ -121,13 +119,13 @@
 		// en otras palabras las tareas comunes y silvestres!
 		if(count($taskinfo['regular'])>0)
 			foreach($taskinfo['regular'] as $task){
-				$asignado = isset($childrens[$task->name]) ? 'checked' : '';
+				$asignado = isset($childrens[$task->name]) ? 'text-info' : '';
 				$loop = $rbac->detectLoop($model->name,$task->name) ? 
-						"loop" : "" ;
+						"text-alert" : "" ;
 				$treeDataRegular[] = array(
 					'id'=>$task->name,
 					'text'=>"<span class='{$asignado} {$loop}'>".
-						$task->name."</span>".$imgPin,
+						$task->name."</span>".$imgPin . "<input type='checkbox' name='assignRoles' class='{$asignado}'>",
 					'expanded'=>false,
 					'hasChildren'=>false,
 					'htmlOptions'=>array('class'=>'authitem',
@@ -159,14 +157,14 @@
 				as $item){
 				// por cada operacion filtrada por $filter la agrega
 
-				$asignado = isset($childrens[$item->name]) ? 'checked' : '';
+				$asignado = isset($childrens[$item->name]) ? 'text-info' : '';
 				$loop = $rbac->detectLoop($model->name,$item->name) ? 
-						"loop" : "" ;
+						"text-alert" : "" ;
 
 				$childs[] = array(
 					'id'=>$item->name,
 					'text'=>"<span class='{$asignado} {$loop}'>".
-						$item->name."</span>".$imgPin,
+						$item->name."</span>".$imgPin . "<input type='checkbox' name='assignRoles' class='{$asignado}'>",
 					'htmlOptions'=>array('class'=>'authitem',
 						'alt'=>$item->name),
 				);
@@ -228,44 +226,129 @@
 			),
 		);
 	}
-
-	$this->widget('CTreeView',array(
-		'id'=>'auth-item-tree',
-		'persist'=>'cookie',
-		'data'=>
-		array(
-
-			// ROLES  TREENODE
-			array(
-				'text'=>"<b>".CrugeTranslator::t("Roles")."</b>", 
-				'expanded'=>true, 
-				'children'=>$treeDataRoles,
-			),//end roles treenode
-
-			// TAREAS TREENODE
-			array(
-				'text'=>"<b>".CrugeTranslator::t("Tareas")."</b>", 
-				'expanded'=>true, 
-				'children'=>$arrayTareas,
-			),//end tareas treenode
-
-			// OPERATIONS  TREENODE
-			array(
-				'text'=>"<b>".CrugeTranslator::t(
-					"Operaciones Organizadas por Tipo")."</b>", 
-				'expanded'=>true, 
-				'children'=>$treeDataOps,
-			),//end operations treenode
-			
-		)
-	));
+        
+        
+//	$this->widget('CTreeView',array(
+//		'id'=>'auth-item-tree',
+//		'persist'=>'cookie',
+//		'data'=>
+//		array(
+//
+//			// ROLES  TREENODE
+//			array(
+//				'text'=>"<b>".CrugeTranslator::t("Roles")."</b>", 
+//				'expanded'=>true, 
+//				'children'=>$treeDataRoles,
+//			),//end roles treenode
+//
+//			// TAREAS TREENODE
+//			array(
+//				'text'=>"<b>".CrugeTranslator::t("Tareas")."</b>", 
+//				'expanded'=>true, 
+//				'children'=>$arrayTareas,
+//			),//end tareas treenode
+//
+//			// OPERATIONS  TREENODE
+//			array(
+//				'text'=>"<b>".CrugeTranslator::t(
+//					"Operaciones Organizadas por Tipo")."</b>", 
+//				'expanded'=>true, 
+//				'children'=>$treeDataOps,
+//			),//end operations treenode
+//			
+//		)
+//	));
 ?>
+<div class="span12">
+    <?php
+	echo "<h2>".ucfirst($model->name)." (".
+		CrugeTranslator::t($rbac->getAuthItemTypeName($model->type)).")</h2>";
+	echo "<h3 class='hint'>".$model->description."</h3>";
+	echo "<p>".ucfirst(CrugeTranslator::t(
+	"click an item to enable or disable"))."</p>";
+    ?>
+    <div class="example">
+        <ul class="treeview" data-role="treeview">
+            <li class="node collapsed">
+                <a href="#"><span class="node-toggle"></span>Roles</a>
+                <ul>
+                    <?php foreach ($treeDataRoles as $r): ?>
+                        <li><a href="#" alt="<?= $r['id']; ?>"><?= $r['text']; ?></a></li>
+                    <?php endforeach; ?>
+                </ul>
+            </li>
 
+            <li class="node collapsed">
+                <a href="#"><span class="node-toggle"></span>Task</a>
+                <ul>
+                    <?php foreach ($arrayTareas as $t): ?>
+                        <?php if (count($t['children'])): ?>
+                            <li class="node collapsed">
+                                <a href="#"><span class="node-toggle"></span><?= $t['text']; ?></a>
+                                <ul>
+                                    <?php foreach ($t['children'] as $c): ?>
+                                        <?php if (count($c['children'])): ?>
+                                            <li class="node collapsed">
+                                                <?php if (count($c['children'])): ?>
+                                                    <a href="#" alt="<?= $c['id']; ?>"><span class="node-toggle"></span><?= $c['text']; ?></a>
+                                                    <ul>
+                                                        <?php foreach ($c['children'] as $c2): ?>
+                                                            <li><a href="#" alt="<?= $c2['id']; ?>"><?= $c2['text']; ?></a></li>
+                                                        <?php endforeach; ?>
+                                                    </ul>
+                                                <?php else: ?>
+                                                    <a href="#" alt="<?= $c['id']; ?>"><span class="node-toggle"></span><?= $c['text']; ?></a>
+                                                <?php endif; ?>
+                                            </li>
+                                        <?php else: ?>
+                                            <li><a href="#" alt="<?= $c['id']; ?>"><?= $c['text']; ?></a></li>
+                                        <?php endif; ?>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </li>
+                        <?php else: ?>
+                            <li><a href="#"><?= $t['text']; ?></a></li>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                </ul>
+            </li>
+            
+            <li class="node collapsed">
+                <a href="#"><span class="node-toggle"></span>Role-based operations</a>
+                <ul>
+                    <?php foreach ($treeDataOps as $r): ?>
+                        <?php if (count($r['children'])): ?>
+                            <li class="node collapsed">
+                                <?php if (count($r['children'])): ?>
+                                    <a href="#"><span class="node-toggle"></span><?= $r['text']; ?></a>
+                                    <ul>
+                                        <?php foreach ($r['children'] as $r2): ?>
+                                            <li><a href="#"  alt="<?= $r2['id']; ?>"><?= $r2['text']; ?></a></li>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                <?php else: ?>
+                                    <a href="#" alt="<?= $r['id']; ?>"><span class="node-toggle"></span><?= $r['text']; ?></a>
+                                <?php endif; ?>
+                            </li>
+                        <?php else: ?>
+                            <li><a href="#" alt="<?= $t['id']; ?>"><?= $r['text']; ?></a></li>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
 <script>
-	$('img.pin-on').each(function(){
-		var img = $(this);
-		img.css("cursor","pointer");
-		img.click(function(){
+	$('input[name="assignRoles"]').each(function(){
+		var checkbox = $(this);
+		checkbox.css("cursor", "pointer");
+                
+                if (checkbox.attr('class') !== '') {
+                    checkbox.prop('checked', true);
+                }
+                
+		checkbox.click(function(){
 
 			// el atributo alt del LI tiene el nombre del item que representa.
 			var _li = $(this).parent();
@@ -280,7 +363,7 @@
 			//if(istop==false && issub==true) tiponodo='sub'; // es un submenu
 
 			// el nuevo valor segun el valor checked actual
-			var setFlag = span.hasClass('checked') ? false : true;
+			var setFlag = span.hasClass('text-info') ? false : true;
 
 			//alert("tiponodo="+tiponodo+" newFlag="+setFlag+", span="
 			//	+span.html());
@@ -309,9 +392,11 @@
 					// si se pudo realizar la accion, aqui data trae un objeto 
 					// json con la data del item
 					if(data.result == true){
-						span.addClass("checked");
+						span.addClass("text-info");
+                                                checkbox.prop('checked', true);
 					}else{
-						span.removeClass("checked");
+						span.removeClass("text-info");
+                                                checkbox.prop('checked', false);
 					}
 				},
 				error: function(jqXHR, textStatus, errorThrown){

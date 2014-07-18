@@ -10,6 +10,12 @@ class TicketController extends Controller
      */
     public $layout='//layouts/column2';
     
+    public function init()
+    {
+        parent::beforeAction($this);
+    }
+
+
     /**
      * @access public
      * @return array
@@ -191,7 +197,46 @@ class TicketController extends Controller
     }
     
     /**
+     * Retorna un json con los datos de las estadísticas.
+     * Esta es la primera tabla mostrada en la vista de estadísticas
+     */
+    public function actionAjaxstatistics()
+    {
+        Yii::import('webroot.protected.components.reports.Report');
+        $report = new Report;
+        $date = date('Y-m-d H:i:s');
+        $carrier = 'both';
+        
+        if (isset($_POST['date']) && !empty($_POST['date'])) $date = $_POST['date'] . ' ' . date('H:i:s');
+        if (isset($_POST['carrier']) && !empty($_POST['carrier'])) $carrier = $_POST['carrier'];
+        
+        $statistcs = array();
+        for ($i = 1; $i <= 12; $i++) {
+            $carriers = array();
+            // Fecha seleccionada a consultar
+            $data = $report->optionStatistics($i, $date, $carrier);
+            // Fecha anterior a seleccionar
+            $data2 = $report->optionStatistics($i, date('Y-m-d H:i:s', strtotime("$date - 1 day")), $carrier);
+            // 1 semana antes
+            $data3 = $report->optionStatistics($i, date('Y-m-d H:i:s', strtotime("$date - 7 day")), $carrier);
+                        
+            foreach ($data as $value) {
+                $carriers[] = $value->carrier;
+            }
+            
+            $statistcs[] = array(
+                'totalByColors' => count($data),
+                'subtractOneDay' => count($data2),
+                'subtractSevenDays' => count($data3),
+                'totalByCarriers' => array_count_values($carriers)
+            );
+        }
+        echo CJSON::encode($statistcs);
+    }
+    
+    /**
      * Pobla el datatable con los datos
+     * Esta es la segunda tabla mostrada en la vista de estadísticas
      */
     public function actionDatatable()
     { 
@@ -228,9 +273,13 @@ class TicketController extends Controller
         
         if ($statistcs !== null) {
             foreach ($statistcs as $value) {
+                $escaleted = $value->id_status === 3 ? 'rgb(34, 20, 20)' : 'rgb(90, 90, 90)';
+                $bold = $value->id_status === 3 ? 'bold' : 'normal';
+                
                 $data['aaData'][] = array(
                     $value->carrier . 
                     '<input type="hidden" value="'.$value->id.'" rel="'.$value->id.'" name="id[]">' . 
+                    '<input type="hidden" value="'.$escaleted.'" rel="'.$bold.'"  name="id_status[]">' . 
                     '<input type="hidden" value="'.$value->color.'" name="color[]">', 
                     $value->user_open_ticket != null ? $value->idUser->username : (strlen(Carrier::getCarriers(true, $value->id)) <= 9 ? Carrier::getCarriers(true, $value->id) : substr(Carrier::getCarriers(true, $value->id), 0, 9) .'...'),
                     strlen(Carrier::getCarriers(true, $value->id)) <= 9 ? Carrier::getCarriers(true, $value->id) : substr(Carrier::getCarriers(true, $value->id), 0, 9) .'...', 
@@ -246,28 +295,7 @@ class TicketController extends Controller
         
         return $data;
     }
-        
-    /**
-     * Retorna un json con los datos de las estadísticas
-     */
-    public function actionAjaxstatistics()
-    {
-        Yii::import('webroot.protected.components.reports.Report');
-        $report = new Report;
-        $date = date('Y-m-d H:i:s');
-        $carrier = 'both';
-        
-        if (isset($_POST['date']) && !empty($_POST['date'])) $date = $_POST['date'] . ' ' . date('H:i:s');
-        if (isset($_POST['carrier']) && !empty($_POST['carrier'])) $carrier = $_POST['carrier'];
-        
-        $statisc = array();
-        for ($i = 1; $i <= 12; $i++) {
-            $statistcs[] = count($report->optionStatistics($i, $date, $carrier));
-        }
-        echo CJSON::encode($statistcs);
-    }
-        
-
+    
     public function actionPrintticket()
     {
         if (isset($_POST['data'])) {

@@ -43,15 +43,53 @@ function ajaxStatistics(date, carrier)
         dataType:'json',
         data:{'date':date, 'carrier':carrier},
         success:function(data) {
+            // Con el ciclo seteamos las cantidades separadas por tipo de carrier
             for (var i = 0; i < data.length; i++) {
-                 $('.display-data').eq(i).text(data[i]);
+                var a = $('.display-data').eq(i).text(data[i].totalByColors),
+                b = $('.subtract-one-day').eq(i).text(data[i].subtractOneDay),
+                c = $('.subtract-seven-days').eq(i).text(data[i].subtractSevenDays),
+                d = $('.display-supplier').eq(i).text(data[i].totalByCarriers.Supplier != null ? data[i].totalByCarriers.Supplier : 0),
+                e = $('.display-customer').eq(i).text(data[i].totalByCarriers.Customer != null ? data[i].totalByCarriers.Customer : 0);
+                checkMargin(a.text(), b.text(), $('.arrow'), i);   
+                checkMargin(a.text(), c.text(), $('.arrow2'), i);   
             }
-            $('.total-data').eq(0).text(data[0] + data[1] + data[2]);
-            $('.total-data').eq(1).text(data[3] + data[4] + data[5]);
-            $('.total-data').eq(2).text(data[6] + data[7] + data[8]);
-            $('.total-data').eq(3).text(data[9] + data[10] + data[11]);
+            
+            // Se setean los totales
+            for (var i = 0; i < 4; i++) {
+                var a = $('.total-data').eq(i).text(data[i * 3].totalByColors + data[(i * 3) + 1].totalByColors + data[(i * 3) + 2].totalByColors),
+                b = $('.total-one-day').eq(i).text(data[i * 3].subtractOneDay + data[(i * 3) + 1].subtractOneDay + data[(i * 3) + 2].subtractOneDay),
+                c = $('.total-seven-days').eq(i).text(data[i * 3].subtractSevenDays + data[(i * 3) + 1].subtractSevenDays + data[(i * 3) + 2].subtractSevenDays),
+                d = $('.total-supplier').eq(i).text(parseInt($('.display-supplier').eq(i * 3).html()) + parseInt($('.display-supplier').eq((i * 3) + 1).html()) + parseInt($('.display-supplier').eq((i * 3) + 2).html())),
+                e = $('.total-customer').eq(i).text(parseInt($('.display-customer').eq(i * 3).html()) + parseInt($('.display-customer').eq((i * 3) + 1).html()) + parseInt($('.display-customer').eq((i * 3) + 2).html()));
+                checkMargin(a.text(), b.text(), $('.total-arrow'), i); 
+                checkMargin(a.text(), c.text(), $('.total-arrow2'), i); 
+            }         
         }
     });
+}
+
+/**
+ * 
+ * @param {int} a
+ * @param {int} b
+ * @param {object} div
+ * @param {int} index
+ * @returns {void}
+ */
+function checkMargin(a, b, div, index)
+{
+    if (parseInt(a) > parseInt(b)) {
+        div.eq(index).html('<i class="icon-arrow-down fg-red"></i>');
+    } else if (parseInt(a) < parseInt(b)) {
+        div.eq(index).html('<i class="icon-arrow-up fg-green"></i>');
+    } else if (parseInt(a) === parseInt(b)) {
+        div.eq(index).html('<div class="rot90"><i class="icon-pause-2"></i></div>');
+    } 
+}
+
+function diagram()
+{
+    
 }
 
 /**
@@ -61,9 +99,11 @@ function ajaxStatistics(date, carrier)
 function changeBackground()
 {
     $('#tbl-datatable tbody tr').each(function(i){
-        $('#tbl-datatable tbody tr')
-                .eq(i)
-                .css('background', $(this).find('td').find('input[name="color[]"]').val());
+        $('#tbl-datatable tbody tr').eq(i).css({
+                        'background': $(this).find('td').find('input[name="color[]"]').val(),
+                        'color': $(this).find('td').find('input[name="id_status[]"]').val(),
+                        'fontWeight': $(this).find('td').find('input[name="id_status[]"]').attr('rel')
+                    });
     });
 }
 
@@ -95,7 +135,54 @@ function initExport(boton)
     }
 }
 
-$(document).on('ready', function(){
+/**
+ * Función para mostrar el ancla en la primera tabla de estadísticas
+ * @returns {void}
+ */
+function goLink()
+{
+    $('input[type="radio"]').each(function(i){
+         if ($(this).is(':checked')) {
+            $(this).parent().parent().parent().next().show('fast');
+         } else {
+            $(this).parent().parent().parent().next().hide('fast');
+         }
+    });
+}
+
+/**
+ * Función para animar el scroll al darle click al ancla de la primera tabla de estadísticas
+ * @returns {void}
+ */
+function animatedScrolling()
+{
+    $('a[href*=#]').click(function() {
+        if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'')
+             && location.hostname == this.hostname) {
+            var $target = $(this.hash);
+
+            $target = $target.length && $target || $('[name=' + this.hash.slice(1) +']');
+
+            if ($target.length) {
+
+                 var targetOffset = $target.offset().top;
+
+                 $('html,body').animate({scrollTop: targetOffset}, 1000);
+
+                 return false;
+            }
+        }
+   });
+}
+
+function load()
+{
+    $('.link-statistics').hide();
+    
+    goLink();
+    
+    animatedScrolling();
+    
     $('.date').datepicker({
         'dateFormat':'yy-mm-dd',
         'changeYear':true,
@@ -125,4 +212,12 @@ $(document).on('ready', function(){
     $(document).on('click', '.itemreporte', function(){
         initExport($(this));
     });
+    
+    $('input[type="radio"]').on('change', function(){
+        goLink();
+    });
+}
+
+$(document).on('ready', function(){
+    load();
 });
