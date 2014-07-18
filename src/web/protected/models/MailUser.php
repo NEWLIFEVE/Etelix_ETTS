@@ -64,8 +64,8 @@ class MailUser extends CActiveRecord
 		return array(
 			'idMail' => array(self::BELONGS_TO, 'Mail', 'id_mail'),
 			'idUser' => array(self::BELONGS_TO, 'User', 'id_user'),
-//			'mailTickets' => array(self::HAS_MANY, 'MailTicket', 'id_mail_user'),
-			'mailTickets' => array(self::BELONGS_TO, 'MailTicket', 'id_mail_user'),
+//			'mailTicket' => array(self::HAS_MANY, 'MailTicket', 'id_mail_user'),
+			'mailTicket' => array(self::BELONGS_TO, 'MailTicket', 'id_mail_user'),
 		);
 	}
 
