@@ -3,6 +3,10 @@ $(document).on('ready', function(){
         "bJQueryUI": true,
         "bAutoWidth": false,
         "bDestroy": true,
-        "sPaginationType": "full_numbers"
+        "sPaginationType": "full_numbers",
+        "aaSorting":[[ 0, 'desc' ]],
+        "aoColumnDefs": [
+                { "bSortable": false, "aTargets": [ 4 ] }
+        ]
     }); 
 });

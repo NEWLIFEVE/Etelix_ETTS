@@ -350,3 +350,16 @@ div.user-assignments-detail #lista2 .boton {
     width: 100%; 
     height: 40px;
 }
+
+.row.buttons.center {
+    text-align: center !important;
+}
+.row.buttons.center .primary.large {
+    width: 400px !important;
+}
+    
+.metro .row2 {
+    width: 100%;
+    float: left;
+    margin-bottom: 5px;
+}

@@ -114,6 +114,19 @@
         <script>
         var _root_ = "<?php echo Yii::app()->getBaseUrl(true) . '/'; ?>";
         </script>
+        <?php if(Yii::app()->user->hasFlash('success')): ?>
+        <script>
+            $.Dialog({
+                shadow: true,
+                overlay: false,
+                icon: '<span class="icon-rocket"></span>',
+                title: false,
+                width: 500,
+                padding: 10,
+                content:'<center><h3><?php echo Yii::app()->user->getFlash('success'); ?></h3><h1><i class="icon-checkmark fg-green"></i></h1></center>'
+            });
+        </script>
+        <?php endif; ?>
         <?php echo Yii::app()->user->ui->displayErrorConsole(); ?>
     </body>
 </html>

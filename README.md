@@ -3,6 +3,10 @@
 
 ##Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
 
+21/07/2014
+- Corrección en las flechas del reporte, se cambió el orden.
+- Adaptando cruge a metro ui
+
 18/07/2014
 - Corrección en las flechas del reporte (Arriba es rojo y abajo verde)
 - Corrección en el modelo Carrier.php en el método "getCarriers($returnNameCarrier = false, $idTicket = false)", si no encontraba carier daba error. Ya se solucionó 

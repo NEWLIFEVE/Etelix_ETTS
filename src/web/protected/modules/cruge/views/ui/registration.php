@@ -135,22 +135,9 @@
     </div>
     <?php } ?>
     <!-- fin pide captcha-->
-    <div class="row buttons" style="text-align: center;">
-	<?php echo CHtml::submitButton('Save', array('class' => 'primary large', 'name'=>'preview', 'style' => 'width:500px')); ?>
+    <div class="row buttons center">
+	<?php echo CHtml::submitButton('Save', array('class' => 'primary large', 'name'=>'preview')); ?>
     </div>
     <?php $this->endWidget(); ?>
 </div>
-<?php if(Yii::app()->user->hasFlash('success')): ?>
-    <script>
-    $.Dialog({
-        shadow: true,
-        overlay: false,
-        icon: '<span class="icon-rocket"></span>',
-        title: false,
-        width: 500,
-        padding: 10,
-        content:'<center><h3><?php echo Yii::app()->user->getFlash('success'); ?></h3></center>'
-    });
-    </script>
-<?php endif; ?>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/cruge/registration.js',CClientScript::POS_END); ?>

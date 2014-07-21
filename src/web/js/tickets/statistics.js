@@ -87,11 +87,6 @@ function checkMargin(a, b, div, index)
     } 
 }
 
-function diagram()
-{
-    
-}
-
 /**
  * Cambio de los colores de los tr dependiendo del color del ticket
  * @returns {void}

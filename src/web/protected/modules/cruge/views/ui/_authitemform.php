@@ -6,19 +6,21 @@
 		$model: instancia de CrugeAuthItemEditor
 	*/
 ?>
-<div class="form">
 <?php $form = $this->beginWidget('CActiveForm', array(
     'id'=>'authitem-form',
     'enableAjaxValidation'=>false,
     'enableClientValidation'=>false,
 )); ?>
-<div class="row form-group">
-	<div class='row'>
+<div class="example">
+    <div class="row2">
+	<div class='input-control text span5'>
 		<?php echo $form->labelEx($model,'name'); ?>
 		<?php echo $form->textField($model,'name',array('size'=>64,'maxlength'=>64)); ?>
 		<?php echo $form->error($model,'name'); ?>
 	</div>
-	<div class='row'>
+    </div>
+    <div class="row2">
+	<div class='input-control text span5'>
 		<?php echo $form->labelEx($model,'description'); ?>
 		<?php echo $form->textField($model,'description',array('size'=>50,'maxlength'=>100)); ?>
 		<?php echo $form->error($model,'description'); ?>
@@ -28,7 +30,10 @@
 		ejemplo: <span class='code'>":Edita tu Perfil{menuprincipal}"</span></div>
 		<?php } ?>
 	</div>
-	<div class='row'>
+    </div>
+    
+    <div class="row2">
+	<div class='input-control text span5'>
 		<?php echo $form->labelEx($model,'businessRule'); ?>
 		<?php echo $form->textField($model,'businessRule',array('size'=>50,'maxlength'=>512)); ?>
 		<?php echo $form->error($model,'businessRule'); ?>
@@ -47,13 +52,12 @@
 			<br/>
 		</p>
 	</div>
+    </div>
 </div>
 
-<div class="row buttons">
-	
-	<?php Yii::app()->user->ui->tbutton(($model->isNewRecord ? 'Crear Nuevo' : 'Actualizar')); ?>
-	<?php Yii::app()->user->ui->bbutton("Volver",'volver'); ?>
+<div class="row buttons center">
+	<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Update', array('class'=>'primary large')); ?>
+	<?php //Yii::app()->user->ui->bbutton("Volver",'volver'); ?>
 </div>
 <?php echo $form->errorSummary($model); ?>
 <?php $this->endWidget(); ?>
-</div>

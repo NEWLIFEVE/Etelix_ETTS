@@ -209,16 +209,16 @@ class UiController extends Controller
     {
         Script::registerDataTable();
         Script::registerJsAction();
-        $data = CrugeUser2::model()->findAll();
+        $data = CrugeStoredUser::model()->findAll();
         $users = array();
         foreach ($data as $key => $value) {
-            $lastusage = CrugeSession2::model()->findBySql("SELECT lastusage FROM cruge_session WHERE idsession = (SELECT MAX(idsession) AS idsession FROM cruge_session WHERE iduser = {$value->iduser})");
+            $lastusage = CrugeSession::model()->findBySql("SELECT lastusage FROM cruge_session WHERE idsession = (SELECT MAX(idsession) AS idsession FROM cruge_session WHERE iduser = {$value->iduser})");
             $users[] = array(
                 'iduser' => $value->iduser,
                 'username' => $value->username,
                 'email' => $value->email,
                 'state' => $value->state === 1 ? 'Enabled' : 'Disabled',
-                'lastusage' => isset($lastusage) ? date('Y-m-d H:i:s', $lastusage->lastusage) : ''
+                'lastusage' => isset($lastusage) ? date('jS F Y h:i:s', $lastusage->lastusage) : ''
             );
         }
         
@@ -492,13 +492,10 @@ class UiController extends Controller
 
     public function actionFieldsAdminList()
     {  
-        $model = Yii::app()->user->um->getSearchModelICrugeField();
-        $model->unsetAttributes();
-        if (isset($_GET[CrugeUtil::config()->postNameMappings['CrugeField']])) {
-            $model->attributes = $_GET[CrugeUtil::config()->postNameMappings['CrugeField']];
-        }
-        $dataProvider = $model->search();
-        $this->render("fieldsadminlist", array('model' => $model, 'dataProvider' => $dataProvider));
+        Script::registerDataTable();
+        Script::registerJsAction();
+        $data = CrugeField::model()->findAll(array('order' => 'fieldname ASC'));
+        $this->render("fieldsadminlist", array('data' => $data));
     }
 
     public function actionFieldsAdminUpdate($id)
@@ -601,8 +598,15 @@ class UiController extends Controller
         $model = Yii::app()->user->um->loadFieldById($id);
         if ($model != null) {
             if (Yii::app()->request->isAjaxRequest) {
-                $model->delete();
+                if ($model->delete()) {
+                    echo 'true';
+                    return true;
+                } else {
+                    throw new Exception("Error al borrar " . $model->getErrors());
+                }
             }
+        } else {
+            throw new Exception("No existe el id $id");
         }
     }
 
@@ -1216,22 +1220,31 @@ class UiController extends Controller
 
     public function actionSessionAdmin()
     {
-        $model = Yii::app()->user->um->getSearchModelICrugeSession();
-        $model->unsetAttributes();
-        if (isset($_GET[CrugeUtil::config()->postNameMappings['CrugeSession']])) {
-            $model->attributes = $_GET[CrugeUtil::config()->postNameMappings['CrugeSession']];
-        }
-        $dataProvider = $model->search();
-        $this->render("sessionadmin", array('model' => $model, 'dataProvider' => $dataProvider));
+        Script::registerDataTable();
+        Script::registerJsAction();
+        
+        $data = CrugeSession::model()->findAll(array('order' =>'idsession DESC'));
+        
+        $this->render("sessionadmin", array('data'=>$data));
     }
 
     public function actionSessionAdminDelete($id)
     {
-        if (Yii::app()->request->isAjaxRequest) {
+        $id = (int) $id;
+        if (is_int($id)) {
             $model = Yii::app()->user->um->loadSessionById($id);
             if ($model != null) {
-                $model->delete();
+                if (!$model->delete()) {
+                    throw new Exception("Error al borrar " . $model->getErrors());
+                } else {
+                    echo 'true';
+                    return true;
+                }
+            } else {
+                throw new Exception("El id no existe $id");
             }
+        } else {
+            throw new Exception("El id deber ser un numero $id");
         }
     }
 
