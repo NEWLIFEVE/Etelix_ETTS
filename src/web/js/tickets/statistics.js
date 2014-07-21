@@ -78,9 +78,9 @@ function ajaxStatistics(date, carrier)
  */
 function checkMargin(a, b, div, index)
 {
-    if (parseInt(a) > parseInt(b)) {
+    if (parseInt(a) < parseInt(b)) {
         div.eq(index).html('<i class="icon-arrow-down fg-green"></i>');
-    } else if (parseInt(a) < parseInt(b)) {
+    } else if (parseInt(a) > parseInt(b)) {
         div.eq(index).html('<i class="icon-arrow-up fg-red"></i>');
     } else if (parseInt(a) === parseInt(b)) {
         div.eq(index).html('<div class="rot90"><i class="icon-pause-2"></i></div>');
