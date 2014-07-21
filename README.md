@@ -3,6 +3,7 @@
 
 ##Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
 
+###Release 1.4.2
 - Cambio en la dirección de las flechas del reporte
 - Corrección en modelo Carrier.php en el método "getCarriers($returnNameCarrier = false, $idTicket = false)", si devolvía null el nombre del carriel mostraba un error, ahora se valida, si devuelve null retorna una cadena vacía
 
