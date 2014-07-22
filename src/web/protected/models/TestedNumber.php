@@ -103,6 +103,11 @@ class TestedNumber extends CActiveRecord
 		));
 	}
 
+        /**
+         * Busca el modelo por id de ticket
+         * @param int $idTicket Si se manda un id de ticket, se filtra por este id, de los contrario se hace una búsqueda global
+         * @return type
+         */
         public static function getNumbers($idTicket = false)
         {
             if ($idTicket) {
@@ -114,8 +119,8 @@ class TestedNumber extends CActiveRecord
         
         /**
          * Retorna el primer Number que cumpla con la condición
-         * @param integer $idTicket
-         * @return string
+         * @param integer $idTicket El id del ticket
+         * @return array
          */
         public static function getNumber($idTicket)
         {
@@ -126,6 +131,11 @@ class TestedNumber extends CActiveRecord
             return false;
         }
         
+        /**
+         * Retorna un array ordenado del model
+         * @param int $idTicket El id del ticket
+         * @return array
+         */
         public static function getTestedNumberArray($idTicket)
         {
             $array = null;
@@ -141,6 +151,11 @@ class TestedNumber extends CActiveRecord
             return  $array;
         }
         
+        /**
+         * Guarda los números
+         * @param array $attributes Atributos propios del modelo
+         * @return boolean
+         */
         public static function saveTestedNumbers($attributes)
         {
             $isOk=true;

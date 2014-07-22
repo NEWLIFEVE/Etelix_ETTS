@@ -7,17 +7,6 @@ class MailticketController extends Controller
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
 	public $layout='//layouts/column2';
-
-	/**
-	 * @return array action filters
-	 */
-//	public function filters()
-//	{
-//		return array(
-//			'accessControl', // perform access control for CRUD operations
-//			'postOnly + delete', // we only allow deletion via POST request
-//		);
-//	}
         
         public function filters()
         {
@@ -109,9 +98,7 @@ class MailticketController extends Controller
 	}
 
 	/**
-	 * Deletes a particular model.
-	 * If deletion is successful, the browser will be redirected to the 'admin' page.
-	 * @param integer $id the ID of the model to be deleted
+	 * Borra los mails asociados a un ticket
 	 */
 	public function actionDelete()
 	{   
@@ -186,6 +173,9 @@ class MailticketController extends Controller
 		}
 	}
         
+        /**
+         * Guarda los mails asociados a un ticket específico
+         */
         public function actionSavemailticket()
         {   
             $attributes=array('id_ticket'=>$_POST['idTicket'], 'responseTo'=>$_POST['mail']);

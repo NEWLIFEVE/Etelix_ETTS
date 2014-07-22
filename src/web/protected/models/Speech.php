@@ -113,7 +113,8 @@ class Speech extends CActiveRecord
 	}
         
         /**
-         * Método para retornar una lista de los speech
+         * Método para retornar una lista de los speech en ingles dependiendo del tipo de carrier
+         * @param string $ticketNumber El número del ticket 
          * @return array
          */
         public static function getSpeech($ticketNumber = false)
@@ -131,6 +132,11 @@ class Speech extends CActiveRecord
             }
         }
         
+        /**
+         * Método para retornar una lista de los speech en español dependiendo del tipo de carrier
+         * @param string $ticketNumber El número del ticket 
+         * @return array
+         */
         public static function getSpeechSpanish($ticketNumber = false)
         {
             if ($ticketNumber)

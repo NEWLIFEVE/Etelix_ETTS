@@ -88,11 +88,18 @@ class Status extends CActiveRecord
 		));
 	}
         
-        public static function getStatus($notArray = false, $idStatu = false, $params = false)
+        /**
+         * Método para retornar el o los status
+         * @param boolean $notArray Si es true, retorna con limit 1, de lo contrario retorna con findAll
+         * @param int $idStatus El id del status
+         * @param string $params Puede ser una condición sql
+         * @return type
+         */
+        public static function getStatus($notArray = false, $idStatus = false, $params = false)
         {
             if ($notArray) {
-                if ($idStatu)
-                    return self::model()->findByPk($idStatu);
+                if ($idStatus)
+                    return self::model()->findByPk($idStatus);
                 else 
                     return self::model()->find($params);
             } else {

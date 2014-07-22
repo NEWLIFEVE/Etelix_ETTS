@@ -300,10 +300,10 @@ class Report extends Excel
         $a = (int) $a;
         $b = (int) $b;
         if (is_int($a) && is_int($b)) {
-            if ($a > $b) { 
+            if ($a < $b) { 
                 $image = 'down.png'; 
-            } elseif ($a < $b) {
-                $image = 'up.png';
+            } elseif ($a > $b) {
+                $image = 'up.png'; 
             } elseif ($a === $b) {
                 $image = 'equals.png';
             }

@@ -140,7 +140,7 @@ class Carrier extends CActiveRecord
 	}
     
     /**
-     *
+     * Retorna el id de los carrier que esten registrados en cruge_user
      */
     public static function getListUserCarriers()
     {
@@ -153,7 +153,10 @@ class Carrier extends CActiveRecord
     }
     
     /**
-     *
+     * Si nameCarrier es true retorna el nombre del carrier, de lo contrario retorna un listData 
+     * @param boolean $returnNameCarrier Si es true, retorna un string con el nombre del carrier, de lo contrario listData con los carriers que no esten cruge_user
+     * @param int $idTicket Id asociado al ticket
+     * @return string|listData
      */
     public static function getCarriers($returnNameCarrier = false, $idTicket = false)
     {
@@ -185,7 +188,7 @@ class Carrier extends CActiveRecord
      * proveedor. Se esta llamando la vista carrier_proveedor o carrier_cliente
      * dependiendo el caso.
      * 
-     * @param string $type
+     * @param string $type Puede ser supplier o customer
      * @return int
      */
     public static function getCarriersByClass($type)
@@ -217,9 +220,10 @@ class Carrier extends CActiveRecord
     }
 
     /**
-     * @access public
-     * @static
-     */   
+     * Retorna los customers
+     * @param int $id Id del carrier
+     * @return array
+     */  
     public static function getCustomer($id = false)
     {
         if($id)
@@ -239,8 +243,9 @@ class Carrier extends CActiveRecord
     }
 
     /**
-     * @access public
-     * @static
+     * Retorna los suppliers
+     * @param int $id Id del carrier
+     * @return type
      */
     public static function getSupplier($id = false)
     {
@@ -261,8 +266,9 @@ class Carrier extends CActiveRecord
     }
 
     /**
-     * @access public
-     * @static
+     * Retorna C si es customer, S si es supplier y CS si es ambos casos.
+     * @param int $idUser Id del usuario
+     * @return boolean|string
      */
     public static function getTypeCarrier($idUser)
     {
@@ -281,15 +287,6 @@ class Carrier extends CActiveRecord
             {
                 return 'S'; // Supplier
             }
-            
-//            if(self::getCustomer($idCarrier) != null) 
-//            {
-//                return 'Customer';
-//            }
-//            else
-//            {
-//                return 'Supplier';
-//            }
         }
         return false;
     }
@@ -299,7 +296,7 @@ class Carrier extends CActiveRecord
      * si el usuario no tiene carrier retorna un booleano false
      * @access public
      * @static
-     * @param int $idUser
+     * @param int $idUser Id del usuario
      * @return boolean o string
      */   
     public static function getNameByUser($idUser)

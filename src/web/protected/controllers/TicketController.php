@@ -63,8 +63,7 @@ class TicketController extends Controller
     }
 
     /**
-     * Creates a new model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
+     * Create será realiza el render al formulario para abrir tickets a los usuarios con rol cliente
      */
     public function actionCreate()
     {
@@ -152,7 +151,7 @@ class TicketController extends Controller
     }
 
     /**
-     * Manages all models.
+     * Pantalla para ver todos los tickets creados. Si el rol es cliente, dicho usuario solo verá sus tickets
      */
     public function actionAdmin()
     {
@@ -185,7 +184,7 @@ class TicketController extends Controller
     }
     
     /**
-     * Renderiza la vista de los reportes con datatable
+     * Renderiza la vista de los reportes 
      */
     public function actionStatistics() 
     {                  

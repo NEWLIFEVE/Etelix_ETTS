@@ -103,7 +103,7 @@ class Mail extends CActiveRecord
 
         /**
          * Método para buscar los nombres de los correos filtrado por id_ticket
-         * @param integer $id_ticket
+         * @param integer $id_ticket El id del ticket
          * @return array
          */
         public static function getNameMails($id_ticket)
@@ -122,7 +122,7 @@ class Mail extends CActiveRecord
         
         /**
          * Método para buscar los nombres de los correos(cc) filtrado por id_ticket
-         * @param integer $id_ticket
+         * @param integer $id_ticket El id del ticket
          * @return array
          */
         public static function getNameMailsCC($id_ticket)
@@ -145,7 +145,7 @@ class Mail extends CActiveRecord
         
         /**
          * Método para buscar los nombres de los correos(bcc) filtrado por id_ticket
-         * @param integer $id_ticket
+         * @param integer $id_ticket El id del ticket
          * @return array
          */
         public static function getNameMailsBcc($id_ticket)
@@ -168,7 +168,7 @@ class Mail extends CActiveRecord
         
         /**
          * Método para mostrar los mails asociados a un ticket
-         * @param int $idTicket
+         * @param int $idTicket Id único del ticket
          * @return array
          */
         public static function getMailsTicket($idTicket)

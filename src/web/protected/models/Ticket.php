@@ -38,23 +38,23 @@ class Ticket extends CActiveRecord
 	 * @param string $className active record class name.
 	 * @return Ticket the static model class
 	 */
-    public $maximo;
-    public $id_manager;
-    public $description;
-    public $mail=array();
-    public $tested_numbers=array();
-    public $country=array();
-    public $date_number=array();
-    public $hour_number=array();
-    public $number_of_the_day;
-    public $lifetime;
-    public $color;
-    public $carrier;
-    public $user_open_ticket;
+        public $maximo;
+        public $id_manager;
+        public $description;
+        public $mail=array();
+        public $tested_numbers=array();
+        public $country=array();
+        public $date_number=array();
+        public $hour_number=array();
+        public $number_of_the_day;
+        public $lifetime;
+        public $color;
+        public $carrier;
+        public $user_open_ticket;
 
-    /**
-     *
-     */        
+        /**
+         *
+         */        
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
@@ -76,14 +76,14 @@ class Ticket extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-            array('id_failure, id_status, date, machine_ip', 'required'),
-            array('id_failure, id_status, id_gmt', 'numerical', 'integerOnly'=>true),
-            array('origination_ip, destination_ip, machine_ip', 'length', 'max'=>64),
-            array('ticket_number', 'length', 'max'=>50),
-            array('hour, close_ticket, escalated_date', 'safe'),
-			// The following rule is used by search().
-			// Please remove those attributes that should not be searched.
-			array('id, id_failure, id_status, origination_ip, destination_ip, date, machine_ip, hour, prefix, id_gmt, ticket_number', 'safe', 'on'=>'search'),
+                    array('id_failure, id_status, date, machine_ip', 'required'),
+                    array('id_failure, id_status, id_gmt', 'numerical', 'integerOnly'=>true),
+                    array('origination_ip, destination_ip, machine_ip', 'length', 'max'=>64),
+                    array('ticket_number', 'length', 'max'=>50),
+                    array('hour, close_ticket, escalated_date', 'safe'),
+                    // The following rule is used by search().
+                    // Please remove those attributes that should not be searched.
+                    array('id, id_failure, id_status, origination_ip, destination_ip, date, machine_ip, hour, prefix, id_gmt, ticket_number', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -126,7 +126,7 @@ class Ticket extends CActiveRecord
                     'id_gmt'=>'Id Gmt',
                     'ticket_number'=>'Ticket Number',
                 );
-    }
+        }
 
 	/**
 	 * Retrieves a list of models based on the current search/filter conditions.
@@ -139,12 +139,12 @@ class Ticket extends CActiveRecord
 
 		$criteria=new CDbCriteria;
                 
-        $tipoUsuario=CrugeAuthassignment::getRoleUser();
-        if($tipoUsuario=="C")
-            $criteria->condition="id in(".implode(",", self::getIdTicketsByuser()).")";
+                $tipoUsuario=CrugeAuthassignment::getRoleUser();
+                if($tipoUsuario=="C")
+                $criteria->condition="id in(".implode(",", self::getIdTicketsByuser()).")";
         
-        $criteria->order="id DESC";             
-        $criteria->compare('id',$this->id);
+                $criteria->order="id DESC";             
+                $criteria->compare('id',$this->id);
 		$criteria->compare('id_failure',$this->id_failure);
 		$criteria->compare('id_status',$this->id_status);
 		$criteria->compare('origination_ip',$this->origination_ip,true);
@@ -161,238 +161,252 @@ class Ticket extends CActiveRecord
 		));
 	}
     
-
-    /**
-     *
-     */
-    public static function ticketsByUsers($idUser,$idTicket=false,$returnArray=true,$allTickets=false,$sendMail=false)
-    {
-        $tipoUsuario=CrugeAuthassignment::getRoleUser();
-        $conditionUser='';
-        $conditionTicket='';
-        $order='ASC';
-        $sql='';
-        $onlyOpen="id_status IN(SELECT id FROM status WHERE name = 'open' OR name = 'escalated') AND";
-        if ($sendMail) $onlyOpen='';
-        
         /**
-         * Si el tipo de usuario es cliente, se muestran sus tickets, de lo
-         * contrario la condicion queda en blanco, es decir, se muestran todos
-         * los tickets de todos los usuarios
+         * Retorna todos los tickets creados
+         * @param int $idUser El id del usuairo
+         * @param int $idTicket El id del ticket
+         * @param bolean $returnArray Si es true, retorna una búsqueda global, de lo contrario busca con un limit 1
+         * @param bolean $allTickets Si es true, retorna todos los tickets (abiertos, cerrados y escalados) de lo contrario retorna solo los abiertos y escalados
+         * @param bolean $sendMail Si es true es para mandarse por correo
+         * @return array
          */
-        if($tipoUsuario=="C") 
+        public static function ticketsByUsers($idUser,$idTicket=false,$returnArray=true,$allTickets=false,$sendMail=false)
         {
-            $conditionUser=' where id_user='.$idUser;
+            $tipoUsuario=CrugeAuthassignment::getRoleUser();
+            $conditionUser='';
+            $conditionTicket='';
             $order='ASC';
+            $sql='';
+            $onlyOpen="id_status IN(SELECT id FROM status WHERE name = 'open' OR name = 'escalated') AND";
+            if ($sendMail) $onlyOpen='';
+
+            /**
+             * Si el tipo de usuario es cliente, se muestran sus tickets, de lo
+             * contrario la condicion queda en blanco, es decir, se muestran todos
+             * los tickets de todos los usuarios
+             */
+            if($tipoUsuario=="C") 
+            {
+                $conditionUser=' where id_user='.$idUser;
+                $order='ASC';
+            }
+
+            /**
+             * Si no se envía el id de un ticket se muestran todos los tickets,
+             * De lo contrario se muestra solo el ticket seleccionado
+             */
+            if($idTicket) $conditionTicket='AND id='.$idTicket;
+
+            if($allTickets)
+            {
+
+                $sql="SELECT *
+                      FROM ticket
+                      WHERE id IN (SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user $conditionUser)) $conditionTicket
+                      ORDER BY id_status, date, hour ASC";
+
+
+                // Si $returnArray esta en true, retorna un array con los datos del ticket
+                if($returnArray)
+                {
+                    return self::model()->findAllBySql($sql);
+                // De lo contrario no retorna un array
+                }
+                else
+                {
+                    return self::model()->findBySql($sql);
+                }
+            }
+            else
+            {
+                $sql="SELECT t.*, t.id AS id
+                      FROM (SELECT * 
+                            FROM ticket 
+                            WHERE $onlyOpen id IN (SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user $conditionUser)) $conditionTicket
+                            ) t
+                      ORDER BY id_status, date, hour ASC";
+
+                // Si $returnArray esta en true, retorna un array con los datos del ticket
+                if($returnArray)
+                {
+                    return self::model()->findAllBySql($sql);
+                // De lo contrario no retorna un array
+                }
+                else
+                {
+                    return self::model()->findBySql($sql);
+                }
+            }
         }
-        
+
         /**
-         * Si no se envía el id de un ticket se muestran todos los tickets,
-         * De lo contrario se muestra solo el ticket seleccionado
+         * Retorna todos los tickets cerrados
+         * @access public
+         * @static
          */
-        if($idTicket) $conditionTicket='AND id='.$idTicket;
-        
-        if($allTickets)
+        public static function ticketsClosed()
         {
+            $conditionUser='';
+            if(CrugeAuthassignment::getRoleUser()=="C") $conditionUser=' WHERE id_user='.Yii::app()->user->id;
 
-            $sql="SELECT *
-                  FROM ticket
-                  WHERE id IN (SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user $conditionUser)) $conditionTicket
-                  ORDER BY id_status, date, hour ASC";
-
-            
-            // Si $returnArray esta en true, retorna un array con los datos del ticket
-            if($returnArray)
-            {
-                return self::model()->findAllBySql($sql);
-            // De lo contrario no retorna un array
-            }
-            else
-            {
-                return self::model()->findBySql($sql);
-            }
+            return self::model()->findAllBySql("SELECT *, (close_ticket::timestamp - (to_char(date, 'YYYY-MM-DD') || ' ' || to_char(hour, 'HH24:MI:SS'))::timestamp) AS lifetime
+                                                FROM ticket
+                                                WHERE id IN (SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user $conditionUser)) AND 
+                                                id_status=2 AND 
+                                                close_ticket >= NOW()-'2 week'::interval
+                                                ORDER BY id_status, id  ASC");
         }
-        else
+
+        /**
+         * Retorna el conteo de los tickets cerrados, si el ususario logueado es cliente, solo se contarán sus tickets
+         * @return int
+         */
+        public static function countTicketClosed()
         {
-            
-            $sql="SELECT t.*, t.id AS id
-                  FROM (SELECT * 
-                        FROM ticket 
-                        WHERE $onlyOpen id IN (SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user $conditionUser)) $conditionTicket
-                        ) t
-                  ORDER BY id_status, date, hour ASC";
-
-            // Si $returnArray esta en true, retorna un array con los datos del ticket
-            if($returnArray)
-            {
-                return self::model()->findAllBySql($sql);
-            // De lo contrario no retorna un array
+            $conditionUser='';
+            if (CrugeAuthassignment::getRoleUser() == "C") {
+                $conditionUser = ' WHERE id_user=' . Yii::app()->user->id;
             }
-            else
-            {
-                return self::model()->findBySql($sql);
-            }
+            return self::model()->count(
+                    "id IN(SELECT DISTINCT(id_ticket) "
+                    . "FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user $conditionUser)) AND "
+                    . "id_status = 2 AND "
+                    . "close_ticket >= NOW()-'2 week'::interval"
+                    );
         }
-    }
-    
-    /**
-     * @access public
-     * @static
-     */
-    public static function ticketsClosed()
-    {
-        $conditionUser='';
-        if(CrugeAuthassignment::getRoleUser()=="C") $conditionUser=' WHERE id_user='.Yii::app()->user->id;
-        
-        return self::model()->findAllBySql("SELECT *, (close_ticket::timestamp - (to_char(date, 'YYYY-MM-DD') || ' ' || to_char(hour, 'HH24:MI:SS'))::timestamp) AS lifetime
-                                            FROM ticket
-                                            WHERE id IN (SELECT DISTINCT(id_ticket) FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user $conditionUser)) AND 
-                                            id_status=2 AND 
-                                            close_ticket >= NOW()-'2 week'::interval
-                                            ORDER BY id_status, id  ASC");
-    }
-    
-    public static function countTicketClosed()
-    {
-        $conditionUser='';
-        if (CrugeAuthassignment::getRoleUser() == "C") {
-            $conditionUser = ' WHERE id_user=' . Yii::app()->user->id;
-        }
-        return self::model()->count(
-                "id IN(SELECT DISTINCT(id_ticket) "
-                . "FROM mail_ticket WHERE id_mail_user IN (SELECT id FROM mail_user $conditionUser)) AND "
-                . "id_status = 2 AND "
-                . "close_ticket >= NOW()-'2 week'::interval"
-                );
-    }
 
-    /**
-     *
-     */
-    public static function getIdTicketsByuser()
-    {
-        $ids=array();
-        foreach(self::ticketsByUsers(Yii::app()->user->id) as $value)
+        /**
+         * Retorna un array de los id's del los tickets. 
+         * @return array
+         */
+        public static function getIdTicketsByuser()
         {
-            $ids[]=$value->id;
+            $ids=array();
+            foreach(self::ticketsByUsers(Yii::app()->user->id) as $value)
+            {
+                $ids[]=$value->id;
+            }
+            return $ids;
         }
-        return $ids;
-    }
 
-    /**
-     * Retorna los tickets relacionados a un ticket padre y a un usuario
-     * @param int $idTicket 
-     * @param int $idUser
-     * @return array
-     */
-    public static function ticketsRelations($idTicket,$idUser=false)
-    {
-        $conditionUser='';
-        if($idUser) $conditionUser='where id_user='.$idTicket;
-        return self::model()->findAllBySql("SELECT * 
-                                            FROM ticket 
-                                            WHERE id IN (SELECT tr.id_ticket_son
-                                                         FROM ticket t, ticket_relation tr
-                                                         WHERE t.id IN (SELECT DISTINCT(id_ticket) 
-                                                                        FROM mail_ticket 
-                                                                        WHERE id_mail_user IN (SELECT id 
-                                                                                               FROM mail_user $conditionUser)) AND t.id=tr.id_ticket_father AND t.id=$idTicket
-                                            ORDER BY t.id DESC)");
-    }
-
-    /**
-     * Retorna el tipo de usuario que esxcribió el primer comentario
-     */
-    public static function getFirstUser($ticket_number)
-    {
-        $id=self::model()->find('ticket_number=:number',array(':number'=>$ticket_number))->id;
-        $user=DescriptionTicket::model()->find('id_ticket=:id ORDER BY date ASC, hour ASC',array(':id'=>$id))->id_user;
-        return $user;
-    }
-
-    /**
-     * Retorna el id del ticket segun el ticket_number
-     */
-    public static function getId($ticketNumber)
-    {
-        $id=self::model()->find('ticket_number=:number',array(':number'=>$ticketNumber))->id;
-        if ($id != null) {
-            return $id;
+        /**
+         * Retorna los tickets relacionados a un ticket padre y a un usuario
+         * @param int $idTicket El id del ticekt
+         * @param int $idUser El id del usuario
+         * @return array
+         */
+        public static function ticketsRelations($idTicket,$idUser=false)
+        {
+            $conditionUser='';
+            if($idUser) $conditionUser='where id_user='.$idTicket;
+            return self::model()->findAllBySql("SELECT * 
+                                                FROM ticket 
+                                                WHERE id IN (SELECT tr.id_ticket_son
+                                                             FROM ticket t, ticket_relation tr
+                                                             WHERE t.id IN (SELECT DISTINCT(id_ticket) 
+                                                                            FROM mail_ticket 
+                                                                            WHERE id_mail_user IN (SELECT id 
+                                                                                                   FROM mail_user $conditionUser)) AND t.id=tr.id_ticket_father AND t.id=$idTicket
+                                                ORDER BY t.id DESC)");
         }
-        return null;
-    }
-        
-    /**
-     * Retorna el id del usuario filtrado por id_ticket
-     * @param integer $idTicket
-     * @return integer
-     */
-    public static function getIdUser($idTicket)
-    {
-        return self::model()->findByPk($idTicket)->id_user;
-    }
-    
-    /**
-     * Retorna como fue abierto el ticket, es decir, si el carrier abrió un ticket
-     * a etelix, si etelix abrió un ticket como el carrier o si etelix le abre un
-     * ticket al carrier
-     * 
-     * @param integer $idTicket
-     * @return string
-     */
-    public static function getOptionOpen($idTicket)
-    {
-        return self::model()->findByPk($idTicket)->option_open;
-    }
-    
-    /**
-     * Método para retornar los datos del ticket que se mostrarán al mandar un correo
-     * @param integer $idTicket
-     * @return array
-     */
-    public static function getTicketAsArray($idTicket)
-    {
-        $data=self::ticketsByUsers(CrugeUser2::getUserTicket($idTicket,true)->iduser,$idTicket,false,false,true);
-        $testedNumber=TestedNumber::getTestedNumberArray($idTicket);
-        
-        $datos = array(
-            'ticketNumber'=>$data->ticket_number, 
-            'username'=>CrugeUser2::getUserTicket($idTicket),
-            'emails'=>Mail::getNameMails($idTicket),
-            'failure'=>$data->idFailure->name,
-            'originationIp'=>$data->origination_ip,
-            'destinationIp'=>$data->destination_ip,
-            'prefix'=>$data->prefix,
-            'gmt'=>null,
-            'testedNumber'=>null,
-            'country'=>null,
-            'date'=>null,
-            'hour'=>null,
-            'description'=>'description',
-            'cc'=>Mail::getNameMailsCC($idTicket),
-            'bcc'=>Mail::getNameMailsBcc($idTicket),
-            'speech'=>null,
-            'idTicket'=>$idTicket,
-            'optionOpen'=>$data->option_open
-        );
-        
-        if ($testedNumber != null) {
-            $numbers = array(
-                'testedNumber'=>$testedNumber['number'],
-                'country'=>$testedNumber['country'],
-                'date'=>$testedNumber['date'],
-                'hour'=>$testedNumber['hour'],
+
+        /**
+         * Retorna el tipo de usuario que esxcribió el primer comentario
+         * @param string $ticket_number El número del ticket
+         * @return array
+         */
+        public static function getFirstUser($ticket_number)
+        {
+            $id=self::model()->find('ticket_number=:number',array(':number'=>$ticket_number))->id;
+            $user=DescriptionTicket::model()->find('id_ticket=:id ORDER BY date ASC, hour ASC',array(':id'=>$id))->id_user;
+            return $user;
+        }
+
+        /**
+         * Retorna el id del ticket segun el ticket_number
+         * @param string $ticketNumber El número del ticket
+         * @return int
+         */
+        public static function getId($ticketNumber)
+        {
+            $id=self::model()->find('ticket_number=:number',array(':number'=>$ticketNumber))->id;
+            if ($id != null) {
+                return $id;
+            }
+            return null;
+        }
+
+        /**
+         * Retorna el id del usuario filtrado por id_ticket
+         * @param integer $idTicket El id del ticket
+         * @return integer
+         */
+        public static function getIdUser($idTicket)
+        {
+            return self::model()->findByPk($idTicket)->id_user;
+        }
+
+        /**
+         * Retorna como fue abierto el ticket, es decir, si el carrier abrió un ticket
+         * a etelix, si etelix abrió un ticket como el carrier o si etelix le abre un
+         * ticket al carrier
+         * 
+         * @param integer $idTicket El id del ticket
+         * @return string
+         */
+        public static function getOptionOpen($idTicket)
+        {
+            return self::model()->findByPk($idTicket)->option_open;
+        }
+
+        /**
+         * Método para retornar los datos del ticket que se mostrarán al mandar un correo
+         * @param integer $idTicket El id del ticket
+         * @return array
+         */
+        public static function getTicketAsArray($idTicket)
+        {
+            $data=self::ticketsByUsers(CrugeUser2::getUserTicket($idTicket,true)->iduser,$idTicket,false,false,true);
+            $testedNumber=TestedNumber::getTestedNumberArray($idTicket);
+
+            $datos = array(
+                'ticketNumber'=>$data->ticket_number, 
+                'username'=>CrugeUser2::getUserTicket($idTicket),
+                'emails'=>Mail::getNameMails($idTicket),
+                'failure'=>$data->idFailure->name,
+                'originationIp'=>$data->origination_ip,
+                'destinationIp'=>$data->destination_ip,
+                'prefix'=>$data->prefix,
+                'gmt'=>null,
+                'testedNumber'=>null,
+                'country'=>null,
+                'date'=>null,
+                'hour'=>null,
+                'description'=>'description',
+                'cc'=>Mail::getNameMailsCC($idTicket),
+                'bcc'=>Mail::getNameMailsBcc($idTicket),
+                'speech'=>null,
+                'idTicket'=>$idTicket,
+                'optionOpen'=>$data->option_open
             );
-            
-            $datos = array_merge($datos, $numbers);
+
+            if ($testedNumber != null) {
+                $numbers = array(
+                    'testedNumber'=>$testedNumber['number'],
+                    'country'=>$testedNumber['country'],
+                    'date'=>$testedNumber['date'],
+                    'hour'=>$testedNumber['hour'],
+                );
+
+                $datos = array_merge($datos, $numbers);
+            }
+
+            if (isset($data->idGmt->name)) {
+                $gmt = array('gmt' => $data->idGmt->name);
+                $datos = array_merge($datos, $gmt);
+            }
+
+            return $datos;
         }
-        
-        if (isset($data->idGmt->name)) {
-            $gmt = array('gmt' => $data->idGmt->name);
-            $datos = array_merge($datos, $gmt);
-        }
-        
-        return $datos;
-    }
        
 }

@@ -7,17 +7,6 @@ class MailController extends Controller
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
 	public $layout='//layouts/column2';
-
-	/**
-	 * @return array action filters
-	 */
-//	public function filters()
-//	{
-//		return array(
-//			'accessControl', // perform access control for CRUD operations
-//			'postOnly + delete', // we only allow deletion via POST request
-//		);
-//	}
         
         public function filters()
         {
@@ -109,21 +98,6 @@ class MailController extends Controller
 	}
 
 	/**
-	 * Deletes a particular model.
-	 * If deletion is successful, the browser will be redirected to the 'admin' page.
-	 * @param integer $id the ID of the model to be deleted
-	 */
-	public function actionDelete($id)
-	{
-            echo $id;
-//		$this->loadModel($id)->delete();
-//
-//		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-//		if(!isset($_GET['ajax']))
-//			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
-	}
-
-	/**
 	 * Lists all models.
 	 */
 	public function actionIndex()
@@ -162,7 +136,7 @@ class MailController extends Controller
         }
 
 	/**
-	 *Guarda los mail relacionados a usuarios y también los mails de los tickets
+	 * Guarda los mails relacionados a usuarios y a los mails de los tickets
 	 */
 	public function actionSetMail()
 	{
@@ -300,9 +274,11 @@ class MailController extends Controller
 	}
         
         /**
-         * Guardará en la tabla mail_ticket al guardar en mail y mail_user
-         * @param int $idticket
-         * @param int $idMailUser
+         * Guardará en la tabla mail_ticket al guardar primero en mail y luego 
+         * en mail_user (Deben cumplirse estos dos ultimos insert para que pueda 
+         * guardarse en mail_ticket)
+         * @param int $idticket El id asociado al ticket
+         * @param int $idMailUser El id asociado al mailuser
          * @return boolean
          */
         private function _saveMailTicket($idticket, $idMailUser)
@@ -315,8 +291,9 @@ class MailController extends Controller
         }
 
     /**
-     * 
-     * @param string $typeUser
+     * Assign by especifica si el correo lo guardo un usuario con rol cliente u otro tipo de rol.
+     * Si es 0, el correo lo guardo un usuario cliente, 1 para los demas roles 
+     * @param string $optionOpen Recibe la opción de apertura del ticket, si es etelix_to_carrier, etelix_as_carrier o carrier_to_etelix
      * @return int
      */
     private function _assignBy($optionOpen)

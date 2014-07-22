@@ -102,9 +102,9 @@ class MailUser extends CActiveRecord
 	}
         
         /**
-         * 
-         * @param int $user
-         * @param boolean $json
+         * Retorna los mails asociados a un ticket o a un usuario en particular
+         * @param int $user Id del usuario
+         * @param boolean $json Si es false retorna un array, de lo contrario retorna un json
          * @return array
          */
         public static function getMails($user, $json = false, $etelixAsCarrier = false, $idTicket = false)
@@ -132,8 +132,8 @@ class MailUser extends CActiveRecord
         }
         
         /**
-         * 
-         * @param int $idTicket
+         * Retorna los mail asociados a un ticket
+         * @param int $idTicket El id del ticket
          * @return array
          */
         public static function getMailsByTicket($idTicket)
@@ -141,6 +141,11 @@ class MailUser extends CActiveRecord
             return self::model()->findAll("id in(select id_mail_user from mail_ticket where id_ticket = $idTicket)");
         }
         
+        /**
+         * Retorna los id's de los mails relacionados a un ticket 
+         * @param int $idTicket El id del ticket
+         * @return array
+         */
         public static function idMailUser($idTicket)
         {
             $id = array();
@@ -156,8 +161,8 @@ class MailUser extends CActiveRecord
 
         
         /**
-         * 
-         * @param int $user
+         * Retorna tru si el usuario tiene menos de 5 correos asociados, de lo contrario retorna false
+         * @param int $user Id del usuario
          * @return boolean
          */
         public static function getCountMail($user)

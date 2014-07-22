@@ -167,16 +167,18 @@ class DescriptionticketController extends Controller
 	}
         
     /**
-     * Action para salvar la descripción o respuesta que se de en el preview
-     * del ticket
+     * Guarda la descripción (respuesta) del ticket
      */
     public function actionSavedescription()
     {
     	if(isset($_POST['idTicket']))
     	{
             $mailer=new EnviarEmail;
+            // Varieble para guardar el speech seleccionado en el caso que exista
             $speech=null;
+            // Variable que guarda si se responde como carrier si se da el caso
             $internalAsCarrier=null;
+            // Si se envía un speech, $speech ser igual al speech mandado
             if(isset($_POST['idSpeech'])) $speech=$_POST['idSpeech'];
             //Guardar Description
             $model=new DescriptionTicket;
@@ -188,14 +190,16 @@ class DescriptionticketController extends Controller
             $optionRead=DescriptionTicket::getUserNewDescription();
             $model->read_carrier=$optionRead['read_carrier'];
             $model->read_internal=$optionRead['read_internal'];
-            
+            // Si es etelix que responde como el carrier, en id_user se guardará el  id del usuario que corresponde el ticket
             if (isset($_POST['internalAsCarrier']) && $_POST['internalAsCarrier'] == 1) {
                 $model->id_user=CrugeUser2::getUserTicket($_POST['idTicket'],true)->iduser;
                 $internalAsCarrier=$_POST['internalAsCarrier'];
+            // De lo contrario guardará el id del usuario logueado
             } else {
                 $model->id_user=Yii::app()->user->id;
             }
-
+            
+            // Respondido por el usario logueado
             $model->response_by=Yii::app()->user->id;
                 
     		if($model->save())
@@ -228,6 +232,7 @@ class DescriptionticketController extends Controller
                     $date=Ticket::model()->findByPk($model->id_ticket)->date;
                     //Renderizar para mostrar la repsuesta
                     $this->renderPartial('/ticket/_answer', array('datos' => Ticket::ticketsByUsers(Yii::app()->user->id, $model->id_ticket, false)));
+                    // Los mails asociados al ticket actual
                     $mailsAll=Mail::getNameMails($model->id_ticket);
                     
                     $asunto=new Subject;
@@ -246,7 +251,9 @@ class DescriptionticketController extends Controller
     }
     
     /**
-     *
+     * Pone como leído a el ticket que tengan nueva descripción y el campo read esté en cero.
+     * Sí el usuario tiene rol cliente se actualizará el read_carrier = 1, si es otro rol
+     * se actualizará el read_internal = 1 
      */
     public function actionRead()
     {

@@ -7,17 +7,6 @@ class MailuserController extends Controller
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
 	public $layout='//layouts/column2';
-
-	/**
-	 * @return array action filters
-	 */
-//	public function filters()
-//	{
-//		return array(
-//			'accessControl', // perform access control for CRUD operations
-//			'postOnly + delete', // we only allow deletion via POST request
-//		);
-//	}
         
         public function filters()
         {
@@ -177,7 +166,7 @@ class MailuserController extends Controller
 	}
 
 	/**
-	 * Métodos propios
+	 * Retorna los mails asociados a los usuarios
 	 * @access public
 	 * @return void
 	 */
@@ -203,6 +192,7 @@ class MailuserController extends Controller
 	}
 
 	/**
+         * Pone en status 0 a un mail asociado a algún usuario
 	 * @access public
 	 * @return void
 	 */

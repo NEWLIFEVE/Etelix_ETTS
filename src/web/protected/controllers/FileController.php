@@ -8,21 +8,11 @@ class FileController extends Controller
 	 */
 	public $layout='//layouts/column2';
 
-	/**
-	 * @return array action filters
-	 */
-//	public function filters()
-//	{
-//		return array(
-//			'accessControl', // perform access control for CRUD operations
-//			'postOnly + delete', // we only allow deletion via POST request
-//		);
-//	}
         
-    public function filters()
-    {
-        return array(array('CrugeAccessControlFilter'));
-    }
+        public function filters()
+        {
+            return array(array('CrugeAccessControlFilter'));
+        }
 
 	/**
 	 * Specifies the access control rules.
@@ -176,66 +166,75 @@ class FileController extends Controller
 		}
 	}
         
-    public function actionUpload() 
-    {
-        Yii::import("ext.EAjaxUpload.qqFileUploader");
-
-        $folder = 'uploads/'; // folder for uploaded files
-        $allowedExtensions = array('pdf', 'gif', 'jpeg', 'png', 'jpg', 'xlsx', 'xls', 'txt', 'cap', 'pcap', 'csv'); 
-        $sizeLimit = 10 * 1024 * 1024; // maximum file size in bytes
-        $uploader = new qqFileUploader($allowedExtensions, $sizeLimit);
-        $result = $uploader->handleUpload($folder, false);
-        $return = htmlspecialchars(json_encode($result), ENT_NOQUOTES);
-
-        $fileSize = filesize($folder . $result['filename']); //GETTING FILE SIZE
-        $fileName = $result['filename']; //GETTING FILE NAME
-
-        echo $return; // it's array 
-    }
-        
-    public function actionUploadjquery()
-    {
-        $output_dir = "uploads/";
-        if(isset($_FILES["myfile"]))
+        /**
+         * Action para la subida de archivos con la extensión EAjaxUpload
+         */
+        public function actionUpload() 
         {
-            $ret = array();
+            Yii::import("ext.EAjaxUpload.qqFileUploader");
 
-            $error =$_FILES["myfile"]["error"];
-            //You need to handle  both cases
-            //If Any browser does not support serializing of multiple files using FormData() 
-            if(!is_array($_FILES["myfile"]["name"])) //single file
-            {                           
-                $fileName = uniqid() . '-' . $_FILES["myfile"]["name"];
-                move_uploaded_file($_FILES["myfile"]["tmp_name"],$output_dir.$fileName);
-                $ret[]= $fileName;
-            }
-            else  //Multiple files, file[]
-            {
-            	$fileCount = count($_FILES["myfile"]["name"]);
-              	for($i=0; $i < $fileCount; $i++)
-              	{
-                    $fileName = uniqid() . '-' . $_FILES["myfile"]["name"][$i];
-                    move_uploaded_file($_FILES["myfile"]["tmp_name"][$i],$output_dir.$fileName);
-                    $ret[]= $fileName;
-              	}
-            }
-            
-            echo json_encode($ret);
-         }
-    }
-        
-    public function actionDeletejquery()
-    {
-        $output_dir = "uploads/";
-        if(isset($_POST["op"]) && $_POST["op"] == "delete" && isset($_POST['name']))
-        {
-            $fileName =$_POST['name'];
-            $filePath = $output_dir. $fileName;
-            if (file_exists($filePath)) 
-            {
-            	unlink($filePath);
-            }
-        	echo "Deleted File ".$fileName."<br>";
+            $folder = 'uploads/'; // folder for uploaded files
+            $allowedExtensions = array('pdf', 'gif', 'jpeg', 'png', 'jpg', 'xlsx', 'xls', 'txt', 'cap', 'pcap', 'csv'); 
+            $sizeLimit = 10 * 1024 * 1024; // maximum file size in bytes
+            $uploader = new qqFileUploader($allowedExtensions, $sizeLimit);
+            $result = $uploader->handleUpload($folder, false);
+            $return = htmlspecialchars(json_encode($result), ENT_NOQUOTES);
+
+            $fileSize = filesize($folder . $result['filename']); //GETTING FILE SIZE
+            $fileName = $result['filename']; //GETTING FILE NAME
+
+            echo $return; // it's array 
         }
-    }    
+
+        /**
+         * Action para la subida de archivos con jquery.uploadfile
+         */
+        public function actionUploadjquery()
+        {
+            $output_dir = "uploads/";
+            if(isset($_FILES["myfile"]))
+            {
+                $ret = array();
+
+                $error =$_FILES["myfile"]["error"];
+                //You need to handle  both cases
+                //If Any browser does not support serializing of multiple files using FormData() 
+                if(!is_array($_FILES["myfile"]["name"])) //single file
+                {                           
+                    $fileName = uniqid() . '-' . $_FILES["myfile"]["name"];
+                    move_uploaded_file($_FILES["myfile"]["tmp_name"],$output_dir.$fileName);
+                    $ret[]= $fileName;
+                }
+                else  //Multiple files, file[]
+                {
+                    $fileCount = count($_FILES["myfile"]["name"]);
+                    for($i=0; $i < $fileCount; $i++)
+                    {
+                        $fileName = uniqid() . '-' . $_FILES["myfile"]["name"][$i];
+                        move_uploaded_file($_FILES["myfile"]["tmp_name"][$i],$output_dir.$fileName);
+                        $ret[]= $fileName;
+                    }
+                }
+
+                echo json_encode($ret);
+             }
+        }
+        
+        /**
+         * Action para borrar archivos con jquery.uploadfile
+         */
+        public function actionDeletejquery()
+        {
+            $output_dir = "uploads/";
+            if(isset($_POST["op"]) && $_POST["op"] == "delete" && isset($_POST['name']))
+            {
+                $fileName =$_POST['name'];
+                $filePath = $output_dir. $fileName;
+                if (file_exists($filePath)) 
+                {
+                    unlink($filePath);
+                }
+                    echo "Deleted File ".$fileName."<br>";
+            }
+        }    
 }

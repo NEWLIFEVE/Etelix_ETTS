@@ -7,25 +7,14 @@ class SpeechController extends Controller
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
 	public $layout='//layouts/column2';
-
-	/**
-	 * @return array action filters
-	 */
-//	public function filters()
-//	{
-//		return array(
-//			'accessControl', // perform access control for CRUD operations
-//			'postOnly + delete', // we only allow deletion via POST request
-//		);
-//	}
     
-    /**
-     *
-     */
-    public function filters()
-    {
-        return array(array('CrugeAccessControlFilter'));
-    }
+        /**
+         *
+         */
+        public function filters()
+        {
+            return array(array('CrugeAccessControlFilter'));
+        }
 
 	/**
 	 * Specifies the access control rules.
@@ -188,7 +177,7 @@ class SpeechController extends Controller
         $idSpeech=$_POST['_idSpeech'];
         if ($idSpeech != null)
         {
-            $speech=$model::model()->find("id = '$idSpeech'")->speech;
+            $speech=$model::model()->findByPk($idSpeech)->speech;
             if ($speech != null)
             {
                 if (isset($_POST['failure']) && !empty($_POST['failure'])) 
@@ -202,7 +191,7 @@ class SpeechController extends Controller
     }
     
     /**
-     *
+     * Retorna un json con los speech asociados a los customer 
      */
     public function actionGetspeechcustomer()
     {
@@ -212,7 +201,7 @@ class SpeechController extends Controller
     }
     
     /**
-     *
+     * Retorna un json con los speech asociados a los suppliers dependiendo de la falla seleccionada por interfaz
      */
     public function actionGetspeechsupplier()
     {

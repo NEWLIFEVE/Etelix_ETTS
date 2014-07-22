@@ -95,7 +95,7 @@ class MailTicket extends CActiveRecord
         
         /**
          * Retorna los correos que tienen asociado un o varios tickets
-         * @param integer $id_tickets
+         * @param integer $id_tickets El id del ticket
          * @return array|null
          */
         public static function getMails($id_tickets)
@@ -105,7 +105,7 @@ class MailTicket extends CActiveRecord
         
         /**
          * Retorna los correos(cc) que tienen asociado un o varios tickets
-         * @param integer $id_tickets
+         * @param integer $id_tickets El id del ticket
          * @return array|null
          */
         public static function getCc($id_tickets)
@@ -120,7 +120,7 @@ class MailTicket extends CActiveRecord
         
         /**
          * Retorna los correos(bcc) que tienen asociado un o varios tickets
-         * @param integer $id_tickets
+         * @param integer $id_tickets El id del ticket
          * @return array|null
          */
         public static function getBcc($id_tickets)
@@ -134,10 +134,10 @@ class MailTicket extends CActiveRecord
         }
         
         /**
-         * Gurada los mails que apliquen a un ticket relacionado
+         * Guarda los mails que apliquen a un ticket relacionado
          * 
-         * @param array $attributes
-         * @param int $typeMail
+         * @param array $attributes Atributos propios del modelo
+         * @param int $typeMail El tipo de correo (0 = to, 1 = cc, 2 = bcc)
          * @return boolean
          */
         public static function saveMailTicket($attributes, $typeMail)

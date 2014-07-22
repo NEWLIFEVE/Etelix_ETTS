@@ -105,8 +105,8 @@ class CrugeAuthassignment extends CActiveRecord
      * se retornará el nombre completo del rol, de lo contrario solo retorna
      * la primera letra del rol
      * 
-     * @param boolean $nameFull
-     * @param int $userId
+     * @param boolean $nameFull Si es true, retorna el nombre completo, de lo contrario retorna la primera letra del rol
+     * @param int $userId El id del usuario
      * @return string
      */
     public static function getRoleUser($nameFull = false, $userId = false)

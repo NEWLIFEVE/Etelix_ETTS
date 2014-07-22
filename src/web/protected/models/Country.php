@@ -87,6 +87,10 @@ class Country extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+        /**
+         * Retorna un listData con el nombre de los paises
+         * @return listData|array
+         */
         static public function getNames()
         {
             return CHtml::listData(Country::model()->findAll(array('order' => 'name')), 'id', 'name');

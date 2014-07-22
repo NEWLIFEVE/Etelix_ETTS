@@ -135,7 +135,7 @@ class CrugeUser2 extends CActiveRecord
 	}
      
     /**
-     *
+     * Retorna los usuarios que tenga asignados carriers
      */  
     public static function getUsuerByIdCarrier()
     {
@@ -143,8 +143,12 @@ class CrugeUser2 extends CActiveRecord
     }
     
     /**
-     *
-     */ 
+     * Método para obtener el usuairo que le pertenece el ticket
+     * @param int $id_ticket El id del ticket
+     * @param boolean $returnAllNoArray Si es true, retorna todos los campos del usuario, de lo con trario solo retorna el nombre del usuario
+     * @param boolean $distinct
+     * @return array
+     */
     public static function getUserTicket($id_ticket, $returnAllNoArray = false, $distinct = false)
     {
         if($returnAllNoArray)
@@ -172,7 +176,7 @@ class CrugeUser2 extends CActiveRecord
     /**
      * Método para obtener el id y el username dependiendo si es supplier o customer 
      * 
-     * @param string $type
+     * @param string $type Puede ser customer o supplier
      * @return array
      */
     public static function getCarriersSupplierOrCustomer($type)
@@ -181,6 +185,11 @@ class CrugeUser2 extends CActiveRecord
         if ($carriers != null) return self::model()->findAllBySql("SELECT iduser, username FROM cruge_user WHERE id_carrier IN (".implode(",",$carriers).") ORDER BY username ASC");
     }
     
+    /**
+     * Retorna el id del carrier dependiendo del usuario
+     * @param type $idUser El id del usuario
+     * @return null|int
+     */
     public static function getIdCarrier($idUser)
     {
         $idCarrier=self::model()->findByPk($idUser)->id_carrier;

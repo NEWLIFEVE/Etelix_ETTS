@@ -129,7 +129,7 @@ class SiteController extends Controller
 	}
                         
         /**
-         * Exportable de imprimir
+         * Exportable para imprimir
          */
         public function actionPrint()
         {
@@ -336,7 +336,7 @@ class SiteController extends Controller
         
         /**
          * Define el nombre que contendra el exportable dependiendo del status del ticket
-         * @param int|string $status
+         * @param int|string $status Si es 1 son tickets abiertos, 2 para tickets cerrados
          * @return string
          */
         private function _setNameExport($status)

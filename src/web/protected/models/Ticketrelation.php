@@ -101,7 +101,12 @@ class Ticketrelation extends CActiveRecord
 		return parent::model($className);
 	}
         
-        
+        /**
+         * Retorna los tickets relacionados a otros tickets
+         * @param int $idTicketFather El id del ticket padre
+         * @param bolean $returnArray Si es true, hace una búsqueda global, de lo contrario con limit 1
+         * @return null|array
+         */
         public static function getTicketRelation($idTicketFather = false, $returnArray = false)
         {
             if ($returnArray) {

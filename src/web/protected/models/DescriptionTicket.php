@@ -114,8 +114,9 @@ class DescriptionTicket extends CActiveRecord
 	}
         
     /**
-     * 
-     * @param int $idTicket
+     * Retorna todo el hilo de la conversación de un ticket
+     * @param int $idTicket El id del ticket
+     * @return array 
      */
     public static function getDescription($idTicket)
     {   
@@ -129,8 +130,8 @@ class DescriptionTicket extends CActiveRecord
     }
     
     /**
-     * 
-     * @param int $idTicket
+     * Retorna la última descripcion del hilo de conversación de un ticket
+     * @param int $idTicket El id del ticket
      * @return null | array
      */
     public static function lastDescription($idTicket)
@@ -144,7 +145,8 @@ class DescriptionTicket extends CActiveRecord
     }
     
     /**
-     * @param integer $idTicket
+     * Sql para obtener la última descripción
+     * @param integer $idTicket El id del ticket
      * @return array
      */
     public static function sqlLastDescription($idTicket)
@@ -156,6 +158,13 @@ class DescriptionTicket extends CActiveRecord
                   ORDER BY date DESC, hour DESC");
     }
     
+    /**
+     * Método que guarda la descripción y de existir archivos para guardar, también los guardará
+     * @param array $attributes Los datos para guardar la descripción
+     * @param strign $optionOpen Opción de apertura del ticket
+     * @param array $attributtesFile Los campos para guardar los archivos si es que se da el caso
+     * @return boolean
+     */
     public static function saveDescription($attributes,$optionOpen,$attributtesFile=null)
     {
         $model=new DescriptionTicket;
@@ -188,9 +197,9 @@ class DescriptionTicket extends CActiveRecord
     }
     
     /**
-     * 
-     * @param int $idTicket
-     * @return string
+     * Método para especificar si un ticket está marcado como leído o no.
+     * @param int $idTicket El id del ticket
+     * @return string Si es blink, será no leído, de lo contrario estará leído
      */
     public static function blinkTr($idTicket)
     {
@@ -219,8 +228,10 @@ class DescriptionTicket extends CActiveRecord
     }
     
     /**
-     * @param boolean $etelixAsCustomer
-     * @param int $idTicket
+     * Método que sirve para manejar quien verá como leído o no leído la(s) nueva(s) respuesta(s)
+     * que se den en un ticket
+     * @param boolean $etelixAsCustomer true si un usuario interno responde como el carrier
+     * @param int $idTicket El id asociado al ticket
      * @return array
      */
     public static function getUserNewDescription($etelixAsCustomer=false, $idTicket=false)

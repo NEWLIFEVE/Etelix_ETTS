@@ -106,6 +106,12 @@ class File extends CActiveRecord
 		));
 	}
         
+        /**
+         * Método para guardar los archivos
+         * @param array $attributes Atributos del propio modelo
+         * @param int $idDescription Id de la descripción
+         * @return boolean
+         */
         public static function saveFile($attributes,$idDescription)
         {
             $isOk=true;
