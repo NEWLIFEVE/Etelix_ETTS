@@ -17,6 +17,7 @@ class Report extends Excel
     
     /**
      * Método para generar el excel
+     * @param array $args Array de configuración del excel
      */
     public function genExcel($args) 
     {
@@ -78,7 +79,7 @@ class Report extends Excel
     
     /**
      * Setea la hoja con el resumen de los tickets por categorias
-     * @param array $args
+     * @param array $args Array de configuraciónd el excel
      */
     private function _setSummary($args)
     {
@@ -295,6 +296,15 @@ class Report extends Excel
         
     }
     
+    /**
+     * Checkea y setea las flechas del reporte
+     * @param int $a El conteo de los tickets de le fecha actual
+     * @param int $b El conteo de los tickets de fechas anteriores
+     * @param string $coordinate Las celdas del excel
+     * @param bolean $excel True para cuando sea un excel, false para cuando sea mandado por correo
+     * @return string
+     * @throws Exception
+     */
     public function checkLowerOrHigher($a, $b, $coordinate = false, $excel = false)
     {
         $a = (int) $a;
@@ -331,6 +341,12 @@ class Report extends Excel
         }
     }
     
+    /**
+     * Retorna el conteo del los tickets por categoría (colores), fecha y tipo de carrier
+     * @param array $args Configuración del excel
+     * @return array
+     * @throws Exception
+     */
     public function setIntervalDays($args)
     {
         if (isset($args['date']) && isset($args['carrier'])) {
@@ -375,8 +391,8 @@ class Report extends Excel
     
     /**
      * Retorna un array con el conteo de suppliers y customers por cada color de ticket
-     * @param string $date
-     * @param string $carrier
+     * @param string $date Fecha de búsqueda en la consulta
+     * @param string $carrier Si es customer, supplier o ambos
      * @return array
      */
     public function countCarriers($date, $carrier)
@@ -430,7 +446,7 @@ class Report extends Excel
     
     /**
      * Seteamos la data a la hoja
-     * @param array $params
+     * @param array $params Recibe tres índices nameSheet, index y data. El primero es el nombre de la hoja, el segundo la posición de la hoja y el tercero la data del ticket
      */
     protected function _setData($params) 
     {
@@ -442,7 +458,7 @@ class Report extends Excel
         $this->_phpExcel->setActiveSheetIndexByName($params['nameSheet'])->mergeCells('A1:C1');
         $this->_phpExcel->setActiveSheetIndexByName($params['nameSheet'])->mergeCells('D1:J1');
         
-//        $this->_phpExcel->getActiveSheet()->freezePane('A3');
+        //$this->_phpExcel->getActiveSheet()->freezePane('A3');
         
         //Asigno los nombres de las columnas al principio
         $this->_setTitle();
@@ -525,6 +541,10 @@ class Report extends Excel
         $this->_phpExcel->setActiveSheetIndex($index)->setCellValue('D1', $title);
     }
     
+    /**
+     * Define un background en las celdas donde se colocará el logo
+     * @param string $cell Las celdas del excel
+     */
     private function _backgroundLogo($cell)
     {
         $this->_phpExcel
@@ -585,7 +605,7 @@ class Report extends Excel
     
     /**
      * Define el estilo de las filas dependiendo del color del ticket
-     * @param string $cell
+     * @param string $cell Las celdas del excel
      * @param string $color El color del ticket
      * @param int $status El estatus del ticket
      */
@@ -653,7 +673,7 @@ class Report extends Excel
     
         
     /**
-     * Metodo para soltar el excel en pantalla
+     * Método para soltar el excel en pantalla
      * @param object $objWriter Llamado del PHPExcel_IOFactory::createWriter 
      * @param string $file Nombre del  archivo
      */
@@ -665,8 +685,6 @@ class Report extends Excel
         header('Expires: 0');
         $objWriter->save('php://output');
     }
-    
-    
     
     /**
      * Método para retornar el string de la consulta que contendrá el color, lifetime y tipo de carrier
@@ -714,10 +732,10 @@ class Report extends Excel
         
     /**
      * Retorna los tickets escalados
-     * @param string $date
+     * @param string $date Fecha de la búsqueda
      * @param string $color Color del ticket dependiendo de su tiempo de vida
      * @param string $status Si el ticket es cerrado o abierto
-     * @param string $carrier
+     * @param string $carrier Si supplier, customer o ambos
      * @return array
      */
     public function ticketEscaladed($date, $color = 'white', $status = 'open', $carrier = 'both')
@@ -881,8 +899,8 @@ class Report extends Excel
     
     /**
      * Retorna los tickets escalados
-     * @param string $date
-     * @param string $carrier
+     * @param string $date Fecha de la consulta
+     * @param string $carrier Customer, supplier o ambos
      * @return array
      */
     public function totalTicketEscaladed($date, $carrier = 'both')
@@ -949,7 +967,7 @@ class Report extends Excel
         
     /**
      * Define  el color del reporte dependiendo la categoria y el lifetime del ticket
-     * @param string $color
+     * @param string $color Exadecimal que viene por la consulta a la bd
      * @return string
      */
     private function _cssTickets($color)

@@ -6,8 +6,18 @@
  */
 abstract class Connection
 {
+    /**
+     * Es el llamado imap_open
+     * @var object 
+     */
     private $_con;
     
+    /**
+     * En el contructor se inicia la conexión a imap
+     * @param array $key Opcioanl para configurar el host, usuario y contraseña
+     * @return object
+     * @throws Exception
+     */
     protected function __construct($key = false)
     {
         if ($key)
@@ -21,6 +31,10 @@ abstract class Connection
             throw new Exception('Error: ' . imap_last_error());
     }
     
+    /**
+     * Cierra la conexión a imap
+     * @throws Exception
+     */
     protected function _disconnect()
     {
         if (!imap_close($this->_con))

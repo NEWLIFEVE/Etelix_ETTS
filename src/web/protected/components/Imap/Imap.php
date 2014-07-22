@@ -6,8 +6,22 @@
  */
 class Imap extends Connection
 {
+    /**
+     * La conexión a imap
+     * @var object 
+     */
     private $_inbox;
+    
+    /**
+     * El cuerpo del mensaje
+     * @var array
+     */
     private $_message;
+    
+    /**
+     * El conteo total de los mensajes en el buzón de entrada
+     * @var int 
+     */
     private $_count;
     private $_posBody;
 
