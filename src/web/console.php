@@ -1,5 +1,4 @@
 <?php
-date_default_timezone_set('America/Caracas');
 //Definimos nuestro servidor de produccion
 define('SERVER_NAME_PROD','s1248-101');
 //Definimos el directorio de desarrollo
