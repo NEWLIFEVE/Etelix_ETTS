@@ -33,7 +33,8 @@ class ReportCommand extends CConsoleCommand
             $mail = new EnviarEmail;
             if(!YII_DEBUG) $Address='revista@etelix.com';
             else $Address='auto@sacet.biz';
-            $mail->enviar($table, $Address, '', strtoupper($nameReport), 'uploads/' . $nameReport . '.xlsx');   
+            $route=Yii::getPathOfAlias('webroot.uploads') . DIRECTORY_SEPARATOR . $nameReport . '.xlsx';
+            $mail->enviar($table, $Address, '', strtoupper($nameReport), $route);   
         } 
         
     }

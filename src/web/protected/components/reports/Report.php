@@ -71,7 +71,7 @@ class Report extends Excel
             $this->_octetStream($objWriter, $file);
         }
         $objWriter->setIncludeCharts(TRUE);
-        $objWriter->save('uploads' . DIRECTORY_SEPARATOR . $file);
+        $objWriter->save(Yii::getPathOfAlias('webroot.uploads') . DIRECTORY_SEPARATOR. $file);
         unset($this->objWriter);
         unset($this->_phpExcel);
     }
@@ -314,7 +314,8 @@ class Report extends Excel
                         throw new Exception("Las coordenas deben ser string: $coordinate");
 
                     $objDrawing = new PHPExcel_Worksheet_Drawing();
-                    $objDrawing->setPath('images/' . $image);
+                    $route = Yii::getPathOfAlias('webroot.images') . DIRECTORY_SEPARATOR;
+                    $objDrawing->setPath($route . $image);
                     $objDrawing->setCoordinates($coordinate);
                     $objDrawing->setOffsetX(10);
                     $objDrawing->setWorksheet($this->_phpExcel->getActiveSheet());
@@ -502,7 +503,8 @@ class Report extends Excel
         $objDrawing = new PHPExcel_Worksheet_Drawing();
         $objDrawing->setName('Logo');
         $objDrawing->setDescription('Logo');
-        $objDrawing->setPath('images/logo.jpg');
+        $logo = Yii::getPathOfAlias('webroot.images') . DIRECTORY_SEPARATOR . 'logo.jpg';
+        $objDrawing->setPath($logo);
 
         $objDrawing->setCoordinates('A1');
         $objDrawing->setHeight(200);
