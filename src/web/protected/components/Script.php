@@ -1,7 +1,6 @@
 <?php
 abstract class Script
 {
-
     /**
      * Registra el codigo css y js del datatable
      */
@@ -22,7 +21,7 @@ abstract class Script
 
 
     /**
-     * Registra los mudlos que usara el action
+     * Registra los módulos que usará el action
      * @param array $modules Modulos que seran pasados como un arreglo
      * @throws Exception
      */
@@ -38,6 +37,11 @@ abstract class Script
         }
     }
     
+    /**
+     * Registra los nombres de los plugins que se usaran en el sistema
+     * @param array $jquery Array de los nombres de los plugins
+     * @throws Exception
+     */
     public static function registerPlugins($jquery = array())
     {
         $cs = Yii::app()->getClientScript();
@@ -66,6 +70,9 @@ abstract class Script
             throw new Exception('Error in jquery');
         }
     }
+    
+    /*
+     * Descomentar para usar highcharts
     public static function registerChartsPlugin()
     {
         $cs = Yii::app()->getClientScript();
@@ -74,7 +81,7 @@ abstract class Script
         foreach ($javascript as $js) {
             $cs->registerScriptFile(Yii::app()->baseUrl . '/js/plugins/charts/' . $js . '.js', CClientScript::POS_END);
         }
-    }
+    }*/
     
     /**
      * Registra los estilos css
@@ -95,8 +102,8 @@ abstract class Script
     
     /**
      * Registro los scripts propios de cada controller
-     * @param array $javascript
-     * @param string $controller
+     * @param array $javascript Nombres de los scripts que seran usados en el sistema
+     * @param string $controller Nombre del controlado
      * @throws Exception
      */    
     public static function registerJsController($javascript = array(), $controller = false)
@@ -118,6 +125,13 @@ abstract class Script
         }
     }
     
+    /**
+     * Registra los scripts propios de cada action, siempre y cuando el archivo 
+     * javascript tenga el mismo nombre del action, y la carpeta que lo contiene
+     * tenga el nombre del controlador
+     * @param string $controller El nombre del controlador
+     * @param string $action El nombre del action
+     */
     public static function registerJsAction($controller = false, $action = false)
     {
         $cs = Yii::app()->getClientScript();
@@ -135,10 +149,10 @@ abstract class Script
         }
         
         $path = YiiBase::getPathOfAlias('webroot') . DIRECTORY_SEPARATOR .  'js' . DIRECTORY_SEPARATOR . $controller . DIRECTORY_SEPARATOR . $action . '.js';
-//        if (file_exists($path)) {
+        if (file_exists($path)) {
             $cs->registerScriptFile(Yii::app()->baseUrl . '/js/' . $controller . '/' . $action . '.js', CClientScript::POS_END);
-//        } else {
-//            return false;
-//        }
+        } else {
+            return false;
+        }
     }
 }

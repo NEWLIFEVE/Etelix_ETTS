@@ -7,7 +7,16 @@
  */
 class Export extends TicketDesign
 {
+    /**
+     * El css de los th
+     * @var string
+     */
     private $_cssTh;
+    
+    /**
+     * El css de la tabla
+     * @var string
+     */
     private $_cssTable;
     
     public function __construct() 
@@ -18,7 +27,8 @@ class Export extends TicketDesign
     
     /**
      * Tabla de los tickets
-     * @param arrray $ids
+     * @param arrray $ids El id's de los tickets
+     * @param string $date La fecha para establecer la búsqueda de los tickets
      * @return string
      */
     public function table($ids, $date = false)
@@ -39,8 +49,8 @@ class Export extends TicketDesign
     
     /**
      * Tabla del resumen de los tickets
-     * @param string $carrier
-     * @param string $date
+     * @param string $carrier Si es supplier, customer o ambos
+     * @param string $date La fecha para buscar los tickets
      * @return string
      */
     public function tableSummary($carrier = 'both', $date = false)
@@ -263,7 +273,7 @@ class Export extends TicketDesign
     
     /**
      * Contenido de la tabla
-     * @param array $data
+     * @param array $data La data del ticket
      * @return string
      */
     private function _contentTable($data) 
@@ -286,7 +296,7 @@ class Export extends TicketDesign
     
     /**
      * Retorna el carrier o el username dependiento de option_open
-     * @param array $tickets
+     * @param array $tickets La data de los tickets
      * @return string
      */
     private function _defineUserOrCarrier($tickets)
@@ -306,7 +316,8 @@ class Export extends TicketDesign
 
     /**
      * Consulta sql para obtner los tickets dependiendo de los ids que se pasen como parametro
-     * @param array $ids
+     * @param array $ids El id's de los ticket
+     * @param strign $date La fecha para buscar los tickets
      * @return array
      */
     private function _getData($ids, $date = false)
@@ -384,7 +395,8 @@ class Export extends TicketDesign
     
     /**
      * Retorna el color del ticket dependiendo del tiempo y el status
-     * @param string $color
+     * @param string $color El color del ticket
+     * @param int $status El status del ticket
      * @return string
      */
     private function _cssTickets($color, $status = false)
@@ -410,6 +422,12 @@ class Export extends TicketDesign
         return $style;
     }
     
+    /**
+     * Muestra la vista de impresión del ticket
+     * @param array $key Key es un arreglo con toda la data del ticket, es decir, sus atributos
+     * @param string $optionalInformation Información opcional que se mostrará en la vista de impresión 
+     * @return string
+     */
     public function printTicket($key, $optionalInformation = false)
     {
         parent::__construct($key);

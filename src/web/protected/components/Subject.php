@@ -7,15 +7,24 @@
  */
 class Subject 
 {
+    /**
+     * El subject propio del correo
+     * @var string 
+     */
     private $_subject;
+    
+    /**
+     * El tipo de carrier (customer/supplier)
+     * @var string
+     */
     private $_carrier;
     
     /**
      * Método que retornará el subject al abrir un ticket
      * 
-     * @param string $ticketNumber
-     * @param string $nameCarrier
-     * @param string $optionOpen
+     * @param string $ticketNumber El numero de ticket
+     * @param string $nameCarrier El nombre del carrier
+     * @param string $optionOpen EL tipo de apertura del ticket
      * @return string
      */
     public function subjectOpenTicket($ticketNumber, $nameCarrier, $optionOpen)
@@ -27,9 +36,10 @@ class Subject
     /**
      * Método que retorna el subject al cerrar un ticket
      * 
-     * @param string $ticketNumber
-     * @param string $nameCarrier
-     * @param string $timeTicket
+     * @param string $ticketNumber El numero del ticket
+     * @param string $nameCarrier El nombre del carrier
+     * @param string $timeTicket El tiempo de vida del ticket
+     * @param int $id El id del usuario
      * @return string
      */
     public function subjectCloseTicket($ticketNumber, $nameCarrier, $timeTicket, $id = false)
@@ -52,33 +62,12 @@ class Subject
         
         return $this->_subject;
     }
-    
-    
-//    /**
-//     * Método para retornar el asunto cuando se responde un ticket
-//     * 
-//     * @param string $ticketNumber
-//     * @param string $nameCarrier
-//     * @param string $timeTicket
-//     * @param integer $etelixAsCustomer
-//     * @return string
-//     */
-//    public function subjectNewAnswer($ticketNumber,$idUser,$idResponseBy,$timeTicket)
-//    {
-//        $this->_setCarrier($ticketNumber);
-//        //Primera parte del subject
-//        $this->_subject="TT ".$this->_formatTicketNumber($ticketNumber)." ".$this->_carrier." to Etelix, ";
-//        //Segunda parte del subject
-//        $this->_subject.=$this->_defineStatus($idUser,$idResponseBy);
-//        //Tercera parte del subject
-//        $this->_subject.=$ticketNumber." (".$timeTicket.")";
-//        return $this->_subject;
-//    }
-    
+        
     /**
      * Retorna el subject del correo al dar una nueva repuesta
-     * @param string $ticketNumber
-     * @param string $timeTicket
+     * @param string $ticketNumber El numero del ticket
+     * @param string $timeTicket El tiempo de vida del ticket
+     * @param null $internalAsCarrier Si la respuesta se da de parte de etelix como el carrier
      * @return string
      */
     public function subjectNewAnswer($ticketNumber, $timeTicket, $internalAsCarrier = null)
@@ -123,7 +112,8 @@ class Subject
     }
     
     /**
-     * @param string $ticketNumber
+     * Dice sin un numero de ticket es de customer o supplier
+     * @param string $ticketNumber EL numero del ticket
      * @return string
      */
     private function _formatTicketNumber($ticketNumber)
@@ -135,23 +125,11 @@ class Subject
     }
 
     /**
-     * Metodo encargado de definir el from
-     */
-    private function _defineFromFor($ticketNumber)
-    {
-        if(CrugeAuthassignment::getRoleUser(false,Ticket::getFirstUser($ticketNumber)) == 'C')
-        {
-            $body=' from ';
-        }
-        else
-        {
-            $body=' for ';
-        }
-        return $body;
-    }
-    
-    /**
      * Metodo encargado de definir el subject cuando se abre el ticket 
+     * @param string $optionOpen EL tipo de apertura del ticket
+     * @param string $ticketNumber El numero del ticket
+     * @param stirng $nameCarrier El nombre del carrier
+     * @return string
      */
     private function _firstElementSubject($optionOpen, $ticketNumber, $nameCarrier)
     {
@@ -162,51 +140,13 @@ class Subject
         if ($optionOpen == 'carrier_to_etelix') 
            return 'TT '.$this->_formatTicketNumber($ticketNumber).' '.$nameCarrier.' to Etelix, New TT, <'.$ticketNumber.'> (00:00)';
     }
-
-
+    
     /**
-     *
-     */
-    private function _defineStatus($idUser,$idResponseBy)
-    {
-        $body="New ";
-        $final=", ";
-        if(CrugeAuthassignment::getRoleUser(false,$idUser) == 'C')
-        {
-            $body.=$this->_carrier;
-            if(CrugeAuthassignment::getRoleUser(false,$idResponseBy) != 'C')
-            {
-                $final=" (by Etelix on ETTS), ";
-            }
-        }
-        else
-        {
-            $body.="Etelix";
-        }
-        $body.=" Status";
-        return $body.$final;
-    }
-
-    /**
-     * 
+     * Define el nombre del carrier buscando por numero de ticket
+     * @param type $ticketNumber El numero de ticket
      */
     private function _setCarrier($ticketNumber)
     {
         $this->_carrier=Carrier::getNameByUser(CrugeUser2::getUserTicket(Ticket::getId($ticketNumber),true)->iduser);
-    }
-    
-    /**
-     * 
-     * @param string $nameCarrier
-     * @return string
-     */
-    private function _defineBy($nameCarrier)
-    {
-        if ($nameCarrier == 'Etelix')
-        {
-            return '(by Etelix on ETTS), ';
-        }
-        
-        return ', ';
     }
 }

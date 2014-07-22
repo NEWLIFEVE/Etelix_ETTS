@@ -6,14 +6,27 @@
  */
 class CuerpoCorreo extends TicketDesign
 {
-    // footer del correo
+    /**
+     * El footer del correo en general
+     * @var string
+     */
     private $_footerTT;
+    
+    /**
+     * El footer del correo para los customer
+     * @var string
+     */
     private $_footerCustomer;
+    
+    /**
+     * El footer del correo para los supplier
+     * @var string
+     */
     private $_footerSupplier;
     
     /**
      * El constructor recibe el detalle del ticket
-     * @param array $key
+     * @param array $key Array con los datos del ticket
      */
     public function __construct($key = false)
     {
@@ -33,9 +46,11 @@ class CuerpoCorreo extends TicketDesign
     }
     
     /**
-     * Retorna el texto que contendrá el correo cuando etelix abra, responda o cierre un ticket como 
-     * el carrier
-     * @param string $carrier
+     * Retorna el texto que contendrá el correo cuando etelix abra, responda o 
+     * cierre un ticket como el carrier
+     * @param string $carrier El nombre del carrier
+     * @param string $option Si es abierto, cerrado o una respuesta
+     * @param type $status El nombre del status del ticket
      * @return string
      */
     private function _ettsAsCarrier($carrier, $option, $status = false)
@@ -65,8 +80,10 @@ class CuerpoCorreo extends TicketDesign
     /**
      * Retorna el texto que contendrá el correo cuando el carrier le abra, responda o cierre un ticket
      * a etelix
-     * @param string $carrier
-     * @return strign
+     * @param stiring $carrier El nombre del carrier
+     * @param string $option Si es abierto, cerrado o una respuesta
+     * @param string $status El nombre del status del ticket
+     * @return string
      */
     private function _carrierToEtts($carrier, $option, $status)
     {
@@ -74,9 +91,11 @@ class CuerpoCorreo extends TicketDesign
     }
     
     /**
-     * Retorna el texto que contendrá el correo cuando etelix le abra, responda o cierre un ticket 
-     * al carrier
-     * @param string $carrier
+     * Retorna el texto que contendrá el correo cuando etelix le abra, responda 
+     * o cierre un ticket al carrier
+     * @param stiring $carrier El nombre del carrier
+     * @param string $option Si es abierto, cerrado o una respuesta
+     * @param string $status El nombre del status del ticket
      * @return string
      */
     private function _ettsToCarrier($carrier, $option, $status = false)
@@ -103,7 +122,7 @@ class CuerpoCorreo extends TicketDesign
     
     /**
      * Retorna el cuerpo completo del correo al abrir un ticket
-     * @param string $optionOpen
+     * @param string $optionOpen El tipo de apertura del ticket
      * @return string
      */
     public function getBodyOpenTicket($optionOpen)
@@ -122,7 +141,7 @@ class CuerpoCorreo extends TicketDesign
     
     /**
      * Retorna el cuerpo completo del correo al cerrar un ticket
-     * @param string $status
+     * @param string $status El nombre del status del ticket
      * @return string
      */
     public function getBodyCloseTicket($status)
@@ -130,6 +149,11 @@ class CuerpoCorreo extends TicketDesign
         return $this->_getHeader() . $this->_getInfoCloseTicekt($status) . $this->_getDetailTicket() . $this->_footerCustomer;
     }
     
+    /**
+     * Retorna el cuerpo del mensaje cuando se escala un ticket
+     * @param string $message El mensaje que se mandará al escalar un ticket
+     * @return string
+     */
     public function getBodyEscaladeTicket($message)
     {
         return $this->_getHeader() . '<p>'. $message . '</p>' . $this->_getDetailTicket() . $this->_footerCustomer;
@@ -153,7 +177,9 @@ class CuerpoCorreo extends TicketDesign
     
     /**
      * Retorna el texto que contendrá el correo dependiendo de quien abra el ticket
-     * @param string $optionOpen
+     * @param string $optionOpen El tipo de apertura del ticket (etelix_as_carrier, carrier_to_etelix, etelix_to_carrier)
+     * @param string $operation Si es abierto, cerrado o una respuesta
+     * @param status $status El nombre del status del ticket
      * @return string
      */
     private function _getHeaderInfo($optionOpen, $operation, $status = false)
@@ -181,6 +207,7 @@ class CuerpoCorreo extends TicketDesign
     
     /**
      * Retorna la cabecera cuando se abre un ticket
+     * @param string $optionOpen El tipo de apertura
      * @return string
      */
     private function _getInfoOpenTicket($optionOpen)
@@ -221,7 +248,7 @@ class CuerpoCorreo extends TicketDesign
     
     /**
      * Retorna la cabecera cuando se cierra un ticket
-     * @param string $status
+     * @param string $status El nobmre del status del ticket
      * @return string
      */
     private function _getInfoCloseTicekt($status)
@@ -244,7 +271,7 @@ class CuerpoCorreo extends TicketDesign
     
     /**
      * Retorna si es customer o supplier dependiendo del ticketNumber
-     * @param strign $ticketNumber
+     * @param strign $ticketNumber El número del ticket
      * @return boolean|string
      */
     public function formatTicketNumber($ticketNumber = false)

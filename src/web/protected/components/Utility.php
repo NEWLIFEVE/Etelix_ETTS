@@ -16,8 +16,8 @@ abstract class Utility extends CApplicationComponent
      * Método para calcular el tiempo que ha pasado desde el primer momento que
      * se guarda un ticket, retornando en formato unix
      * 
-     * @param string $date
-     * @param string $hour
+     * @param string $date Fecha de creado
+     * @param string $hour Hora creado
      * @return int
      */
     public static function getTime($date, $hour)
@@ -29,6 +29,13 @@ abstract class Utility extends CApplicationComponent
         return $timeTicket;
     }
     
+    /**
+     * Resta dos horas retornando en un formato legible
+     * @param string $horaini
+     * @param string $horafin
+     * @param int $timestamp
+     * @return string
+     */
     public static function restarHoras($horaini, $horafin, $timestamp)
     {
             $horai=substr($horaini,0,2);
@@ -62,6 +69,11 @@ abstract class Utility extends CApplicationComponent
             } 
     }
     
+    /**
+     * Retorna si un carrier es customer o supplier dependiendo del número del ticket
+     * @param string $ticketNumber Número de ticket
+     * @return string
+     */
     public static function formatTicketNumber($ticketNumber)
     {
         if (strpos($ticketNumber, 'C'))
@@ -86,7 +98,12 @@ abstract class Utility extends CApplicationComponent
         return  date('D', $fechats) . ', ' . date('M', $fechats) . ' ' . $dia . ', ' . $anio;
     }
     
-
+    /**
+     * Retorna los dias de semana según una fecha
+     * @param string $date La fecha en formato Y-m-d
+     * @param string $lang El lenguaje de salida
+     * @return type
+     */
     public static function formatWeek($date, $lang = 'EN')
     {
         $date = explode('-', $date);
@@ -107,6 +124,12 @@ abstract class Utility extends CApplicationComponent
         }
     }
     
+    /**
+     * Retorna el día del mes, puede ser en ingles o español
+     * @param int $month
+     * @param string $lang
+     * @return string
+     */
     public static function formatMonth($month, $lang = 'EN')
     {
         switch ($month) {
@@ -126,6 +149,11 @@ abstract class Utility extends CApplicationComponent
         }
     }
     
+    /**
+     * @param string $date
+     * @param string $lang
+     * @return string
+     */
     public static function formatDate($date, $lang = 'EN')
     {
         $_date = $date;
@@ -142,7 +170,7 @@ abstract class Utility extends CApplicationComponent
     
     /**
      * Retorna el icono que contendrá los elementos del menú
-     * @param string $label
+     * @param string $label el label del menú
      * @return string
      */
     public static function menuIcon($label)

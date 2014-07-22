@@ -36,7 +36,7 @@ class TicketDesign
     
     /**
      * Retorna el chat asociado a un ticket
-     * @param integer $idTicket
+     * @param integer $idTicket El id del ticket
      * @return string
      */
     protected function _getChat($idTicket = false)
@@ -110,7 +110,7 @@ class TicketDesign
     
     /**
      * Retorna los correos
-     * @param string $title
+     * @param string $title El titulo que se mostrará para el correo. Ejemplo:Response to, CC, BCC
      * @return string
      */
     private function _getEmails($title)
@@ -264,6 +264,7 @@ class TicketDesign
 
     /**
      * Retorna el detalle del ticket
+     * @param string $optionalInformation Este parámetro es opcional para mostrar información adicional en la tabla
      * @return string
      */
     protected function _getDetailTicket($optionalInformation = false)
