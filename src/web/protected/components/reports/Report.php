@@ -314,7 +314,8 @@ class Report extends Excel
                         throw new Exception("Las coordenas deben ser string: $coordinate");
 
                     $objDrawing = new PHPExcel_Worksheet_Drawing();
-                    $objDrawing->setPath('images/' . $image);
+                    $route = Yii::getPathOfAlias('webroot.images') . DIRECTORY_SEPARATOR;
+                    $objDrawing->setPath($route . $image);
                     $objDrawing->setCoordinates($coordinate);
                     $objDrawing->setOffsetX(10);
                     $objDrawing->setWorksheet($this->_phpExcel->getActiveSheet());
