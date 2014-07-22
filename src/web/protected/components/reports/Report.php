@@ -71,7 +71,7 @@ class Report extends Excel
             $this->_octetStream($objWriter, $file);
         }
         $objWriter->setIncludeCharts(TRUE);
-        $objWriter->save('uploads' . DIRECTORY_SEPARATOR . $file);
+        $objWriter->save(Yii::getPathOfAlias('webroot.uploads') . DIRECTORY_SEPARATOR. $file);
         unset($this->objWriter);
         unset($this->_phpExcel);
     }
