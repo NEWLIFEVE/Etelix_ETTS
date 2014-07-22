@@ -23,8 +23,16 @@ class Imap extends Connection
      * @var int 
      */
     private $_count;
+    
+    /**
+     * Mensaje de advertencia para especificar que se están obteniendo mensajes del correo y pueden llegar con errores
+     * @var string 
+     */
     private $_posBody;
 
+    /**
+     * @param array $connection Opcionalmente se puede establecer la conexión por el constructor
+     */
     public function __construct($connection = false) 
     {
         $this->_inbox = parent::__construct($connection);
@@ -73,8 +81,8 @@ class Imap extends Connection
      * Filtra el cuerpo del mensaje mostrando solo la parte derecha del mismo
      * dependiendo de las reglas de filtrado que se pasen por el segundo parametro
      * 
-     * @param string $body
-     * @param array $rules
+     * @param string $body El cuerpo del mensaje
+     * @param array $rules Las reglas de filtrado del mensaje
      * @return string
      */
     private function _filterBodyToLeft($body, $rules)
@@ -90,8 +98,8 @@ class Imap extends Connection
      * Filtra el cuerpo del mensaje mostrando solo la parte izquierda del mismo
      * dependiendo de la regla de filtrado que se pase por el segundo parametro
      * 
-     * @param string $body
-     * @param string $rules
+     * @param string $body El cuerpo del mensaje
+     * @param string $rules Las reglas de filtrado
      * @return string
      */
     private function _filterBodyToRight($body, $rules)
@@ -108,7 +116,7 @@ class Imap extends Connection
 
     /**
      * Retorna un array de un mensaje dado, pasando como parametro el ticketNumber
-     * @param string $ticketNumber
+     * @param string $ticketNumber El número del ticket
      * @return array
      */
     public function messageByTicketNumber($ticketNumber)
@@ -137,7 +145,7 @@ class Imap extends Connection
         
     /**
      * Retorna el subject del mensaje
-     * @param integer $messageID
+     * @param integer $messageID El id del mensaje
      * @return string
      */
     public function getSubject($messageID)
@@ -152,7 +160,7 @@ class Imap extends Connection
     
     /**
      * Retorna el subject del mensaje si solo tiene un numero de ticket
-     * @param integer $messageID Debe ser el numero del mensaje
+     * @param integer $messageID EL id del mensaje
      * @return string
      */
     public function filterSubjectTicketsNumbers($messageID)
@@ -176,7 +184,7 @@ class Imap extends Connection
         
     /**
      * Retorna el id del o los mensajes dependiendo del ticketNumber
-     * @param string $ticketNumber
+     * @param string $ticketNumber El número del ticket
      * @return array|boolean
      */
     public function getIdMessage($ticketNumber)
@@ -190,7 +198,7 @@ class Imap extends Connection
     
     /**
      * Retorna el id unico de cada mensaje
-     * @param int $messageID
+     * @param int $messageID El id del mensaje
      * @return int
      */
     public function getUid($messageID)
@@ -204,7 +212,7 @@ class Imap extends Connection
     
     /**
      * Retorna el to del mensaje
-     * @param integer $messageID
+     * @param integer $messageID El id del mensaje
      * @return string
      */
     public function getTo($messageID)
@@ -219,7 +227,7 @@ class Imap extends Connection
     
     /**
      * Retorna el form del mensaje
-     * @param integer $messageID
+     * @param integer $messageID El id del mensaje
      * @return string
      */
     public function getFrom($messageID)
@@ -234,7 +242,7 @@ class Imap extends Connection
     
     /**
      * Retorna la fecha del mensaje
-     * @param integer $messageID
+     * @param integer $messageID El id del mensaje
      * @return string
      */
     public function getDate($messageID)
@@ -278,12 +286,11 @@ class Imap extends Connection
         }
     }
     
-   /**
-    * Borra los mensajes por su id
-    * @param array $mails
-    * @param string $optionOpen
-    * @param int $idTicket
-    */
+    /**
+     * Borra los mensaje por su id y salva la descripción en base de datos
+     * @param array $mails Los mails obtenidos del correo
+     * @param bolean $save Si es true, se guardará en base de datos los datos los mails obtenidos
+     */
     public function deleteMessage($mails, $save = false)
     {
         foreach ($mails as $value) {
