@@ -503,7 +503,8 @@ class Report extends Excel
         $objDrawing = new PHPExcel_Worksheet_Drawing();
         $objDrawing->setName('Logo');
         $objDrawing->setDescription('Logo');
-        $objDrawing->setPath('images/logo.jpg');
+        $logo = Yii::getPathOfAlias('webroot.images') . DIRECTORY_SEPARATOR . 'logo.jpg';
+        $objDrawing->setPath($logo);
 
         $objDrawing->setCoordinates('A1');
         $objDrawing->setHeight(200);
