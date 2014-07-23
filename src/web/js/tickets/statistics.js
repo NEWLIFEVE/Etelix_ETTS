@@ -1,8 +1,8 @@
 /**
  * Inicializando datatable
- * @param {string} date
- * @param {string} option
- * @param {string} carrier
+ * @param {string} date Fecha de búsqueda
+ * @param {string} option Categoría del reporte
+ * @param {string} carrier Puede ser customer, supplier o ambos
  * @returns {void}
  */
 function initDatatable(date, option, carrier)
@@ -31,8 +31,8 @@ function initDatatable(date, option, carrier)
 
 /**
  * Retorna la cantidad de tickets por categoria y los muestra en la primera tabla de estadísticas
- * @param {string} date
- * @param {string} carrier
+ * @param {string} date Fecha de búsqueda
+ * @param {string} carrier Puede ser customer, supplier o ambos
  * @returns {void}
  */
 function ajaxStatistics(date, carrier)
@@ -50,8 +50,8 @@ function ajaxStatistics(date, carrier)
                 c = $('.subtract-seven-days').eq(i).text(data[i].subtractSevenDays),
                 d = $('.display-supplier').eq(i).text(data[i].totalByCarriers.Supplier != null ? data[i].totalByCarriers.Supplier : 0),
                 e = $('.display-customer').eq(i).text(data[i].totalByCarriers.Customer != null ? data[i].totalByCarriers.Customer : 0);
-                checkMargin(a.text(), b.text(), $('.arrow'), i);   
-                checkMargin(a.text(), c.text(), $('.arrow2'), i);   
+                arrow(a.text(), b.text(), $('.arrow'), i);   
+                arrow(a.text(), c.text(), $('.arrow2'), i);   
             }
             
             // Se setean los totales
@@ -61,22 +61,22 @@ function ajaxStatistics(date, carrier)
                 c = $('.total-seven-days').eq(i).text(data[i * 3].subtractSevenDays + data[(i * 3) + 1].subtractSevenDays + data[(i * 3) + 2].subtractSevenDays),
                 d = $('.total-supplier').eq(i).text(parseInt($('.display-supplier').eq(i * 3).html()) + parseInt($('.display-supplier').eq((i * 3) + 1).html()) + parseInt($('.display-supplier').eq((i * 3) + 2).html())),
                 e = $('.total-customer').eq(i).text(parseInt($('.display-customer').eq(i * 3).html()) + parseInt($('.display-customer').eq((i * 3) + 1).html()) + parseInt($('.display-customer').eq((i * 3) + 2).html()));
-                checkMargin(a.text(), b.text(), $('.total-arrow'), i); 
-                checkMargin(a.text(), c.text(), $('.total-arrow2'), i); 
+                arrow(a.text(), b.text(), $('.total-arrow'), i); 
+                arrow(a.text(), c.text(), $('.total-arrow2'), i); 
             }         
         }
     });
 }
 
 /**
- * 
+ * Define en que dirección irá las flechas
  * @param {int} a
  * @param {int} b
  * @param {object} div
  * @param {int} index
  * @returns {void}
  */
-function checkMargin(a, b, div, index)
+function arrow(a, b, div, index)
 {
     if (parseInt(a) < parseInt(b)) {
         div.eq(index).html('<i class="icon-arrow-down fg-green"></i>');
@@ -104,7 +104,7 @@ function changeBackground()
 
 /**
  * Botones para exportar
- * @param {object} boton
+ * @param {object} boton El botón presionado
  * @returns {void}
  */
 function initExport(boton)
@@ -170,6 +170,10 @@ function animatedScrolling()
    });
 }
 
+/**
+ * Empaqueta todas las funciones de este archivo para luego ser cargada el onReady
+ * @returns {void}
+ */
 function load()
 {
     $('.link-statistics').hide();
