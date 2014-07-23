@@ -34,27 +34,94 @@
 class Ticket extends CActiveRecord
 {
 	/**
-	 * Returns the static model of the specified AR class.
-	 * @param string $className active record class name.
-	 * @return Ticket the static model class
-	 */
+         * Máximo será el límite de correos que puedan ser agregados en la interfaz de crear ticket
+         * @var int 
+         */
         public $maximo;
+        
+        /**
+         * El id del account manager
+         * @var int 
+         */
         public $id_manager;
+        
+        /**
+         * Descripción del ticket
+         * @var string 
+         */
         public $description;
+        
+        /**
+         * Mails asociados al usuario al abrir un ticket
+         * @var array
+         */
         public $mail=array();
+        
+        /**
+         * Los tested numbers
+         * @var array 
+         */
         public $tested_numbers=array();
+        
+        /**
+         * Los países del tested number
+         * @var array 
+         */
         public $country=array();
+        
+        /**
+         * La fecha de tested number
+         * @var array
+         */
         public $date_number=array();
+        
+        /**
+         * La hora de tested number
+         * @var array 
+         */
         public $hour_number=array();
+        
+        /**
+         * Número que se usará para dar formato al $ticket_number, el cual quedará de la siguiente forma:
+         * Ymd-$number_of_the_day-C/S$id_failure
+         * 
+         * [Ymd] Es el año, mes y día
+         * [$number_of_the_day] El conteo de los id's del ticket del día actual
+         * [C/S] Si se abrió como customer o como supplier
+         * [$id_failure] El id de la falla
+         * @var int
+         */
         public $number_of_the_day;
+        
+        /**
+         * Tiempo de vida del ticket
+         * @var string
+         */
         public $lifetime;
+        
+        /**
+         * Color del ticket, el cual depende del tiempo de vida
+         * @var string
+         */
         public $color;
+        
+        /**
+         * Si el número de ticket es como customer o como supplier
+         * @var string
+         */
         public $carrier;
+        
+        /**
+         * id del usuario que abrió el ticket
+         * @var int 
+         */
         public $user_open_ticket;
 
         /**
-         *
-         */        
+	 * Returns the static model of the specified AR class.
+	 * @param string $className active record class name.
+	 * @return Ticket the static model class
+	 */        
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);

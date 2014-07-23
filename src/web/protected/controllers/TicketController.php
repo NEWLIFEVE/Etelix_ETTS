@@ -295,6 +295,9 @@ class TicketController extends Controller
         return $data;
     }
     
+    /**
+     * Action que retorna la vista de impresión de un ticket en espcífico
+     */
     public function actionPrintticket()
     {
         if (isset($_POST['data'])) {
@@ -338,7 +341,11 @@ class TicketController extends Controller
     }
 
     /**
-     *
+     * Action para guardar los ticket
+     * Por este action pasarán todos los casos de apertura de ticket, es decir:
+     * Etelix le abre un tikcet a un carrier
+     * El carrier le abre un ticket a Etelix
+     * Etelix abre el ticket como el carrier para Etelix
      */
     public function actionSaveticket()
     {
@@ -483,7 +490,7 @@ class TicketController extends Controller
      * en la tabla "ticket_relation", se actualizaran sus tickets hijos al 
      * status que sea seleccionado, si no se encuentra en dicha tabla, solo 
      * se modificara en la tabla del ticket
-     * @param int $id
+     * @param int $id El id del ticket
      */
     public function actionUpdatestatus($id)
     {
@@ -582,8 +589,8 @@ class TicketController extends Controller
 
     /**
      * Método para retornar los tickets hijos de la tabla ticket_relation
-     * @param Ticketrelation $idTickets
-     * @return array
+     * @param Ticketrelation $idTickets El id del ticket
+     * @return array Retorna el id de los tickets hijos
      */
     public static function getTicketsSon($idTickets) 
     {
@@ -596,7 +603,7 @@ class TicketController extends Controller
         
     /**
      * Action para retornar los datos del ticket por su id
-     * @param int $id
+     * @param int $id El id del ticket
      */
     public function actionGetdataticket($id)
     {
@@ -605,7 +612,7 @@ class TicketController extends Controller
         
     /**
      * Action para retornar los tickets relacionados codificados en json
-     * @param int $id
+     * @param int $id El id del ticket
      */
     public function actionGetticketrelation($id)
     {
@@ -625,12 +632,18 @@ class TicketController extends Controller
         echo json_encode($array);
     }
     
+    /**
+     * Retorna un json con el id y username del carrier dependiendo si es customer o supplier
+     */
     public function actionCarriersbyclass()
     {
         header("Content-type: application/json");
         echo CJSON::encode(CrugeUser2::getCarriersSupplierOrCustomer($_POST['_type']));
     }
     
+    /**
+     * Datatable de los tickets cerrados
+     */
     public function actionAdminclose()
     {
         $colors=$this->_countColorsTicket();
@@ -642,7 +655,7 @@ class TicketController extends Controller
     }
     
     /**
-     *
+     * Lee los correos asociados a un número de ticket y guarda la despción en base de datos, borrando al final el correo asociado al ticket
      */
     public function actionGetmailsimap()
     {
@@ -668,6 +681,9 @@ class TicketController extends Controller
         }
     }
         
+    /**
+     * Action de pruba para ver el funcionamiento de imap
+     */
     public function actionTestimap()
     {
         error_reporting(E_ALL & ~E_NOTICE); 
