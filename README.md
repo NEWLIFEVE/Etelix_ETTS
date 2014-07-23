@@ -24,29 +24,19 @@
     *cruge/ui/rbaclisttasks
     *cruge/ui/rbaclistops
     *cruge/ui/rbacauthitemchilditems/id/subadmin (Se agregó checbox a los items)
-
-16/07/2014
 - El cambio del menu de un solo elemento (11/07/2014) está causando conflictos y se dejó como estaba antes de esa modificación
 - Se colocó la imagen de up y down en el excel y el correo
 - Modificación en rbacauthitemchilditems (asignar/desasignar items) al tema metro ui
-
-15/07/2014
 - Se agregaron las columnas "previous day" y "a week ago" en el excel y en el correo.
 - Los reportes ahora se ordenan por "carrier, date, hour".
 - A los tickets escalados se le puso font-weigth bold para que se notaran más en datatable
-
-14/07/2014
 - Se borró el import de controllers en el config ya que gasta memoria innecesaria
 - Se pasó el método estático blinkTr($idTicket) que se encontraba en DescriptionTickeController al modelo DescriptionTicket
 - Columna que muestra la diferencia en tickets del día y la semana anterior
-
-11/07/2014
 - A la tabla de estadísticas se le agrego un ancla para llegar rápidamente al datatable
 - Ahora se pueden crear menus de un solo elemento en cruge. La sintaxis es:
     nombre: "menu_nombre_menu"
     descripción: ":Label menu .controller_action"
-
-10/07/2014
 - Se creó la operación "responder-tickets" en cruge, la cual permite seleccionar a que rol se le permite responder tickets
 - Se creó la operación "escalar-tickets" en cruge, la cual permite seleccionar a que rol se le permite escalar tickets
 - Se creó la operación "cerrar-tickets" en cruge, la cual permite seleccionar a que rol se le permite cerrar tickets
@@ -74,27 +64,19 @@
     * Escalated yellow today
     * Escalated red today
     * Total Escalated
-
-09/07/2014
 - Modificación del resumen de reportes, se agregan las columnas de customer y supplier en la página
 
-08/07/2014
+###Release 1.3.2
 - Ahora se puede elegir el rol en la interfaz de crear usuarios
 - Se agregó datatable a manage users
 - Corrección en reporte de tickets sin actividad. Antes se busca igual al dia seleccionado, ahora se busca menor o igual al dia seleccionado
-- Corrección de bug en cruge en protected/modules/cruge/views/ui/rbacauthitemchilditems.php, 
-  habia un salto de línea que no permitía ver los submenus selecciones en tareas tipo menú.
-- Se cambió el método getMenu() de cruge/components/CrugeAuthManager.php para que ahora se pueda
-  usar el mismo menu para varios roles, solo hay que seleccionar el submenú que se quiere mostrar.
-- Se BORRO el rol subadmin y se volvió a crear, ya que estaba causando error y mostraba incoherencias
-  en el menú
-- Se habilitó el menú ManageUser para usuarios internos, el cual tiene la opción de crear usuarios y
-  editar perfil
+- Corrección de bug en cruge en protected/modules/cruge/views/ui/rbacauthitemchilditems.php, habia un salto de línea que no permitía ver los submenus selecciones en tareas tipo menú.
+- Se cambió el método getMenu() de cruge/components/CrugeAuthManager.php para que ahora se pueda usar el mismo menu para varios roles, solo hay que seleccionar el submenú que se quiere mostrar.
+- Se BORRO el rol subadmin y se volvió a crear, ya que estaba causando error y mostraba incoherencias en el menú
+- Se habilitó el menú ManageUser para usuarios internos, el cual tiene la opción de crear usuarios y editar perfil
 - Leyenda de colores en el mail de los reportes y en el resumen del excel
 - Imprimir detalle del ticket antes de ser creado
-- Se cambió la consulta que trae los tickets cerrados, antes traía un rango a 
-  partir de la fecha de creación del ticket hasta 2 semanas, ahora el rango es a
-  partir de la fecha de cierre hasta 2 semanas.
+- Se cambió la consulta que trae los tickets cerrados, antes traía un rango a partir de la fecha de creación del ticket hasta 2 semanas, ahora el rango es a partir de la fecha de cierre hasta 2 semanas.
 - Creado componente para cerrar tickets automáticamente (Falta crear tarea en cron para que se ejecute el cierre automático)
 - Se paso el método estático que estaba en TicketController getTicketAsArray($params) al
   modelo(TicketModel).
@@ -185,8 +167,7 @@
 - Corrección en el subject de nueva respuesta, se colocó una coma y la palabra "status" después del usuario que escribió la respuesta. También se colocó si es etelix que responde por el carrier si el option_open es "carrier_to_etelix".
 - Ahora el carrier tiene la opción de ver tickets cerrados.
 - Invertido el nombre de las ip en la interfaz tickets etelix a carrier
-- Interfaz "carrier to etelix", si el carrier es supplier/customer, podrá seleccionar alguna de las 2 opciones,
-      Sí solo es supplier o solo customer, vendrá seteado por defecto y no podrá cambiar el tipo de carrier
+- Interfaz "carrier to etelix", si el carrier es supplier/customer, podrá seleccionar alguna de las 2 opciones, sí solo es supplier o solo customer, vendrá seteado por defecto y no podrá cambiar el tipo de carrier
 
 ###Release 1.1.8 26/03/2014
 - Corrección al cerrar tickets viejos desde el preview del ticket.
@@ -196,8 +177,7 @@
 - De la interfaz crear ticket(carrier to etelix), ahora se le permite al carrier seleccionar si abrirá el ticket como customer o supplier.
 - Corrección en refresh. Ahora al abrir el chat se cancela el refresh y al cerrarlo se continua con el mismo. Siguiendo el mismo flujo cada vez que se abra y cierre el chat.
 - En preview del ticket ahora permite cerrar el ticket
-- Correccion al guardar email en interfaz de crear tickets. Los usuarios internos pueden agregar tantos correos deseen, los carriers solo pueden agregar 5. Los correos que sean agregados por usuarios internos, no se veran a la hora de que un carrier abra la interfaz de abrir ticket.
-    
+- Correccion al guardar email en interfaz de crear tickets. Los usuarios internos pueden agregar tantos correos deseen, los carriers solo pueden agregar 5. Los correos que sean agregados por usuarios internos, no se veran a la hora de que un carrier abra la interfaz de abrir ticket.    
 
 ###Release 1.1.7 21/03/2014
 - En la interfaz de administracion de tickets, agregado el pais con mayor incidencia entre los tested number del ticket
@@ -208,7 +188,6 @@
 - Cambio en el menu de ticket para usuarios internos
 - Ticket Information - Open TT from Carrier by Etelix, Ticket Information - Open TT to Carrier
 - Corrección en el datepicker del tested number
-
 
 ###Release 1.1.6
 - Modificacion de asunto de nueva respuesta, TT from/for Customer/Supplier Carrier, New Etelix/Carrier Status (By Etelix on ETTS), ticket_number (tiempo)
@@ -297,8 +276,7 @@
 - Estilos tipo chat de facebook para la descripcion del ticket en el detalle
 - Se refresca el area de respuesta al mandar la misma
 - El scroll del area de respuesta queda abajo al abrir el detalle del ticket
-- Modificado el método ticketsByUser del model Ticket, con parámetro de solo traer
-ticket abiertos
+- Modificado el método ticketsByUser del model Ticket, con parámetro de solo traer ticket abiertos
 - Cambiada interfaz de respuesta del ticket
 - Agregado el envío del mail al dar respuesta en el ticket y al cambiar de status
 - Cambio en el tamaño de las columnas de los tickets relacionados en datatable

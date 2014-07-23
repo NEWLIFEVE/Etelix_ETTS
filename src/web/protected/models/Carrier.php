@@ -168,6 +168,7 @@ class Carrier extends CActiveRecord
             if($idCarrier!=null)
             {
                 $carrier =  self::model()->find("id = $idCarrier");
+
                 if ($carrier!=null) return $carrier->name;
                 else return '';
             }

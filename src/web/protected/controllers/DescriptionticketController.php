@@ -267,6 +267,4 @@ class DescriptionticketController extends Controller
                 $model->updateAll(array('read_internal'=>'1'), "id_ticket = ".$_POST['idTicket']);
         }
     }
-    
-    
 }

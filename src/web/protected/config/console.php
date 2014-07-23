@@ -4,14 +4,13 @@
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 	'name'=>'ETTS Console',
-	'timeZone'=>'America/Caracas',
 	// preloading 'log' component
 	'preload'=>array('log'),
         'import'=>array(
         	'application.models.*',
-                'application.components.Imap.*',
-                'application.components.reports.*',
-                'application.components.*',
+            'application.components.Imap.*',
+            'application.components.reports.*',
+            'application.components.*',
 		),
 	// application components
 	'components'=>array(
