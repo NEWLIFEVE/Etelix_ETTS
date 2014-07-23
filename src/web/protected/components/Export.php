@@ -19,9 +19,11 @@ class Export extends TicketDesign
     /**
      * Tabla de los tickets
      * @param arrray $ids
+     * @param string $date Fecha de busqueda
+     * @param int $idUser Id del usuario
      * @return string
      */
-    public function table($ids, $date = false)
+    public function table($ids, $date = false, $idUser = false)
     {
         if (!is_array($ids)) {
             $ids = explode (",", $ids);
@@ -30,8 +32,8 @@ class Export extends TicketDesign
         $table = null;
         if (count($data)) {
             $table = '<table ' . $this->_cssTable . '>' . 
-                    $this->_thead() .
-                    $this->_contentTable($data) .
+                    $this->_thead($idUser) .
+                    $this->_contentTable($data, $idUser) .
                     '</table>';
         }
         return $table;
@@ -93,7 +95,7 @@ class Export extends TicketDesign
                     . '</thead>';
             $table .= '<tbody>'
                         . '<tr>'
-                            . '<td '.$white.'>Open white</td>'
+                            . '<td '.$white.'>Open white within 24 hours</td>'
                             . '<td '.$white.'>' . $k[0][0] . '</td>'
                             . '<td '.$white.'>' . $k[0][1] . '</td>'
                             . '<td '.$white.'>' . $temp1 = count($report->openOrClose($date, 'white', 'open', $carrier)) . '</td>';
@@ -103,7 +105,7 @@ class Export extends TicketDesign
                             . '<td '.$white.'>' . $intervals['wo1Week'] . '</td>'
                         . '</tr>'
                         . '<tr>'
-                            . '<td '.$yellow.'>Open yellow</td>'
+                            . '<td '.$yellow.'>Open yellow within 48 hours</td>'
                             . '<td '.$yellow.'>' . $k[1][0] . '</td>'
                             . '<td '.$yellow.'>' . $k[1][1] . '</td>'
                             . '<td '.$yellow.'>' . $temp1 = count($report->openOrClose($date, 'yellow', 'open', $carrier)) . '</td>';
@@ -113,7 +115,7 @@ class Export extends TicketDesign
                             . '<td '.$yellow.'>' . $intervals['yo1Week'] . '</td>'
                         . '</tr>'
                         . '<tr>'
-                            . '<td '.$red.'>Open red</td>'
+                            . '<td '.$red.'>Open red with more than 48 hours</td>'
                             . '<td '.$red.'>' . $k[2][0] . '</td>'
                             . '<td '.$red.'>' . $k[2][1] . '</td>'
                             . '<td '.$red.'>' . $temp1 = count($report->openOrClose($date, 'red', 'open', $carrier)) . '</td>';
@@ -123,7 +125,7 @@ class Export extends TicketDesign
                             . '<td '.$red.'>' . $intervals['ro1Week'] . '</td>'
                         . '</tr>'
                         . '<tr>'
-                            . '<td '.$without.'>Total open</td>'
+                            . '<td '.$without.'>Total open today</td>'
                             . '<td '.$without.'>' . ($k[0][0]+$k[1][0]+$k[2][0]) . '</td>'
                             . '<td '.$without.'>' . ($k[0][1]+$k[1][1]+$k[2][1]) . '</td>'
                             . '<td '.$without.'>' . $temp1 = count($report->totalTicketsPending($date, $carrier)) . '</td>';
@@ -134,7 +136,7 @@ class Export extends TicketDesign
                         . '</tr>'
                     
                         . '<tr>'
-                            . '<td '.$white.'>Closed white</td>'
+                            . '<td '.$white.'>Closed white today</td>'
                             . '<td '.$white.'>' . $k[3][0] . '</td>'
                             . '<td '.$white.'>' . $k[3][1] . '</td>'
                             . '<td '.$white.'>' . $temp1 = count($report->openOrClose($date, 'white', 'close', $carrier)) . '</td>';
@@ -144,7 +146,7 @@ class Export extends TicketDesign
                             . '<td '.$white.'>' . $intervals['wc1Week'] . '</td>'
                         . '</tr>'
                         . '<tr>'
-                            . '<td '.$yellow.'>Closed yellow</td>'
+                            . '<td '.$yellow.'>Closed yellow today</td>'
                             . '<td '.$yellow.'>' . $k[4][0] . '</td>'
                             . '<td '.$yellow.'>' . $k[4][1] . '</td>'
                             . '<td '.$yellow.'>' . $temp1 = count($report->openOrClose($date, 'yellow', 'close', $carrier)) . '</td>';
@@ -154,7 +156,7 @@ class Export extends TicketDesign
                             . '<td '.$yellow.'>' . $intervals['yc1Week'] . '</td>'
                         . '</tr>'
                         . '<tr>'
-                            . '<td '.$red.'>Closed red</td>'
+                            . '<td '.$red.'>Closed red today</td>'
                             . '<td '.$red.'>' . $k[5][0] .'</td>'
                             . '<td '.$red.'>' . $k[5][1] .'</td>'
                             . '<td '.$red.'>' . $temp1 = count($report->openOrClose($date, 'red', 'close', $carrier)) . '</td>';
@@ -164,7 +166,7 @@ class Export extends TicketDesign
                             . '<td '.$red.'>' . $intervals['rc1Week'] . '</td>'
                         . '</tr>'
                         . '<tr>'
-                            . '<td '.$without.'>Total closed</td>'
+                            . '<td '.$without.'>Total closed today</td>'
                             . '<td '.$without.'>' . ($k[3][0]+$k[4][0]+$k[5][0]) .'</td>'
                             . '<td '.$without.'>' . ($k[3][1]+$k[4][1]+$k[5][1]) .'</td>'
                             . '<td '.$without.'>' . $temp1 = count($report->totalTicketsClosed($date, $carrier)) . '</td>';
@@ -175,7 +177,7 @@ class Export extends TicketDesign
                         . '</tr>'
                     
                         . '<tr>'
-                            . '<td '.$white.'>No activity white</td>'
+                            . '<td '.$white.'>No activity white today</td>'
                             . '<td '.$white.'>' . $k[6][0] .'</td>'
                             . '<td '.$white.'>' . $k[6][1] .'</td>'
                             . '<td '.$white.'>' . $temp1 = count($report->withoutDescription($date, 'white', 'open', $carrier)) . '</td>';
@@ -185,7 +187,7 @@ class Export extends TicketDesign
                             . '<td '.$white.'>' . $intervals['naW1Week'] . '</td>'
                         . '</tr>'
                         . '<tr>'
-                            . '<td '.$yellow.'>No activity yellow</td>'
+                            . '<td '.$yellow.'>No activity yellow today</td>'
                             . '<td '.$yellow.'>' . $k[7][0] . '</td>'
                             . '<td '.$yellow.'>' . $k[7][1] . '</td>'
                             . '<td '.$yellow.'>' . $temp1 = count($report->withoutDescription($date, 'yellow', 'open', $carrier)) . '</td>';
@@ -195,7 +197,7 @@ class Export extends TicketDesign
                             . '<td '.$yellow.'>' . $intervals['naY1Week'] . '</td>'
                         . '</tr>'
                         . '<tr>'
-                            . '<td '.$red.'>No activity red</td>'
+                            . '<td '.$red.'>No activity red today</td>'
                             . '<td '.$red.'>' . $k[8][0] . '</td>'
                             . '<td '.$red.'>' . $k[8][1] . '</td>'
                             . '<td '.$red.'>' . $temp1 = count($report->withoutDescription($date, 'red', 'open', $carrier)) . '</td>';
@@ -205,7 +207,7 @@ class Export extends TicketDesign
                             . '<td '.$red.'>' . $intervals['naR1Week'] . '</td>'
                         . '</tr>'
                         . '<tr>'
-                            . '<td '.$without.'>Total no activity</td>'
+                            . '<td '.$without.'>Total no activity today</td>'
                             . '<td '.$without.'>' . ($k[6][0]+$k[7][0]+$k[8][0]) . '</td>'
                             . '<td '.$without.'>' . ($k[6][1]+$k[7][1]+$k[8][1]) . '</td>'
                             . '<td '.$without.'>' . $temp1 = count($report->totalWithoutDescription($date, $carrier)) . '</td>';
@@ -216,7 +218,7 @@ class Export extends TicketDesign
                         . '</tr>'
                     
                         . '<tr>'
-                            . '<td '.$white.'>Escalated white</td>'
+                            . '<td '.$white.'>Escalated white today</td>'
                             . '<td '.$white.'>' . $k[9][0] . '</td>'
                             . '<td '.$white.'>' . $k[9][1] . '</td>'
                             . '<td '.$white.'>' . $temp1 = count($report->ticketEscaladed($date, 'white', 'open', $carrier)) . '</td>';
@@ -226,7 +228,7 @@ class Export extends TicketDesign
                             . '<td '.$white.'>' . $intervals['eW1Week'] . '</td>'
                         . '</tr>'
                         . '<tr>'
-                            . '<td '.$yellow.'>Escalated yellow</td>'
+                            . '<td '.$yellow.'>Escalated yellow today</td>'
                             . '<td '.$yellow.'>' . $k[10][0] . '</td>'
                             . '<td '.$yellow.'>' . $k[10][1] . '</td>'
                             . '<td '.$yellow.'>' . $temp1 = count($report->ticketEscaladed($date, 'yellow', 'open', $carrier)) . '</td>';
@@ -236,7 +238,7 @@ class Export extends TicketDesign
                             . '<td '.$yellow.'>' . $intervals['eY1Week'] . '</td>'
                         . '</tr>'
                         . '<tr>'
-                            . '<td '.$red.'>Escalated red</td>'
+                            . '<td '.$red.'>Escalated red today</td>'
                             . '<td '.$red.'>' . $k[11][0] . '</td>'
                             . '<td '.$red.'>' . $k[11][1] . '</td>'
                             . '<td '.$red.'>' . $temp1 = count($report->ticketEscaladed($date, 'red', 'open', $carrier)) . '</td>';
@@ -246,7 +248,7 @@ class Export extends TicketDesign
                             . '<td '.$red.'>' . $intervals['eR1Week'] . '</td>'
                         . '</tr>'
                         . '<tr>'
-                            . '<td '.$without.'>Total Escalated</td>'
+                            . '<td '.$without.'>Total Escalated today</td>'
                             . '<td '.$without.'>' . ($k[9][0]+$k[10][0]+$k[11][0]) . '</td>'
                             . '<td '.$without.'>' . ($k[9][1]+$k[10][1]+$k[11][1]) . '</td>'
                             . '<td '.$without.'>' . $temp1 = count($report->totalTicketEscaladed($date, $carrier)) . '</td>';
@@ -264,15 +266,16 @@ class Export extends TicketDesign
     /**
      * Contenido de la tabla
      * @param array $data
+     * @param int $idUser El id del usuario
      * @return string
      */
-    private function _contentTable($data) 
+    private function _contentTable($data, $idUser = false) 
     {
         $contentTable = '<tbody>';
         foreach ($data as $tickets) {
             $contentTable .= '<tr>';
                 $contentTable .= '<td ' . $this->_cssTickets($tickets->color, $tickets->id_status) . ' >' . Utility::formatTicketNumber($tickets->ticket_number) . '</td>';
-                $contentTable .= $this->_defineUserOrCarrier($tickets);
+                $contentTable .= $this->_defineUserOrCarrier($tickets, $idUser);
                 $contentTable .= '<td ' . $this->_cssTickets($tickets->color, $tickets->id_status) . '>' . $tickets->ticket_number . '</td>';
                 $contentTable .= '<td ' . $this->_cssTickets($tickets->color, $tickets->id_status) . '>' . $tickets->idFailure->name . '</td>';
                 if (TestedNumber::getNumber($tickets->id) != false) $contentTable .= '<td ' . $this->_cssTickets($tickets->color, $tickets->id_status) . '>' . TestedNumber::getNumber($tickets->id)->idCountry->name . '</td>';
@@ -287,12 +290,13 @@ class Export extends TicketDesign
     /**
      * Retorna el carrier o el username dependiento de option_open
      * @param array $tickets
+     * @param int $idUser El id del usuario
      * @return string
      */
-    private function _defineUserOrCarrier($tickets)
+    private function _defineUserOrCarrier($tickets, $idUser = false)
     {
         $contentTable = '';
-        if (CrugeAuthassignment::getRoleUser() != 'C') {
+        if (CrugeAuthassignment::getRoleUser(false, $idUser) != 'C') {
             if ($tickets->option_open == 'etelix_to_carrier') {
                if (isset($tickets->idUser->username)) $contentTable .= '<td ' . $this->_cssTickets($tickets->color, $tickets->id_status) . '>' . $tickets->idUser->username . '</td>';
             } else {
@@ -356,12 +360,13 @@ class Export extends TicketDesign
     
     /**
      * Retorna el thead de la tabla
+     * @param int $idUser Id del usuario
      * @return string
      */
-    private function _thead()
+    private function _thead($idUser = false)
     {
         $thead = '<thead><tr>';
-        if (CrugeAuthassignment::getRoleUser() === 'C') {
+        if (CrugeAuthassignment::getRoleUser(false, $idUser) === 'C') {
             $thead .= '<th ' . $this->_cssTh . ' width:10%;" >Type</th>';
             $thead .= '<th ' . $this->_cssTh . ' border-left:1px solid #d3d3d3; width:30%;" >Ticket Number</th>';
             $thead .= '<th ' . $this->_cssTh . ' border-left:1px solid #d3d3d3; width:15%;" >Failure</th>';

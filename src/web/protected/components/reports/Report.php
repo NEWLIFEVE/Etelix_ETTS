@@ -149,7 +149,7 @@ class Report extends Excel
                     ->setCellValue('A3', "TT's within 48 hours")
                     ->setCellValue('A4', "TT's with more than 48 hours")
                 
-                    ->setCellValue('A6', 'Open white')
+                    ->setCellValue('A6', 'Open white within 24 hours')
                     ->setCellValue('B6', $k[0][0])
                     ->setCellValue('C6', $k[0][1])
                     ->setCellValue('D6', $temp1 = count($this->openOrClose($args['date'], 'white', 'open', $args['carrier'])))
@@ -158,7 +158,7 @@ class Report extends Excel
                     ->setCellValue('G6', $this->checkLowerOrHigher($temp1, $intervals['wo1Week'], 'G6', true))
                     ->setCellValue('H6', $intervals['wo1Week'])
                     
-                    ->setCellValue('A7', 'Open yellow')
+                    ->setCellValue('A7', 'Open yellow within 48 hours')
                     ->setCellValue('B7', $k[1][0])
                     ->setCellValue('C7', $k[1][1])
                     ->setCellValue('D7', $temp1 = count($this->openOrClose($args['date'], 'yellow', 'open', $args['carrier'])))
@@ -167,7 +167,7 @@ class Report extends Excel
                     ->setCellValue('G7', $this->checkLowerOrHigher($temp1, $intervals['yo1Week'], 'G7', true))
                     ->setCellValue('H7', $intervals['yo1Week'])
                     
-                    ->setCellValue('A8', 'Open red')
+                    ->setCellValue('A8', 'Open red with more than 48 hours')
                     ->setCellValue('B8', $k[2][0])
                     ->setCellValue('C8', $k[2][1])
                     ->setCellValue('D8', $temp1 = count($this->openOrClose($args['date'], 'red', 'open', $args['carrier'])))
@@ -176,7 +176,7 @@ class Report extends Excel
                     ->setCellValue('G8', $this->checkLowerOrHigher($temp1, $intervals['ro1Week'], 'G8', true))
                     ->setCellValue('H8', $intervals['ro1Week'])
                     
-                    ->setCellValue('A9', 'Total open')
+                    ->setCellValue('A9', 'Total open today')
                     ->setCellValue('B9', $k[0][0]+$k[1][0]+$k[2][0])
                     ->setCellValue('C9', $k[0][1]+$k[1][1]+$k[2][1])
                     ->setCellValue('D9', $temp1 = count($this->totalTicketsPending($args['date'], $args['carrier'])))
@@ -185,7 +185,7 @@ class Report extends Excel
                     ->setCellValue('G9', $this->checkLowerOrHigher($temp1, $intervals['to1Week'], 'G9', true))
                     ->setCellValue('H9', $intervals['to1Week'])
                 
-                    ->setCellValue('A10', 'Closed white')
+                    ->setCellValue('A10', 'Closed white today')
                     ->setCellValue('B10', $k[3][0])
                     ->setCellValue('C10', $k[3][1])
                     ->setCellValue('D10', $temp1 = count($this->openOrClose($args['date'], 'white', 'close', $args['carrier'])))
@@ -194,7 +194,7 @@ class Report extends Excel
                     ->setCellValue('G10', $this->checkLowerOrHigher($temp1, $intervals['wc1Week'], 'G10', true))
                     ->setCellValue('H10', $intervals['wc1Day'])
                     
-                    ->setCellValue('A11', 'Closed yellow')
+                    ->setCellValue('A11', 'Closed yellow today')
                     ->setCellValue('B11', $k[4][0])
                     ->setCellValue('C11', $k[4][1])
                     ->setCellValue('D11', $temp1 = count($this->openOrClose($args['date'], 'yellow', 'close', $args['carrier'])))
@@ -203,7 +203,7 @@ class Report extends Excel
                     ->setCellValue('G11', $this->checkLowerOrHigher($temp1, $intervals['yc1Week'], 'G11', true))
                     ->setCellValue('H11', $intervals['yc1Week'])
                     
-                    ->setCellValue('A12', 'Closed red')
+                    ->setCellValue('A12', 'Closed red today')
                     ->setCellValue('B12', $k[5][0])
                     ->setCellValue('C12', $k[5][1])
                     ->setCellValue('D12', $temp1 = count($this->openOrClose($args['date'], 'red', 'close', $args['carrier'])))
@@ -212,7 +212,7 @@ class Report extends Excel
                     ->setCellValue('G12', $this->checkLowerOrHigher($temp1, $intervals['rc1Week'], 'G12', true))
                     ->setCellValue('H12', $intervals['rc1Week'])
                     
-                    ->setCellValue('A13', 'Total closed')
+                    ->setCellValue('A13', 'Total closed today')
                     ->setCellValue('B13', $k[3][0]+$k[4][0]+$k[5][0])
                     ->setCellValue('C13', $k[3][1]+$k[4][1]+$k[5][1])
                     ->setCellValue('D13', $temp1 = count($this->totalTicketsClosed($args['date'], $args['carrier'])))
@@ -221,7 +221,7 @@ class Report extends Excel
                     ->setCellValue('G13', $this->checkLowerOrHigher($temp1, $intervals['tc1Week'], 'G13', true))
                     ->setCellValue('H13', $intervals['tc1Week'])
                 
-                    ->setCellValue('A14', 'No activity white')
+                    ->setCellValue('A14', 'No activity white today')
                     ->setCellValue('B14', $k[6][0])
                     ->setCellValue('C14', $k[6][1])
                     ->setCellValue('D14', $temp1 = count($this->withoutDescription($args['date'], 'white', 'open', $args['carrier'])))
@@ -230,7 +230,7 @@ class Report extends Excel
                     ->setCellValue('G14', $this->checkLowerOrHigher($temp1, $intervals['naW1Week'], 'G14', true))
                     ->setCellValue('H14', $intervals['naW1Week'])
                     
-                    ->setCellValue('A15', 'No activity yellow')
+                    ->setCellValue('A15', 'No activity yellow today')
                     ->setCellValue('B15', $k[7][0])
                     ->setCellValue('C15', $k[7][1])
                     ->setCellValue('D15', $temp1 = count($this->withoutDescription($args['date'], 'yellow', 'open', $args['carrier'])))
@@ -239,7 +239,7 @@ class Report extends Excel
                     ->setCellValue('G15', $this->checkLowerOrHigher($temp1, $intervals['naY1Week'], 'G15', true))
                     ->setCellValue('H15', $intervals['naY1Week'])
                     
-                    ->setCellValue('A16', 'No activity red')
+                    ->setCellValue('A16', 'No activity red today')
                     ->setCellValue('B16', $k[8][0])
                     ->setCellValue('C16', $k[8][1])
                     ->setCellValue('D16', $temp1 = count($this->withoutDescription($args['date'], 'red', 'open', $args['carrier'])))
@@ -248,7 +248,7 @@ class Report extends Excel
                     ->setCellValue('G16', $this->checkLowerOrHigher($temp1, $intervals['naR1Week'], 'G16', true))
                     ->setCellValue('H16', $intervals['naR1Week'])
                     
-                    ->setCellValue('A17', 'Total no activity')
+                    ->setCellValue('A17', 'Total no activity today')
                     ->setCellValue('B17', $k[6][0]+$k[7][0]+$k[8][0])
                     ->setCellValue('C17', $k[6][1]+$k[7][1]+$k[8][1])
                     ->setCellValue('D17', $temp1 = count($this->totalWithoutDescription($args['date'], $args['carrier'])))
@@ -257,7 +257,7 @@ class Report extends Excel
                     ->setCellValue('G17', $this->checkLowerOrHigher($temp1, $intervals['tna1Week'], 'G17', true))
                     ->setCellValue('H17', $intervals['tna1Week'])
                 
-                    ->setCellValue('A18', 'Escalated white')
+                    ->setCellValue('A18', 'Escalated white today')
                     ->setCellValue('B18', $k[9][0])
                     ->setCellValue('C18', $k[9][1])
                     ->setCellValue('D18', $temp1 = count($this->ticketEscaladed($args['date'], 'white', 'open', $args['carrier'])))
@@ -266,7 +266,7 @@ class Report extends Excel
                     ->setCellValue('G18', $this->checkLowerOrHigher($temp1, $intervals['eW1Week'], 'G18', true))
                     ->setCellValue('H18', $intervals['eW1Week'])
                     
-                    ->setCellValue('A19', 'Escalated yellow')
+                    ->setCellValue('A19', 'Escalated yellow today')
                     ->setCellValue('B19', $k[10][0])
                     ->setCellValue('C19', $k[10][1])
                     ->setCellValue('D19', $temp1 = count($this->ticketEscaladed($args['date'], 'yellow', 'open', $args['carrier'])))
@@ -275,7 +275,7 @@ class Report extends Excel
                     ->setCellValue('G19', $this->checkLowerOrHigher($temp1, $intervals['eY1Week'], 'G19', true))
                     ->setCellValue('H19', $intervals['eY1Week'])
                     
-                    ->setCellValue('A20', 'Escalated red')
+                    ->setCellValue('A20', 'Escalated red today')
                     ->setCellValue('B20', $k[11][0])
                     ->setCellValue('C20', $k[11][1])
                     ->setCellValue('D20', $temp1 = count($this->ticketEscaladed($args['date'], 'red', 'open', $args['carrier'])))
@@ -284,7 +284,7 @@ class Report extends Excel
                     ->setCellValue('G20', $this->checkLowerOrHigher($temp1, $intervals['eR1Week'], 'G20', true))
                     ->setCellValue('H20', $intervals['eR1Week'])
                     
-                    ->setCellValue('A21', 'Total escalated')
+                    ->setCellValue('A21', 'Total escalated today')
                     ->setCellValue('B21', $k[9][0]+$k[10][0]+$k[11][0])
                     ->setCellValue('C21', $k[9][1]+$k[10][1]+$k[11][1])
                     ->setCellValue('D21', $temp1 = count($this->totalTicketEscaladed($args['date'], $args['carrier'])))
@@ -323,7 +323,7 @@ class Report extends Excel
                     throw new Exception('Faltan las coordenadas para mostrar las imagenes up o down');
                 }
             } else {
-                return "<img src='$image' alt='". substr($image, -3) ."' />";
+                return "<img src='http://deve.sacet.com.ve/images/$image' alt='". substr($image, 0, -4) ."' />";
             }
             
         } else {
@@ -945,6 +945,25 @@ class Report extends Excel
         }
         
         return null;
+    }
+    
+    /**
+     * Retorna los id's de una determniada consutla obtenida con $this->optionStatistics($option, $date, $carrier)
+     * @param int $option Categoría del ticket
+     * @param string $date Fecha de búsqueda
+     * @param string $carrier Si es supplier, customer o ambos
+     * @return array
+     */
+    public function getIdsByCategory($option, $date, $carrier)
+    {
+        $ids = array();
+        $data = $this->optionStatistics($option, $date, $carrier);
+        if ($data != null) {
+            foreach ($data as $value) {
+                $ids[] = $value->id;
+            }
+        }
+        return $ids;
     }
         
     /**

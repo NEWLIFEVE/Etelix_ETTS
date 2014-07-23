@@ -3,7 +3,9 @@
 
 ##Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
 
-- Cambio en rutas para setear el logo y guardar el excel en Report.php y ReportCommand.php
+- Cambio de ruta para mostrar las flechas en los reportes por correo
+- Se anexa los tickets abiertos al reporte automático
+- Cambio en el path para setear el logo y guardar el excel en Report.php y ReportCommand.php
 
 ###Release 1.4.2
 - Cambio en la dirección de las flechas del reporte
