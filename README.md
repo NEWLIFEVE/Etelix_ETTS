@@ -5,6 +5,7 @@
 
 23/07/2014
 - Documentación en algunos métodos de TicketController y propiedades del modelo Ticket
+- Documentación en archivos javascript
 
 22/07/2014
 - Documentación de los métodos en los controladores, modelos y componentes
