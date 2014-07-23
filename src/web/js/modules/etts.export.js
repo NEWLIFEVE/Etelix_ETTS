@@ -1,8 +1,3 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 $ETTS.export=(function(){
     var _head   = '<!DOCTYPE html><html><meta charset="es"><head></head><body>',
         _footer = '<script>function printPage() { window.focus(); window.print();return; }</script>'+
@@ -11,6 +6,7 @@ $ETTS.export=(function(){
      * Petición ajax para los exportables
      * @param {object} settings Url de la petición ajax
      * @returns {jqXHR.responseText}
+     * @private
      */
     function _xhr(settings) {
         var response = $.ajax({ 
@@ -35,6 +31,7 @@ $ETTS.export=(function(){
     * Método para obtener los id's del ticket de lo que se está mostrando en datatable
     * @param {obj} element
     * @returns {Array}
+    * @private
     */
     function _getIds(element) {
         var ids = [];
@@ -49,6 +46,7 @@ $ETTS.export=(function(){
      * @param {string} text
      * @param {string} icon
      * @returns {string}
+     * @private
      */
     function _window(text, icon) {
         if (!icon) {
@@ -71,6 +69,7 @@ $ETTS.export=(function(){
          * Método para mostrar la vista de impresión
          * @param {object} settings
          * @returns {void}
+         * @public
          */
         print:function(settings) {
             settings.id = _getIds(settings.id);
@@ -91,6 +90,13 @@ $ETTS.export=(function(){
                 return;
             }
         },
+        
+        /**
+         * Vista previa de impresión del ticket
+         * @param {type} settings
+         * @returns {undefined}
+         * @public
+         */
         printPreviewTicket:function(settings) {
             settings.success = null;
             settings.beforesend = null;
@@ -106,11 +112,13 @@ $ETTS.export=(function(){
             newIframe.contentWindow.printPage();
             return;
         },
+        
         /**
          * Método para exportar a excel
          * @param {obj} element
          * @param {string} url
          * @returns {void}
+         * @public
          */
         excel:function(element, url) {
             var ids = _getIds(element);
@@ -120,11 +128,13 @@ $ETTS.export=(function(){
                 setTimeout(function(){_window('The file has been generated');}, 3500);
             }
         },
+        
         /**
          * Método para exportar a excel usando formulario
          * @param {obj} form
          * @param {obj} input
          * @returns {void}
+         * @public
          */
         excelForm:function(form, input, validate) {
             if (validate) {
@@ -136,10 +146,12 @@ $ETTS.export=(function(){
             setTimeout(function(){_window('The file has been generated');}, 3000);
             setTimeout(form.submit(), 1000);
         },
+        
         /**
          * Método para enviar mail
          * @param {object} settings
          * @returns {void}
+         * @public
          */
         mail:function(settings, validate) {
             settings.id = _getIds(settings.id);

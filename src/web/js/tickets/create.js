@@ -1,3 +1,7 @@
+/**
+ * Lee los eventos que sean "Change"
+ * @returns {undefined}
+ */
 function loadOnChange()
 {
     /*************************************************************************
@@ -60,6 +64,10 @@ function loadOnChange()
     });
 }
 
+/**
+ * Lee los eventos "Click"
+ * @returns {undefined}
+ */
 function loadOnClick()
 {    
     /*************************************************************************
@@ -88,7 +96,6 @@ function loadOnClick()
         
         $('#originationIp').val(originationIP); 
         $('#destinationIp').val(destinationIP);
-//        $('#areaDescription').val(description);
     });
     
     // Remove mails
@@ -140,6 +147,10 @@ function loadOnClick()
     });
 }
 
+/**
+ * Lee las validaciones de los formularios
+ * @returns {undefined}
+ */
 function loadValidation()
 {
     /*************************************************************************
@@ -346,6 +357,10 @@ function loadValidation()
      });
 }
 
+/**
+ * Empaqueta las funciones para cargarlas en onReady
+ * @returns {undefined}
+ */
 function load()
 {
     loadOnChange();

@@ -1,11 +1,10 @@
 <?php
 /**
- * Description of ChangeStatus:
- * 
  * Componente que se encargará de cerrar automáticamente los tickets que cumplan
- * la condiciones dadas para ejecutar el cierre automatico
+ * la condiciones dadas para ejecutar el cierre automático
  *
- * @author Nelson Marcano
+ * @author Nelson Marcano <nelsonm@sacet.biz>
+ * @package components
  */
 class ChangeStatus 
 {
@@ -34,7 +33,7 @@ class ChangeStatus
     private $_interval;
     
     /**
-     * Descripción que ser verá en el chat del ticket al cerrar el mismo
+     * Descripción que se verá en el chat del ticket al cerrar el mismo
      * @var string 
      */
     private $_description;

@@ -1,8 +1,9 @@
 <?php
 /**
- * Description of Connection
+ * Clase para establecer la conexión y cierre de imap
  *
- * @author Nelson Marcano
+ * @author Nelson Marcano <nelsonm@sacet.biz>
+ * @package Imap
  */
 abstract class Connection
 {

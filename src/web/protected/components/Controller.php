@@ -21,7 +21,7 @@ class Controller extends CController
 	 */
 	public $breadcrumbs=array();
         
-        /*
+        /**
         * Antes de que se ejecute una acción
         */
         public function beforeAction($action) 

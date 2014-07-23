@@ -7,6 +7,27 @@ var $ETTS={};
  */
 $ETTS.UI=(function(){
    
+    /**
+     * Retorna el detalle del ticket
+     * @param {string} clase Si es customer o supplier
+     * @param {string} user El usuario del ticket
+     * @param {array} to Correos del ticket
+     * @param {array} cc Copiar correo
+     * @param {array} bbc Copia oculta de correo
+     * @param {string} falla Falla del ticket
+     * @param {string} originationIp Puerto ip de origen
+     * @param {string} destinationIp Puerto ip de destino
+     * @param {string} prefijo Prefijo del ticket
+     * @param {string} speech Speech seleccionado de darse el caso
+     * @param {string} descripcion Descripción del ticket
+     * @param {string} gmt Gmt seleccioando 
+     * @param {array} testedNumber Los números de prueba
+     * @param {array} country El pais al que pertenece el número
+     * @param {array} date La fecha es que se marcó el número
+     * @param {array} hour La hora en que se marcó el número
+     * @returns {String}
+     * @private
+     */
     function _ticketCompleto(clase,
                              user,
                              to,
@@ -186,6 +207,12 @@ $ETTS.UI=(function(){
                    '</div>';
     }
     
+    /**
+     * Quita la validación que está en el select de "Response to"
+     * @param {object} select
+     * @returns {undefined}
+     * @private
+     */
     function _quitarValidacion(select){
             if (select.find('option').length > 0)
                 select.removeClass('validate[required]');
@@ -193,6 +220,18 @@ $ETTS.UI=(function(){
                 select.addClass('validate[required]');
     }
     
+    /**
+     * Es un confirm personalizado con el tema de metro ui.
+     * 
+     * Para hacer uso del confirm, se debe especificar la pregunta o mensaje que 
+     * contendrá la ventana mostrada, luego se debe llamar a los eventos onClick 
+     * de ambos botones para especificar que acción tomar cuando se pulse sobre ellos
+     * @param {string} mensaje
+     * @param {type} aceptar
+     * @param {type} cancelar
+     * @returns {undefined}
+     * @private
+     */
     function _confirmar(mensaje, aceptar, cancelar) {
             $.Dialog({
                 shadow: true,
@@ -212,7 +251,9 @@ $ETTS.UI=(function(){
     
     /**
     * Muestra la vista de impresión del ticket
+    * @param {object} ticketDetails El detalle del ticket
     * @returns {void}
+    * @private
     */
     function _printOpenTicket(ticketDetails) {
         var _head   = '<!DOCTYPE html><html><meta charset="es"><head></head><body>',
@@ -233,7 +274,9 @@ $ETTS.UI=(function(){
     
     /**
     * Diseño que contendrá el imprimible del ticket
-    * @returns {void}
+    * @param {object} ticketDetails El detalle del ticket
+    * @returns {string}
+    * @private
     */
     function _designTicket(ticketDetails) {
         var information = '<h2>Ticket Details</h2>',
@@ -349,10 +392,14 @@ $ETTS.UI=(function(){
     }
     
     return {
-        
-        tables:function(){
-            return _tables[0];
-        },
+       
+        /**
+         * Puede ser usada para mensajes de confirmación, errores, etc
+         * @param {string} text El texto del mensaje
+         * @param {string} icon El icono usado para mostrar en la parte superior izquierda
+         * @returns {undefined}
+         * @public
+         */
         message:function(text, icon) {
             if (!icon) {
                 icon = 'icon-rocket';
@@ -370,11 +417,17 @@ $ETTS.UI=(function(){
         },
         
         /**
-         * Método para mostrar un confirm personalizado
-         * @param string mensaje
-         * @param obj aceptar
-         * @param obj cancelar
-         */
+        * Es un confirm personalizado con el tema de metro ui.
+        * 
+        * Para hacer uso del confirm, se debe especificar la pregunta o mensaje que 
+        * contendrá la ventana mostrada, luego se debe llamar a los eventos onClick 
+        * de ambos botones para especificar que acción tomar cuando se pulse sobre ellos
+        * @param {string} mensaje Mensaje a mostrar en la ventana
+        * @param {string} aceptar El botón para aceptar
+        * @param {string} cancelar El botón para cancelar
+        * @returns {undefined}
+        * @public
+        */
         confirmar:function(mensaje, aceptar, cancelar) {
             $.Dialog({
                 shadow: true,
@@ -396,6 +449,7 @@ $ETTS.UI=(function(){
          * 
          * @param obj element
          * @param boolean statusTrack
+         * @public
          */
         tooltip:function(element, statusTrack){
             $(element).tooltip({
@@ -404,8 +458,27 @@ $ETTS.UI=(function(){
         },
         
         /**
-         * 
-         */
+        * Muestra el preview del ticekt antes de ser guardado
+        * 
+        * @param {string} clase Si es customer o supplier
+        * @param {string} user El usuario del ticket
+        * @param {array} to Correos del ticket
+        * @param {array} cc Copiar correo
+        * @param {array} bbc Copia oculta de correo
+        * @param {string} falla Falla del ticket
+        * @param {string} originationIp Puerto ip de origen
+        * @param {string} destinationIp Puerto ip de destino
+        * @param {string} prefijo Prefijo del ticket
+        * @param {string} speech Speech seleccionado de darse el caso
+        * @param {string} descripcion Descripción del ticket
+        * @param {string} gmt Gmt seleccioando 
+        * @param {array} testedNumber Los números de prueba
+        * @param {array} country El pais al que pertenece el número
+        * @param {array} date La fecha es que se marcó el número
+        * @param {array} hour La hora en que se marcó el número
+        * @returns {undefined}
+        * @public
+        */
         previewTicket:function(clase,
                              user,
                              to,
@@ -474,6 +547,7 @@ $ETTS.UI=(function(){
         
         /**
          * Valida las direccioens ip
+         * 
          * @param {object} element
          * @returns {void}
          */
@@ -508,6 +582,13 @@ $ETTS.UI=(function(){
                 }
             });
         },
+        
+        /**
+         * Borra los options de cualquier select que se le pase por parámetro
+         * 
+         * @param {object} select
+         * @returns {undefined}
+         */
         borrarOptionSelect:function(select){
               var element = select.parent().children('select');
               if(element.val()) 
@@ -516,12 +597,16 @@ $ETTS.UI=(function(){
                   _quitarValidacion(element);
               }
         },
+        
         /**
+         * Envía los options de un select a otro select
+         * 
          * @param {obj} boton
          * @param {obj} select
-         * @param {string} optionOpen
+         * @param {string} optionOpen Depende de come se abrá el ticket: carrier_to_etelex, etelix_to_carrier o etelix_by_carrier
          * @param {boolean} save
          * @returns {Boolean}
+         * @public
          */
         appendOptions:function(boton, select, optionOpen, settings){
             var select2 = boton.parent().children('select');
@@ -555,17 +640,38 @@ $ETTS.UI=(function(){
                 }
             }
         },
+        
+        /**
+         * Deselecciona un option de un select multiple
+         * @param {object} select
+         * @returns {undefined}
+         * @public
+         */
         clearOptions:function(select){
             if(select.val()) 
             {
                 select.find('option:selected').attr('selected',false);
             }
         },
+        
+        /**
+         * Agrega todos los options de un select a un segundo select
+         * @param {object} select
+         * @param {object} select2
+         * @returns {undefined}
+         * @public
+         */
         addAllEmails:function(select, select2){
                 select.html('');
                 select2.find('option').clone().appendTo(select);
                 select.removeClass('validate[required]');
         },
+        
+        /**
+         * Clona la fila de tested number(numero, país, fecha y hora) para duplicarla
+         * @returns {undefined}
+         * @public
+         */
         addTestedNumber:function(){
             var $html = $('#elemento').clone().css('display', 'none');
             $html.find('span,br').remove();
@@ -576,12 +682,25 @@ $ETTS.UI=(function(){
             $html.find('a').find('i').removeClass('icon-plus-2').addClass('icon-cancel-2 fg-red');
             $('#preview_tested_number').append($html.fadeIn('fast')); 
         },
+        
+        /**
+         * Borra una fila clonada de tested number
+         * @param {object} boton
+         * @returns {undefined}
+         * @public
+         */
         removeTestedNumber:function(boton){
             boton.parent().parent().fadeOut('fast', function(){
                 boton.parent().parent().remove();
             });
         },
         
+        /**
+         * Confirma si se quiere cerrar o no un ticket
+         * @param {object} select
+         * @returns {undefined}
+         * @public
+         */
         confirmCloseTicket:function(select){
             if (select.val())
             {   if (select.val() == '2')
@@ -594,6 +713,13 @@ $ETTS.UI=(function(){
                 }    
             }
         },
+        
+        /**
+         * Remueve la clase blink que muestran los tickets que tienen una respuesta nueva y no la han visto
+         * @param {object} boton
+         * @returns {undefined}
+         * @public
+         */
         removeBlink:function(boton){
             boton.parent().parent().removeClass('blink');
         }

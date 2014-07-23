@@ -129,7 +129,7 @@ class SiteController extends Controller
 	}
                         
         /**
-         * Exportable para imprimir
+         * Exportable de imprimir
          */
         public function actionPrint()
         {

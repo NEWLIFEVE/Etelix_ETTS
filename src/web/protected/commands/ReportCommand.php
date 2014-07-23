@@ -1,18 +1,14 @@
 <?php
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
- * Description of ReportCommand
- *
- * @author nelson
+ * @author Nelson Marcano <nelsonm@sace.biz>
+ * @package commands
  */
 class ReportCommand extends CConsoleCommand
 {
+    /**
+     * Corre automáticamente los reportes
+     * @param array $args
+     */
     public function run($args)
     {
         $report = new Report;

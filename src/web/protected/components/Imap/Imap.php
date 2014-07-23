@@ -1,8 +1,7 @@
 <?php
 /**
- * Description of Imap
- *
- * @author Nelson Marcano
+ * @author Nelson Marcano <nelsonm@sacet.biz>}
+ * @package Imap
  */
 class Imap extends Connection
 {

@@ -39,7 +39,13 @@ function fnFormatDetails ( data,id )
         
 }
 
-// Función con ajax para traer los tickets relacionados
+/**
+ * Función con ajax para traer los tickets relacionados
+ * @param {int} id Id del ticket
+ * @param {type} nTr
+ * @param {object} oTable Datatable
+ * @returns {undefined}
+ */
 function getTicketsRelated(id, nTr, oTable)
 {
     $.ajax({

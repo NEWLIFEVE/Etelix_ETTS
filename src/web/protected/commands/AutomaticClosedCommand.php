@@ -1,18 +1,14 @@
 <?php
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
- * Description of AutomaticClosedCommand
- *
- * @author nelson
+ * @author Nelson Marcano <nelsonm@sacet.biz>
+ * @package commands
  */
 class AutomaticClosedCommand extends CConsoleCommand 
 {
+    /**
+     * Corre automáticamente el cierre del ticket
+     * @return \ChangeStatus
+     */
     public function run()
     {
         $interval = '30 days';

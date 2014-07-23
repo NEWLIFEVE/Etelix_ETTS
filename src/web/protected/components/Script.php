@@ -1,4 +1,8 @@
 <?php
+/**
+ * @author Nelson Marcano <nelsonm@sacet.biz>
+ * @package components
+ */
 abstract class Script
 {
     /**

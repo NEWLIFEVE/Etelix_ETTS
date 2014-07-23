@@ -1,7 +1,6 @@
 <?php
 /**
- * version 1.1.3
- * 
+ * @author Nelson Marcano <nelsonm@sacet.biz>
  * @package components
  */
 class CuerpoCorreo extends TicketDesign

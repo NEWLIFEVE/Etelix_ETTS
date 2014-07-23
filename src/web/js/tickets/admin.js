@@ -52,6 +52,11 @@ $.fn.dataTableExt.oApi.fnGetColumnData = function ( oSettings, iColumn, bUnique,
     return asResultData;
 }}(jQuery));
 
+/**
+ * Crea los selects dinámicamente en datatable
+ * @param {object} aData Datatable
+ * @returns {String}
+ */
 function fnCreateSelect( aData )
 {
     var r='<select><option value=""></option>', i, iLen=aData.length;
@@ -62,7 +67,10 @@ function fnCreateSelect( aData )
     return r+'</select>';
 }
 
-// Función para agregar archivos en el description
+/**
+ * Agregar archivos a la descripción
+ * @returns {string}
+ */
 function attachFile()
 {
     var settings = {
@@ -95,13 +103,21 @@ function attachFile()
 }
 
 
-// Asociar mas correos al ticket creado
+/**
+ * Muestra la opción de agregar más correos
+ * @returns {void}
+ */ 
 function seeOptions(e)
 {
     $('.options-hide').show('fast');
     $(e).text('hide');
     $(e).attr('onclick', 'hideOptions(this)');
 }
+/**
+ * Esconde la opción de agregar más correos
+ * @param {object} e
+ * @returns {void}
+ */
 function hideOptions(e)
 {
     $('.options-hide').hide('fast');
@@ -109,7 +125,11 @@ function hideOptions(e)
     $(e).attr('onclick', 'seeOptions(this)');
 }
 
-// Bajar correos a la lista a donde se enviará la nota al cerrar o dar una respuesta al ticket
+/**
+ * Bajar correos a la lista a donde se enviará la nota al cerrar o dar una respuesta al ticket
+ * @param {object} e
+ * @returns {void}
+ */
 function bajarCorreo(e)
 {
     var totalMails = $('#mails option:selected'), mails = [];
@@ -126,12 +146,22 @@ function bajarCorreo(e)
     $ETTS.UI.appendOptions($(e), $('#mails'), $('#open-ticket'), settings);
 }
 
+/**
+ * Guarda un nuevo mail en la lista de correos asociados al ticket
+ * @param {object} e
+ * @returns {void}
+ */
 function newMailTicket(e)
 {
     if ($('#new_mail').val().length > 0) 
         $ETTS.ajax.saveMail($('#new_mail'),'',$('#user-ticket'),null,$('#mostrar-mails'),$('#open-ticket'),$('#id_ticket').val());
 }
 
+/**
+ * Borra un correo asociado a un ticket
+ * @param {object} e
+ * @returns {void}
+ */
 function borrarCorreo(e)
 {
     var longitudTotal = $('#mostrar-mails option').length, 
@@ -156,18 +186,32 @@ function borrarCorreo(e)
         }
     }
 }
-
+/**
+ * Muestra un elemento (puede ser cualquier etiqueta html)
+ * @param {object} e
+ * @param {string} show
+ * @returns {void}
+ */
 function show(e, show)
 {
     $(show).show('fast');
 }
+
+/**
+ * Esconde un elemento (puede ser cualquier etiqueta html)
+ * @param {type} e
+ * @param {type} show
+ * @returns {void}
+ */
 function hide(e, show)
 {
     $(show).hide('fast');
 }
 
 /*
-* Guarda la respuesta de la descripcion
+* Guarda la respuesta de la descripcion y cierra el ticket en el caso que sea 
+* marcada dicha opcion. Igualmente dice si la repuesta es enviada por Etelix 
+* como el carrier
 */
 function saveMessage()
 {
@@ -297,9 +341,9 @@ function initExport(boton)
 }
 
 /**
-*Función para refrescar la vista admin.php cada 5 minutos. Si se da un preview del
-*ticket se interrrumpe el proceso y al cerrar el preview se vuelven a contar los 
-*cinco minutos.
+* Función para refrescar la vista admin.php cada 5 minutos. Si se da un preview del
+* ticket se interrrumpe el proceso y al cerrar el preview se vuelven a contar los 
+* cinco minutos.
 */
 var timeRefresh = 300000, 
     refreshInterval = setInterval(function(){
@@ -307,7 +351,7 @@ var timeRefresh = 300000,
     }, timeRefresh);
             
 /**
- * Imprime el ticket que ya esta guardado en base de datos
+ * Imprime el ticket que ya está guardado en base de datos
  * @returns {void}
  */
 function printTicketBd()
@@ -324,8 +368,8 @@ function printTicketBd()
 }
 
 /**
- * Función para escalar tickets
- * @returns {void}
+ * Muestra la vista para escalar tickets
+ * @returns {string}
  */
 function previewEscaladeTicket()
 {
@@ -410,6 +454,11 @@ function previewEscaladeTicket()
     });
 }
 
+/**
+ * Petición ajax para escalar el ticket
+ * @param {object} settings
+ * @returns {string}
+ */
 function escaladedTicket(settings)
 {
     $.ajax({
@@ -435,7 +484,7 @@ function escaladedTicket(settings)
 }
 
 /**
- * Muestra el preview del ticket
+ * Muestra el detalle del ticket
  * @param {int} idTicket
  * @param {object} boton
  * @returns {void}
@@ -516,6 +565,10 @@ function previewTicket(idTicket, boton)
     }
 }
 
+/**
+ * Empaqueta las funciones para ser cargadas en el onReady
+ * @returns {object}
+ */
 function loadFunctions()
 {
     printTicketBd();
@@ -523,6 +576,13 @@ function loadFunctions()
     attachFile();
 }
 
+/**
+ * Da un efecto de poner los bordes más oscuros del div que contiene al textarea 
+ * y el select al estar enfocado en el textarea donde se responden los tickets, y 
+ * volver a su color original al perder el foco.
+ * @param {object} element
+ * @returns {void}
+ */
 function efectBorder(element)
 {
     $(document).on('focus', element, function(){
@@ -565,7 +625,7 @@ $(document).on('ready', function() {
     //Tooltip del status y el tiempo que lleva desde que se abrió
     $( document ).tooltip({track: true});
 
-    //Append Speech
+    // Llamado de los speech
     $(document).on('change', 'select#speech', function(){
         if ($(this).val()){
             var settings = {
@@ -578,6 +638,7 @@ $(document).on('ready', function() {
         }
     });
 
+    
     // Llamado del preview del ticket
     $(document).on('click', '.preview', function () {
         previewTicket($(this).attr('rel'), $(this));

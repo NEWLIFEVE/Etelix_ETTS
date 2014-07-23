@@ -1,9 +1,7 @@
 <?php
-
 /**
- * Description of Subject
- *
  * @author Nelson Marcano
+ * @package components
  */
 class Subject 
 {
