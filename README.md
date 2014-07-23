@@ -3,6 +3,12 @@
 
 ##Etelis Ticket Trouble Shoting: tickera de Etelix para manejo de incidencias
 
+23/07/2014
+- Documentación en algunos métodos de TicketController y propiedades del modelo Ticket
+
+22/07/2014
+- Documentación de los métodos en los controladores, modelos y componentes
+
 21/07/2014
 - Corrección en las flechas del reporte, se cambió el orden.
 - Adaptando cruge a metro ui
