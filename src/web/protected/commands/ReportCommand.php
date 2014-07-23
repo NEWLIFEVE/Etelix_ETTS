@@ -37,13 +37,21 @@ class ReportCommand extends CConsoleCommand
         $table = $export->tableSummary();
         if ($table !== null) {
             $mail = new EnviarEmail;
-            if(!YII_DEBUG) $Address='revista@etelix.com';
-            else $Address='auto@sacet.biz';
+            if(!YII_DEBUG)
+            {
+                $Address='revista@etelix.com';
+                $copy='auto@sacet.biz';
+            }
+            else
+            {
+                $Address='auto@sacet.biz';
+                $copy=null;
+            } 
             // Ruta para conseguir el excel
             $route=Yii::getPathOfAlias('webroot.uploads') . DIRECTORY_SEPARATOR . $nameReport . '.xlsx';
             // Se le anexa a la tabla del resumen la tabla con los tieckets dependiendo de la categoría seleccioanda
             $table .= '<center><h3>'. substr($nameReport, 0, -7) .'</h3></center>' . $export->table($ids, $date, 1);
-            $mail->enviar($table, $Address, '', strtoupper($nameReport), $route); 
+            $mail->enviar($table, $Address, '', strtoupper($nameReport), $route,$copy);   
         } 
         
     }
